@@ -100,6 +100,14 @@
     };
   }
 
+  function formatFieldValue(value) {
+    const values = Array.isArray(value) ? value : [value];
+    return values
+      .map(function (item) { return String(item == null ? "" : item).trim(); })
+      .filter(Boolean)
+      .join("; ");
+  }
+
   function buildContactMessage(input) {
     const data = input || {};
     const fields = data.fields || {};
@@ -114,7 +122,8 @@
       ["Ubicación o referencia", "ubicacion"],
       ["Partida o nomenclatura catastral", "nomenclatura"],
       ["Superficie aproximada", "superficie"],
-      ["Información disponible", "documentacion"],
+      ["Documentación disponible (declarada)", "documentacion"],
+      ["Consultas realizadas (declaradas)", "verificaciones"],
       ["Contexto", "detalle"]
     ];
     const lines = ["Hola Erica, quiero iniciar una conversación sobre una oportunidad en MORENO.", ""];
@@ -122,12 +131,12 @@
       const label = entry[0];
       const key = entry[1];
       if (key === "superficie" && areaFromCalculator) return;
-      const value = String(fields[key] == null ? "" : fields[key]).trim();
+      const value = formatFieldValue(fields[key]);
       if (value) lines.push(label + ": " + value);
     });
     const note = buildLeadNote(calculationInput);
     if (!note.empty) lines.push("", ...note.lines);
-    lines.push("", "Enviado desde el formulario de oportunidades del sitio MORENO.");
+    lines.push("", "Las selecciones de documentación y consultas son declaraciones de quien completa; no constituyen verificación independiente.", "", "Enviado desde el formulario de oportunidades del sitio MORENO.");
     return lines.join("\n");
   }
 
