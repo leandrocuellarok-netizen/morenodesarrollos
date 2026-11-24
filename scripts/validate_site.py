@@ -170,7 +170,7 @@ def main() -> None:
             errors.append(f"{relative.as_posix()}: imágenes sin alt: {', '.join(parser.images_without_alt)}")
         if relative == Path("oportunidades/index.html"):
             page_source = file_path.read_text(encoding="utf-8")
-            for required_field in ('name="nombre"', 'name="perfil"', 'name="interes"', 'name="zona"', 'name="ubicacion"', 'name="nomenclatura"'):
+            for required_field in ('name="nombre"', 'name="perfil"', 'name="interes"', 'name="zona"', 'name="ubicacion"', 'name="nomenclatura"', 'name="documentacion"', 'name="verificaciones"'):
                 if required_field not in page_source:
                     errors.append(f"{relative.as_posix()}: falta campo obligatorio {required_field}")
             if 'id="opportunity-form"' not in page_source:
@@ -179,10 +179,10 @@ def main() -> None:
                 errors.append(f"{relative.as_posix()}: falta el destino de WhatsApp del formulario")
             if "El sitio no recibe ni almacena estos datos" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta la explicación de privacidad del formulario")
-            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral", "contact-preview", "contact-message-preview", "copy-contact-message", "open-whatsapp"):
+            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral", "documentation-checklist", "verification-checklist", "contact-preview", "contact-message-preview", "copy-contact-message", "open-whatsapp"):
                 if required_id not in parser.ids:
                     errors.append(f"{relative.as_posix()}: falta control de cálculo {required_id}")
-            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.buildLeadNote", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", "contactPreview.hidden = false", "navigator.clipboard.writeText"):
+            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.buildLeadNote", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", 'formData.getAll("documentacion")', 'formData.getAll("verificaciones")', "contactPreview.hidden = false", "navigator.clipboard.writeText"):
                 if required_logic not in page_source:
                     errors.append(f"{relative.as_posix()}: falta integración de la lógica de oportunidades: {required_logic}")
             if not re.search(r'<button\b[^>]*id="feasibility-calculate"[^>]*type="button"[^>]*>', page_source, re.IGNORECASE):
@@ -192,7 +192,7 @@ def main() -> None:
                 errors.append("Falta assets/js/opportunity-tools.js")
             else:
                 module_source = module_path.read_text(encoding="utf-8")
-                for required_logic in ("area.value * fos.value", "area.value * fot.value", "buildLeadNote", "buildContactMessage", "buildWhatsAppUrl", "Ubicación o referencia", "Partida o nomenclatura catastral", "No se realizó el cálculo", "Este resultado es matemático y orientativo"):
+                for required_logic in ("area.value * fos.value", "area.value * fot.value", "buildLeadNote", "buildContactMessage", "buildWhatsAppUrl", "formatFieldValue", "Documentación disponible (declarada)", "Consultas realizadas (declaradas)", "no constituyen verificación independiente", "Ubicación o referencia", "Partida o nomenclatura catastral", "No se realizó el cálculo", "Este resultado es matemático y orientativo"):
                     if required_logic not in module_source:
                         errors.append(f"assets/js/opportunity-tools.js: falta lógica requerida: {required_logic}")
             if 'id="contact-message-preview"' in page_source and 'id="contact-message-preview" rows="12" readonly' not in page_source:
@@ -201,6 +201,14 @@ def main() -> None:
                 errors.append(f"{relative.as_posix()}: el formulario no debe redirigir automáticamente sin revisión del borrador")
             if "Si solo conocés la superficie" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta explicar que se puede iniciar contacto sin FOS/FOT")
+            documentation_checks = re.findall(r'<input\b[^>]*type="checkbox"[^>]*name="documentacion"', page_source)
+            verification_checks = re.findall(r'<input\b[^>]*type="checkbox"[^>]*name="verificaciones"', page_source)
+            if len(documentation_checks) < 6:
+                errors.append(f"{relative.as_posix()}: se esperaban al menos seis opciones de documentación")
+            if len(verification_checks) < 5:
+                errors.append(f"{relative.as_posix()}: se esperaban al menos cinco opciones de consultas realizadas")
+            if "no constituyen verificación independiente" not in page_source and "no constituyen verificación independiente" not in module_source:
+                errors.append(f"{relative.as_posix()}: falta aclarar que las selecciones no son verificaciones independientes")
 
         for script_kind, source in parser.scripts:
             if script_kind == "json":
