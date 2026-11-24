@@ -24,7 +24,7 @@ PAGE_URLS = {
     Path("mapa-ia/index.html"): PUBLIC_BASE + "mapa-ia/",
     Path("erica-acosta/index.html"): PUBLIC_BASE + "erica-acosta/",
 }
-REQUIRED_SOCIAL_META = ("og:title", "og:description", "og:type", "og:locale", "twitter:card")
+REQUIRED_SOCIAL_META = ("og:title", "og:description", "og:type", "og:locale", "og:image", "og:image:alt", "twitter:card")
 
 
 class PageAudit(HTMLParser):
@@ -38,7 +38,9 @@ class PageAudit(HTMLParser):
         self.title_parts: list[str] = []
         self.has_description = False
         self.meta: dict[str, str] = {}
+        self.meta_counts: dict[str, int] = {}
         self.canonicals: list[str] = []
+        self.h1_count = 0
         self.lang = ""
         self._in_title = False
         self._script: dict[str, object] | None = None
@@ -56,10 +58,13 @@ class PageAudit(HTMLParser):
             self.lang = values.get("lang") or ""
         if tag == "title":
             self._in_title = True
+        if tag == "h1":
+            self.h1_count += 1
         if tag == "meta":
             key = (values.get("property") or values.get("name") or "").lower()
             if key:
                 self.meta[key] = (values.get("content") or "").strip()
+                self.meta_counts[key] = self.meta_counts.get(key, 0) + 1
             if key == "description":
                 self.has_description = bool(self.meta[key])
         if tag == "link" and "canonical" in (values.get("rel") or "").lower().split():
@@ -144,6 +149,19 @@ def main() -> None:
         for key in REQUIRED_SOCIAL_META:
             if not parser.meta.get(key):
                 errors.append(f"{relative.as_posix()}: falta metadato social {key}")
+            if parser.meta_counts.get(key, 0) != 1:
+                errors.append(f"{relative.as_posix()}: el metadato {key} debe aparecer exactamente una vez")
+        if parser.h1_count != 1:
+            errors.append(f"{relative.as_posix()}: se esperaba exactamente un H1 y se encontraron {parser.h1_count}")
+        image_url = parser.meta.get("og:image", "")
+        image_parts = urlsplit(image_url)
+        base_parts = urlsplit(PUBLIC_BASE)
+        if image_parts.netloc != base_parts.netloc or not image_parts.path.startswith(base_parts.path):
+            errors.append(f"{relative.as_posix()}: og:image debe apuntar a un recurso del sitio público")
+        else:
+            image_path = ROOT / unquote(image_parts.path[len(base_parts.path):])
+            if not image_path.is_file():
+                errors.append(f"{relative.as_posix()}: og:image no existe en el repositorio: {image_url}")
         if parser.duplicates:
             errors.append(f"{relative.as_posix()}: IDs duplicados: {', '.join(sorted(parser.duplicates))}")
         if parser.images_without_alt:
@@ -233,7 +251,7 @@ def main() -> None:
     refs_count = sum(len(page.refs) for page in audits.values())
     print(
         f"OK: {len(audits)} páginas; {refs_count} referencias locales; canonical, OG/Twitter, "
-        "robots.txt, sitemap.xml, IDs, imágenes, JSON-LD y referencias DOM correctos."
+        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD y referencias DOM correctos."
     )
     if node:
         print("OK: sintaxis de JavaScript inline validada con node --check.")
