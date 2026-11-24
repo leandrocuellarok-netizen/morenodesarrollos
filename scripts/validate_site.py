@@ -193,10 +193,16 @@ def main() -> None:
                 errors.append("Falta mapa-ia/index.html para contrastar el esquema territorial de Inicio")
             else:
                 map_source = map_path.read_text(encoding="utf-8")
-                locality_body = extract_array_body(map_source, "localities")
-                opportunity_body = extract_array_body(map_source, "opportunities")
+                map_data_path = ROOT / "assets/js/mapa-ia.js"
+                if not map_data_path.is_file():
+                    errors.append("Falta assets/js/mapa-ia.js para contrastar el esquema territorial de Inicio")
+                    map_data_source = ""
+                else:
+                    map_data_source = map_data_path.read_text(encoding="utf-8")
+                locality_body = extract_array_body(map_data_source, "localities")
+                opportunity_body = extract_array_body(map_data_source, "opportunities")
                 if locality_body is None or opportunity_body is None:
-                    errors.append("Mapa IA: no se pudieron leer las listas de localidades y tesis")
+                    errors.append("Mapa IA: no se pudieron leer las listas de localidades y tesis desde assets/js/mapa-ia.js")
                 else:
                     localities = re.findall(r'\{\s*id:"([^"]+)",\s*name:"([^"]+)",\s*lat:', locality_body)
                     opportunities = re.findall(r'\{\s*id:"([^"]+)",\s*stage:"([^"]+)",\s*name:"([^"]+)",\s*lat:', opportunity_body)
@@ -258,8 +264,8 @@ def main() -> None:
                 "attributionControl: { compact: false }",
                 "https://www.openstreetmap.org/fixthemap",
                     'map.addSource("moreno-boundary"',
-                    'document.createElement("details")',
-                    'document.createElement("summary")',
+                    'doc.createElement("details")',
+                    'doc.createElement("summary")',
                     'addDetail("Línea a investigar", item.business)',
                     'addDetail("Qué sabemos", item.evidence)',
                     'addDetail("Estado de verificación", item.status)',
