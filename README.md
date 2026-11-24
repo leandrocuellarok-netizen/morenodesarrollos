@@ -63,7 +63,7 @@ Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
 ### Pendientes antes de publicar
 
 1. Definir si se usará la URL de GitHub Pages o un dominio propio; el workflow de publicación ya está versionado en `.github/workflows/pages.yml`.
-2. Incorporar fotografía y datos de contacto reales de Erica (no se inventaron email, teléfono ni perfiles sociales).
+2. La fotografía de Erica ya está incorporada. Revisar con ella la biografía, el teléfono de contacto y las alianzas mencionadas antes de publicar; no se inventaron email ni perfiles sociales.
 3. Revisar el contenido biográfico y las alianzas mencionadas antes de publicación.
 4. Confirmar que GitHub Pages esté configurado con la opción de HTML estático mediante GitHub Actions y validar el último despliegue en navegador.
 5. Validar en navegador el servicio GeoJSON del límite municipal y sumar capas parcelarias/zonificación solo con fuentes oficiales y permisos adecuados.
@@ -86,3 +86,12 @@ Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
 - Cada fila identifica expresamente el alcance de sus coordenadas: localidad o corredor aproximado, nunca parcela verificada.
 - En móvil, el mapa se muestra antes del inventario para que la herramienta cartográfica quede accesible sin recorrer primero todas las fichas.
 - La exportación es una herramienta de trabajo y no convierte hipótesis en oportunidades verificadas ni acredita disponibilidad, titularidad, zonificación o rentabilidad.
+
+
+### Control automático antes de publicar
+
+- El workflow de GitHub Pages ejecuta `scripts/validate_site.py` antes de subir el sitio.
+- El control comprueba que existan las tres páginas públicas, que tengan idioma, título y descripción, y que no haya IDs duplicados ni imágenes sin texto alternativo.
+- Comprueba referencias internas, archivos locales, fragmentos de navegación y JSON-LD.
+- Si Node.js está disponible en el runner, valida además la sintaxis de cada bloque JavaScript inline.
+- Si una comprobación falla, el despliegue se detiene para evitar publicar una versión rota.
