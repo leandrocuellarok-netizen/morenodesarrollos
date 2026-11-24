@@ -182,13 +182,21 @@ def main() -> None:
             for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results"):
                 if required_id not in parser.ids:
                     errors.append(f"{relative.as_posix()}: falta control de cálculo {required_id}")
-            for required_logic in ("function calculatePreliminary", "area.value*fos.value", "area.value*fot.value", "Intl.NumberFormat"):
+            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.buildLeadNote", "window.location.href"):
                 if required_logic not in page_source:
-                    errors.append(f"{relative.as_posix()}: falta lógica de cálculo preliminar: {required_logic}")
-            if not re.search(r'<button\b[^>]*id="feasibility-calculate"[^>]*type="button"[^>]*>', page_source, re.IGNORECASE):
+                    errors.append(f"{relative.as_posix()}: falta integración de la lógica de oportunidades: {required_logic}")
+            if not re.search(r'<button\\b[^>]*id="feasibility-calculate"[^>]*type="button"[^>]*>', page_source, re.IGNORECASE):
                 errors.append(f"{relative.as_posix()}: el botón de cálculo no debe enviar el formulario de contacto")
-            if "Este resultado es matemático y orientativo" not in page_source:
-                errors.append(f"{relative.as_posix()}: falta la advertencia sobre el alcance del cálculo")
+            module_path = ROOT / "assets/js/opportunity-tools.js"
+            if not module_path.is_file():
+                errors.append("Falta assets/js/opportunity-tools.js")
+            else:
+                module_source = module_path.read_text(encoding="utf-8")
+                for required_logic in ("area.value * fos.value", "area.value * fot.value", "buildLeadNote", "No se realizó el cálculo", "Este resultado es matemático y orientativo"):
+                    if required_logic not in module_source:
+                        errors.append(f"assets/js/opportunity-tools.js: falta lógica requerida: {required_logic}")
+            if "Si solo conocés la superficie" not in page_source:
+                errors.append(f"{relative.as_posix()}: falta explicar que se puede iniciar contacto sin FOS/FOT")
 
         for script_kind, source in parser.scripts:
             if script_kind == "json":
@@ -252,6 +260,16 @@ def main() -> None:
 
     node = shutil.which("node")
     if node:
+        test_script = ROOT / "scripts/test_opportunity_tools.js"
+        if not test_script.is_file():
+            errors.append("Falta scripts/test_opportunity_tools.js")
+        else:
+            unit_test = subprocess.run([node, str(test_script)], capture_output=True, text=True, check=False)
+            if unit_test.returncode:
+                detail = (unit_test.stderr or unit_test.stdout).strip()
+                errors.append(f"Pruebas de lógica de oportunidades fallidas: {detail}")
+            elif unit_test.stdout.strip():
+                print(unit_test.stdout.strip())
         for relative, parser in audits.items():
             for index, (kind, source) in enumerate(parser.scripts):
                 if kind != "javascript" or not source.strip():
@@ -274,10 +292,10 @@ def main() -> None:
     refs_count = sum(len(page.refs) for page in audits.values())
     print(
         f"OK: {len(audits)} páginas; {refs_count} referencias locales; canonical, OG/Twitter, "
-        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, referencias DOM y calculadora preliminar correctos."
+        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, referencias DOM y módulo de oportunidades correctos."
     )
     if node:
-        print("OK: sintaxis de JavaScript inline validada con node --check.")
+        print("OK: sintaxis de JavaScript inline y pruebas unitarias de oportunidades validadas con Node.js.")
 
 
 if __name__ == "__main__":
