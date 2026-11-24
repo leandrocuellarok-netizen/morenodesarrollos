@@ -103,3 +103,12 @@ Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
 - Comprueba referencias internas, archivos locales, fragmentos de navegación y JSON-LD.
 - Si Node.js está disponible en el runner, valida además la sintaxis de cada bloque JavaScript inline.
 - Si una comprobación falla, el despliegue se detiene para evitar publicar una versión rota.
+
+
+## Captación de oportunidades y primer contacto
+
+- [Presentar un terreno, proyecto o interés de inversión](https://leandrocuellarok-netizen.github.io/morenodesarrollos/oportunidades/)
+- La página separa el recorrido de propietarios del de inversores y profesionales, y solicita únicamente información inicial: nombre, perfil, interés, zona y datos opcionales.
+- El formulario genera un borrador de WhatsApp editable. No hay backend, envío automático ni almacenamiento de datos en el sitio; la persona revisa el texto y decide si lo envía.
+- No se solicitan escrituras, DNI, datos bancarios ni documentación confidencial en el primer contacto.
+- Las consultas no constituyen tasaciones, ofertas, compromisos de inversión ni confirmaciones de disponibilidad.
