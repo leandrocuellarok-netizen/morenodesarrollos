@@ -62,7 +62,7 @@ Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
 
 ### Pendientes antes de publicar
 
-1. Definir dominio definitivo y configurar hosting/GitHub Pages; las rutas están preparadas para publicarse desde la raíz de un dominio.
+1. Definir si se usará la URL de GitHub Pages o un dominio propio; el workflow de publicación ya está versionado en `.github/workflows/pages.yml`.
 2. Incorporar fotografía y datos de contacto reales de Erica (no se inventaron email, teléfono ni perfiles sociales).
 3. Revisar el contenido biográfico y las alianzas mencionadas antes de publicación.
 4. Confirmar que GitHub Pages esté configurado con la opción de HTML estático mediante GitHub Actions y validar el último despliegue en navegador.
