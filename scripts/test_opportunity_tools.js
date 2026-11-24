@@ -58,5 +58,7 @@ assert.match(contactMessage, /Partida o nomenclatura catastral: Circ\. II, Secc\
 assert.match(contactMessage, /Superficie declarada en calculadora: 1200 m²/);
 assert.doesNotMatch(contactMessage, /Superficie aproximada: 1200/);
 assert.match(contactMessage, /Dato aportado/);
+assert.ok(contactMessage.includes("\nUbicación o referencia:"));
+assert.equal(contactMessage.includes("\\n"), false);
 
 console.log("OK: 8 grupos de pruebas de cálculo, datos parciales, campos parcelarios y borrador de contacto.");
