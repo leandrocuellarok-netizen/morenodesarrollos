@@ -208,3 +208,16 @@ body{background:var(--paper);color:var(--ink)}
 .feasibility-panel .feasibility-disclaimer{font:10px/1.7 var(--sans);color:#77796f;margin:13px 0 0}
 @media(max-width:900px){.feasibility-tool{grid-template-columns:1fr;gap:25px}.feasibility-intro{max-width:760px}}
 @media(max-width:600px){.feasibility-panel{padding:19px 15px}.feasibility-fields,.feasibility-result-list{grid-template-columns:1fr}.feasibility-button{width:100%}.feasibility-tool{padding:15px 0 65px}}
+
+
+/* Vista previa explícita del contacto: revisión y consentimiento antes de abrir WhatsApp */
+.contact-preview[hidden]{display:none!important}
+.contact-preview{margin-top:25px;padding:24px;background:#f4f1e8;border:1px solid #bdb7aa;border-left:3px solid var(--rust)}
+.contact-preview-head h3{font:400 clamp(27px,3vw,36px)/1.05 var(--serif);letter-spacing:-.035em;margin:10px 0}
+.contact-preview-head p{font:12px/1.75 var(--sans);color:#686a61;max-width:620px}
+.contact-preview-label{display:block;margin:20px 0 8px;font:10px var(--sans);letter-spacing:.13em;text-transform:uppercase;color:#55584f}
+.contact-preview textarea{display:block;width:100%;min-height:230px;padding:14px;border:1px solid #c7c1b4;background:#fbfaf6;color:var(--ink);font:12px/1.65 var(--sans);resize:vertical}
+.contact-preview textarea:focus{outline:2px solid var(--rust);outline-offset:2px}
+.contact-preview-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:15px}
+.contact-preview-actions .button{justify-content:center;cursor:pointer}
+@media(max-width:600px){.contact-preview{padding:18px 14px}.contact-preview-actions{flex-direction:column}.contact-preview-actions .button{width:100%;justify-content:space-between}.contact-preview textarea{min-height:260px}}
