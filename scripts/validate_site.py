@@ -235,35 +235,58 @@ def main() -> None:
                         errors.append(f"assets/css/erica.css: falta estilo del esquema territorial: {required_style}")
 
         if relative == Path("mapa-ia/index.html"):
-            for required_logic in (
-                'document.createElement("details")',
-                'document.createElement("summary")',
-                'addDetail("Línea a investigar",x.business)',
-                'addDetail("Qué sabemos",x.evidence)',
-                'addDetail("Estado de verificación",x.status)',
-                'addDetail("Próximo paso",x.next)',
-                'link.href=x.source',
-                'link.textContent="Abrir referencia externa ↗"',
-                'focusButton.textContent="Ubicar en el mapa"',
-                'focusButton.setAttribute("aria-label","Centrar el mapa en "+x.name)'
+            for required_markup in (
+                'href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css"',
+                'href="../assets/css/mapa-ia.css"',
+                'src="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js"',
+                'src="../assets/js/mapa-ia.js"',
             ):
-                if required_logic not in page_source:
-                    errors.append(f"{relative.as_posix()}: falta detalle accesible del inventario: {required_logic}")
-            map_css_path = ROOT / "assets/css/erica.css"
+                if required_markup not in page_source:
+                    errors.append(f"{relative.as_posix()}: falta integración MapLibre/OpenStreetMap: {required_markup}")
+            if "leaflet" in page_source.lower():
+                errors.append(f"{relative.as_posix()}: quedaron referencias al motor Leaflet anterior")
+
+            map_js_path = ROOT / "assets/js/mapa-ia.js"
+            if not map_js_path.is_file():
+                errors.append("Falta assets/js/mapa-ia.js para el Mapa IA")
+            else:
+                map_js = map_js_path.read_text(encoding="utf-8")
+                for required_logic in (
+                    "new maplibregl.Map(",
+                    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    'map.addSource("moreno-boundary"',
+                    'document.createElement("details")',
+                    'document.createElement("summary")',
+                    'addDetail("Línea a investigar", item.business)',
+                    'addDetail("Qué sabemos", item.evidence)',
+                    'addDetail("Estado de verificación", item.status)',
+                    'addDetail("Próximo paso", item.next)',
+                    "link.href = item.source",
+                    'link.textContent = "Abrir referencia externa ↗"',
+                    'focusButton.textContent = "Ubicar en el mapa"',
+                    'focusButton.setAttribute("aria-label", "Centrar el mapa en " + item.name)',
+                    "function filterReferences",
+                    "function buildCsv"
+                ):
+                    if required_logic not in map_js:
+                        errors.append(f"assets/js/mapa-ia.js: falta comportamiento del Mapa IA: {required_logic}")
+
+            map_css_path = ROOT / "assets/css/mapa-ia.css"
             if not map_css_path.is_file():
-                errors.append("Falta assets/css/erica.css para las fichas del Mapa IA")
+                errors.append("Falta assets/css/mapa-ia.css para la cartografía MapLibre")
             else:
                 map_css = map_css_path.read_text(encoding="utf-8")
                 for required_style in (
-                    ".map-item summary:focus-visible",
-                    ".map-item-body",
-                    ".map-source-link",
-                    ".map-focus-button",
-                    ".map-canvas{order:1;min-height:420px}",
-                    ".map-sidebar{order:2;max-height:none;overflow:visible}"
+                    ".map-canvas .maplibregl-canvas",
+                    ".map-pin-locality",
+                    ".map-pin-documented",
+                    ".map-pin-hypothesis",
+                    "order: -1",
+                    "order: 1",
+                    "height: 480px"
                 ):
                     if required_style not in map_css:
-                        errors.append(f"assets/css/erica.css: falta mejora del inventario Mapa IA: {required_style}")
+                        errors.append(f"assets/css/mapa-ia.css: falta estilo requerido: {required_style}")
 
         if relative == Path("oportunidades/index.html"):
             page_source = file_path.read_text(encoding="utf-8")
@@ -371,7 +394,7 @@ def main() -> None:
 
     node = shutil.which("node")
     if node:
-        for test_name in ("test_opportunity_tools.js", "test_site_navigation.js"):
+        for test_name in ("test_opportunity_tools.js", "test_site_navigation.js", "test_mapa_ia.js"):
             test_script = ROOT / "scripts" / test_name
             if not test_script.is_file():
                 errors.append(f"Falta scripts/{test_name}")
@@ -383,7 +406,7 @@ def main() -> None:
             elif unit_test.stdout.strip():
                 print(unit_test.stdout.strip())
 
-        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js"):
+        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js", ROOT / "assets/js/mapa-ia.js"):
             if script_path.is_file():
                 syntax_check = subprocess.run([node, "--check", str(script_path)], capture_output=True, text=True, check=False)
                 if syntax_check.returncode:
@@ -434,7 +457,7 @@ def main() -> None:
     refs_count = sum(len(page.refs) for page in audits.values())
     print(
         f"OK: {len(audits)} páginas; {refs_count} referencias locales; canonical, OG/Twitter, "
-        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, navegación móvil, referencias DOM y módulos JavaScript correctos."
+        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, navegación móvil, MapLibre/OpenStreetMap, referencias DOM y módulos JavaScript correctos."
     )
     if node:
         print("OK: sintaxis JavaScript y pruebas unitarias de oportunidades y navegación móvil validadas con Node.js.")
