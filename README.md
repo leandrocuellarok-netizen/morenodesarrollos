@@ -99,9 +99,9 @@ Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
 ### Control automático antes de publicar
 
 - El workflow de GitHub Pages ejecuta `scripts/validate_site.py` antes de subir el sitio.
-- El control comprueba que existan las tres páginas públicas, que tengan idioma, título y descripción, y que no haya IDs duplicados ni imágenes sin texto alternativo.
+- El control comprueba que existan las cuatro páginas públicas, que tengan idioma, título y descripción, y que no haya IDs duplicados ni imágenes sin texto alternativo.
 - Comprueba referencias internas, archivos locales, fragmentos de navegación y JSON-LD.
-- Si Node.js está disponible en el runner, valida además la sintaxis de cada bloque JavaScript inline.
+- Si Node.js está disponible en el runner, valida la sintaxis de cada bloque JavaScript inline y ejecuta `scripts/test_opportunity_tools.js` para comprobar la lógica de la calculadora.
 - Si una comprobación falla, el despliegue se detiene para evitar publicar una versión rota.
 
 
@@ -123,4 +123,4 @@ La página `oportunidades/` incluye una herramienta opcional que calcula referen
 
 No se precargan coeficientes ni se infieren indicadores por ubicación. El visitante debe consultar los valores correspondientes a su parcela en documentación o fuentes oficiales. El resultado es orientativo y no contempla retiros, alturas, usos, servidumbres, restricciones, geometría ni otras condiciones de la normativa aplicable.
 
-Si la persona decide continuar, el resumen de los datos y el cálculo se incorpora al borrador de WhatsApp para revisión voluntaria. La herramienta funciona en el navegador y no almacena los datos en el sitio.
+Si la persona decide continuar, el resumen de los datos y el cálculo se incorpora al borrador de WhatsApp para revisión voluntaria. La herramienta funciona en el navegador y no almacena los datos en el sitio. La lógica de cálculo está separada en `assets/js/opportunity-tools.js` y cuenta con pruebas unitarias en `scripts/test_opportunity_tools.js`. Si el visitante aporta solo la superficie, una referencia o indicadores incompletos, el formulario permite continuar: los transcribe como datos pendientes de verificación y no inventa ni calcula resultados.
