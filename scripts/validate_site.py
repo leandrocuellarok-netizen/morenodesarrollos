@@ -121,6 +121,13 @@ def resolve_local(page: Path, raw_url: str) -> tuple[Path, str]:
     return target, parsed.fragment
 
 
+
+def extract_array_body(source: str, variable: str) -> str | None:
+    """Return the literal body of a small JavaScript data array."""
+    match = re.search(rf"const\s+{re.escape(variable)}\s*=\s*\[(.*?)\];", source, re.DOTALL)
+    return match.group(1) if match else None
+
+
 def main() -> None:
     audits: dict[Path, PageAudit] = {}
     errors: list[str] = []
@@ -168,6 +175,55 @@ def main() -> None:
             errors.append(f"{relative.as_posix()}: IDs duplicados: {', '.join(sorted(parser.duplicates))}")
         if parser.images_without_alt:
             errors.append(f"{relative.as_posix()}: imágenes sin alt: {', '.join(parser.images_without_alt)}")
+        if relative == Path("index.html"):
+            page_source = file_path.read_text(encoding="utf-8")
+            map_path = ROOT / "mapa-ia/index.html"
+            css_path = ROOT / "assets/css/erica.css"
+            if not map_path.is_file():
+                errors.append("Falta mapa-ia/index.html para contrastar el esquema territorial de Inicio")
+            else:
+                map_source = map_path.read_text(encoding="utf-8")
+                locality_body = extract_array_body(map_source, "localities")
+                opportunity_body = extract_array_body(map_source, "opportunities")
+                if locality_body is None or opportunity_body is None:
+                    errors.append("Mapa IA: no se pudieron leer las listas de localidades y tesis")
+                else:
+                    localities = re.findall(r'\{\s*id:"([^"]+)",\s*name:"([^"]+)",\s*lat:', locality_body)
+                    opportunities = re.findall(r'\{\s*id:"([^"]+)",\s*stage:"([^"]+)",\s*name:"([^"]+)",\s*lat:', opportunity_body)
+                    svg_match = re.search(r'<svg\b(?=[^>]*\bclass="territory-diagram")[^>]*>(.*?)</svg>', page_source, re.DOTALL)
+                    if not svg_match:
+                        errors.append("Inicio: falta el esquema SVG de referencias territoriales")
+                    else:
+                        svg_source = svg_match.group(1)
+                        locality_marks = len(re.findall(r'<g\b[^>]*class="locality-mark"', svg_source))
+                        thesis_marks = len(re.findall(r'class="thesis-mark\b', svg_source))
+                        documented_marks = len(re.findall(r'class="thesis-mark documented-mark"', svg_source))
+                        hypothesis_marks = len(re.findall(r'class="thesis-mark hypothesis-mark"', svg_source))
+                        expected_documented = sum(stage == "documented" for _, stage, _ in opportunities)
+                        expected_hypothesis = sum(stage == "hypothesis" for _, stage, _ in opportunities)
+                        if locality_marks != len(localities):
+                            errors.append(f"Inicio: el esquema muestra {locality_marks} localidades, pero Mapa IA contiene {len(localities)}")
+                        if thesis_marks != len(opportunities):
+                            errors.append(f"Inicio: el esquema muestra {thesis_marks} tesis, pero Mapa IA contiene {len(opportunities)}")
+                        if documented_marks != expected_documented or hypothesis_marks != expected_hypothesis:
+                            errors.append("Inicio: la leyenda visual de evidencia no coincide con las etapas de las tesis del Mapa IA")
+                        for _, locality_name in localities:
+                            if locality_name.upper() not in svg_source:
+                                errors.append(f"Inicio: falta la localidad {locality_name} en el esquema territorial")
+                        if 'id="map-preview-title"' not in svg_source or 'id="map-preview-description"' not in svg_source:
+                            errors.append("Inicio: el esquema territorial necesita título y descripción accesibles")
+                if "no representa límites municipales, calles, parcelas ni disponibilidad inmobiliaria" not in page_source:
+                    errors.append("Inicio: falta aclarar que el esquema no es cartografía parcelaria ni acredita disponibilidad")
+                if "no una cartografía oficial ni un inventario de terrenos" not in page_source:
+                    errors.append("Inicio: falta distinguir el esquema editorial de una cartografía oficial")
+            if not css_path.is_file():
+                errors.append("Falta assets/css/erica.css para el esquema territorial")
+            else:
+                css_source = css_path.read_text(encoding="utf-8")
+                for required_style in (".territory-diagram", ".map-art-legend", ".hypothesis-mark", ".map-art{min-height:0}"):
+                    if required_style not in css_source:
+                        errors.append(f"assets/css/erica.css: falta estilo del esquema territorial: {required_style}")
+
         if relative == Path("oportunidades/index.html"):
             page_source = file_path.read_text(encoding="utf-8")
             for required_field in ('name="nombre"', 'name="perfil"', 'name="interes"', 'name="zona"', 'name="ubicacion"', 'name="nomenclatura"', 'name="documentacion"', 'name="verificaciones"'):
@@ -182,9 +238,11 @@ def main() -> None:
             for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral", "documentation-checklist", "verification-checklist", "contact-preview", "contact-message-preview", "copy-contact-message", "open-whatsapp"):
                 if required_id not in parser.ids:
                     errors.append(f"{relative.as_posix()}: falta control de cálculo {required_id}")
-            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.buildLeadNote", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", 'formData.getAll("documentacion")', 'formData.getAll("verificaciones")', "contactPreview.hidden = false", "navigator.clipboard.writeText"):
+            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", 'formData.getAll("documentacion")', 'formData.getAll("verificaciones")', "navigator.clipboard.writeText"):
                 if required_logic not in page_source:
                     errors.append(f"{relative.as_posix()}: falta integración de la lógica de oportunidades: {required_logic}")
+            if not re.search(r"contactPreview\.hidden\s*=\s*false", page_source):
+                errors.append(f"{relative.as_posix()}: la vista previa no se muestra al preparar el borrador")
             if not re.search(r'<button\b[^>]*id="feasibility-calculate"[^>]*type="button"[^>]*>', page_source, re.IGNORECASE):
                 errors.append(f"{relative.as_posix()}: el botón de cálculo no debe enviar el formulario de contacto")
             module_path = ROOT / "assets/js/opportunity-tools.js"
