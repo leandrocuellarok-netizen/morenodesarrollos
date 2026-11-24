@@ -79,9 +79,18 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 6. Continuar el trabajo de oportunidades con identificación parcelaria y verificación documental; los marcadores actuales son áreas/corredores indicativos, no ofertas verificadas.
 
 
+### Motor cartográfico: MapLibre GL JS + OpenStreetMap
+
+- La página usa MapLibre GL JS para renderizar la cartografía sin una clave de API.
+- La capa base inicial utiliza teselas raster de OpenStreetMap y muestra la atribución a sus colaboradores.
+- El lienzo cartográfico se presenta en escala monocromática; los marcadores conservan acentos distintos para localidades, contexto documentado e hipótesis.
+- El límite administrativo se solicita por separado a Georef Argentina y se dibuja como GeoJSON cuando el servicio responde.
+- El servidor estándar de teselas de OpenStreetMap tiene una política de uso propia y no debe tratarse como infraestructura ilimitada. Antes de aumentar tráfico o incorporar funciones intensivas, evaluar un proveedor de teselas OSM o alojamiento propio, respetando sus condiciones.
+- Si MapLibre, las teselas o Georef no responden, las fichas, filtros y fuentes del inventario permanecen disponibles.
+
 ### Resiliencia y accesibilidad del Mapa IA
 
-- Las fichas de localidades y tesis se renderizan aunque Leaflet o la cartografía base no estén disponibles.
+- Las fichas de localidades y tesis se renderizan aunque MapLibre GL JS o la cartografía base no estén disponibles.
 - Los filtros de texto, tipo y nivel de evidencia funcionan también en modo de consulta sin mapa.
 - Se incluye una alternativa HTML mediante `noscript` para lectores sin JavaScript, con enlaces directos a las fuentes.
 - Los controles de las fichas muestran foco visible para navegación por teclado.
