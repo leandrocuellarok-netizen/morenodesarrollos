@@ -5,6 +5,8 @@ const fs = require("node:fs");
 const path = require("node:path");
 const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
+const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
+const styles = fs.readFileSync(stylePath, "utf8");
 const { localities, opportunities, all, filterReferences, buildCsv } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
@@ -16,6 +18,8 @@ assert.ok(source.includes("card.dataset.mapItem = item.id"), "cada ficha tiene u
 assert.ok(source.includes('element.addEventListener("click", () => {'), "seleccionar un marcador abre su ficha asociada");
 assert.ok(source.includes('card.scrollIntoView({'), "la ficha seleccionada se revela en el inventario");
 assert.ok(source.includes('matchMedia("(prefers-reduced-motion: reduce)")'), "el desplazamiento respeta la preferencia de movimiento reducido");
+assert.ok(styles.includes(".map-pin.is-selected"), "el marcador seleccionado tiene un estado visual");
+assert.ok(styles.includes(".map-item.is-active"), "la ficha seleccionada tiene un estado visual");
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
 assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
