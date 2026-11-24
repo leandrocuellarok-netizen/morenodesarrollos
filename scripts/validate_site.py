@@ -255,6 +255,8 @@ def main() -> None:
                     "new maplibregl.Map(",
                 "mapElement.replaceChildren();",
                     "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                "attributionControl: { compact: false }",
+                "https://www.openstreetmap.org/fixthemap",
                     'map.addSource("moreno-boundary"',
                     'document.createElement("details")',
                     'document.createElement("summary")',
