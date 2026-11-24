@@ -130,3 +130,8 @@ Si la persona decide continuar, el resumen de los datos y el cálculo se incorpo
 ## Ficha inicial de oportunidad inmobiliaria
 
 La página pública `/oportunidades/` permite iniciar un contacto mediante un borrador editable de WhatsApp. Para mejorar la identificación preliminar de un inmueble, el formulario admite de manera opcional una ubicación más precisa y la partida o nomenclatura catastral. No requiere adjuntar escrituras ni documentación sensible. Los datos se preparan en el navegador y no se almacenan en el sitio. La identificación parcelaria, la titularidad y la normativa deben verificarse por separado antes de evaluar una operación.
+
+
+## Clasificación inicial de documentación y consultas
+
+El formulario de `/oportunidades/` permite marcar varias referencias disponibles (ubicación, nomenclatura, plano/mensura, certificado urbanístico, antecedentes dominiales e información de servicios) y varias consultas que el contacto declara haber realizado (catastro, zonificación, dominio, servicios, restricciones y consultas municipales). Las selecciones se incorporan al borrador de WhatsApp como declaraciones del contacto, no como hechos verificados. No se solicitan adjuntos ni documentación sensible y el sitio no almacena los datos.
