@@ -126,3 +126,11 @@ body{background:var(--paper);color:var(--ink)}
 @media(max-width:900px){.process-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:760px){.process-intro{grid-template-columns:1fr;gap:18px}.process-grid{grid-template-columns:1fr 1fr;gap:20px 14px}.process-card h3{font-size:19px}}
 @media(max-width:420px){.process-grid{grid-template-columns:1fr}}
+
+/* Accesibilidad y consulta alternativa del Mapa IA */
+.map-item:focus-visible{outline:2px solid var(--rust);outline-offset:3px;position:relative;z-index:1}
+.map-item a{display:inline-block;margin-top:8px;font:10px var(--sans);letter-spacing:.04em;color:#80533a;text-underline-offset:3px}
+.map-item a:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+.map-fallback h3,.map-fallback h4{font-family:var(--serif);font-weight:400}
+.map-fallback li{font:13px/1.75 var(--sans);margin:6px 0}
+.map-fallback a{color:#80533a;text-underline-offset:3px}
