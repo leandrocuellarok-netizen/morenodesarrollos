@@ -57,7 +57,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 
 - Paleta: marfil, grafito, piedra, ocre y naranja quemado.
 - Lenguaje gráfico: ilustración arquitectónica editorial dibujada en SVG, retícula sutil, líneas de plano y cartografía monocromática.
-- Diseño responsive y navegación común entre las tres páginas.
+- Diseño responsive y navegación común entre las cuatro páginas.
 - Metadatos SEO en español argentino con términos locales: desarrollos inmobiliarios en Moreno, oportunidades de inversión, inteligencia territorial e inteligencia artificial aplicada.
 - Copy de marca personal conversacional, claro y persuasivo; no se imita literalmente la voz de otra profesional.
 
@@ -110,7 +110,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 
 - [Presentar un terreno, proyecto o interés de inversión](https://leandrocuellarok-netizen.github.io/morenodesarrollos/oportunidades/)
 - La página separa el recorrido de propietarios del de inversores y profesionales, y solicita únicamente información inicial: nombre, perfil, interés, zona y datos opcionales.
-- El formulario genera un borrador de WhatsApp editable. No hay backend, envío automático ni almacenamiento de datos en el sitio; la persona revisa el texto y decide si lo envía.
+- El formulario muestra primero una vista previa de solo lectura del borrador de WhatsApp. La persona puede copiarlo o abrir WhatsApp desde un botón explícito; para corregir datos, vuelve al formulario y genera una nueva vista previa. No hay backend, envío automático ni almacenamiento de datos en el sitio.
 - No se solicitan escrituras, DNI, datos bancarios ni documentación confidencial en el primer contacto.
 - Las consultas no constituyen tasaciones, ofertas, compromisos de inversión ni confirmaciones de disponibilidad.
 
@@ -124,7 +124,7 @@ La página `oportunidades/` incluye una herramienta opcional que calcula referen
 
 No se precargan coeficientes ni se infieren indicadores por ubicación. El visitante debe consultar los valores correspondientes a su parcela en documentación o fuentes oficiales. El resultado es orientativo y no contempla retiros, alturas, usos, servidumbres, restricciones, geometría ni otras condiciones de la normativa aplicable.
 
-Si la persona decide continuar, el resumen de los datos y el cálculo se incorpora al borrador de WhatsApp para revisión voluntaria. La herramienta funciona en el navegador y no almacena los datos en el sitio. La lógica de cálculo está separada en `assets/js/opportunity-tools.js` y cuenta con pruebas unitarias en `scripts/test_opportunity_tools.js`. Si el visitante aporta solo la superficie, una referencia o indicadores incompletos, el formulario permite continuar: los transcribe como datos pendientes de verificación y no inventa ni calcula resultados.
+Si la persona decide continuar, el resumen de los datos y el cálculo se incorpora a una vista previa de WhatsApp. La herramienta funciona en el navegador y no almacena los datos en el sitio. El visitante puede copiar el mensaje; si el portapapeles del navegador no está disponible, el texto queda seleccionado para copia manual. La lógica de cálculo está separada en `assets/js/opportunity-tools.js` y cuenta con pruebas unitarias en `scripts/test_opportunity_tools.js`. Si el visitante aporta solo la superficie, una referencia o indicadores incompletos, el formulario permite continuar: los transcribe como datos pendientes de verificación y no inventa ni calcula resultados.
 
 
 ## Ficha inicial de oportunidad inmobiliaria
