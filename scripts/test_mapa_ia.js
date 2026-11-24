@@ -114,4 +114,4 @@ assert.equal(
 );
 
 
-console.log("OK: pruebas del motor MapLibre, datos territoriales, filtros, evidencias y exportación CSV del Mapa IA.");
+console.log("OK: pruebas del motor MapLibre, datos territoriales, filtros, evidencias y exportaciones CSV/GeoJSON del Mapa IA.");
