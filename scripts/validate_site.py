@@ -185,7 +185,7 @@ def main() -> None:
             for required_logic in ("function calculatePreliminary", "area.value*fos.value", "area.value*fot.value", "Intl.NumberFormat"):
                 if required_logic not in page_source:
                     errors.append(f"{relative.as_posix()}: falta lógica de cálculo preliminar: {required_logic}")
-            if 'id="feasibility-calculate" type="button"' not in page_source:
+            if not re.search(r'<button\\b(?=[^>]*\\bid=["\\']feasibility-calculate["\\'])(?=[^>]*\\btype=["\\']button["\\'])[^>]*>', page_source, re.IGNORECASE):
                 errors.append(f"{relative.as_posix()}: el botón de cálculo no debe enviar el formulario de contacto")
             if "Este resultado es matemático y orientativo" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta la advertencia sobre el alcance del cálculo")
