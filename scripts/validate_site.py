@@ -179,10 +179,10 @@ def main() -> None:
                 errors.append(f"{relative.as_posix()}: falta el destino de WhatsApp del formulario")
             if "El sitio no recibe ni almacena estos datos" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta la explicación de privacidad del formulario")
-            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral"):
+            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral", "contact-preview", "contact-message-preview", "copy-contact-message", "open-whatsapp"):
                 if required_id not in parser.ids:
                     errors.append(f"{relative.as_posix()}: falta control de cálculo {required_id}")
-            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.buildLeadNote", "MorenoOpportunityTools.buildContactMessage", "window.location.href"):
+            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.buildLeadNote", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", "contactPreview.hidden = false", "navigator.clipboard.writeText"):
                 if required_logic not in page_source:
                     errors.append(f"{relative.as_posix()}: falta integración de la lógica de oportunidades: {required_logic}")
             if not re.search(r'<button\b[^>]*id="feasibility-calculate"[^>]*type="button"[^>]*>', page_source, re.IGNORECASE):
@@ -192,9 +192,13 @@ def main() -> None:
                 errors.append("Falta assets/js/opportunity-tools.js")
             else:
                 module_source = module_path.read_text(encoding="utf-8")
-                for required_logic in ("area.value * fos.value", "area.value * fot.value", "buildLeadNote", "buildContactMessage", "Ubicación o referencia", "Partida o nomenclatura catastral", "No se realizó el cálculo", "Este resultado es matemático y orientativo"):
+                for required_logic in ("area.value * fos.value", "area.value * fot.value", "buildLeadNote", "buildContactMessage", "buildWhatsAppUrl", "Ubicación o referencia", "Partida o nomenclatura catastral", "No se realizó el cálculo", "Este resultado es matemático y orientativo"):
                     if required_logic not in module_source:
                         errors.append(f"assets/js/opportunity-tools.js: falta lógica requerida: {required_logic}")
+            if 'id="contact-message-preview"' in page_source and 'id="contact-message-preview" rows="12" readonly' not in page_source:
+                errors.append(f"{relative.as_posix()}: el borrador de contacto debe ser visible solo para lectura")
+            if "window.location.href" in page_source:
+                errors.append(f"{relative.as_posix()}: el formulario no debe redirigir automáticamente sin revisión del borrador")
             if "Si solo conocés la superficie" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta explicar que se puede iniciar contacto sin FOS/FOT")
 
