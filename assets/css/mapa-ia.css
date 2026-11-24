@@ -1,0 +1,79 @@
+/* MapLibre GL JS + OpenStreetMap: cartografía monocromática con referencias legibles. */
+.map-canvas {
+  height: 660px;
+  min-height: 560px;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+  background: #e8e5d9;
+  filter: none;
+}
+.map-canvas .maplibregl-canvas {
+  filter: grayscale(1) contrast(.94) sepia(.08);
+}
+.map-canvas .maplibregl-ctrl-attrib {
+  font-size: 10px;
+  line-height: 1.4;
+}
+.map-canvas .maplibregl-ctrl-group button:focus-visible {
+  outline: 3px solid #a95d3c;
+  outline-offset: 2px;
+}
+.map-canvas .maplibregl-popup-content {
+  color: #243033;
+  font: 13px/1.5 Arial, sans-serif;
+  padding: 14px 16px;
+}
+.map-canvas .maplibregl-popup-content h3 {
+  font: 600 15px/1.3 Arial, sans-serif;
+  margin: 0 0 8px;
+}
+.map-canvas .maplibregl-popup-content p {
+  margin: 6px 0;
+}
+.map-pin {
+  width: 15px;
+  height: 15px;
+  border: 2px solid #f1efe5;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 1px 7px #1d292b55;
+  padding: 0;
+}
+.map-pin-locality {
+  width: 11px;
+  height: 11px;
+  background: #596e70;
+}
+.map-pin-documented {
+  width: 17px;
+  height: 17px;
+  background: #52756d;
+}
+.map-pin-hypothesis {
+  width: 17px;
+  height: 17px;
+  background: #c28e2e;
+}
+.map-pin:focus-visible {
+  outline: 3px solid #1d292b;
+  outline-offset: 3px;
+}
+@media (max-width: 760px) {
+  .map-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .map-layout .map-canvas {
+    order: -1;
+    width: 100%;
+    height: 480px;
+    min-height: 420px;
+  }
+  .map-layout .map-sidebar {
+    order: 1;
+    max-height: none;
+    overflow: visible;
+  }
+}
