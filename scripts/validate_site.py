@@ -168,6 +168,17 @@ def main() -> None:
             errors.append(f"{relative.as_posix()}: IDs duplicados: {', '.join(sorted(parser.duplicates))}")
         if parser.images_without_alt:
             errors.append(f"{relative.as_posix()}: imágenes sin alt: {', '.join(parser.images_without_alt)}")
+        if relative == Path("oportunidades/index.html"):
+            page_source = file_path.read_text(encoding="utf-8")
+            for required_field in ('name="nombre"', 'name="perfil"', 'name="interes"', 'name="zona"'):
+                if required_field not in page_source:
+                    errors.append(f"{relative.as_posix()}: falta campo obligatorio {required_field}")
+            if 'id="opportunity-form"' not in page_source:
+                errors.append(f"{relative.as_posix()}: falta el formulario de oportunidades")
+            if "https://wa.me/5491141671674?text=" not in page_source:
+                errors.append(f"{relative.as_posix()}: falta el destino de WhatsApp del formulario")
+            if "El sitio no recibe ni almacena estos datos" not in page_source:
+                errors.append(f"{relative.as_posix()}: falta la explicación de privacidad del formulario")
 
         for script_kind, source in parser.scripts:
             if script_kind == "json":
