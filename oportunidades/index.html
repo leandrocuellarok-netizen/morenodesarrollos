@@ -37,6 +37,40 @@
 <article class="opportunity-path"><span>01 / Propietarios</span><h2>Tengo un terreno o inmueble</h2><p>Podemos iniciar con la ubicación, la superficie aproximada y la documentación que tengas disponible. No hace falta enviar escrituras ni documentación sensible en este primer mensaje.</p></article>
 <article class="opportunity-path"><span>02 / Inversores y aliados</span><h2>Quiero explorar un proyecto</h2><p>Contame qué tipo de desarrollo, inversión o colaboración te interesa. La viabilidad, los números y las condiciones se analizan caso por caso.</p></article>
 </section>
+<section class="wrap feasibility-tool" aria-labelledby="feasibility-title">
+  <div class="feasibility-intro">
+    <div class="eyebrow">Una primera lectura técnica</div>
+    <h2 id="feasibility-title">¿Tenés los indicadores urbanísticos? Hagamos una cuenta preliminar.</h2>
+    <p>Si conocés la superficie del lote y los factores FOS y/o FOT que corresponden a esa parcela, podés estimar sus superficies teóricas de referencia antes de iniciar un análisis más profundo.</p>
+    <p class="feasibility-caution">Ingresá únicamente indicadores consultados para esa parcela en una fuente municipal o documentación técnica vigente. Si no los conocés, dejá los campos vacíos y continuá con el contacto.</p>
+  </div>
+  <div class="feasibility-panel">
+    <div class="feasibility-fields">
+      <div class="form-field">
+        <label for="parcel-area">Superficie del lote (m²) *</label>
+        <input id="parcel-area" name="superficie-lote-calculo" inputmode="decimal" autocomplete="off" placeholder="Ej.: 1200" aria-describedby="feasibility-help">
+      </div>
+      <div class="form-field">
+        <label for="parcel-fos">FOS de la parcela</label>
+        <input id="parcel-fos" name="fos-calculo" inputmode="decimal" autocomplete="off" placeholder="Ej.: 0,60">
+      </div>
+      <div class="form-field">
+        <label for="parcel-fot">FOT de la parcela</label>
+        <input id="parcel-fot" name="fot-calculo" inputmode="decimal" autocomplete="off" placeholder="Ej.: 1,20">
+      </div>
+      <div class="form-field">
+        <label for="parcel-reference">Fuente o referencia consultada</label>
+        <input id="parcel-reference" name="fuente-indicadores" maxlength="180" placeholder="Ej.: certificado urbanístico / ordenanza">
+      </div>
+    </div>
+    <p class="field-hint" id="feasibility-help">Usá números sin separador de miles. Podés escribir coma o punto decimal. FOS y FOT son opcionales, pero necesitás al menos uno para calcular.</p>
+    <button class="button dark feasibility-button" id="feasibility-calculate" type="button">Calcular referencia ↗</button>
+    <div class="feasibility-results" id="feasibility-results" role="status" aria-live="polite">
+      <p>El resultado aparecerá acá. No se aplican coeficientes supuestos ni valores automáticos.</p>
+    </div>
+    <p class="feasibility-disclaimer">El cálculo es matemático y orientativo: no determina superficie efectivamente edificable ni viabilidad. No contempla retiros, alturas, densidad, usos, servidumbres, afectaciones, restricciones hidráulicas o ambientales, geometría del lote ni otras exigencias. Todo debe verificarse para la parcela y la normativa vigente.</p>
+  </div>
+</section>
 <section class="wrap opportunity-form-shell">
 <aside class="opportunity-form-aside">
 <div class="eyebrow">Un primer paso, sin compromiso</div>
@@ -106,6 +140,78 @@
 <footer class="site-footer"><span>© Erica M. Acosta · Moreno, Buenos Aires</span><span>Desarrollos inmobiliarios · IA aplicada · Alianzas</span><a href="../">Volver al inicio ↗</a></footer>
 <script>
 "use strict";
+const feasibilityResults=document.getElementById("feasibility-results");
+const feasibilityIds=["parcel-area","parcel-fos","parcel-fot"];
+let feasibilityTouched=false;
+function parsePositiveDecimal(raw,label){
+  const normalized=String(raw||"").trim().replace(",",".");
+  if(!/^\\d+(?:\\.\\d+)?$/.test(normalized))return {error:"Revisá "+label+": usá un número positivo, sin separador de miles."};
+  const value=Number(normalized);
+  if(!Number.isFinite(value)||value<=0)return {error:label+" debe ser mayor que cero."};
+  return {value};
+}
+function calculatePreliminary(){
+  const areaRaw=document.getElementById("parcel-area").value;
+  const fosRaw=document.getElementById("parcel-fos").value;
+  const fotRaw=document.getElementById("parcel-fot").value;
+  if(!areaRaw.trim()&&!fosRaw.trim()&&!fotRaw.trim())return {empty:true};
+  if(!areaRaw.trim())return {error:"Para calcular, ingresá la superficie del lote."};
+  if(!fosRaw.trim()&&!fotRaw.trim())return {error:"Ingresá al menos el FOS o el FOT verificado de la parcela."};
+  const area=parsePositiveDecimal(areaRaw,"la superficie del lote");
+  if(area.error)return area;
+  const fos=fosRaw.trim()?parsePositiveDecimal(fosRaw,"el FOS"):null;
+  const fot=fotRaw.trim()?parsePositiveDecimal(fotRaw,"el FOT"):null;
+  if(fos&&fos.error)return fos;
+  if(fot&&fot.error)return fot;
+  const format=new Intl.NumberFormat("es-AR",{maximumFractionDigits:2});
+  const lines=["Superficie del lote ingresada: "+format.format(area.value)+" m²."];
+  const results=document.createElement("div");
+  results.className="feasibility-result-list";
+  if(fos){
+    const value=area.value*fos.value;
+    lines.push("FOS "+format.format(fos.value)+": "+format.format(value)+" m² teóricos de ocupación en planta.");
+    const item=document.createElement("p");
+    const label=document.createElement("strong");
+    label.textContent="Referencia FOS";
+    const amount=document.createElement("span");
+    amount.textContent=format.format(value)+" m²";
+    const detail=document.createElement("small");
+    detail.textContent="Superficie teórica máxima de ocupación en planta (lote × FOS).";
+    item.append(label,amount,detail);results.append(item);
+  }
+  if(fot){
+    const value=area.value*fot.value;
+    lines.push("FOT "+format.format(fot.value)+": "+format.format(value)+" m² teóricos de superficie total computable.");
+    const item=document.createElement("p");
+    const label=document.createElement("strong");
+    label.textContent="Referencia FOT";
+    const amount=document.createElement("span");
+    amount.textContent=format.format(value)+" m²";
+    const detail=document.createElement("small");
+    detail.textContent="Superficie teórica total computable (lote × FOT).";
+    item.append(label,amount,detail);results.append(item);
+  }
+  const reference=document.getElementById("parcel-reference").value.trim();
+  if(reference)lines.push("Fuente o referencia ingresada: "+reference+".");
+  feasibilityResults.replaceChildren(results);
+  const note=document.createElement("p");
+  note.className="feasibility-disclaimer";
+  note.textContent="Resultado matemático preliminar; no equivale a capacidad edificable aprobada ni a prefactibilidad urbanística.";
+  feasibilityResults.append(note);
+  return {ok:true,summary:lines.join("\\n")};
+}
+document.getElementById("feasibility-calculate").addEventListener("click",()=>{
+  feasibilityTouched=true;
+  const result=calculatePreliminary();
+  if(result.error){feasibilityResults.textContent=result.error;feasibilityResults.setAttribute("data-state","error");}
+  else if(result.empty){feasibilityResults.textContent="Ingresá la superficie y al menos uno de los indicadores de la parcela para calcular.";feasibilityResults.setAttribute("data-state","error");}
+  else feasibilityResults.setAttribute("data-state","success");
+});
+feasibilityIds.forEach(id=>document.getElementById(id).addEventListener("input",()=>{
+  feasibilityTouched=true;
+  feasibilityResults.textContent="Modificaste los datos. Volvé a calcular para actualizar la referencia.";
+  feasibilityResults.removeAttribute("data-state");
+}));
 const opportunityForm=document.getElementById("opportunity-form");
 const formStatus=document.getElementById("form-status");
 const profileFromLink=new URLSearchParams(window.location.search).get("perfil");
@@ -113,6 +219,13 @@ if(profileFromLink==="propietario")opportunityForm.elements.perfil.value="Propie
 if(profileFromLink==="inversor")opportunityForm.elements.perfil.value="Inversor/a";
 opportunityForm.addEventListener("submit",event=>{
   event.preventDefault();
+  const feasibility=feasibilityTouched?calculatePreliminary():{empty:true};
+  if(feasibility.error){
+    formStatus.textContent=feasibility.error+" Corregí los datos o dejá vacía la calculadora para continuar sin ese cálculo.";
+    feasibilityResults.textContent=feasibility.error;
+    feasibilityResults.setAttribute("data-state","error");
+    return;
+  }
   const values=new FormData(opportunityForm);
   const labels=[
     ["Nombre","nombre"],["Perfil","perfil"],["Interés","interes"],["Zona","zona"],
@@ -123,6 +236,7 @@ opportunityForm.addEventListener("submit",event=>{
     const value=String(values.get(key)||"").trim();
     if(value)lines.push(label+": "+value);
   }
+  if(feasibility.ok)lines.push("","Cálculo preliminar ingresado por el contacto:",feasibility.summary,"Este resultado es matemático y orientativo; requiere verificación urbanística y parcelaria.");
   lines.push("","Enviado desde el formulario de oportunidades del sitio MORENO.");
   formStatus.textContent="Se abrirá WhatsApp con el borrador. Revisalo y elegí si querés enviarlo.";
   window.location.href="https://wa.me/5491141671674?text="+encodeURIComponent(lines.join("\n"));
