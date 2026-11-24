@@ -46,11 +46,12 @@ La investigación inicial identifica cinco tesis territoriales preliminares: cor
 
 ## Sitio de marca personal — Erica M. Acosta
 
-Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
+Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales:
 
 - / — Inicio: presentación del proyecto, desarrollo inmobiliario, inteligencia territorial e IA aplicada.
 - /mapa-ia/ — Mapa IA: mapa interactivo del Partido de Moreno, localidades y cinco tesis preliminares de oportunidad.
 - /erica-acosta/ — Sobre Erica: perfil personal y enfoque de trabajo, con énfasis en residencia local, iniciativa emprendedora y alianzas.
+- /oportunidades/ — Captación inicial: formulario opcional para propietarios, inversores y aliados, con ubicación y nomenclatura catastral cuando estén disponibles.
 
 ### Identidad visual y contenido
 
