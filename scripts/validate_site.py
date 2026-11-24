@@ -268,6 +268,9 @@ def main() -> None:
                     'link.textContent = "Abrir referencia externa ↗"',
                     'focusButton.textContent = "Ubicar en el mapa"',
                     'focusButton.setAttribute("aria-label", "Centrar el mapa en " + item.name)',
+                    "function setActiveReference(item, options)",
+                    'card.dataset.mapItem = item.id',
+                    'element.addEventListener("click", () => {',
                     "function filterReferences",
                     "function buildCsv"
                 ):
@@ -284,6 +287,8 @@ def main() -> None:
                     ".map-pin-locality",
                     ".map-pin-documented",
                     ".map-pin-hypothesis",
+                    ".map-pin.is-selected",
+                    ".map-item.is-active",
                     "order: -1",
                     "order: 1",
                     "height: 480px"
