@@ -11,6 +11,11 @@ assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapL
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
 assert.ok(source.includes("attributionControl: { compact: false }"), "la atribución OSM permanece visible también en móvil");
 assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece el enlace para reportar problemas cartográficos");
+assert.ok(source.includes("function setActiveReference(item, options)"), "la selección sincroniza mapa e inventario");
+assert.ok(source.includes("card.dataset.mapItem = item.id"), "cada ficha tiene una identidad enlazable");
+assert.ok(source.includes('element.addEventListener("click", () => {'), "seleccionar un marcador abre su ficha asociada");
+assert.ok(source.includes('card.scrollIntoView({'), "la ficha seleccionada se revela en el inventario");
+assert.ok(source.includes('matchMedia("(prefers-reduced-motion: reduce)")'), "el desplazamiento respeta la preferencia de movimiento reducido");
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
 assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
