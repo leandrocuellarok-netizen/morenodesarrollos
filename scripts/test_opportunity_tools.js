@@ -38,4 +38,25 @@ assert.match(ambiguousArea.error, /ambiguo/);
 const emptyLead = tools.buildLeadNote({});
 assert.equal(emptyLead.empty, true);
 
-console.log("OK: 7 grupos de pruebas de cálculo, entradas parciales, datos inválidos y borrador comercial.");
+const contactMessage = tools.buildContactMessage({
+  fields: {
+    nombre: "Contacto de prueba",
+    perfil: "Propietario/a",
+    interes: "Presentar un terreno o inmueble",
+    zona: "La Reja",
+    tipo: "Terreno",
+    ubicacion: "Cerca de la estación",
+    nomenclatura: "Circ. II, Secc. B, Quinta 14",
+    superficie: "1200",
+    documentacion: "Partida o nomenclatura catastral",
+    detalle: "Consulta de prueba"
+  },
+  calculationInput: { areaRaw: "1200", referenceRaw: "Dato aportado" }
+});
+assert.match(contactMessage, /Ubicación o referencia: Cerca de la estación/);
+assert.match(contactMessage, /Partida o nomenclatura catastral: Circ\. II, Secc\. B, Quinta 14/);
+assert.match(contactMessage, /Superficie declarada en calculadora: 1200 m²/);
+assert.doesNotMatch(contactMessage, /Superficie aproximada: 1200/);
+assert.match(contactMessage, /Dato aportado/);
+
+console.log("OK: 8 grupos de pruebas de cálculo, datos parciales, campos parcelarios y borrador de contacto.");
