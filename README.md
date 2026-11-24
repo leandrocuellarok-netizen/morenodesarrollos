@@ -60,6 +60,14 @@ Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
 - Metadatos SEO en español argentino con términos locales: desarrollos inmobiliarios en Moreno, oportunidades de inversión, inteligencia territorial e inteligencia artificial aplicada.
 - Copy de marca personal conversacional, claro y persuasivo; no se imita literalmente la voz de otra profesional.
 
+### Indexación y enlaces canónicos
+
+- `robots.txt` permite el rastreo público y declara el sitemap.
+- `sitemap.xml` enumera únicamente Inicio, Mapa IA y Sobre Erica.
+- Las tres páginas incluyen canonical y metadatos Open Graph/Twitter en español argentino.
+- La URL base actual es la de GitHub Pages (`https://leandrocuellarok-netizen.github.io/morenodesarrollos/`). Si se configura un dominio propio o cambia el nombre del repositorio, actualizar `PUBLIC_BASE` en `scripts/validate_site.py`, los canonical, `robots.txt` y `sitemap.xml` en el mismo cambio.
+- El workflow valida que canonical, metadatos sociales, robots y sitemap coincidan antes de publicar.
+
 ### Pendientes antes de publicar
 
 1. Definir si se usará la URL de GitHub Pages o un dominio propio; el workflow de publicación ya está versionado en `.github/workflows/pages.yml`.
