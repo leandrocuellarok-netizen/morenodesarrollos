@@ -146,6 +146,16 @@ def main() -> None:
             continue
         audits[relative] = parser
 
+        page_source = file_path.read_text(encoding="utf-8")
+        if not re.search(r'<button\\b(?=[^>]*class="mobile-menu")(?=[^>]*aria-controls="primary-navigation")(?=[^>]*aria-expanded="false")(?=[^>]*aria-label="Abrir menú de navegación")[^>]*>', page_source, re.IGNORECASE):
+            errors.append(f"{relative.as_posix()}: falta el botón accesible del menú móvil")
+        if not re.search(r'<nav\\b(?=[^>]*id="primary-navigation")(?=[^>]*aria-label="Navegación principal")[^>]*>', page_source, re.IGNORECASE):
+            errors.append(f"{relative.as_posix()}: falta la navegación principal identificada para el menú móvil")
+        if not re.search(r'<a\\b(?=[^>]*class="active")(?=[^>]*aria-current="page")[^>]*>', page_source, re.IGNORECASE):
+            errors.append(f"{relative.as_posix()}: el enlace activo debe declarar aria-current=page")
+        if not re.search(r'<script\\b(?=[^>]*src="(?:\\.\\./|\\./)?assets/js/site-navigation\\.js")(?=[^>]*\\bdefer\\b)[^>]*>', page_source, re.IGNORECASE):
+            errors.append(f"{relative.as_posix()}: falta cargar site-navigation.js con defer")
+
         title = "".join(parser.title_parts).strip()
         if not parser.lang:
             errors.append(f"{relative.as_posix()}: falta lang en <html>")
@@ -330,16 +340,25 @@ def main() -> None:
 
     node = shutil.which("node")
     if node:
-        test_script = ROOT / "scripts/test_opportunity_tools.js"
-        if not test_script.is_file():
-            errors.append("Falta scripts/test_opportunity_tools.js")
-        else:
+        for test_name in ("test_opportunity_tools.js", "test_site_navigation.js"):
+            test_script = ROOT / "scripts" / test_name
+            if not test_script.is_file():
+                errors.append(f"Falta scripts/{test_name}")
+                continue
             unit_test = subprocess.run([node, str(test_script)], capture_output=True, text=True, check=False)
             if unit_test.returncode:
                 detail = (unit_test.stderr or unit_test.stdout).strip()
-                errors.append(f"Pruebas de lógica de oportunidades fallidas: {detail}")
+                errors.append(f"Pruebas {test_name} fallidas: {detail}")
             elif unit_test.stdout.strip():
                 print(unit_test.stdout.strip())
+
+        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js"):
+            if script_path.is_file():
+                syntax_check = subprocess.run([node, "--check", str(script_path)], capture_output=True, text=True, check=False)
+                if syntax_check.returncode:
+                    detail = (syntax_check.stderr or syntax_check.stdout).strip()
+                    errors.append(f"{script_path.relative_to(ROOT).as_posix()}: sintaxis JavaScript inválida: {detail}")
+
         for relative, parser in audits.items():
             for index, (kind, source) in enumerate(parser.scripts):
                 if kind != "javascript" or not source.strip():
@@ -354,6 +373,28 @@ def main() -> None:
     else:
         print("WARN: Node.js no está disponible; se omite la comprobación sintáctica de JavaScript.")
 
+    navigation_module = ROOT / "assets/js/site-navigation.js"
+    if not navigation_module.is_file():
+        errors.append("Falta assets/js/site-navigation.js")
+    else:
+        navigation_source = navigation_module.read_text(encoding="utf-8")
+        for required_logic in ("aria-expanded", "aria-label", "is-open", "Escape", "matchMedia"):
+            if required_logic not in navigation_source:
+                errors.append(f"assets/js/site-navigation.js: falta comportamiento requerido: {required_logic}")
+
+    navigation_test = ROOT / "scripts/test_site_navigation.js"
+    if not navigation_test.is_file():
+        errors.append("Falta scripts/test_site_navigation.js")
+
+    navigation_css = ROOT / "assets/css/erica.css"
+    if not navigation_css.is_file():
+        errors.append("Falta assets/css/erica.css para la navegación móvil")
+    else:
+        css_source = navigation_css.read_text(encoding="utf-8")
+        for required_style in (".mobile-menu:focus-visible", ".has-js .nav.is-open", ".has-js .mobile-menu"):
+            if required_style not in css_source:
+                errors.append(f"assets/css/erica.css: falta estilo de navegación móvil: {required_style}")
+
     if errors:
         for error in errors:
             print(f"ERROR: {error}")
@@ -362,10 +403,10 @@ def main() -> None:
     refs_count = sum(len(page.refs) for page in audits.values())
     print(
         f"OK: {len(audits)} páginas; {refs_count} referencias locales; canonical, OG/Twitter, "
-        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, referencias DOM y módulo de oportunidades correctos."
+        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, navegación móvil, referencias DOM y módulos JavaScript correctos."
     )
     if node:
-        print("OK: sintaxis de JavaScript inline y pruebas unitarias de oportunidades validadas con Node.js.")
+        print("OK: sintaxis JavaScript y pruebas unitarias de oportunidades y navegación móvil validadas con Node.js.")
 
 
 if __name__ == "__main__":
