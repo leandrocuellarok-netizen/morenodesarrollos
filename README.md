@@ -139,3 +139,14 @@ El formulario de `/oportunidades/` permite marcar varias referencias disponibles
 ## Esquema cartográfico editorial en Inicio
 
 La vista de Inicio muestra un esquema SVG de referencias espaciales construido a partir de las coordenadas de las seis localidades y las cinco tesis publicadas en `mapa-ia/index.html`. Los círculos identifican localidades; los cuadrados, tesis con contexto respaldado por fuente pública; y el rombo discontinuo, una hipótesis de prospección. Las posiciones son orientativas. El esquema no dibuja límites municipales, calles ni parcelas y no acredita disponibilidad. Si cambian las coordenadas o la clasificación de las fichas del Mapa IA, actualizar también el esquema de Inicio.
+
+
+## Navegación móvil accesible
+
+Las cuatro páginas públicas comparten un menú móvil desplegable, controlable por teclado y compatible con lectores de pantalla:
+
+- El botón informa su estado mediante `aria-expanded` y controla la navegación mediante `aria-controls`.
+- La tecla Escape cierra el menú y devuelve el foco al botón.
+- Elegir un enlace cierra el menú; al volver a escritorio también se restablece.
+- Si JavaScript no está disponible, los enlaces permanecen visibles como navegación vertical.
+- `scripts/test_site_navigation.js` comprueba los estados, el cierre por teclado, la selección de enlaces y el cambio a escritorio.
