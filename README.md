@@ -112,3 +112,15 @@ Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
 - El formulario genera un borrador de WhatsApp editable. No hay backend, envío automático ni almacenamiento de datos en el sitio; la persona revisa el texto y decide si lo envía.
 - No se solicitan escrituras, DNI, datos bancarios ni documentación confidencial en el primer contacto.
 - Las consultas no constituyen tasaciones, ofertas, compromisos de inversión ni confirmaciones de disponibilidad.
+
+
+## Calculadora preliminar FOS/FOT
+
+La página `oportunidades/` incluye una herramienta opcional que calcula referencias matemáticas a partir de datos ingresados por el visitante:
+
+- **FOS:** superficie del lote × FOS ingresado = referencia teórica de ocupación en planta.
+- **FOT:** superficie del lote × FOT ingresado = referencia teórica de superficie total computable.
+
+No se precargan coeficientes ni se infieren indicadores por ubicación. El visitante debe consultar los valores correspondientes a su parcela en documentación o fuentes oficiales. El resultado es orientativo y no contempla retiros, alturas, usos, servidumbres, restricciones, geometría ni otras condiciones de la normativa aplicable.
+
+Si la persona decide continuar, el resumen de los datos y el cálculo se incorpora al borrador de WhatsApp para revisión voluntaria. La herramienta funciona en el navegador y no almacena los datos en el sitio.
