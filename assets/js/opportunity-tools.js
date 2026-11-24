@@ -131,10 +131,15 @@
     return lines.join("\n");
   }
 
+  function buildWhatsAppUrl(message) {
+    return "https://wa.me/5491141671674?text=" + encodeURIComponent(String(message == null ? "" : message));
+  }
+
   return {
     parsePositiveDecimal: parsePositiveDecimal,
     calculatePreliminary: calculatePreliminary,
     buildLeadNote: buildLeadNote,
-    buildContactMessage: buildContactMessage
+    buildContactMessage: buildContactMessage,
+    buildWhatsAppUrl: buildWhatsAppUrl
   };
 });
