@@ -221,3 +221,56 @@ body{background:var(--paper);color:var(--ink)}
 .contact-preview-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:15px}
 .contact-preview-actions .button{justify-content:center;cursor:pointer}
 @media(max-width:600px){.contact-preview{padding:18px 14px}.contact-preview-actions{flex-direction:column}.contact-preview-actions .button{width:100%;justify-content:space-between}.contact-preview textarea{min-height:260px}}
+
+
+/* MORENO: listas de documentación y consultas declaradas */
+.checklist-fieldset{
+  display:block;
+  min-width:0;
+  margin:0;
+  padding:17px 18px 18px;
+  border:1px solid var(--line);
+  background:rgba(244,241,232,.56);
+}
+.checklist-fieldset legend{
+  padding:0 7px;
+  font:10px var(--sans);
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:#55584f;
+}
+.checklist-fieldset .field-hint{margin:0 0 13px}
+.checklist-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:11px 18px;
+}
+.check-option{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  min-width:0;
+  color:#55584f;
+  font:12px/1.55 var(--sans);
+  letter-spacing:0;
+  text-transform:none;
+  cursor:pointer;
+}
+.check-option input{
+  width:16px;
+  height:16px;
+  min-height:16px;
+  margin:1px 0 0;
+  flex:0 0 16px;
+  accent-color:var(--rust);
+}
+.check-option span{min-width:0}
+.check-option:focus-within{
+  outline:2px solid var(--rust);
+  outline-offset:4px;
+}
+@media(max-width:600px){
+  .checklist-fieldset{padding:15px 12px}
+  .checklist-grid{grid-template-columns:1fr;gap:12px}
+  .check-option{font-size:12px}
+}
