@@ -124,3 +124,8 @@ La página `oportunidades/` incluye una herramienta opcional que calcula referen
 No se precargan coeficientes ni se infieren indicadores por ubicación. El visitante debe consultar los valores correspondientes a su parcela en documentación o fuentes oficiales. El resultado es orientativo y no contempla retiros, alturas, usos, servidumbres, restricciones, geometría ni otras condiciones de la normativa aplicable.
 
 Si la persona decide continuar, el resumen de los datos y el cálculo se incorpora al borrador de WhatsApp para revisión voluntaria. La herramienta funciona en el navegador y no almacena los datos en el sitio. La lógica de cálculo está separada en `assets/js/opportunity-tools.js` y cuenta con pruebas unitarias en `scripts/test_opportunity_tools.js`. Si el visitante aporta solo la superficie, una referencia o indicadores incompletos, el formulario permite continuar: los transcribe como datos pendientes de verificación y no inventa ni calcula resultados.
+
+
+## Ficha inicial de oportunidad inmobiliaria
+
+La página pública `/oportunidades/` permite iniciar un contacto mediante un borrador editable de WhatsApp. Para mejorar la identificación preliminar de un inmueble, el formulario admite de manera opcional una ubicación más precisa y la partida o nomenclatura catastral. No requiere adjuntar escrituras ni documentación sensible. Los datos se preparan en el navegador y no se almacenan en el sitio. La identificación parcelaria, la titularidad y la normativa deben verificarse por separado antes de evaluar una operación.
