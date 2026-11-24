@@ -61,4 +61,9 @@ assert.match(contactMessage, /Dato aportado/);
 assert.ok(contactMessage.includes("\nUbicación o referencia:"));
 assert.equal(contactMessage.includes("\\n"), false);
 
-console.log("OK: 8 grupos de pruebas de cálculo, datos parciales, campos parcelarios y borrador de contacto.");
+const whatsappUrl = tools.buildWhatsAppUrl(contactMessage);
+assert.match(whatsappUrl, /^https:\/\/wa\.me\/5491141671674\?text=/);
+assert.equal(new URL(whatsappUrl).searchParams.get("text"), contactMessage);
+assert.ok(whatsappUrl.includes("%0A"));
+
+console.log("OK: 9 grupos de pruebas de cálculo, datos parciales, campos parcelarios, URL y borrador de contacto.");
