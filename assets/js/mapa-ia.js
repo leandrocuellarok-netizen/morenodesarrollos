@@ -242,6 +242,7 @@ function initMapPage(doc) {
     showFallback("No se pudo cargar el motor cartográfico. Las fichas, los filtros y las fuentes siguen disponibles.");
   } else {
     try {
+      mapElement.replaceChildren();
       map = new maplibregl.Map({
         container: mapElement,
         style: {
