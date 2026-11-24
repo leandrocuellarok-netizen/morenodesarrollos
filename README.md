@@ -41,3 +41,28 @@ La investigación inicial identifica cinco tesis territoriales preliminares: cor
 - Incluye localidades y cinco tesis territoriales del Pilar 1, con filtros, fichas emergentes y enlaces a fuentes.
 - Superpone el límite administrativo municipal mediante GeoJSON de Georef / IGN (WGS84), con ajuste automático del encuadre.
 - Los marcadores de oportunidades son referencias aproximadas de áreas/corredores, no parcelas ni límites oficiales.
+
+
+## Sitio de marca personal — Erica M. Acosta
+
+Primer boceto editorial de la web personal de Erica M. Acosta, con tres destinos principales:
+
+- / — Inicio: presentación del proyecto, desarrollo inmobiliario, inteligencia territorial e IA aplicada.
+- /mapa-ia/ — Mapa IA: mapa interactivo del Partido de Moreno, localidades y cinco tesis preliminares de oportunidad.
+- /erica-acosta/ — Sobre Erica: perfil personal y enfoque de trabajo, con énfasis en residencia local, iniciativa emprendedora y alianzas.
+
+### Identidad visual y contenido
+
+- Paleta: marfil, grafito, piedra, ocre y naranja quemado.
+- Lenguaje gráfico: composición arquitectónica abstracta, retícula, líneas de plano y cartografía monocromática.
+- Diseño responsive y navegación común entre las tres páginas.
+- Metadatos SEO en español argentino con términos locales: desarrollos inmobiliarios en Moreno, oportunidades de inversión, inteligencia territorial e inteligencia artificial aplicada.
+- Copy de marca personal conversacional, claro y persuasivo; no se imita literalmente la voz de otra profesional.
+
+### Pendientes antes de publicar
+
+1. Definir dominio definitivo y configurar hosting/GitHub Pages; las rutas están preparadas para publicarse desde la raíz de un dominio.
+2. Incorporar fotografía y datos de contacto reales de Erica (no se inventaron email, teléfono ni perfiles sociales).
+3. Revisar el contenido biográfico y las alianzas mencionadas antes de publicación.
+4. Validar en navegador el servicio GeoJSON del límite municipal y sumar capas parcelarias/zonificación solo con fuentes oficiales y permisos adecuados.
+5. Continuar el trabajo de oportunidades con identificación parcelaria y verificación documental; los marcadores actuales son áreas/corredores indicativos, no ofertas verificadas.
