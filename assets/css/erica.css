@@ -134,3 +134,15 @@ body{background:var(--paper);color:var(--ink)}
 .map-fallback h3,.map-fallback h4{font-family:var(--serif);font-weight:400}
 .map-fallback li{font:13px/1.75 var(--sans);margin:6px 0}
 .map-fallback a{color:#80533a;text-underline-offset:3px}
+
+
+/* Exportación de investigación y prioridad de mapa en móvil */
+.map-export{font:9px var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:12px 15px;border:1px solid #77796f;background:var(--ink);color:var(--paper);cursor:pointer;transition:background .2s,border-color .2s}
+.map-export:hover:not(:disabled){background:var(--rust);border-color:var(--rust)}
+.map-export:focus-visible,.map-reset:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+.map-export:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:760px){
+ .map-toolbar .map-export{width:100%;max-width:none;min-width:0}
+ .map-layout .map-canvas{order:-1;min-height:min(62vh,520px)}
+ .map-layout .map-sidebar{max-height:none;overflow:visible}
+}
