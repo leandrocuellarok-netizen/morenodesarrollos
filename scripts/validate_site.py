@@ -179,7 +179,7 @@ def main() -> None:
                 errors.append(f"{relative.as_posix()}: falta el destino de WhatsApp del formulario")
             if "El sitio no recibe ni almacena estos datos" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta la explicación de privacidad del formulario")
-            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results"):
+            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral"):
                 if required_id not in parser.ids:
                     errors.append(f"{relative.as_posix()}: falta control de cálculo {required_id}")
             for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.buildLeadNote", "MorenoOpportunityTools.buildContactMessage", "window.location.href"):
