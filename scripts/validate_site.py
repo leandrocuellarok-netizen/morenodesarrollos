@@ -185,7 +185,7 @@ def main() -> None:
             for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.buildLeadNote", "window.location.href"):
                 if required_logic not in page_source:
                     errors.append(f"{relative.as_posix()}: falta integración de la lógica de oportunidades: {required_logic}")
-            if not re.search(r'<button\\b[^>]*id="feasibility-calculate"[^>]*type="button"[^>]*>', page_source, re.IGNORECASE):
+            if not re.search(r'<button\b[^>]*id="feasibility-calculate"[^>]*type="button"[^>]*>', page_source, re.IGNORECASE):
                 errors.append(f"{relative.as_posix()}: el botón de cálculo no debe enviar el formulario de contacto")
             module_path = ROOT / "assets/js/opportunity-tools.js"
             if not module_path.is_file():
