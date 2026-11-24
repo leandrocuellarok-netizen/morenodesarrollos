@@ -234,6 +234,37 @@ def main() -> None:
                     if required_style not in css_source:
                         errors.append(f"assets/css/erica.css: falta estilo del esquema territorial: {required_style}")
 
+        if relative == Path("mapa-ia/index.html"):
+            for required_logic in (
+                'document.createElement("details")',
+                'document.createElement("summary")',
+                'addDetail("Línea a investigar",x.business)',
+                'addDetail("Qué sabemos",x.evidence)',
+                'addDetail("Estado de verificación",x.status)',
+                'addDetail("Próximo paso",x.next)',
+                'link.href=x.source',
+                'link.textContent="Abrir referencia externa ↗"',
+                'focusButton.textContent="Ubicar en el mapa"',
+                'focusButton.setAttribute("aria-label","Centrar el mapa en "+x.name)'
+            ):
+                if required_logic not in page_source:
+                    errors.append(f"{relative.as_posix()}: falta detalle accesible del inventario: {required_logic}")
+            map_css_path = ROOT / "assets/css/erica.css"
+            if not map_css_path.is_file():
+                errors.append("Falta assets/css/erica.css para las fichas del Mapa IA")
+            else:
+                map_css = map_css_path.read_text(encoding="utf-8")
+                for required_style in (
+                    ".map-item summary:focus-visible",
+                    ".map-item-body",
+                    ".map-source-link",
+                    ".map-focus-button",
+                    ".map-canvas{order:1;min-height:420px}",
+                    ".map-sidebar{order:2;max-height:none;overflow:visible}"
+                ):
+                    if required_style not in map_css:
+                        errors.append(f"assets/css/erica.css: falta mejora del inventario Mapa IA: {required_style}")
+
         if relative == Path("oportunidades/index.html"):
             page_source = file_path.read_text(encoding="utf-8")
             for required_field in ('name="nombre"', 'name="perfil"', 'name="interes"', 'name="zona"', 'name="ubicacion"', 'name="nomenclatura"', 'name="documentacion"', 'name="verificaciones"'):

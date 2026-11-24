@@ -67,18 +67,63 @@ if(map){
 function makeCards(items,target){
   target.replaceChildren();
   items.forEach(x=>{
-    const card=document.createElement(map?"button":"article");
-    if(map)card.type="button";
+    const card=document.createElement("details");
     card.className="map-item";
-    const title=document.createElement("strong");title.textContent=x.name;
+    const summary=document.createElement("summary");
+    const title=document.createElement("strong");
+    title.textContent=x.name;
     const meta=document.createElement("span");
-    meta.textContent=x.type==="locality"?x.info:((x.stage==="hypothesis"?"Hipótesis de prospección":"Contexto con fuente pública")+" · "+x.status);
-    card.append(title,meta);
-    if(!map&&x.type==="opportunity"){
-      const next=document.createElement("span");next.textContent="Próximo paso: "+x.next;card.append(next);
-      const link=document.createElement("a");link.href=x.source;link.target="_blank";link.rel="noopener noreferrer";link.textContent="Consultar fuente ↗";card.append(link);
+    meta.textContent=x.type==="locality"
+      ?"Localidad · referencia territorial"
+      :((x.stage==="hypothesis"?"Hipótesis de prospección":"Contexto con fuente pública")+" · "+(kindLabel[x.kind]||"Tesis territorial"));
+    summary.append(title,meta);
+    card.append(summary);
+
+    const body=document.createElement("div");
+    body.className="map-item-body";
+    const addDetail=(label,value)=>{
+      if(!value)return;
+      const paragraph=document.createElement("p");
+      const heading=document.createElement("strong");
+      heading.textContent=label;
+      paragraph.append(heading,document.createTextNode(value));
+      body.append(paragraph);
+    };
+
+    if(x.type==="locality"){
+      addDetail("Lectura territorial",x.info);
+    }else{
+      addDetail("Línea a investigar",x.business);
+      addDetail("Qué sabemos",x.evidence);
+      addDetail("Estado de verificación",x.status);
+      addDetail("Próximo paso",x.next);
+      if(x.source){
+        const link=document.createElement("a");
+        link.className="map-source-link";
+        link.href=x.source;
+        link.target="_blank";
+        link.rel="noopener noreferrer";
+        link.textContent="Abrir referencia externa ↗";
+        body.append(link);
+      }
     }
-    if(map)card.addEventListener("click",()=>{map.setView([x.lat,x.lng],14);markers.get(x.id).openPopup()});
+
+    if(map){
+      const focusButton=document.createElement("button");
+      focusButton.type="button";
+      focusButton.className="map-focus-button";
+      focusButton.textContent="Ubicar en el mapa";
+      focusButton.setAttribute("aria-label","Centrar el mapa en "+x.name);
+      focusButton.addEventListener("click",()=>{
+        const marker=markers.get(x.id);
+        if(!marker)return;
+        map.setView([x.lat,x.lng],14);
+        marker.openPopup();
+      });
+      body.append(focusButton);
+    }
+
+    card.append(body);
     target.append(card);
   });
 }

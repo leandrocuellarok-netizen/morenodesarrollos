@@ -337,3 +337,26 @@ body{background:var(--paper);color:var(--ink)}
   .has-js .nav.is-open{display:flex}
 }
 @media(min-width:761px){.mobile-menu{display:none!important}}
+
+
+/* Mapa IA: fichas de evidencia legibles, fuentes directas y orden móvil mapa-primero */
+.map-item{display:block;border-top:1px solid #c7c4b8;padding:14px 0}
+.map-item summary{display:flex;flex-direction:column;gap:5px;position:relative;padding:0 25px 0 0;cursor:pointer;list-style:none}
+.map-item summary::-webkit-details-marker{display:none}
+.map-item summary:after{content:"+";position:absolute;right:3px;top:0;font:18px/1 var(--serif);color:var(--rust)}
+.map-item[open] summary:after{content:"−"}
+.map-item summary:focus-visible{outline:2px solid var(--rust);outline-offset:4px}
+.map-item summary strong{font:400 17px/1.2 var(--serif);margin:0}
+.map-item summary span{font:10px/1.55 var(--sans);color:#66685f}
+.map-item-body{padding:13px 0 2px}
+.map-item-body p{margin:0 0 11px;font:11px/1.65 var(--sans);color:#55584f}
+.map-item-body p strong{display:block;margin:0 0 3px;font:600 9px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#77796f}
+.map-source-link{display:inline-block;margin:2px 0 12px;color:#80533a;font:600 10px/1.5 var(--sans);text-underline-offset:3px}
+.map-focus-button{display:block;width:100%;margin-top:10px;padding:10px 12px;border:1px solid #a9a497;background:transparent;color:var(--ink);font:600 9px var(--sans);letter-spacing:.1em;text-transform:uppercase;text-align:left;cursor:pointer}
+.map-focus-button:hover{background:#e2ddcf}
+.map-focus-button:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+@media(max-width:760px){
+  .map-layout{grid-template-columns:1fr}
+  .map-canvas{order:1;min-height:420px}
+  .map-sidebar{order:2;max-height:none;overflow:visible}
+}
