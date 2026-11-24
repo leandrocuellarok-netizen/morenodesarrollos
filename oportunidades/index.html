@@ -47,23 +47,23 @@
   <div class="feasibility-panel">
     <div class="feasibility-fields">
       <div class="form-field">
-        <label for="parcel-area">Superficie del lote (m²) *</label>
-        <input id="parcel-area" name="superficie-lote-calculo" inputmode="decimal" autocomplete="off" placeholder="Ej.: 1200" aria-describedby="feasibility-help">
+        <label for="parcel-area">Superficie del lote (m²)</label>
+        <input id="parcel-area" name="superficie-lote-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 1200" aria-describedby="feasibility-help">
       </div>
       <div class="form-field">
         <label for="parcel-fos">FOS de la parcela</label>
-        <input id="parcel-fos" name="fos-calculo" inputmode="decimal" autocomplete="off" placeholder="Ej.: 0,60">
+        <input id="parcel-fos" name="fos-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 0,60">
       </div>
       <div class="form-field">
         <label for="parcel-fot">FOT de la parcela</label>
-        <input id="parcel-fot" name="fot-calculo" inputmode="decimal" autocomplete="off" placeholder="Ej.: 1,20">
+        <input id="parcel-fot" name="fot-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 1,20">
       </div>
       <div class="form-field">
         <label for="parcel-reference">Fuente o referencia consultada</label>
         <input id="parcel-reference" name="fuente-indicadores" maxlength="180" placeholder="Ej.: certificado urbanístico / ordenanza">
       </div>
     </div>
-    <p class="field-hint" id="feasibility-help">Usá números sin separador de miles. Podés escribir coma o punto decimal. FOS y FOT son opcionales, pero necesitás al menos uno para calcular.</p>
+    <p class="field-hint" id="feasibility-help">FOS = referencia teórica de ocupación en planta. FOT = referencia teórica de superficie total computable. Para calcular, ingresá superficie y al menos uno de esos indicadores. Usá números sin separador de miles; podés escribir coma o punto decimal.</p>
     <button class="button dark feasibility-button" id="feasibility-calculate" type="button">Calcular referencia ↗</button>
     <div class="feasibility-results" id="feasibility-results" role="status" aria-live="polite">
       <p>El resultado aparecerá acá. No se aplican coeficientes supuestos ni valores automáticos.</p>
