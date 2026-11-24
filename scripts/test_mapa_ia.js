@@ -26,8 +26,8 @@ for (const item of opportunities) {
 
 assert.equal(filterReferences(all, { category: "locality" }).length, 6);
 assert.equal(filterReferences(all, { category: "opportunity" }).length, 5);
-assert.equal(filterReferences(all, { evidence: "documented" }).length, 10, "el filtro de evidencia conserva las localidades como referencias neutrales");
-assert.equal(filterReferences(all, { evidence: "hypothesis" }).length, 7);
+assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");
+assert.equal(filterReferences(all, { evidence: "hypothesis" }).length, 1, "el filtro de hipótesis no mezcla localidades sin clasificar");
 assert.deepEqual(
   filterReferences(all, { query: "paso del rey", category: "locality" }).map(item => item.id),
   ["paso"]
