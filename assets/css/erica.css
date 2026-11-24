@@ -186,3 +186,25 @@ body{background:var(--paper);color:var(--ink)}
 .opportunity-direct a{color:#80533a;text-underline-offset:3px}
 @media(max-width:900px){.opportunity-form-shell{grid-template-columns:1fr;gap:25px}.opportunity-form-aside{max-width:760px}}
 @media(max-width:760px){.opportunity-paths{grid-template-columns:1fr}.opportunity-form{padding:20px 16px}.form-grid{grid-template-columns:1fr}.form-field.full{grid-column:auto}.lead-bridge-actions{flex-direction:column;align-items:stretch}.lead-bridge-actions .button{justify-content:space-between}.opportunity-form-shell{padding:35px 0 70px}}
+
+
+/* Herramienta preliminar FOS/FOT para calificación de oportunidades */
+.feasibility-tool{display:grid;grid-template-columns:.88fr 1.12fr;gap:7vw;align-items:start;padding:30px 0 92px;border-bottom:1px solid var(--line)}
+.feasibility-intro h2{font:400 clamp(35px,4.4vw,56px)/1.02 var(--serif);letter-spacing:-.045em;margin:17px 0}
+.feasibility-intro p{font:13px/1.85 var(--sans);color:#62645c;max-width:510px}
+.feasibility-intro .feasibility-caution{padding-left:15px;border-left:2px solid var(--rust);font-size:12px}
+.feasibility-panel{padding:27px;background:#e9e4d7;border:1px solid var(--line)}
+.feasibility-fields{display:grid;grid-template-columns:1fr 1fr;gap:17px}
+.feasibility-button{margin-top:20px;cursor:pointer;justify-content:center}
+.feasibility-results{margin-top:20px;padding:18px;background:#f4f1e8;border:1px solid #cbc6b8;min-height:82px}
+.feasibility-results>p{font:12px/1.7 var(--sans);color:#66675e;margin:0}
+.feasibility-results[data-state="error"]{border-color:#a95d3c;background:#f5ebe4}
+.feasibility-results[data-state="error"]>p{color:#8b442e}
+.feasibility-result-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.feasibility-result-list>p{margin:0;padding:12px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:7px}
+.feasibility-result-list strong{font:italic 13px var(--serif);color:var(--rust)}
+.feasibility-result-list span{font:400 clamp(25px,3vw,34px)/1 var(--serif);letter-spacing:-.03em}
+.feasibility-result-list small{font:10px/1.6 var(--sans);color:#73756d}
+.feasibility-panel .feasibility-disclaimer{font:10px/1.7 var(--sans);color:#77796f;margin:13px 0 0}
+@media(max-width:900px){.feasibility-tool{grid-template-columns:1fr;gap:25px}.feasibility-intro{max-width:760px}}
+@media(max-width:600px){.feasibility-panel{padding:19px 15px}.feasibility-fields,.feasibility-result-list{grid-template-columns:1fr}.feasibility-button{width:100%}.feasibility-tool{padding:15px 0 65px}}
