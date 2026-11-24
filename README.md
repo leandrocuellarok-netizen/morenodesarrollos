@@ -38,14 +38,15 @@ La investigación inicial identifica cinco tesis territoriales preliminares: cor
 ## Mapa interactivo de originación
 
 - [Abrir mapa interactivo de Moreno](web/mapa-moreno/index.html)
-- Incluye localidades y cinco tesis territoriales del Pilar 1, con filtros, fichas emergentes y enlaces a fuentes.
+- Incluye localidades y cinco tesis territoriales del Pilar 1, con búsqueda por contenido, filtros por tipo y nivel de evidencia, fichas emergentes, leyenda y enlaces a fuentes públicas.
+- Distingue el contexto respaldado por una fuente pública de las hipótesis de prospección; esa distinción no equivale a verificar parcelas ni disponibilidad.
 - Superpone el límite administrativo municipal mediante GeoJSON de Georef / IGN (WGS84), con ajuste automático del encuadre.
 - Los marcadores de oportunidades son referencias aproximadas de áreas/corredores, no parcelas ni límites oficiales.
 
 
 ## Sitio de marca personal — Erica M. Acosta
 
-Primer boceto editorial de la web personal de Erica M. Acosta, con tres destinos principales:
+Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
 
 - / — Inicio: presentación del proyecto, desarrollo inmobiliario, inteligencia territorial e IA aplicada.
 - /mapa-ia/ — Mapa IA: mapa interactivo del Partido de Moreno, localidades y cinco tesis preliminares de oportunidad.
@@ -54,7 +55,7 @@ Primer boceto editorial de la web personal de Erica M. Acosta, con tres destinos
 ### Identidad visual y contenido
 
 - Paleta: marfil, grafito, piedra, ocre y naranja quemado.
-- Lenguaje gráfico: composición arquitectónica abstracta, retícula, líneas de plano y cartografía monocromática.
+- Lenguaje gráfico: ilustración arquitectónica editorial dibujada en SVG, retícula sutil, líneas de plano y cartografía monocromática.
 - Diseño responsive y navegación común entre las tres páginas.
 - Metadatos SEO en español argentino con términos locales: desarrollos inmobiliarios en Moreno, oportunidades de inversión, inteligencia territorial e inteligencia artificial aplicada.
 - Copy de marca personal conversacional, claro y persuasivo; no se imita literalmente la voz de otra profesional.
@@ -64,5 +65,6 @@ Primer boceto editorial de la web personal de Erica M. Acosta, con tres destinos
 1. Definir dominio definitivo y configurar hosting/GitHub Pages; las rutas están preparadas para publicarse desde la raíz de un dominio.
 2. Incorporar fotografía y datos de contacto reales de Erica (no se inventaron email, teléfono ni perfiles sociales).
 3. Revisar el contenido biográfico y las alianzas mencionadas antes de publicación.
-4. Validar en navegador el servicio GeoJSON del límite municipal y sumar capas parcelarias/zonificación solo con fuentes oficiales y permisos adecuados.
-5. Continuar el trabajo de oportunidades con identificación parcelaria y verificación documental; los marcadores actuales son áreas/corredores indicativos, no ofertas verificadas.
+4. Confirmar que GitHub Pages esté configurado con la opción de HTML estático mediante GitHub Actions y validar el último despliegue en navegador.
+5. Validar en navegador el servicio GeoJSON del límite municipal y sumar capas parcelarias/zonificación solo con fuentes oficiales y permisos adecuados.
+6. Continuar el trabajo de oportunidades con identificación parcelaria y verificación documental; los marcadores actuales son áreas/corredores indicativos, no ofertas verificadas.
