@@ -63,7 +63,7 @@
   <main>
     <aside>
       <h2>Inteligencia territorial</h2>
-      <p class="intro">Mapa de trabajo para orientar la prospección. Los puntos de oportunidad son referencias aproximadas de corredores o áreas, no parcelas identificadas ni límites oficiales.</p>
+      <p class="intro">Mapa de trabajo para orientar la prospección. El contorno municipal se carga desde Georef/IGN. Los puntos de oportunidad siguen siendo referencias aproximadas de corredores o áreas, no parcelas identificadas ni límites catastrales.</p>
       <div class="legend">
         <span><i class="dot" style="background:#64748b"></i>Localidades</span>
         <span><i class="dot" style="background:#0f766e"></i>Industrial/logística</span>
@@ -79,7 +79,7 @@
     <div id="map" role="application" aria-label="Mapa interactivo del Partido de Moreno"></div>
   </main>
   <footer class="notice">
-    Uso estratégico preliminar. Antes de negociar o invertir, verificar nomenclatura catastral, titularidad, zonificación vigente, FOS/FOT, usos, restricciones, afectaciones hidráulicas/ambientales, servicios, accesos, contribuciones y disponibilidad. No se muestran precios ni rentabilidades no comprobados.
+    Límite municipal de referencia: Georef / IGN (WGS84). No equivale a mensura ni catastro parcelario. Antes de negociar o invertir, verificar nomenclatura catastral, titularidad, zonificación vigente, FOS/FOT, usos, restricciones, afectaciones hidráulicas/ambientales, servicios, accesos, contribuciones y disponibilidad. No se muestran precios ni rentabilidades no comprobados.
   </footer>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
@@ -90,6 +90,71 @@
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
+    // Límite oficial del Partido de Moreno: geometría municipal, no parcelaria.
+    // Georef (IGN) publica geometrías GeoJSON en WGS84 / EPSG:4326.
+    const boundaryUrl = "https://apis.datos.gob.ar/georef/api/v2.0/municipios?nombre=Moreno&provincia=Buenos%20Aires&formato=geojson";
+    const boundaryStyle = {
+      color: "#0d47a1",
+      weight: 3,
+      opacity: 0.95,
+      fillColor: "#0d47a1",
+      fillOpacity: 0.10
+    };
+    const boundaryLayer = L.geoJSON(null, {
+      style: boundaryStyle,
+      onEachFeature: (feature, layer) => {
+        const props = feature.properties || {};
+        const label = props.nombre || props.NAM || "Partido de Moreno";
+        layer.bindPopup(
+          '<div class="popup"><h3>' + label + '</h3>' +
+          '<p>Límite administrativo municipal de referencia, obtenido de Georef / IGN.</p>' +
+          '<p class="small">Esta geometría representa el contorno del partido. No define parcelas, zonificación ni límites catastrales.</p>' +
+          '<a href="https://www.ign.gob.ar/" target="_blank" rel="noopener noreferrer">Fuente: Instituto Geográfico Nacional</a></div>'
+        );
+      }
+    });
+    const boundaryStatus = document.createElement("span");
+    boundaryStatus.className = "hint";
+    boundaryStatus.id = "boundary-status";
+    boundaryStatus.textContent = "Cargando límite municipal oficial…";
+    document.querySelector(".toolbar").appendChild(boundaryStatus);
+
+    fetch(boundaryUrl)
+      .then(response => {
+        if (!response.ok) throw new Error("No se pudo consultar Georef (" + response.status + ")");
+        return response.json();
+      })
+      .then(data => {
+        // La API puede devolver FeatureCollection o un objeto contenedor.
+        let geojson = data;
+        if (!data.type && data.municipios) {
+          geojson = {
+            type: "FeatureCollection",
+            features: data.municipios.map(item => item.geojson).filter(Boolean)
+          };
+        }
+        if (geojson.type === "FeatureCollection" && Array.isArray(geojson.features)) {
+          geojson.features = geojson.features.filter(feature => {
+            const p = feature.properties || {};
+            const name = String(p.nombre || p.NAM || p.nombre_completo || "").toLocaleLowerCase("es-AR");
+            const province = String(p.provincia_nombre || p.provincia || "").toLocaleLowerCase("es-AR");
+            return name.includes("moreno") && (!province || province.includes("buenos"));
+          });
+        }
+        boundaryLayer.addData(geojson).addTo(map);
+        const bounds = boundaryLayer.getBounds();
+        if (bounds.isValid()) {
+          map.fitBounds(bounds, { padding: [24, 24] });
+          boundaryStatus.textContent = "Límite municipal oficial cargado · Georef / IGN";
+        } else {
+          throw new Error("La respuesta no contiene una geometría identificable para Moreno.");
+        }
+      })
+      .catch(error => {
+        console.warn("No se pudo cargar el límite municipal:", error);
+        boundaryStatus.textContent = "Límite municipal no disponible · revisar conexión";
+      });
 
     const localities = [
       { id:"moreno-centro", name:"Moreno Centro · Palacio Municipal", lat:-34.6508, lng:-58.7914, info:"Cabecera del partido y centro administrativo.", type:"locality" },
