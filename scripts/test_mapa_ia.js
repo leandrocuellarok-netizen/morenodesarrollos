@@ -1,7 +1,14 @@
 "use strict";
 
 const assert = require("node:assert/strict");
-const { localities, opportunities, all, filterReferences, buildCsv } = require("../assets/js/mapa-ia.js");
+const fs = require("node:fs");
+const path = require("node:path");
+const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
+const source = fs.readFileSync(modulePath, "utf8");
+const { localities, opportunities, all, filterReferences, buildCsv } = require(modulePath);
+assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
+assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
+assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
 assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
@@ -52,4 +59,4 @@ assert.ok(csv.includes('"Parcela ""A"", sector norte"'), "CSV escapa comillas y 
 assert.ok(csv.includes("alcance_de_coordenada"), "CSV informa el alcance de las coordenadas");
 assert.ok(csv.includes("no identifica una parcela"), "CSV conserva la advertencia parcelaria");
 
-console.log("OK: 17 comprobaciones de datos territoriales, filtros, evidencias y exportación CSV del Mapa IA.");
+console.log("OK: pruebas del motor MapLibre, datos territoriales, filtros, evidencias y exportación CSV del Mapa IA.");
