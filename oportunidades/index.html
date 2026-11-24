@@ -113,6 +113,16 @@
 <option value="No definido">Todavía no lo definí</option><option value="Terreno">Terreno</option><option value="Inmueble existente">Inmueble existente</option><option value="Proyecto en desarrollo">Proyecto en desarrollo</option><option value="Inversión o alianza">Inversión o alianza</option><option value="Servicios profesionales">Servicios profesionales</option>
 </select>
 </div>
+<div class="form-field full">
+<label for="contact-address">Ubicación más precisa (opcional)</label>
+<input id="contact-address" name="ubicacion" autocomplete="street-address" maxlength="180" placeholder="Calles, altura aproximada o referencia cercana">
+<span class="field-hint">Si estás presentando un inmueble, una referencia ayuda a identificar la zona. No hace falta compartir datos personales.</span>
+</div>
+<div class="form-field">
+<label for="contact-cadastral">Partida o nomenclatura catastral (opcional)</label>
+<input id="contact-cadastral" name="nomenclatura" maxlength="120" placeholder="Solo si ya la tenés disponible">
+<span class="field-hint">No adjuntes escrituras ni documentación dominial en este primer contacto.</span>
+</div>
 <div class="form-field">
 <label for="contact-area">Superficie aproximada (si no la ingresaste arriba)</label>
 <input id="contact-area" name="superficie" inputmode="decimal" maxlength="60" placeholder="Ej.: 1.200 m² / no lo sé">
@@ -191,21 +201,13 @@ opportunityForm.addEventListener("submit",event=>{
   event.preventDefault();
   const calculationInput=readFeasibilityInput();
   const feasibility=window.MorenoOpportunityTools.buildLeadNote(calculationInput);
-  const values=new FormData(opportunityForm);
-  const labels=[
-    ["Nombre","nombre"],["Perfil","perfil"],["Interés","interes"],["Zona","zona"],
-    ["Tipo de oportunidad","tipo"],["Superficie aproximada","superficie"],["Información disponible","documentacion"],["Contexto","detalle"]
-  ];
-  const lines=["Hola Erica, quiero iniciar una conversación sobre una oportunidad en MORENO.",""];
-  for(const [label,key] of labels){
-    if(key==="superficie"&&String(calculationInput.areaRaw||"").trim())continue;
-    const value=String(values.get(key)||"").trim();
-    if(value)lines.push(label+": "+value);
-  }
-  if(!feasibility.empty)lines.push("",...feasibility.lines);
-  lines.push("","Enviado desde el formulario de oportunidades del sitio MORENO.");
+  const values=Object.fromEntries(new FormData(opportunityForm).entries());
+  const message=window.MorenoOpportunityTools.buildContactMessage({
+    fields:values,
+    calculationInput
+  });
   formStatus.textContent="Se abrirá WhatsApp con el borrador. Revisalo y elegí si querés enviarlo.";
-  window.location.href="https://wa.me/5491141671674?text="+encodeURIComponent(lines.join("\n"));
+  window.location.href="https://wa.me/5491141671674?text="+encodeURIComponent(message);
 });
 </script>
 </body>
