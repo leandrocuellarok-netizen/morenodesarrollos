@@ -145,7 +145,7 @@ const feasibilityIds=["parcel-area","parcel-fos","parcel-fot"];
 let feasibilityTouched=false;
 function parsePositiveDecimal(raw,label){
   const normalized=String(raw||"").trim().replace(",",".");
-  if(!/^\\d+(?:\\.\\d+)?$/.test(normalized))return {error:"Revisá "+label+": usá un número positivo, sin separador de miles."};
+  if(!/^\d+(?:\.\d+)?$/.test(normalized))return {error:"Revisá "+label+": usá un número positivo, sin separador de miles."};
   const value=Number(normalized);
   if(!Number.isFinite(value)||value<=0)return {error:label+" debe ser mayor que cero."};
   return {value};
@@ -198,7 +198,7 @@ function calculatePreliminary(){
   note.className="feasibility-disclaimer";
   note.textContent="Resultado matemático preliminar; no equivale a capacidad edificable aprobada ni a prefactibilidad urbanística.";
   feasibilityResults.append(note);
-  return {ok:true,summary:lines.join("\\n")};
+  return {ok:true,summary:lines.join("\n")};
 }
 document.getElementById("feasibility-calculate").addEventListener("click",()=>{
   feasibilityTouched=true;
