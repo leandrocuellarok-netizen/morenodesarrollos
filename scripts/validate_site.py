@@ -284,6 +284,7 @@ def main() -> None:
                     "function filterReferences",
                     "function buildCsv",
                     "function buildGeoJson(items)",
+                    "line_to_investigate:",
                     "function exportVisibleGeoJson()",
                     'getElementById("export-geojson")',
                     'type: "application/geo+json;charset=utf-8"',
