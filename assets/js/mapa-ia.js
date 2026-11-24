@@ -98,7 +98,7 @@ function buildGeoJson(items) {
         name: item.name,
         category: isLocality ? "Localidad" : (kindLabel[item.kind] || item.kind),
         evidence_level: evidenceLevel,
-        description: isLocality ? item.info : item.business,
+        line_to_investigate: isLocality ? item.info : item.business,
         public_evidence: isLocality ? null : item.evidence,
         verification_status: isLocality
           ? "Referencia geográfica de localidad; no es una evaluación parcelaria."
