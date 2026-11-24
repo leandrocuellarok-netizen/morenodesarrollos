@@ -110,3 +110,19 @@ body{background:var(--paper);color:var(--ink)}
  .boundary-state{margin-left:0;width:100%}
  .map-item{padding:14px 3px}
 }
+
+
+/* Sobre Erica: proceso de desarrollo inmobiliario en cinco pilares */
+.process-intro{display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:end;margin:20px 0 42px}
+.process-intro h2{font:400 clamp(38px,4.8vw,62px)/.98 var(--serif);letter-spacing:-.05em;margin:0;max-width:620px}
+.process-intro p{font:14px/1.85 var(--sans);color:#66675e;max-width:530px;margin:0 0 4px}
+.process-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.process-card{padding:19px 15px 18px 0;border-top:1px solid #88877b;position:relative}
+.process-card:before{content:"";position:absolute;top:-2px;left:0;width:35px;height:3px;background:var(--rust)}
+.process-card span{font:italic 10px var(--serif);letter-spacing:.11em;color:var(--rust)}
+.process-card h3{font:400 21px/1.08 var(--serif);margin:19px 0 11px}
+.process-card p{font:12px/1.75 var(--sans);color:#66675e;margin:0}
+.process-note{font:11px/1.7 var(--sans);color:#77796f;margin-top:25px;max-width:900px}
+@media(max-width:900px){.process-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.process-intro{grid-template-columns:1fr;gap:18px}.process-grid{grid-template-columns:1fr 1fr;gap:20px 14px}.process-card h3{font-size:19px}}
+@media(max-width:420px){.process-grid{grid-template-columns:1fr}}
