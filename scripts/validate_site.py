@@ -18,11 +18,13 @@ SITE_PAGES = (
     Path("index.html"),
     Path("mapa-ia/index.html"),
     Path("erica-acosta/index.html"),
+    Path("oportunidades/index.html"),
 )
 PAGE_URLS = {
     Path("index.html"): PUBLIC_BASE,
     Path("mapa-ia/index.html"): PUBLIC_BASE + "mapa-ia/",
     Path("erica-acosta/index.html"): PUBLIC_BASE + "erica-acosta/",
+    Path("oportunidades/index.html"): PUBLIC_BASE + "oportunidades/",
 }
 REQUIRED_SOCIAL_META = ("og:title", "og:description", "og:type", "og:locale", "og:image", "og:image:alt", "twitter:card")
 
