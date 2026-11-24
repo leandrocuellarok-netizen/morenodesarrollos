@@ -39,4 +39,5 @@ La investigación inicial identifica cinco tesis territoriales preliminares: cor
 
 - [Abrir mapa interactivo de Moreno](web/mapa-moreno/index.html)
 - Incluye localidades y cinco tesis territoriales del Pilar 1, con filtros, fichas emergentes y enlaces a fuentes.
+- Superpone el límite administrativo municipal mediante GeoJSON de Georef / IGN (WGS84), con ajuste automático del encuadre.
 - Los marcadores de oportunidades son referencias aproximadas de áreas/corredores, no parcelas ni límites oficiales.
