@@ -66,4 +66,27 @@ assert.match(whatsappUrl, /^https:\/\/wa\.me\/5491141671674\?text=/);
 assert.equal(new URL(whatsappUrl).searchParams.get("text"), contactMessage);
 assert.ok(whatsappUrl.includes("%0A"));
 
-console.log("OK: 9 grupos de pruebas de cálculo, datos parciales, campos parcelarios, URL y borrador de contacto.");
+const checklistMessage = tools.buildContactMessage({
+  fields: {
+    nombre: "Contacto con checklist",
+    perfil: "Propietario/a",
+    interes: "Presentar un terreno o inmueble",
+    zona: "Moreno",
+    documentacion: ["Plano o mensura", "Certificado urbanístico o zonificación"],
+    verificaciones: ["Zonificación e indicadores urbanísticos consultados", "Servicios y accesos consultados"]
+  },
+  calculationInput: {}
+});
+assert.match(checklistMessage, /Documentación disponible \(declarada\): Plano o mensura; Certificado urbanístico o zonificación/);
+assert.match(checklistMessage, /Consultas realizadas \(declaradas\): Zonificación e indicadores urbanísticos consultados; Servicios y accesos consultados/);
+assert.match(checklistMessage, /no constituyen verificación independiente/);
+assert.doesNotMatch(checklistMessage, /\[object Object\]/);
+
+const noChecklistMessage = tools.buildContactMessage({
+  fields: { nombre: "Contacto sin checklist", perfil: "Otro", interes: "Todavía estoy explorando", zona: "Moreno", documentacion: [], verificaciones: [] },
+  calculationInput: {}
+});
+assert.doesNotMatch(noChecklistMessage, /Documentación disponible \(declarada\):/);
+assert.doesNotMatch(noChecklistMessage, /Consultas realizadas \(declaradas\):/);
+
+console.log("OK: 11 grupos de pruebas de cálculo, datos parciales, listas de documentación, consultas declaradas, URL y borrador de contacto.");
