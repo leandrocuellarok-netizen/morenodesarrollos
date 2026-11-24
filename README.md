@@ -18,7 +18,7 @@ Esta referencia sirve como punto de partida para el análisis territorial y la o
 4. **Ejecución de obra:** contratar y supervisar la construcción, controlando plazos, calidad y presupuesto.
 5. **Comercialización y entrega:** vender o alquilar las unidades, formalizar la escrituración y organizar la puesta en marcha del consorcio.
 
-## Fuentes normativas incorporadas al registro
+## Fuentes normativas y código incorporados
 
-Se catalogaron los documentos municipales y fiscales recibidos en el índice [Documentación de Moreno](docs/INDICE_DOCUMENTAL_MORENO.md). Allí se identifican las ediciones del Boletín Oficial, los textos ordenados de las ordenanzas Fiscal y Tributaria y Tarifaria 2026, y sus actualizaciones.
-
+- [Índice documental de Moreno](docs/INDICE_DOCUMENTAL_MORENO.md): boletines oficiales 331 a 336, ordenanzas fiscales y tributarias 2026, actualizaciones y ejes de consulta inmobiliaria.
+- [Captura de código del portal Turismo de Moreno](web/turismo-moreno/README.md): descripción del HTML recibido y sus dependencias.
