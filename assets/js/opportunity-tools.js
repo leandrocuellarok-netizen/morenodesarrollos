@@ -100,9 +100,41 @@
     };
   }
 
+  function buildContactMessage(input) {
+    const data = input || {};
+    const fields = data.fields || {};
+    const calculationInput = data.calculationInput || {};
+    const areaFromCalculator = String(calculationInput.areaRaw || "").trim();
+    const labels = [
+      ["Nombre", "nombre"],
+      ["Perfil", "perfil"],
+      ["Interés", "interes"],
+      ["Zona", "zona"],
+      ["Tipo de oportunidad", "tipo"],
+      ["Ubicación o referencia", "ubicacion"],
+      ["Partida o nomenclatura catastral", "nomenclatura"],
+      ["Superficie aproximada", "superficie"],
+      ["Información disponible", "documentacion"],
+      ["Contexto", "detalle"]
+    ];
+    const lines = ["Hola Erica, quiero iniciar una conversación sobre una oportunidad en MORENO.", ""];
+    labels.forEach(function (entry) {
+      const label = entry[0];
+      const key = entry[1];
+      if (key === "superficie" && areaFromCalculator) return;
+      const value = String(fields[key] == null ? "" : fields[key]).trim();
+      if (value) lines.push(label + ": " + value);
+    });
+    const note = buildLeadNote(calculationInput);
+    if (!note.empty) lines.push("", ...note.lines);
+    lines.push("", "Enviado desde el formulario de oportunidades del sitio MORENO.");
+    return lines.join("\\n");
+  }
+
   return {
     parsePositiveDecimal: parsePositiveDecimal,
     calculatePreliminary: calculatePreliminary,
-    buildLeadNote: buildLeadNote
+    buildLeadNote: buildLeadNote,
+    buildContactMessage: buildContactMessage
   };
 });
