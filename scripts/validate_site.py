@@ -253,6 +253,7 @@ def main() -> None:
                 map_js = map_js_path.read_text(encoding="utf-8")
                 for required_logic in (
                     "new maplibregl.Map(",
+                "mapElement.replaceChildren();",
                     "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                     'map.addSource("moreno-boundary"',
                     'document.createElement("details")',
