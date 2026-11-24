@@ -128,7 +128,7 @@
     const note = buildLeadNote(calculationInput);
     if (!note.empty) lines.push("", ...note.lines);
     lines.push("", "Enviado desde el formulario de oportunidades del sitio MORENO.");
-    return lines.join("\\n");
+    return lines.join("\n");
   }
 
   return {
