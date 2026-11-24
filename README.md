@@ -77,3 +77,12 @@ Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
 - Se incluye una alternativa HTML mediante `noscript` para lectores sin JavaScript, con enlaces directos a las fuentes.
 - Los controles de las fichas muestran foco visible para navegación por teclado.
 - Si falla el proveedor de teselas, se conserva el inventario de referencias y se informa el estado sin ocultar la investigación.
+
+
+### Exportación del Mapa IA
+
+- El botón **Descargar CSV visible** exporta las referencias que quedan luego de aplicar los filtros y la búsqueda.
+- El archivo incluye tipo de referencia, nombre, coordenadas de referencia, línea a investigar, nivel de evidencia, estado, próximo paso y fuente pública.
+- Cada fila identifica expresamente el alcance de sus coordenadas: localidad o corredor aproximado, nunca parcela verificada.
+- En móvil, el mapa se muestra antes del inventario para que la herramienta cartográfica quede accesible sin recorrer primero todas las fichas.
+- La exportación es una herramienta de trabajo y no convierte hipótesis en oportunidades verificadas ni acredita disponibilidad, titularidad, zonificación o rentabilidad.
