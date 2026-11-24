@@ -1,101 +1,111 @@
 # Pilar 1 — Inteligencia territorial inicial: Moreno
 
-**Fecha de corte de investigación:** 24 de noviembre de 2026.
-**Alcance:** originación de oportunidades. Esto es un screening territorial inicial, no una tasación, estudio de factibilidad ni recomendación de compra.
+**Fecha de corte:** 24 de noviembre de 2026.  
+**Alcance:** screening de originación. No constituye tasación, factibilidad ni recomendación de compra.
 
 ## Hallazgo ejecutivo
 
-Las señales públicas más relevantes apuntan a tres líneas iniciales: (1) suelo productivo/logístico en corredores RP25–Av. Darwin Passaponti y Av. San Fernando; (2) servicios comerciales, almacenamiento y usos complementarios alrededor de los corredores RP24/RP25 y el área de Ecoparque; (3) hospitalidad, gastronomía, recreación y servicios turísticos de baja huella vinculados al Distrito Ecológico Roggero. Una cuarta línea es la reconversión comercial/mixta vinculada a la nueva conectividad de Paso del Rey por el Camino de la Ribera.
+Las señales públicas más relevantes apuntan a cuatro tesis: suelo productivo/logístico en los corredores RP25–Av. Darwin Passaponti y Av. San Fernando; servicios complementarios alrededor de RP24/RP25 y Ecoparque; comercio/servicios en el entorno del Camino de la Ribera en Paso del Rey; y turismo de cercanía de baja huella en el Distrito Ecológico Roggero. Además, se detectan oportunidades de prospección en parcelas grandes de Cuartel V, Trujui y La Reja.
 
 ## 1. Inteligencia de mercado y señales territoriales
 
 ### A. Corredor productivo y logístico RP25 — Darwin Passaponti / Av. San Fernando
-- La Ordenanza municipal 7443/25 documenta una rezonificación puntual de parcelas identificadas catastralmente a I1 e I2 y expresa que el municipio observaba demanda insatisfecha de suelo I1/I2 y una transición hacia matrices productivo-logísticas.
-- La misma ordenanza identifica la RP25–Av. Darwin Passaponti y Av. San Fernando como corredores estructurantes por accesibilidad, jerarquía vial y cercanía relativa a redes primarias. No generalizar esta rezonificación: aplica únicamente a polígonos y parcelas expresamente enumerados en los artículos 1 a 5.
-- Oportunidad de negocio a investigar: pequeños parques/agrupamientos industriales compatibles, depósitos y servicios a flotas, patios operativos, locales de insumos industriales y proyectos llave en mano para PyMEs.
-- Riesgo/condición: verificar parcela por parcela, contribución por valorización inmobiliaria (CVI), permisos, hidráulica, acceso de camiones, energía y servicios. La norma establece que la CVI tiene carácter real y sigue al inmueble alcanzado.
-- Estado: **VERIFIED** en cuanto a ordenanza, corredores y parcelas rezonificadas; cualquier lote/negocio concreto permanece **HYPOTHESIS** hasta comprobar catastro, dominio y disponibilidad.
+
+La Ordenanza municipal 7443/25 documenta una rezonificación puntual de parcelas individualizadas a I1 e I2 y expresa demanda insatisfecha de suelo industrial I1/I2 y una transición hacia matrices productivo-logísticas. Identifica como corredores estructurantes la RP25–Av. Darwin Passaponti y Av. San Fernando por accesibilidad, jerarquía vial y cercanía relativa a redes primarias.
+
+**Tesis comercial:** agrupamientos industriales compatibles, depósitos, patios operativos, servicios a flotas, proveedores industriales y proyectos llave en mano para PyMEs.
+
+**Condición crítica:** la rezonificación es solo para polígonos y parcelas enumerados en los artículos 1 a 5; no extenderla a predios vecinos. Revisar la contribución por valorización inmobiliaria (CVI), que según la ordenanza tiene carácter real y sigue al inmueble alcanzado.
+
+**Evidencia:** VERIFIED respecto de norma, corredores y parcelas listadas; cualquier oportunidad parcelaria concreta es HYPOTHESIS hasta verificar catastro, dominio y disponibilidad.
 
 ### B. Nodo RP24/RP25 — Ecoparque Industrial Moreno
-- El operador del Ecoparque declara ubicación sobre RP24, a unos cinco minutos de Acceso Oeste y cerca de RP25; informa 78 parcelas de 2.000 a 10.000 m², media tensión, desagües pluviales industriales, calles para tránsito pesado, pavimento de hormigón y seguridad.
-- Su web publica FOS 0,6, FOT 1,2 y retiros de 10 m al frente, 5 m al fondo y 5 m laterales. Son datos declarados por el operador para el parque, no parámetros transferibles a parcelas vecinas ni sustitutos de una consulta oficial.
-- Oportunidad: desarrollar oferta complementaria para ocupantes industriales: depósitos pequeños, oficinas operativas, gastronomía de ruta, hotelería de trabajo, mantenimiento de flotas, servicios de personal y proveedores industriales.
-- No se verifica en esta investigación cuántas parcelas siguen disponibles ni sus precios; el contacto comercial debe confirmar inventario real.
-- Estado: **INDICATIVE** para condiciones comerciales publicadas por el operador; disponibilidad y valores **UNVERIFIED**.
+
+El sitio del operador describe el parque sobre RP24, próximo a Acceso Oeste y RP25; publica 78 parcelas de 2.000 a 10.000 m² y servicios como media tensión, desagües pluviales industriales, calles aptas para tránsito pesado, pavimento y seguridad. Publica FOS 0,6, FOT 1,2 y retiros específicos para el parque.
+
+**Tesis comercial:** depósitos pequeños, oficinas operativas, gastronomía de ruta, alojamiento para personal y servicios de mantenimiento de flotas y proveedores.
+
+Los indicadores publicados son información del operador para el parque, no parámetros transferibles a predios vecinos. La disponibilidad y los precios actuales no están confirmados.
+
+**Evidencia:** INDICATIVE respecto de información del operador; disponibilidad y precios UNVERIFIED.
 
 ### C. Paso del Rey — Camino de la Ribera / conexión RP7–Acceso Oeste
-- La Provincia informó que el Camino de la Ribera conecta la Ruta Provincial 7 con la colectora de Acceso Oeste, con una obra de más de 6 km, puente nuevo sobre el Reconquista, pavimentos, drenajes e iluminación.
-- La fuente provincial señala que el nuevo enlace mejora tiempos de circulación, acceso de vecinos y estudiantes de la Universidad Nacional de Moreno, y prevé un impacto positivo en actividad comercial y calidad de vida.
-- Oportunidad: detectar locales, lotes y propiedades aptas para comercio de proximidad, gastronomía, servicios, estacionamiento, pequeños centros de conveniencia o reconversión de inmuebles ubicados en calles realmente conectadas al corredor.
-- Riesgo: cercanía al Río Reconquista y zonas bajas obliga a revisar cotas, restricciones hidráulicas, escurrimiento, drenajes, retiros y autorizaciones ambientales antes de asignar valor adicional.
-- Estado: **VERIFIED** en cuanto a obra y traza general informada; oportunidades parcelarias concretas **HYPOTHESIS**.
+
+La Provincia informó que el Camino de la Ribera conecta la RP7 con la colectora de Acceso Oeste, con un nuevo puente sobre el Río Reconquista, pavimentos, drenajes e iluminación. La fuente provincial describe la mejora de conectividad y su potencial impacto en actividad comercial y calidad de vida.
+
+**Tesis comercial:** detectar locales, lotes y propiedades aptas para comercio de proximidad, gastronomía, servicios, estacionamiento y reconversión de inmuebles en calles efectivamente conectadas.
+
+**Riesgo:** por proximidad al Reconquista y sectores bajos, revisar cotas, restricciones hidráulicas, escurrimiento, drenajes y autorizaciones ambientales.
+
+**Evidencia:** VERIFIED respecto de obra y traza informada; oportunidades parcelarias concretas HYPOTHESIS.
 
 ### D. Distrito Ecológico Roggero — La Reja / Los Robles / El Dorado / Dique
-- El municipio presentó el Distrito Ecológico Roggero como plataforma de desarrollo urbano, ambiental y turístico en torno al área natural protegida. La oferta pública incluye Reserva Los Robles, Estancia El Dorado, Dique Roggero, Paseo Costero y Museo Francisco J. Muñiz.
-- El municipio comunicó para la temporada 2026 nuevas conexiones internas, accesos, senderos autoguiados, ampliación de servicios turísticos y dispositivos de seguridad.
-- Oportunidad: alojamiento de cercanía de baja densidad donde esté permitido, gastronomía, experiencias recreativas y educativas, glamping/ecoturismo solo si la zonificación y el régimen de área protegida lo admiten, servicios a visitantes y reconversión de inmuebles existentes.
-- Riesgo crítico: área natural protegida, regulación ambiental, capacidad de carga, riesgos hídricos y régimen de usos. No asumir que toda parcela cercana puede desarrollarse turísticamente.
-- Estado: **VERIFIED** en cuanto a programa y atractivos municipales; cualquier emprendimiento/parcela es **HYPOTHESIS** hasta conseguir compatibilidad urbanística y ambiental.
 
-### E. Oferta de terrenos: señal de mercado, no inventario confirmado
-- Portales consultados muestran inventario publicado en Moreno, Francisco Álvarez, La Reja, Paso del Rey, Cuartel V y Trujui; las medianas y precios publicados cambian por portal, selección y fecha.
-- Se observaron anuncios de lotes pequeños y parcelas grandes, incluido un aviso de 50.000 m² en Av. San Fernando y Américo Vespucio, Cuartel V, y ofertas de tierra en Cuartel V/zonas de parques industriales.
-- Estas publicaciones son pistas de prospección, no prueba de titularidad, zonificación, disponibilidad o precio de cierre. Confirmar cada aviso con corredor matriculado y documentación registral/catastral.
+El Municipio presentó el Distrito Ecológico Roggero como plataforma de desarrollo urbano, ambiental y turístico en torno al área natural protegida. Los atractivos municipales incluyen Reserva Los Robles, Estancia El Dorado, Dique Roggero, Paseo Costero y Museo Francisco J. Muñiz. Para la temporada 2026 anunció conexiones internas, accesos, senderos autoguiados, ampliación de servicios turísticos y dispositivos de seguridad.
 
-## 2. Ranking inicial de 5 tesis de oportunidad
+**Tesis comercial:** gastronomía, servicios a visitantes, experiencias recreativas/educativas y, únicamente donde la norma lo permita, alojamiento de cercanía de baja densidad.
 
-| Prioridad | Tesis | Producto posible | Evidencia actual | Próxima validación |
-|---|---|---|---|---|
-| 1 | RP25–Darwin Passaponti / Av. San Fernando | Suelo industrial/logístico, agrupamientos PyME y servicios | Ordenanza 7443/25 identifica corredores y parcelas rezonificadas | Superponer polígonos parcelarios; consultar catastro, CVI, servicios y dueño |
-| 2 | Nodo RP24/RP25 y Ecoparque | Proveedores industriales, depósitos, hotelería laboral y gastronomía de ruta | Operador informa parque, infraestructura y parcelas industriales | Disponibilidad, precios, permisos y demanda de empresas residentes |
-| 3 | Paso del Rey / Camino de la Ribera | Comercio de cercanía, gastronomía, servicios y reconversión | Obra vial provincial documentada | Identificar frentes comerciales, accesos efectivos y mapas de riesgo hídrico |
-| 4 | Distrito Ecológico Roggero | Turismo de cercanía, gastronomía y experiencias | Programa municipal y activos turísticos publicados | Zonificación, restricciones de área protegida, capacidad de carga y operadores existentes |
-| 5 | Lotes grandes en Cuartel V / Trujui / La Reja | Land assembly, desarrollo por etapas o asociación con propietarios | Avisos públicos de parcelas grandes | Validar dominio, subdivisión, accesos, zonificación y servicios |
+**Riesgo crítico:** área natural protegida, regulación ambiental, capacidad de carga y condiciones hídricas. No asumir que toda parcela próxima puede desarrollarse turísticamente.
 
-El orden representa prioridad de investigación, no una calificación financiera definitiva. No hay precios de adquisición verificados ni costos de obra auditados, por lo que todavía no corresponde calcular ROI.
+**Evidencia:** VERIFIED respecto del programa y atractivos municipales; emprendimientos o parcelas concretos HYPOTHESIS.
 
-## 3. Código urbanístico y controles mínimos
+### E. Señales en anuncios de terrenos
 
-- El portal municipal publica el Código de Zonificación (Ordenanzas 3707/08, 5537/15 y texto ordenado por Decreto 1600/15, con fe de erratas 5542/15).
-- El código contempla categorías urbanas, residenciales, turísticas, industriales I1/I2, agrupamiento industrial, producción intensiva/extensiva y alineamientos comerciales. La existencia de una categoría no prueba que una parcela determinada pertenezca a ella.
-- La Ordenanza 7443/25 modifica exclusivamente polígonos delimitados en sus artículos 1 a 5; establece CVI de carácter real respecto de los inmuebles alcanzados.
-- El repositorio incorpora Ordenanzas Fiscal 7437/2025 y Tributaria y Tarifaria 7436/2025, T.O. 2026. Para cada proyecto revisar Derechos de Construcción y Visado, Tasa por Servicios Técnicos, Contribución por Valorización Inmobiliaria y Contribución por Mejoras. Revisar además actualizaciones posteriores.
-- Antes de evaluar capacidad constructiva: solicitar certificado/consulta urbanística oficial por nomenclatura catastral, plano parcelario, dominio e inhibiciones, mensura, factibilidades de agua/cloaca/gas/electricidad, estudio hidráulico, evaluación ambiental, accesibilidad y eventuales cesiones/cargas.
+Los portales consultados muestran inventario publicado en Moreno, Francisco Álvarez, La Reja, Paso del Rey, Cuartel V y Trujui. Se observan publicaciones de lotes pequeños y parcelas grandes, incluyendo avisos en Av. San Fernando y Américo Vespucio, Cuartel V, y ofertas en zonas de parques industriales.
 
-## 4. Modelo económico — aún no cuantificable
+Estos anuncios son pistas de prospección, no prueba de titularidad, zonificación, disponibilidad ni precio de cierre. Validar cada aviso con corredor matriculado y documentación registral/catastral.
 
-Para cada oportunidad completar:
-- Precio de tierra respaldado por comparables cerrados o tasación profesional (no solo avisos).
-- Superficie de parcela y edificabilidad confirmadas oficialmente.
-- Superficie vendible/alquilable, mix de producto y absorción comercial.
-- Costos directos e indirectos de obra, infraestructura, honorarios, permisos, impuestos, comercialización y financiación.
-- Ingresos esperados por ventas/alquileres y calendario de cobros.
-- Flujo de fondos, margen, TIR, VAN, ROI y punto de equilibrio en escenarios conservador, base y optimista.
+## 2. Ranking preliminar de cinco tesis
 
-## 5. Plan de acción de originación (primeros 10 días hábiles)
+| Prioridad | Tesis | Producto posible | Evidencia y validación pendiente |
+|---|---|---|---|
+| 1 | RP25–Darwin Passaponti / Av. San Fernando | Suelo industrial/logístico, agrupamientos PyME y servicios | Ordenanza 7443/25; superponer polígonos, consultar catastro, CVI, servicios y titulares |
+| 2 | Nodo RP24/RP25 y Ecoparque | Proveedores industriales, depósitos, hotelería laboral y gastronomía de ruta | Datos del operador; confirmar inventario, precios, permisos y demanda de ocupantes |
+| 3 | Paso del Rey / Camino de la Ribera | Comercio de cercanía, gastronomía y servicios | Obra provincial; identificar frentes comerciales, accesos efectivos y mapas de riesgo hídrico |
+| 4 | Distrito Ecológico Roggero | Turismo de cercanía, gastronomía y experiencias | Programa municipal; verificar zonificación y régimen ambiental |
+| 5 | Parcelas grandes en Cuartel V / Trujui / La Reja | Ensamble de tierra, desarrollo por etapas o asociación con propietarios | Avisos publicados; validar dominio, subdivisión, acceso, zonificación y servicios |
+
+Este orden representa prioridad de investigación, no ranking financiero. Sin precios de compra verificados ni costos de obra auditados, no corresponde calcular ROI.
+
+## 3. Código urbanístico y controles
+
+- El portal municipal publica el Código de Zonificación (Ordenanzas 3707/08, 5537/15, Texto Ordenado por Decreto 1600/15 y Fe de Erratas 5542/15).
+- El código contempla categorías urbanas, residenciales, turísticas, industriales I1/I2, agrupamiento industrial, producción intensiva/extensiva y alineamientos comerciales. La existencia de una categoría no prueba que una parcela pertenezca a ella.
+- La Ordenanza 7443/25 modifica exclusivamente polígonos delimitados en sus artículos 1 a 5 y establece CVI de carácter real para inmuebles alcanzados.
+- El repositorio contiene Ordenanza Fiscal 7437/2025 y Tributaria y Tarifaria 7436/2025, T.O. 2026. Para cada proyecto revisar Derechos de Construcción y Visado, Tasa por Servicios Técnicos, Contribución por Valorización Inmobiliaria y Contribución por Mejoras, además de modificaciones posteriores.
+- Antes de estimar capacidad: solicitar consulta urbanística oficial por nomenclatura catastral, plano parcelario, dominio e inhibiciones, mensura, factibilidades de servicios, estudio hidráulico, evaluación ambiental, accesibilidad y cargas/cesiones.
+
+## 4. Modelo económico — pendiente de datos verificables
+
+Para cada oportunidad completar precio de tierra respaldado por comparables cerrados o tasación, edificabilidad confirmada, superficie vendible/alquilable, mix de producto, absorción, costos directos e indirectos, infraestructura, honorarios, permisos, impuestos, comercialización, financiación, flujo de fondos, margen, TIR, VAN, ROI y punto de equilibrio en escenarios conservador, base y optimista.
+
+## 5. Plan de acción de originación — primeros 10 días hábiles
 
 1. Obtener cartografía parcelaria oficial y polígonos anexos de Ordenanza 7443/25; georreferenciar y cruzar con mapa municipal.
 2. Crear una lista de 30 parcelas candidatas sobre RP25/Av. San Fernando y nodo RP24/RP25, priorizando frentes viales y tamaños útiles.
-3. Contactar al Ecoparque y solicitar disponibilidad, precios, expensas, reglamento, infraestructura efectiva y documentación urbanística.
-4. Identificar 15 inmuebles/lotes sobre Camino de la Ribera y validar accesibilidad, riesgo hidráulico y uso admisible.
-5. Mapear operadores turísticos, predios privados y servicios existentes en el Distrito Roggero; distinguir área protegida de zonas habilitables.
-6. Para cada candidato, completar ficha de parcela, evidencia, propietario público verificable/contacto de corredor, costos y próxima acción.
-7. Seleccionar cinco oportunidades para due diligence y negociación; no presentar ninguna como inversión aprobada antes de obtener certificados oficiales.
+3. Contactar al Ecoparque para confirmar disponibilidad, precios, expensas, reglamento, infraestructura efectiva y documentación urbanística.
+4. Identificar 15 inmuebles/lotes sobre Camino de la Ribera y validar acceso, riesgo hidráulico y uso admisible.
+5. Mapear operadores turísticos, predios privados y servicios existentes en Distrito Roggero, distinguiendo área protegida de zonas habilitables.
+6. Completar ficha de parcela, evidencias, propietario/contacto público verificable, costos y próxima acción.
+7. Seleccionar cinco oportunidades para due diligence y negociación. No presentar ninguna como inversión aprobada sin certificados oficiales.
 
-## 6. Fuentes públicas consultadas
+## 6. Fuentes consultadas
 
 - Código de Zonificación municipal: https://moreno.gob.ar/docs/catastro/codigo_zonificacion.pdf
-- Ordenanza 7443/25, SIBOM: https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465
-- Ecoparque Industrial Moreno (información publicada por el operador): https://ecoparque.com.ar/
-- Camino de la Ribera, Ministerio de Infraestructura PBA: https://www.gba.gob.ar/node/51424
-- Distrito Ecológico Roggero, municipio: https://moreno.gob.ar/noticia-detalle.php?id=5647
-- Temporada de verano 2026 en Distrito Ecológico Roggero: https://moreno.gob.ar/noticia-detalle.php?id=6751
+- Ordenanza 7443/25 (SIBOM): https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465
+- Ecoparque Industrial Moreno (fuente del operador): https://ecoparque.com.ar/
+- Camino de la Ribera (Ministerio de Infraestructura PBA): https://www.gba.gob.ar/node/51424
+- Distrito Ecológico Roggero (Municipio): https://moreno.gob.ar/noticia-detalle.php?id=5647
+- Temporada de verano 2026 en Roggero: https://moreno.gob.ar/noticia-detalle.php?id=6751
 - Turismo municipal: https://turismo.moreno.gob.ar/
-- Indicadores de avisos de terrenos (referenciales, no oficiales): https://proppies.app/propiedades/terrenos/venta/buenos-aires/moreno
-- Avisos de grandes parcelas (referenciales, no oficiales): https://www.zonaprop.com.ar/terrenos-venta-moreno-mas-9000-m2.html
+- Avisos de terrenos (fuente no oficial): https://proppies.app/propiedades/terrenos/venta/buenos-aires/moreno
+- Avisos de parcelas grandes (fuente no oficial): https://www.zonaprop.com.ar/terrenos-venta-moreno-mas-9000-m2.html
+- Nuevas obras de asfalto en distintas localidades, septiembre 2026: https://moreno2.moreno.gob.ar/noticia-detalle.php?id=7183
+- Obras hidráulicas en Cuartel V y Moreno Norte, octubre 2026: https://moreno2.moreno.gob.ar/noticia-detalle.php?id=7255
+- Obras de asfalto de octubre, noviembre 2026: https://www.smnoticias.com/noticias/289868
 
 ## 7. Conclusión
 
-La tesis con mayor evidencia normativa y dirección de mercado es el corredor productivo-logístico RP25–Darwin Passaponti/Av. San Fernando. La línea de negocio más inmediata para testear comercialmente es la demanda de servicios complementarios al ecosistema industrial RP24/RP25. Paso del Rey y Roggero agregan tesis de comercio y turismo, pero requieren una lectura hidráulica, ambiental y de zonificación más intensa.
+La tesis con mayor evidencia normativa y dirección de mercado es el corredor productivo-logístico RP25–Darwin Passaponti/Av. San Fernando. La línea más inmediata para testear comercialmente es la demanda de servicios complementarios al ecosistema industrial RP24/RP25. Paso del Rey y Roggero agregan tesis de comercio y turismo, sujetas a validación hidráulica, ambiental y urbanística.
 
-**No se identificaron todavía 20 oportunidades parcelarias verificadas.** Este informe establece cinco tesis territoriales sustentadas y un procedimiento para convertirlas en un pipeline de parcelas concretas sin inventar disponibilidad ni rentabilidad.
+**No se identificaron todavía 20 oportunidades parcelarias verificadas.** Esta investigación establece cinco tesis territoriales sustentadas y el procedimiento para convertirlas en un pipeline de parcelas concretas sin inventar disponibilidad ni rentabilidad.
