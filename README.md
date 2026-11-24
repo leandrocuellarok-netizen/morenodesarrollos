@@ -1,18 +1,14 @@
 # Moreno Desarrollos
 
+Repositorio de trabajo para análisis territorial, normativo, fiscal y de oportunidades de desarrollo inmobiliario en el Partido de Moreno, Provincia de Buenos Aires.
+
 ## Referencia territorial y cartográfica
 
-Se incorpora como fuente cartográfica de referencia el siguiente mapa de Poblaciones:
+- **Mapa de Poblaciones:** https://mapa.poblaciones.org/map/96301/#/@-34.669891,-58.772049,12z&r15275/l=280001!v1!w0,0,0,0,0
+- **Centro inicial del visor:** latitud -34.669891, longitud -58.772049
+- **Zoom inicial:** 12
 
-- **Mapa:** https://mapa.poblaciones.org/map/96301/#/@-34.669891,-58.772049,12z&r15275/l=280001!v1!w0,0,0,0,0
-- **Centro de visualización inicial:** latitud -34.669891, longitud -58.772049
-- **Escala inicial del visor:** zoom 12
-
-### Uso dentro del análisis territorial
-
-Esta referencia queda disponible para la etapa **1. Originar el negocio** del desarrollo inmobiliario. Puede utilizarse como punto de partida para estudiar el entorno, la estructura territorial, la localización de oportunidades y la relación del área con la trama urbana.
-
-El mapa es una fuente de consulta visual; no reemplaza la verificación de normativa urbanística vigente, indicadores parcelarios, titularidad, restricciones, mensura, factibilidades de servicios ni informes oficiales. Esos datos deberán validarse con sus organismos y documentos competentes antes de tomar decisiones de inversión.
+Esta referencia sirve como punto de partida para el análisis territorial y la originación de oportunidades. No reemplaza la verificación oficial de zonificación, indicadores parcelarios, usos permitidos, restricciones, titularidad, mensura ni factibilidades de servicios.
 
 ## Los cinco pilares del desarrollo inmobiliario
 
@@ -21,3 +17,8 @@ El mapa es una fuente de consulta visual; no reemplaza la verificación de norma
 3. **Diseño y aprobaciones:** desarrollar el proyecto ejecutivo y tramitar permisos y factibilidades.
 4. **Ejecución de obra:** contratar y supervisar la construcción, controlando plazos, calidad y presupuesto.
 5. **Comercialización y entrega:** vender o alquilar las unidades, formalizar la escrituración y organizar la puesta en marcha del consorcio.
+
+## Fuentes normativas incorporadas al registro
+
+Se catalogaron los documentos municipales y fiscales recibidos en el índice [Documentación de Moreno](docs/INDICE_DOCUMENTAL_MORENO.md). Allí se identifican las ediciones del Boletín Oficial, los textos ordenados de las ordenanzas Fiscal y Tributaria y Tarifaria 2026, y sus actualizaciones.
+
