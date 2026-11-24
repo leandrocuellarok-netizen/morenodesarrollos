@@ -101,9 +101,11 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 
 ### Exportación del Mapa IA
 
-- El botón **Descargar CSV visible** exporta las referencias que quedan luego de aplicar los filtros y la búsqueda.
-- El archivo incluye tipo de referencia, nombre, coordenadas de referencia, línea a investigar, nivel de evidencia, estado, próximo paso y fuente pública.
-- Cada fila identifica expresamente el alcance de sus coordenadas: localidad o corredor aproximado, nunca parcela verificada.
+- El botón **Descargar CSV visible** exporta las referencias que quedan luego de aplicar los filtros y la búsqueda, para revisión en hojas de cálculo.
+- El botón **Descargar GeoJSON visible** exporta exactamente el mismo subconjunto filtrado como una colección GeoJSON de puntos, compatible con QGIS y otros sistemas GIS.
+- Ambos archivos incluyen tipo de referencia, nombre, coordenadas de referencia, línea a investigar, nivel de evidencia, estado, próximo paso y fuente pública cuando existe.
+- GeoJSON usa el orden de coordenadas longitud/latitud de RFC 7946 y conserva en cada elemento el alcance de la coordenada, el estado de evidencia y los indicadores explícitos parcel_identified=false y availability_verified=false.
+- Cada fila o punto identifica expresamente el alcance de sus coordenadas: localidad o corredor aproximado, nunca parcela verificada. La colección también incluye una advertencia general.
 - En móvil, el mapa se muestra antes del inventario para que la herramienta cartográfica quede accesible sin recorrer primero todas las fichas.
 - La exportación es una herramienta de trabajo y no convierte hipótesis en oportunidades verificadas ni acredita disponibilidad, titularidad, zonificación o rentabilidad.
 
