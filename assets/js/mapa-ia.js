@@ -77,6 +77,51 @@ function buildCsv(items) {
   return "\uFEFF" + [headers, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n");
 }
 
+function buildGeoJson(items) {
+  const features = items.map(item => {
+    const isLocality = item.type === "locality";
+    const evidenceLevel = isLocality
+      ? "referencia territorial"
+      : (item.stage === "hypothesis" ? "hipotesis de prospeccion" : "contexto con fuente publica");
+    const coordinateScope = isLocality
+      ? "Centro aproximado de localidad; no identifica una parcela."
+      : "Centro aproximado de corredor o area; no identifica una parcela.";
+    return {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [Number(item.lng), Number(item.lat)]
+      },
+      properties: {
+        id: item.id,
+        reference_type: isLocality ? "localidad" : "tesis territorial",
+        name: item.name,
+        category: isLocality ? "Localidad" : (kindLabel[item.kind] || item.kind),
+        evidence_level: evidenceLevel,
+        description: isLocality ? item.info : item.business,
+        public_evidence: isLocality ? null : item.evidence,
+        verification_status: isLocality
+          ? "Referencia geográfica de localidad; no es una evaluación parcelaria."
+          : item.status,
+        next_step: isLocality
+          ? "Definir zona y recopilar información catastral y normativa."
+          : item.next,
+        source_url: item.source || null,
+        coordinate_scope: coordinateScope,
+        parcel_identified: false,
+        availability_verified: false
+      }
+    };
+  });
+  return {
+    type: "FeatureCollection",
+    name: "Mapa IA de Moreno — referencias territoriales",
+    description: "Exportación de las referencias visibles del inventario exploratorio de MORENO.",
+    disclaimer: "Las coordenadas son referencias aproximadas de localidades o corredores. No identifican parcelas ni acreditan titularidad, disponibilidad, zonificación, factibilidad o rentabilidad. Verificar cada dato con fuentes oficiales y trabajo de campo.",
+    features
+  };
+}
+
 function initMapPage(doc) {
   const mapElement = doc.getElementById("map");
   if (!mapElement) return;
@@ -86,6 +131,7 @@ function initMapPage(doc) {
   const localityList = doc.getElementById("locality-list");
   const opportunityList = doc.getElementById("opportunity-list");
   const exportButton = doc.getElementById("export-csv");
+  const geoJsonExportButton = doc.getElementById("export-geojson");
   const markers = new Map();
   let map = null;
   let visibleItems = all;
@@ -242,6 +288,7 @@ function initMapPage(doc) {
     });
     visibleItems = shown;
     exportButton.disabled = shown.length === 0;
+    geoJsonExportButton.disabled = shown.length === 0;
     if (selectedReferenceId && !shown.some(item => item.id === selectedReferenceId)) {
       selectedReferenceId = null;
       markers.forEach(marker => marker.getElement().classList.remove("is-selected"));
@@ -265,6 +312,21 @@ function initMapPage(doc) {
     const link = doc.createElement("a");
     link.href = url;
     link.download = "moreno-mapa-ia-referencias.csv";
+    doc.body.append(link);
+    link.click();
+    link.remove();
+    view.setTimeout(() => view.URL.revokeObjectURL(url), 1500);
+  }
+
+  function exportVisibleGeoJson() {
+    if (!visibleItems.length) return;
+    const view = doc.defaultView;
+    const content = JSON.stringify(buildGeoJson(visibleItems), null, 2);
+    const blob = new view.Blob([content], { type: "application/geo+json;charset=utf-8" });
+    const url = view.URL.createObjectURL(blob);
+    const link = doc.createElement("a");
+    link.href = url;
+    link.download = "moreno-mapa-ia-referencias.geojson";
     doc.body.append(link);
     link.click();
     link.remove();
@@ -388,6 +450,8 @@ function initMapPage(doc) {
 
   exportButton.addEventListener("click", exportVisibleCsv);
   exportButton.hidden = false;
+  geoJsonExportButton.hidden = false;
+  geoJsonExportButton.addEventListener("click", exportVisibleGeoJson);
   doc.getElementById("search").addEventListener("input", render);
   doc.getElementById("category").addEventListener("change", render);
   doc.getElementById("evidence-filter").addEventListener("change", render);
@@ -402,6 +466,6 @@ function initMapPage(doc) {
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { localities, opportunities, all, filterReferences, buildCsv };
+  module.exports = { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson };
 }
 if (typeof document !== "undefined") initMapPage(document);
