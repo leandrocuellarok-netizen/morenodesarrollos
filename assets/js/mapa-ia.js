@@ -136,9 +136,37 @@ function initMapPage(doc) {
     return box;
   }
 
+  let selectedReferenceId = null;
+
+  function setActiveReference(item, options) {
+    const settings = options || {};
+    selectedReferenceId = item.id;
+    markers.forEach((marker, id) => {
+      marker.getElement().classList.toggle("is-selected", id === item.id);
+    });
+    [localityList, opportunityList].forEach(list => {
+      list.querySelectorAll("[data-map-item]").forEach(card => {
+        const selected = card.dataset.mapItem === item.id;
+        card.classList.toggle("is-active", selected);
+        if (selected && settings.reveal) card.open = true;
+        if (selected && settings.scroll) {
+          const reduceMotion = doc.defaultView &&
+            typeof doc.defaultView.matchMedia === "function" &&
+            doc.defaultView.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          card.scrollIntoView({
+            behavior: reduceMotion ? "auto" : "smooth",
+            block: "nearest"
+          });
+        }
+      });
+    });
+    statusElement.textContent = "Referencia seleccionada: " + item.name;
+  }
+
   function focusItem(item) {
     const marker = markers.get(item.id);
     if (!map || !marker) return;
+    setActiveReference(item, { reveal: true });
     map.flyTo({ center: [item.lng, item.lat], zoom: 14, essential: true });
     const popup = marker.getPopup();
     if (popup && !popup.isOpen()) marker.togglePopup();
@@ -149,7 +177,10 @@ function initMapPage(doc) {
     items.forEach(item => {
       const card = doc.createElement("details");
       card.className = "map-item";
+      card.dataset.mapItem = item.id;
+      if (selectedReferenceId === item.id) card.classList.add("is-active");
       const summary = doc.createElement("summary");
+      summary.addEventListener("click", () => setActiveReference(item));
       const title = doc.createElement("strong");
       title.textContent = item.name;
       const meta = doc.createElement("span");
@@ -211,6 +242,10 @@ function initMapPage(doc) {
     });
     visibleItems = shown;
     exportButton.disabled = shown.length === 0;
+    if (selectedReferenceId && !shown.some(item => item.id === selectedReferenceId)) {
+      selectedReferenceId = null;
+      markers.forEach(marker => marker.getElement().classList.remove("is-selected"));
+    }
     markers.forEach((marker, id) => {
       const shouldShow = shown.some(item => item.id === id);
       const attached = marker.getElement().isConnected;
@@ -279,6 +314,9 @@ function initMapPage(doc) {
           element.title = item.name;
           const popup = new maplibregl.Popup({ offset: 16, maxWidth: "340px" })
             .setDOMContent(popupNode(item));
+          element.addEventListener("click", () => {
+            setActiveReference(item, { reveal: true, scroll: true });
+          });
           const marker = new maplibregl.Marker({ element, anchor: "center" })
             .setLngLat([item.lng, item.lat])
             .setPopup(popup)
