@@ -33,3 +33,10 @@ Esta referencia es un punto de partida. No reemplaza la verificación oficial de
 La investigación inicial identifica cinco tesis territoriales preliminares: corredor productivo-logístico RP25/Darwin Passaponti/Av. San Fernando; nodo RP24/RP25 y servicios complementarios de Ecoparque; comercio y servicios en Paso del Rey/Camino de la Ribera; turismo de cercanía en Distrito Ecológico Roggero; y prospección de parcelas grandes en Cuartel V, Trujui y La Reja.
 
 **Estado:** son tesis para investigación. No se presentan todavía veinte parcelas verificadas ni un ROI demostrado. Cada operación requiere comprobación dominial, catastral, urbanística, ambiental, hidráulica, de servicios y financiera.
+
+
+## Mapa interactivo de originación
+
+- [Abrir mapa interactivo de Moreno](web/mapa-moreno/index.html)
+- Incluye localidades y cinco tesis territoriales del Pilar 1, con filtros, fichas emergentes y enlaces a fuentes.
+- Los marcadores de oportunidades son referencias aproximadas de áreas/corredores, no parcelas ni límites oficiales.
