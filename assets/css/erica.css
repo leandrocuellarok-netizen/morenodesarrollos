@@ -81,3 +81,32 @@ body{background:var(--paper);color:var(--ink)}
  .portrait-placeholder{min-height:0;aspect-ratio:4/5}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+
+
+/* Mapa IA: controles de evidencia, leyenda y estados accesibles */
+.map-toolbar{align-items:center;gap:9px}
+.map-toolbar input{min-width:250px;flex:1}
+.map-toolbar select{max-width:245px}
+.map-toolbar input:focus-visible,.map-toolbar select:focus-visible,.map-reset:focus-visible,.map-item:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+.map-reset{font:9px var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:13px 15px;border:1px solid #8d8b80;background:transparent;color:var(--ink);cursor:pointer}
+.map-reset:hover{background:var(--ink);color:var(--paper)}
+.map-legend{display:flex;align-items:center;flex-wrap:wrap;gap:13px 24px;padding:12px 15px;margin:12px 0 18px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font:10px var(--sans);letter-spacing:.05em;color:#62645c}
+.map-legend>span{display:inline-flex;align-items:center;gap:8px}
+.legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#596e70}
+.documented-dot{background:#52756d}
+.hypothesis-dot{background:#c28e2e}
+.boundary-state{margin-left:auto;color:#77796f;font-style:italic}
+.map-item{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:transparent;border:0;border-top:1px solid #c7c4b8;padding:15px 4px 15px 0;cursor:pointer}
+.map-item:hover{background:#ded9cb;padding-left:9px}
+.map-item strong{font:400 17px var(--serif);display:block;margin-bottom:5px}
+.map-item span{font:11px/1.55 var(--sans);color:#66685f;display:block}
+.map-loading,.map-fallback{padding:25px;font:14px/1.7 var(--sans);color:#686a61}
+.map-fallback{max-width:420px;margin:40px auto}
+.map-note{max-width:1050px}
+@media(max-width:760px){
+ .map-toolbar{align-items:stretch}
+ .map-toolbar input,.map-toolbar select,.map-reset{width:100%;max-width:none;min-width:0}
+ .map-legend{gap:10px 16px}
+ .boundary-state{margin-left:0;width:100%}
+ .map-item{padding:14px 3px}
+}
