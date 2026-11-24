@@ -179,6 +179,16 @@ def main() -> None:
                 errors.append(f"{relative.as_posix()}: falta el destino de WhatsApp del formulario")
             if "El sitio no recibe ni almacena estos datos" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta la explicación de privacidad del formulario")
+            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results"):
+                if required_id not in parser.ids:
+                    errors.append(f"{relative.as_posix()}: falta control de cálculo {required_id}")
+            for required_logic in ("function calculatePreliminary", "area.value*fos.value", "area.value*fot.value", "Intl.NumberFormat"):
+                if required_logic not in page_source:
+                    errors.append(f"{relative.as_posix()}: falta lógica de cálculo preliminar: {required_logic}")
+            if 'id="feasibility-calculate" type="button"' not in page_source:
+                errors.append(f"{relative.as_posix()}: el botón de cálculo no debe enviar el formulario de contacto")
+            if "Este resultado es matemático y orientativo" not in page_source:
+                errors.append(f"{relative.as_posix()}: falta la advertencia sobre el alcance del cálculo")
 
         for script_kind, source in parser.scripts:
             if script_kind == "json":
@@ -236,7 +246,7 @@ def main() -> None:
             locations = [node.text.strip() for node in root.iter() if node.tag.endswith("loc") and node.text]
             expected = set(PAGE_URLS.values())
             if len(locations) != len(expected) or set(locations) != expected:
-                errors.append("sitemap.xml debe listar exactamente las tres páginas públicas canónicas")
+                errors.append(f"sitemap.xml debe listar exactamente las {len(expected)} páginas públicas canónicas")
         except (ET.ParseError, OSError) as exc:
             errors.append(f"sitemap.xml inválido: {exc}")
 
@@ -264,7 +274,7 @@ def main() -> None:
     refs_count = sum(len(page.refs) for page in audits.values())
     print(
         f"OK: {len(audits)} páginas; {refs_count} referencias locales; canonical, OG/Twitter, "
-        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD y referencias DOM correctos."
+        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, referencias DOM y calculadora preliminar correctos."
     )
     if node:
         print("OK: sintaxis de JavaScript inline validada con node --check.")
