@@ -89,6 +89,7 @@ assert.deepEqual(
   "GeoJSON usa el orden longitud, latitud de RFC 7946"
 );
 assert.equal(hypothesisFeature.properties.name, "Cuartel V · Trujui · La Reja");
+assert.equal(hypothesisFeature.properties.line_to_investigate, "Prospección de parcelas grandes, ensamble de tierra, asociaciones con propietarios y desarrollos por etapas.");
 assert.equal(hypothesisFeature.properties.parcel_identified, false);
 assert.equal(hypothesisFeature.properties.availability_verified, false);
 assert.match(hypothesisFeature.properties.coordinate_scope, /no identifica una parcela/);
