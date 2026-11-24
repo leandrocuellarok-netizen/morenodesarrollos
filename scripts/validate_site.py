@@ -241,6 +241,10 @@ def main() -> None:
                         errors.append(f"assets/css/erica.css: falta estilo del esquema territorial: {required_style}")
 
         if relative == Path("mapa-ia/index.html"):
+            if 'id="export-geojson"' not in page_source:
+                errors.append("mapa-ia/index.html: falta la descarga GeoJSON de referencias visibles")
+            if "QGIS u otros sistemas GIS" not in page_source:
+                errors.append("mapa-ia/index.html: falta explicar el uso y alcance de la exportación GeoJSON")
             for required_markup in (
                 'href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css"',
                 'href="../assets/css/mapa-ia.css"',
@@ -278,7 +282,13 @@ def main() -> None:
                     'card.dataset.mapItem = item.id',
                     'element.addEventListener("click", () => {',
                     "function filterReferences",
-                    "function buildCsv"
+                    "function buildCsv",
+                    "function buildGeoJson(items)",
+                    "function exportVisibleGeoJson()",
+                    'getElementById("export-geojson")',
+                    'type: "application/geo+json;charset=utf-8"',
+                    'parcel_identified: false',
+                    'availability_verified: false'
                 ):
                     if required_logic not in map_js:
                         errors.append(f"assets/js/mapa-ia.js: falta comportamiento del Mapa IA: {required_logic}")
