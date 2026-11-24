@@ -147,13 +147,13 @@ def main() -> None:
         audits[relative] = parser
 
         page_source = file_path.read_text(encoding="utf-8")
-        if not re.search(r'<button\\b(?=[^>]*class="mobile-menu")(?=[^>]*aria-controls="primary-navigation")(?=[^>]*aria-expanded="false")(?=[^>]*aria-label="Abrir menú de navegación")[^>]*>', page_source, re.IGNORECASE):
+        if not re.search(r'<button\b(?=[^>]*class="mobile-menu")(?=[^>]*aria-controls="primary-navigation")(?=[^>]*aria-expanded="false")(?=[^>]*aria-label="Abrir menú de navegación")[^>]*>', page_source, re.IGNORECASE):
             errors.append(f"{relative.as_posix()}: falta el botón accesible del menú móvil")
-        if not re.search(r'<nav\\b(?=[^>]*id="primary-navigation")(?=[^>]*aria-label="Navegación principal")[^>]*>', page_source, re.IGNORECASE):
+        if not re.search(r'<nav\b(?=[^>]*id="primary-navigation")(?=[^>]*aria-label="Navegación principal")[^>]*>', page_source, re.IGNORECASE):
             errors.append(f"{relative.as_posix()}: falta la navegación principal identificada para el menú móvil")
-        if not re.search(r'<a\\b(?=[^>]*class="active")(?=[^>]*aria-current="page")[^>]*>', page_source, re.IGNORECASE):
+        if not re.search(r'<a\b(?=[^>]*class="active")(?=[^>]*aria-current="page")[^>]*>', page_source, re.IGNORECASE):
             errors.append(f"{relative.as_posix()}: el enlace activo debe declarar aria-current=page")
-        if not re.search(r'<script\\b(?=[^>]*src="(?:\\.\\./|\\./)?assets/js/site-navigation\\.js")(?=[^>]*\\bdefer\\b)[^>]*>', page_source, re.IGNORECASE):
+        if not re.search(r'<script\b(?=[^>]*src="(?:\.\./|\./)?assets/js/site-navigation\.js")(?=[^>]*\bdefer\b)[^>]*>', page_source, re.IGNORECASE):
             errors.append(f"{relative.as_posix()}: falta cargar site-navigation.js con defer")
 
         title = "".join(parser.title_parts).strip()
