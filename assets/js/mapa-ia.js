@@ -250,7 +250,7 @@ function initMapPage(doc) {
               type: "raster",
               tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
               tileSize: 256,
-              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a> · <a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener noreferrer">Reportar un problema</a>'
             }
           },
           layers: [{ id: "osm-raster-layer", type: "raster", source: "osm-raster" }]
@@ -258,6 +258,7 @@ function initMapPage(doc) {
         center: [-58.7914, -34.6508],
         zoom: 12,
         maxZoom: 19,
+        attributionControl: { compact: false },
         renderWorldCopies: false
       });
       map.addControl(new maplibregl.NavigationControl({ showCompass: true }), "top-right");
