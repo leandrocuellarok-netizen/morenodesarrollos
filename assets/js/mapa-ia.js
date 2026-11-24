@@ -39,9 +39,7 @@ function filterReferences(items, options) {
       (category === "opportunity" && item.type === "opportunity");
     const evidenceMatches =
       evidence === "all" ||
-      item.type === "locality" ||
-      (evidence === "documented" && item.stage === "documented") ||
-      (evidence === "hypothesis" && item.stage === "hypothesis");
+      (item.type === "opportunity" && evidence === item.stage);
     const searchable = [
       item.name, item.info, item.business, item.status, item.evidence, item.next, item.kind
     ].filter(Boolean).join(" ").toLocaleLowerCase("es-AR");
