@@ -14,6 +14,8 @@
 .map-canvas .maplibregl-ctrl-attrib {
   font-size: 10px;
   line-height: 1.4;
+  max-width: min(100%, 86vw);
+  white-space: normal;
 }
 .map-canvas .maplibregl-ctrl-group button:focus-visible {
   outline: 3px solid #a95d3c;
