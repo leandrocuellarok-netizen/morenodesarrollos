@@ -128,12 +128,30 @@
 <input id="contact-area" name="superficie" inputmode="decimal" maxlength="60" placeholder="Ej.: 1.200 m² / no lo sé">
 <span class="field-hint">Opcional. Si ya ingresaste la superficie en la calculadora, no hace falta repetirla acá.</span>
 </div>
-<div class="form-field">
-<label for="contact-docs">¿Qué información tenés?</label>
-<select id="contact-docs" name="documentacion">
-<option value="Aún no lo sé">Aún no lo sé</option><option value="Ubicación o dirección">Ubicación o dirección</option><option value="Partida o nomenclatura catastral">Partida o nomenclatura catastral</option><option value="Planos o antecedentes">Planos o antecedentes</option><option value="Documentación dominial">Documentación dominial</option>
-</select>
+<fieldset class="form-field full checklist-fieldset" id="documentation-checklist">
+<legend>¿Qué documentación tenés disponible?</legend>
+<p class="field-hint">Marcá solo lo que ya tenés a mano. No adjuntes archivos ni compartas información sensible en este primer contacto.</p>
+<div class="checklist-grid">
+<label class="check-option"><input type="checkbox" name="documentacion" value="Ubicación o dirección"><span>Ubicación o dirección</span></label>
+<label class="check-option"><input type="checkbox" name="documentacion" value="Partida o nomenclatura catastral"><span>Partida o nomenclatura catastral</span></label>
+<label class="check-option"><input type="checkbox" name="documentacion" value="Plano o mensura"><span>Plano o mensura</span></label>
+<label class="check-option"><input type="checkbox" name="documentacion" value="Certificado urbanístico o zonificación"><span>Certificado urbanístico o zonificación</span></label>
+<label class="check-option"><input type="checkbox" name="documentacion" value="Antecedentes dominiales (sin adjuntar)"><span>Antecedentes dominiales (sin adjuntar)</span></label>
+<label class="check-option"><input type="checkbox" name="documentacion" value="Información sobre servicios"><span>Información sobre servicios</span></label>
 </div>
+</fieldset>
+<fieldset class="form-field full checklist-fieldset" id="verification-checklist">
+<legend>¿Qué consultas o verificaciones ya hiciste?</legend>
+<p class="field-hint">Son referencias declaradas por vos. MORENO deberá contrastarlas con fuentes y documentación antes de evaluar una operación.</p>
+<div class="checklist-grid">
+<label class="check-option"><input type="checkbox" name="verificaciones" value="Identificación catastral consultada"><span>Identificación catastral consultada</span></label>
+<label class="check-option"><input type="checkbox" name="verificaciones" value="Zonificación e indicadores urbanísticos consultados"><span>Zonificación e indicadores urbanísticos consultados</span></label>
+<label class="check-option"><input type="checkbox" name="verificaciones" value="Titularidad o antecedentes dominiales consultados"><span>Titularidad o antecedentes dominiales consultados</span></label>
+<label class="check-option"><input type="checkbox" name="verificaciones" value="Servicios y accesos consultados"><span>Servicios y accesos consultados</span></label>
+<label class="check-option"><input type="checkbox" name="verificaciones" value="Restricciones hidráulicas o ambientales consultadas"><span>Restricciones hidráulicas o ambientales consultadas</span></label>
+<label class="check-option"><input type="checkbox" name="verificaciones" value="Consultas municipales o prefactibilidades"><span>Consultas municipales o prefactibilidades</span></label>
+</div>
+</fieldset>
 <div class="form-field full">
 <label for="contact-message">Un poco más de contexto</label>
 <textarea id="contact-message" name="detalle" maxlength="1200" placeholder="Contame qué te gustaría hacer, qué necesitás o qué información ya tenés."></textarea>
@@ -233,7 +251,10 @@ copyMessageButton.addEventListener("click",async()=>{
 opportunityForm.addEventListener("submit",event=>{
   event.preventDefault();
   const calculationInput=readFeasibilityInput();
-  const values=Object.fromEntries(new FormData(opportunityForm).entries());
+  const formData=new FormData(opportunityForm);
+  const values=Object.fromEntries(formData.entries());
+  values.documentacion=formData.getAll("documentacion");
+  values.verificaciones=formData.getAll("verificaciones");
   const message=window.MorenoOpportunityTools.buildContactMessage({
     fields:values,
     calculationInput
