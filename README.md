@@ -83,6 +83,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 
 - La página usa MapLibre GL JS para renderizar la cartografía sin una clave de API.
 - La capa base inicial utiliza teselas raster de OpenStreetMap y mantiene visible la atribución a sus colaboradores incluso en móvil, junto con un enlace para reportar errores cartográficos.
+- La selección está sincronizada: al tocar un marcador se abre y revela su ficha en el inventario; al seleccionar una ficha se resalta el marcador correspondiente. El desplazamiento respeta la preferencia del sistema por movimiento reducido.
 - El lienzo cartográfico se presenta en escala monocromática; los marcadores conservan acentos distintos para localidades, contexto documentado e hipótesis.
 - El límite administrativo se solicita por separado a Georef Argentina y se dibuja como GeoJSON cuando el servicio responde.
 - El servidor estándar de teselas de OpenStreetMap tiene una política de uso propia y no debe tratarse como infraestructura ilimitada. Antes de aumentar tráfico o incorporar funciones intensivas, evaluar un proveedor de teselas OSM o alojamiento propio, respetando sus condiciones.
