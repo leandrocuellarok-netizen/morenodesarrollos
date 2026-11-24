@@ -33,7 +33,7 @@ assert.deepEqual(
   ["paso"]
 );
 assert.deepEqual(
-  filterReferences(all, { query: "ordenanza 7443", category: "opportunity", evidence: "documented" }).map(item => item.id),
+  filterReferences(all, { query: "7443/25", category: "opportunity", evidence: "documented" }).map(item => item.id),
   ["rp25"]
 );
 assert.deepEqual(
