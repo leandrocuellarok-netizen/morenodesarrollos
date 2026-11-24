@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, filterReferences, buildCsv } = require(modulePath);
+const { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -20,6 +20,11 @@ assert.ok(source.includes('card.scrollIntoView({'), "la ficha seleccionada se re
 assert.ok(source.includes('matchMedia("(prefers-reduced-motion: reduce)")'), "el desplazamiento respeta la preferencia de movimiento reducido");
 assert.ok(styles.includes(".map-pin.is-selected"), "el marcador seleccionado tiene un estado visual");
 assert.ok(styles.includes(".map-item.is-active"), "la ficha seleccionada tiene un estado visual");
+assert.ok(source.includes('getElementById("export-geojson")'), "el inventario ofrece exportación GeoJSON");
+assert.ok(source.includes("function exportVisibleGeoJson()"), "la descarga GeoJSON usa las referencias visibles");
+assert.ok(source.includes('type: "application/geo+json;charset=utf-8"'), "la descarga declara el tipo MIME GeoJSON");
+assert.ok(source.includes('link.download = "moreno-mapa-ia-referencias.geojson"'), "la descarga usa extensión GeoJSON");
+
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
 assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
@@ -69,5 +74,43 @@ assert.ok(csv.startsWith("\uFEFF"), "CSV compatible con acentos en hojas de cál
 assert.ok(csv.includes('"Parcela ""A"", sector norte"'), "CSV escapa comillas y comas");
 assert.ok(csv.includes("alcance_de_coordenada"), "CSV informa el alcance de las coordenadas");
 assert.ok(csv.includes("no identifica una parcela"), "CSV conserva la advertencia parcelaria");
+const filteredGeoJson = buildGeoJson(filterReferences(all, {
+  category: "opportunity",
+  evidence: "hypothesis"
+}));
+assert.equal(filteredGeoJson.type, "FeatureCollection", "la exportación cumple la estructura GeoJSON");
+assert.equal(filteredGeoJson.features.length, 1, "GeoJSON respeta los filtros activos");
+const hypothesisFeature = filteredGeoJson.features[0];
+assert.equal(hypothesisFeature.type, "Feature");
+assert.equal(hypothesisFeature.geometry.type, "Point", "las referencias se exportan como puntos, no como parcelas");
+assert.deepEqual(
+  hypothesisFeature.geometry.coordinates,
+  [-58.815, -34.61],
+  "GeoJSON usa el orden longitud, latitud de RFC 7946"
+);
+assert.equal(hypothesisFeature.properties.name, "Cuartel V · Trujui · La Reja");
+assert.equal(hypothesisFeature.properties.parcel_identified, false);
+assert.equal(hypothesisFeature.properties.availability_verified, false);
+assert.match(hypothesisFeature.properties.coordinate_scope, /no identifica una parcela/);
+assert.match(filteredGeoJson.disclaimer, /no identifican parcelas/);
+assert.equal(
+  buildGeoJson(all).features.length,
+  11,
+  "la exportación completa conserva las once referencias actuales"
+);
+assert.ok(
+  buildGeoJson(all).features.every(feature => feature.geometry.type === "Point"),
+  "ninguna referencia se convierte en geometría parcelaria"
+);
+assert.ok(
+  buildGeoJson(all).features.some(feature => feature.properties.source_url === "https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465"),
+  "GeoJSON conserva el enlace a la fuente pública"
+);
+assert.equal(
+  JSON.parse(JSON.stringify(buildGeoJson(all))).features.length,
+  11,
+  "GeoJSON puede serializarse como JSON válido"
+);
+
 
 console.log("OK: pruebas del motor MapLibre, datos territoriales, filtros, evidencias y exportación CSV del Mapa IA.");
