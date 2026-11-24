@@ -68,3 +68,12 @@ Sitio personal de Erica M. Acosta en evolución, con tres destinos principales:
 4. Confirmar que GitHub Pages esté configurado con la opción de HTML estático mediante GitHub Actions y validar el último despliegue en navegador.
 5. Validar en navegador el servicio GeoJSON del límite municipal y sumar capas parcelarias/zonificación solo con fuentes oficiales y permisos adecuados.
 6. Continuar el trabajo de oportunidades con identificación parcelaria y verificación documental; los marcadores actuales son áreas/corredores indicativos, no ofertas verificadas.
+
+
+### Resiliencia y accesibilidad del Mapa IA
+
+- Las fichas de localidades y tesis se renderizan aunque Leaflet o la cartografía base no estén disponibles.
+- Los filtros de texto, tipo y nivel de evidencia funcionan también en modo de consulta sin mapa.
+- Se incluye una alternativa HTML mediante `noscript` para lectores sin JavaScript, con enlaces directos a las fuentes.
+- Los controles de las fichas muestran foco visible para navegación por teclado.
+- Si falla el proveedor de teselas, se conserva el inventario de referencias y se informa el estado sin ocultar la investigación.
