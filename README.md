@@ -64,8 +64,8 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 ### Indexación y enlaces canónicos
 
 - `robots.txt` permite el rastreo público y declara el sitemap.
-- `sitemap.xml` enumera únicamente Inicio, Mapa IA y Sobre Erica.
-- Las tres páginas incluyen canonical y metadatos Open Graph/Twitter en español argentino.
+- `sitemap.xml` enumera únicamente las cuatro páginas públicas: Inicio, Mapa IA, Sobre Erica y Oportunidades.
+- Las cuatro páginas incluyen canonical y metadatos Open Graph/Twitter en español argentino.
 - La URL base actual es la de GitHub Pages (`https://leandrocuellarok-netizen.github.io/morenodesarrollos/`). Si se configura un dominio propio o cambia el nombre del repositorio, actualizar `PUBLIC_BASE` en `scripts/validate_site.py`, los canonical, `robots.txt` y `sitemap.xml` en el mismo cambio.
 - El workflow valida que canonical, metadatos sociales, robots y sitemap coincidan antes de publicar.
 
