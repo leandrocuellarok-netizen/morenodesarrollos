@@ -135,3 +135,7 @@ La página pública `/oportunidades/` permite iniciar un contacto mediante un bo
 ## Clasificación inicial de documentación y consultas
 
 El formulario de `/oportunidades/` permite marcar varias referencias disponibles (ubicación, nomenclatura, plano/mensura, certificado urbanístico, antecedentes dominiales e información de servicios) y varias consultas que el contacto declara haber realizado (catastro, zonificación, dominio, servicios, restricciones y consultas municipales). Las selecciones se incorporan al borrador de WhatsApp como declaraciones del contacto, no como hechos verificados. No se solicitan adjuntos ni documentación sensible y el sitio no almacena los datos.
+
+## Esquema cartográfico editorial en Inicio
+
+La vista de Inicio muestra un esquema SVG de referencias espaciales construido a partir de las coordenadas de las seis localidades y las cinco tesis publicadas en `mapa-ia/index.html`. Los círculos identifican localidades; los cuadrados, tesis con contexto respaldado por fuente pública; y el rombo discontinuo, una hipótesis de prospección. Las posiciones son orientativas. El esquema no dibuja límites municipales, calles ni parcelas y no acredita disponibilidad. Si cambian las coordenadas o la clasificación de las fichas del Mapa IA, actualizar también el esquema de Inicio.

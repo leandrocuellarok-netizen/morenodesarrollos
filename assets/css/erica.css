@@ -274,3 +274,47 @@ body{background:var(--paper);color:var(--ink)}
   .checklist-grid{grid-template-columns:1fr;gap:12px}
   .check-option{font-size:12px}
 }
+
+/* Inicio: esquema cartográfico editorial basado en las referencias del Mapa IA */
+.map-art{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  overflow:hidden;
+  border:1px solid #c9c6ba;
+  background:#ece9df;
+  filter:none;
+}
+.map-art:before,.map-art:after{display:none;content:none}
+.territory-diagram{display:block;width:100%;height:auto;background:#ece9df}
+.territory-heading text,.territory-footer text{
+  fill:#66695f;
+  font:9px var(--sans);
+  letter-spacing:1.55px;
+}
+.territory-footer text{font-size:8px;letter-spacing:1.15px}
+.locality-mark circle:first-child{fill:#303a34;stroke:#ece9df;stroke-width:2}
+.locality-mark .locality-halo{fill:none;stroke:#65736b;stroke-width:.8;opacity:.55}
+.locality-mark text{fill:#343a33;font:600 10px var(--sans);letter-spacing:.75px}
+.documented-mark{fill:#68766d;stroke:#ece9df;stroke-width:2}
+.hypothesis-mark{fill:#ece9df;stroke:#a95d3c;stroke-width:2;stroke-dasharray:2 1}
+.map-art-legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 19px;
+  padding:13px 16px 8px;
+  border-top:1px solid #c9c6ba;
+}
+.map-art-legend span{display:inline-flex;align-items:center;gap:8px;font:9px var(--sans);letter-spacing:.035em;color:#62645c}
+.map-key{display:inline-block;width:8px;height:8px;flex:0 0 8px}
+.locality-key{border-radius:50%;background:#303a34}
+.documented-key{background:#68766d}
+.hypothesis-key{width:9px;height:9px;border:1px dashed #a95d3c;transform:rotate(45deg)}
+.map-art figcaption{padding:0 16px 15px;font:10px/1.65 var(--sans);color:#77796f}
+.map-copy-note{margin-top:17px;padding-left:14px;border-left:2px solid var(--rust);font:11px/1.75 var(--sans)!important;color:#77796f!important}
+@media(max-width:760px){
+  .map-art{min-height:0}
+  .map-art-legend{gap:9px 14px;padding:11px 12px 7px}
+  .map-art-legend span{font-size:9px}
+  .map-art figcaption{padding:0 12px 12px;font-size:10px}
+}
