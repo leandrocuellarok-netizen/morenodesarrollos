@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Mapa interactivo de localidades y tesis preliminares de originación inmobiliaria de Moreno Desarrollos.">
+  <title>MORENO DESARROLLOS | Mapa de oportunidades</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    :root { --navy:#0d2b45; --blue:#155e91; --paper:#f4f7fa; --ink:#172b3a; --muted:#607282; --line:#d9e2e9; }
+    * { box-sizing:border-box; }
+    html, body { height:100%; margin:0; font-family:Inter,"Segoe UI",Tahoma,sans-serif; color:var(--ink); }
+    body { display:flex; flex-direction:column; background:var(--paper); }
+    header { background:var(--navy); color:#fff; padding:14px 20px; box-shadow:0 2px 8px #10283c33; z-index:500; }
+    header h1 { margin:0 0 4px; font-size:clamp(1.05rem,2vw,1.35rem); letter-spacing:.02em; }
+    header p { margin:0; font-size:.88rem; opacity:.88; }
+    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:10px 14px; background:#fff; border-bottom:1px solid var(--line); z-index:400; }
+    .toolbar label { font-size:.82rem; font-weight:650; color:var(--muted); }
+    .toolbar input, .toolbar select { min-height:36px; border:1px solid var(--line); border-radius:7px; padding:6px 9px; background:#fff; color:var(--ink); }
+    .toolbar input { flex:1 1 220px; max-width:420px; }
+    .toolbar select { flex:0 1 240px; }
+    .hint { font-size:.78rem; color:var(--muted); margin-left:auto; }
+    main { min-height:0; flex:1; display:grid; grid-template-columns:minmax(250px,330px) 1fr; }
+    aside { overflow:auto; padding:14px; background:#fff; border-right:1px solid var(--line); }
+    aside h2 { font-size:.95rem; margin:0 0 10px; color:var(--navy); }
+    .intro { font-size:.82rem; line-height:1.45; color:var(--muted); margin:0 0 14px; }
+    .legend { display:flex; flex-wrap:wrap; gap:7px 12px; font-size:.75rem; color:var(--muted); margin:0 0 12px; }
+    .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:5px; }
+    .item { border:1px solid var(--line); border-radius:9px; padding:10px; margin:8px 0; cursor:pointer; background:#fff; }
+    .item:hover, .item:focus { border-color:var(--blue); outline:none; box-shadow:0 0 0 2px #155e911c; }
+    .item h3 { margin:0 0 5px; font-size:.85rem; }
+    .item p { margin:0; color:var(--muted); font-size:.76rem; line-height:1.4; }
+    .tag { display:inline-block; margin-top:7px; border-radius:20px; padding:3px 7px; font-size:.68rem; font-weight:700; background:#edf2f6; color:#42596b; }
+    #map { min-height:420px; width:100%; }
+    .leaflet-popup-content { min-width:210px; max-width:290px; }
+    .popup h3 { margin:0 0 6px; color:var(--navy); font-size:1rem; }
+    .popup p { margin:5px 0; line-height:1.4; font-size:.82rem; }
+    .popup .small { color:var(--muted); font-size:.72rem; }
+    .notice { padding:10px 14px; font-size:.75rem; line-height:1.45; color:#596b78; background:#f8fafc; border-top:1px solid var(--line); }
+    @media (max-width:760px) {
+      main { grid-template-columns:1fr; grid-template-rows:minmax(185px,34vh) minmax(360px,1fr); }
+      aside { border-right:0; border-bottom:1px solid var(--line); }
+      .hint { margin-left:0; width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MORENO DESARROLLOS | Mapa de originación inmobiliaria</h1>
+    <p>Partido de Moreno · Provincia de Buenos Aires · Pilar 1: identificar oportunidades antes que el mercado</p>
+  </header>
+  <section class="toolbar" aria-label="Filtros del mapa">
+    <label for="search">Buscar</label>
+    <input id="search" type="search" placeholder="Localidad, corredor o tesis de negocio…">
+    <label for="category">Mostrar</label>
+    <select id="category">
+      <option value="all">Todas las capas</option>
+      <option value="locality">Localidades</option>
+      <option value="opportunity">Tesis de oportunidad</option>
+    </select>
+    <span class="hint">Seleccioná una ficha o un marcador para ver detalles.</span>
+  </section>
+  <main>
+    <aside>
+      <h2>Inteligencia territorial</h2>
+      <p class="intro">Mapa de trabajo para orientar la prospección. Los puntos de oportunidad son referencias aproximadas de corredores o áreas, no parcelas identificadas ni límites oficiales.</p>
+      <div class="legend">
+        <span><i class="dot" style="background:#64748b"></i>Localidades</span>
+        <span><i class="dot" style="background:#0f766e"></i>Industrial/logística</span>
+        <span><i class="dot" style="background:#2563eb"></i>Comercial/servicios</span>
+        <span><i class="dot" style="background:#15803d"></i>Turismo</span>
+        <span><i class="dot" style="background:#a16207"></i>Prospección de tierra</span>
+      </div>
+      <h2>Localidades</h2>
+      <div id="locality-list"></div>
+      <h2 style="margin-top:16px">Tesis de oportunidad · Pilar 1</h2>
+      <div id="opportunity-list"></div>
+    </aside>
+    <div id="map" role="application" aria-label="Mapa interactivo del Partido de Moreno"></div>
+  </main>
+  <footer class="notice">
+    Uso estratégico preliminar. Antes de negociar o invertir, verificar nomenclatura catastral, titularidad, zonificación vigente, FOS/FOT, usos, restricciones, afectaciones hidráulicas/ambientales, servicios, accesos, contribuciones y disponibilidad. No se muestran precios ni rentabilidades no comprobados.
+  </footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    "use strict";
+
+    const map = L.map("map", { scrollWheelZoom: true }).setView([-34.6508, -58.7914], 12);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    const localities = [
+      { id:"moreno-centro", name:"Moreno Centro · Palacio Municipal", lat:-34.6508, lng:-58.7914, info:"Cabecera del partido y centro administrativo.", type:"locality" },
+      { id:"paso-del-rey", name:"Paso del Rey", lat:-34.6569, lng:-58.7611, info:"Localidad del sector este del partido. Área de interés para estudiar conectividad, comercio y servicios.", type:"locality" },
+      { id:"la-reja", name:"La Reja", lat:-34.6433, lng:-58.8286, info:"Localidad del oeste del partido. Referencia territorial para estudiar el entorno de Roggero y usos residenciales/recreativos.", type:"locality" },
+      { id:"francisco-alvarez", name:"Francisco Álvarez", lat:-34.6186, lng:-58.8758, info:"Localidad del corredor oeste del partido.", type:"locality" },
+      { id:"trujui", name:"Trujui", lat:-34.5881, lng:-58.7583, info:"Localidad del norte del partido; área de prospección territorial.", type:"locality" },
+      { id:"cuartel-v", name:"Cuartel V", lat:-34.5583, lng:-58.8139, info:"Localidad del norte del partido; área de prospección productiva y de grandes parcelas.", type:"locality" }
+    ];
+
+    const opportunities = [
+      {
+        id:"rp25-darwin-san-fernando", name:"RP25 · Darwin Passaponti · Av. San Fernando",
+        lat:-34.5705, lng:-58.7955, category:"industrial", color:"#0f766e",
+        business:"Suelo industrial/logístico, agrupamientos PyME, depósitos, patios operativos y proveedores industriales.",
+        evidence:"La Ordenanza municipal 7443/25 documenta una rezonificación puntual de parcelas individualizadas a I1/I2 y menciona demanda de suelo productivo-logístico. La norma aplica únicamente a los polígonos y parcelas enumerados.",
+        status:"Normativa y corredor documentados; parcelas concretas por verificar.",
+        next:"Cruzar los polígonos de la ordenanza con catastro; comprobar CVI, dominio, servicios, accesos y disponibilidad.",
+        source:"https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465"
+      },
+      {
+        id:"ecoparque-rp24-rp25", name:"Nodo RP24/RP25 · Ecoparque Industrial",
+        lat:-34.5860, lng:-58.8350, category:"industrial", color:"#0f766e",
+        business:"Servicios a empresas, depósitos complementarios, oficinas operativas, gastronomía de ruta y mantenimiento de flotas.",
+        evidence:"El operador publica ubicación, infraestructura y características de parcelas del parque. Es información del operador, no normativa para terrenos vecinos.",
+        status:"Información comercial indicativa; inventario y precios actuales no confirmados.",
+        next:"Solicitar disponibilidad, precios, reglamento, expensas, infraestructura efectiva y demanda de empresas instaladas.",
+        source:"https://ecoparque.com.ar/"
+      },
+      {
+        id:"paso-rey-ribera", name:"Paso del Rey · Camino de la Ribera",
+        lat:-34.6575, lng:-58.7440, category:"commercial", color:"#2563eb",
+        business:"Comercio de proximidad, gastronomía, servicios, estacionamiento y reconversión de inmuebles.",
+        evidence:"La Provincia documentó la conexión del Camino de la Ribera entre RP7 y la colectora de Acceso Oeste, con puente, pavimentos, drenajes e iluminación.",
+        status:"Obra y conexión documentadas; activos inmobiliarios concretos por detectar.",
+        next:"Identificar frentes y parcelas realmente conectadas; revisar cotas, drenaje, riesgo hídrico y usos permitidos.",
+        source:"https://www.gba.gob.ar/node/51424"
+      },
+      {
+        id:"roggero-distrito-ecologico", name:"Distrito Ecológico Roggero",
+        lat:-34.6750, lng:-58.8750, category:"tourism", color:"#15803d",
+        business:"Gastronomía, servicios a visitantes, recreación y experiencias educativas; alojamiento solo donde esté permitido.",
+        evidence:"El Municipio describe el distrito y sus atractivos turísticos, con iniciativas de accesibilidad y servicios.",
+        status:"Programa turístico documentado; viabilidad de cada predio no verificada.",
+        next:"Determinar límites de área protegida, zonificación, capacidad de carga, restricciones ambientales e hidráulicas.",
+        source:"https://moreno.gob.ar/noticia-detalle.php?id=5647"
+      },
+      {
+        id:"parcelas-norte-oeste", name:"Cuartel V · Trujui · La Reja",
+        lat:-34.6100, lng:-58.8150, category:"land", color:"#a16207",
+        business:"Prospección de parcelas grandes, ensamble de tierra, asociaciones con propietarios y desarrollos por etapas.",
+        evidence:"Hay publicaciones inmobiliarias de terrenos en estas localidades, pero los avisos no acreditan titularidad, zonificación ni disponibilidad.",
+        status:"Hipótesis de prospección; sin parcelas individualizadas verificadas.",
+        next:"Armar inventario de lotes con nomenclatura catastral, superficie, corredor, precio pedido y contacto verificable.",
+        source:"https://www.zonaprop.com.ar/terrenos-venta-moreno-mas-9000-m2.html"
+      }
+    ];
+
+    const palette = { locality:"#64748b", industrial:"#0f766e", commercial:"#2563eb", tourism:"#15803d", land:"#a16207" };
+    const layers = new Map();
+    const allItems = [...localities, ...opportunities];
+
+    function popupContent(item) {
+      if (item.type === "locality") {
+        return '<div class="popup"><h3>' + item.name + '</h3><p>' + item.info + '</p><p class="small">Marcador de referencia de localidad.</p></div>';
+      }
+      return '<div class="popup"><h3>' + item.name + '</h3>' +
+        '<p><strong>Negocio a investigar:</strong> ' + item.business + '</p>' +
+        '<p><strong>Evidencia:</strong> ' + item.evidence + '</p>' +
+        '<p><strong>Estado:</strong> ' + item.status + '</p>' +
+        '<p><strong>Próxima acción:</strong> ' + item.next + '</p>' +
+        '<p><a href="' + item.source + '" target="_blank" rel="noopener noreferrer">Consultar fuente</a></p>' +
+        '<p class="small">Ubicación indicativa de área/corredor; no representa una parcela ni un límite oficial.</p></div>';
+    }
+
+    function addMarker(item) {
+      const color = item.type === "locality" ? palette.locality : item.color;
+      const marker = L.circleMarker([item.lat, item.lng], {
+        radius: item.type === "locality" ? 7 : 10,
+        color: "#fff", weight: 2, fillColor: color, fillOpacity: .95
+      }).bindPopup(popupContent(item));
+      marker.addTo(map);
+      layers.set(item.id, marker);
+    }
+
+    localities.forEach(addMarker);
+    opportunities.forEach(addMarker);
+
+    function renderList(targetId, items) {
+      const target = document.getElementById(targetId);
+      target.innerHTML = "";
+      items.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "item";
+        card.tabIndex = 0;
+        const heading = document.createElement("h3");
+        heading.textContent = item.name;
+        const paragraph = document.createElement("p");
+        paragraph.textContent = item.type === "locality" ? item.info : item.business;
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = item.type === "locality" ? "Localidad" : item.status;
+        card.append(heading, paragraph, tag);
+        const activate = () => {
+          map.setView([item.lat, item.lng], item.type === "locality" ? 13 : 14);
+          layers.get(item.id).openPopup();
+        };
+        card.addEventListener("click", activate);
+        card.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") { event.preventDefault(); activate(); }
+        });
+        target.appendChild(card);
+      });
+    }
+
+    function filterMap() {
+      const term = document.getElementById("search").value.trim().toLocaleLowerCase("es-AR");
+      const category = document.getElementById("category").value;
+      const visible = allItems.filter(item => {
+        const categoryMatch = category === "all" ||
+          (category === "locality" && item.type === "locality") ||
+          (category === "opportunity" && item.type !== "locality");
+        const haystack = [item.name, item.info, item.business, item.status].filter(Boolean).join(" ").toLocaleLowerCase("es-AR");
+        const textMatch = !term || haystack.includes(term);
+        const marker = layers.get(item.id);
+        if (categoryMatch && textMatch) marker.addTo(map);
+        else map.removeLayer(marker);
+        return categoryMatch && textMatch;
+      });
+      renderList("locality-list", visible.filter(item => item.type === "locality"));
+      renderList("opportunity-list", visible.filter(item => item.type !== "locality"));
+    }
+
+    document.getElementById("search").addEventListener("input", filterMap);
+    document.getElementById("category").addEventListener("change", filterMap);
+    filterMap();
+  </script>
+</body>
+</html>
