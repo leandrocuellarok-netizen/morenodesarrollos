@@ -328,7 +328,7 @@ assert.ok(styles.includes(".map-review-import-note"));
 
 
 const territorialBrief = buildTerritorialBrief(
-  opportunities.find(item => item.id === "rp25"),
+  all.find(item => item.id === "rp25"),
   "2026-11-25T21:00:00.000Z"
 );
 assert.equal(territorialBrief.schema, "moreno.territorial-brief");
@@ -353,7 +353,7 @@ assert.match(territorialHtml, /no identifica una parcela/);
 assert.match(territorialHtml, /https:\/\/sibom\.slyt\.gba\.gob\.ar/);
 assert.ok(!/<script\b/i.test(territorialHtml), "la ficha no necesita scripts ni recursos externos");
 const hostileTerritorialBrief = buildTerritorialBrief({
-  ...opportunities[0],
+  ...all.find(item => item.id === "rp25"),
   name: '<img src=x onerror="alert(1)">',
   business: '<svg onload="alert(1)">',
   source: "javascript:alert(1)"
