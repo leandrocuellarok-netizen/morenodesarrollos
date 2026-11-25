@@ -1,6 +1,7 @@
 "use strict";
 const assert = require("node:assert/strict");
 const tools = require("../assets/js/opportunity-tools.js");
+const mapCatalogue = require("../assets/js/mapa-ia.js");
 
 const both = tools.calculatePreliminary({
   areaRaw: "1200",
@@ -64,6 +65,14 @@ assert.deepEqual(
   tools.readMapReference("?map_ref=moreno"),
   { id: "moreno", name: "Moreno Centro" }
 );
+
+for (const item of mapCatalogue.all) {
+  assert.deepEqual(
+    tools.readMapReference("?map_ref=" + encodeURIComponent(item.id) + "&map_name=Etiqueta+no+confiable"),
+    { id: item.id, name: item.name },
+    "el formulario resuelve desde el catálogo canónico: " + item.id
+  );
+}
 
 const contactMessage = tools.buildContactMessage({
   fields: {
