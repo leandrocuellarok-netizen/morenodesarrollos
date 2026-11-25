@@ -42,7 +42,7 @@ function buildReferenceUrl(baseUrl, referenceId) {
 function buildOpportunityContactUrl(baseUrl, item) {
   const url = new URL("../oportunidades/", String(baseUrl));
   url.searchParams.set("map_ref", String(item.id));
-  url.searchParams.set("map_name", String(item.name));
+  url.searchParams.delete("map_name");
   return url.toString();
 }
 
