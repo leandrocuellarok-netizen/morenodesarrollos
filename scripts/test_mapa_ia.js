@@ -85,6 +85,7 @@ assert.ok(source.includes('matchMedia("(prefers-reduced-motion: reduce)")'), "el
 assert.ok(styles.includes(".map-pin.is-selected"), "el marcador seleccionado tiene un estado visual");
 assert.ok(styles.includes(".map-pin-hypothesis.is-selected"), "el rombo conserva su forma al seleccionarse");
 assert.ok(styles.includes(".map-atlas-index"), "el índice editorial tiene una composición propia");
+assert.ok(styles.includes(".map-atlas-stat:nth-of-type(even)"), "en móvil los bordes del índice respetan la primera columna");
 assert.ok(styles.includes(".documented-dot"), "la leyenda diferencia el contexto con fuente por forma");
 assert.ok(styles.includes(".hypothesis-dot"), "la leyenda diferencia la hipótesis por forma");
 assert.ok(styles.includes(".map-item.is-active"), "la ficha seleccionada tiene un estado visual");
