@@ -169,3 +169,7 @@ Las cuatro páginas públicas comparten un menú móvil desplegable, controlable
 - Elegir un enlace cierra el menú; al volver a escritorio también se restablece.
 - Si JavaScript no está disponible, los enlaces permanecen visibles como navegación vertical.
 - `scripts/test_site_navigation.js` comprueba los estados, el cierre por teclado, la selección de enlaces y el cambio a escritorio.
+
+## Conversión comercial desde el Mapa IA
+
+Cada localidad o tesis territorial puede abrir el formulario de oportunidades con su identificador y nombre como contexto de origen. El formulario muestra esa referencia, incorpora una nota explícita sobre su alcance aproximado y la incluye en el borrador de WhatsApp para que la persona lo revise. La referencia no se transforma en identificación parcelaria ni acredita titularidad, disponibilidad, zonificación o factibilidad. El sitio no envía ni almacena el contacto automáticamente.
