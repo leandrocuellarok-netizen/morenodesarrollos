@@ -308,6 +308,17 @@ function filterReferences(items, options) {
   });
 }
 
+function countInventory(items) {
+  const list = Array.isArray(items) ? items : [];
+  return list.reduce((counts, item) => {
+    if (item.type === "locality") counts.localities += 1;
+    else if (item.type === "opportunity" && item.stage === "documented") counts.documented += 1;
+    else if (item.type === "opportunity" && item.stage === "hypothesis") counts.hypotheses += 1;
+    counts.total += 1;
+    return counts;
+  }, { localities: 0, documented: 0, hypotheses: 0, total: 0 });
+}
+
 function csvCell(value) {
   return '"' + String(value == null ? "" : value).replace(/"/g, '""') + '"';
 }
@@ -397,6 +408,13 @@ function initMapPage(doc) {
   const reviewImportButton = doc.getElementById("import-review");
   const reviewImportInput = doc.getElementById("import-review-file");
   const reviewStatusElement = doc.getElementById("review-status");
+  const atlasCounts = {
+    localities: doc.getElementById("atlas-localities-count"),
+    documented: doc.getElementById("atlas-documented-count"),
+    hypotheses: doc.getElementById("atlas-hypotheses-count"),
+    total: doc.getElementById("atlas-total-count"),
+    status: doc.getElementById("atlas-index-status")
+  };
   const markers = new Map();
   let map = null;
   let visibleItems = all;
@@ -719,6 +737,19 @@ function initMapPage(doc) {
     });
   }
 
+  function updateAtlasIndex(items) {
+    const counts = countInventory(items);
+    if (atlasCounts.localities) atlasCounts.localities.textContent = String(counts.localities).padStart(2, "0");
+    if (atlasCounts.documented) atlasCounts.documented.textContent = String(counts.documented).padStart(2, "0");
+    if (atlasCounts.hypotheses) atlasCounts.hypotheses.textContent = String(counts.hypotheses).padStart(2, "0");
+    if (atlasCounts.total) atlasCounts.total.textContent = counts.total + " / " + all.length;
+    if (atlasCounts.status) {
+      atlasCounts.status.textContent = counts.total + " de " + all.length +
+        " referencias visibles · " + counts.localities + " localidades, " +
+        counts.documented + " contextos con fuente y " + counts.hypotheses + " hipótesis.";
+    }
+  }
+
   function render() {
     const shown = filterReferences(all, {
       query: doc.getElementById("search").value,
@@ -726,6 +757,7 @@ function initMapPage(doc) {
       evidence: doc.getElementById("evidence-filter").value
     });
     visibleItems = shown;
+    updateAtlasIndex(shown);
     exportButton.disabled = shown.length === 0;
     geoJsonExportButton.disabled = shown.length === 0;
     reviewExportButton.disabled = !shown.some(item => item.type === "opportunity");
@@ -921,13 +953,13 @@ function initMapPage(doc) {
             id: "moreno-boundary-fill",
             type: "fill",
             source: "moreno-boundary",
-            paint: { "fill-color": "#b78a3c", "fill-opacity": 0.08 }
+            paint: { "fill-color": "#4a4d46", "fill-opacity": 0.055 }
           });
           map.addLayer({
             id: "moreno-boundary-line",
             type: "line",
             source: "moreno-boundary",
-            paint: { "line-color": "#a95d3c", "line-width": 2.5, "line-opacity": 0.9 }
+            paint: { "line-color": "#444840", "line-width": 2, "line-opacity": 0.82 }
           });
 
           const bounds = new maplibregl.LngLatBounds();
@@ -990,7 +1022,7 @@ function initMapPage(doc) {
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
-    localities, opportunities, all, filterReferences, buildCsv, buildGeoJson,
+    localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson,
     getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
     isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
