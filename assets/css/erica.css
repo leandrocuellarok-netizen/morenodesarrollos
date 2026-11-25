@@ -634,3 +634,79 @@ body{background:var(--paper);color:var(--ink)}
   .hero .art-index{top:15px;right:16px}
   .hero .art-caption{left:17px;bottom:15px;font-size:11px}
 }
+
+
+/* Perfil de Erica: jerarquía editorial, retrato en lámina y recorridos de contacto. */
+.about-page{overflow:hidden}
+.about-hero{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(320px,.82fr);gap:clamp(38px,7vw,104px);align-items:center;padding:clamp(58px,8vw,112px) 0 82px}
+.about-hero-copy .eyebrow{margin-bottom:25px}
+.about-hero h1{max-width:760px;margin:0 0 25px;color:var(--ink);font:400 clamp(48px,6.1vw,82px)/.98 var(--serif);letter-spacing:-.055em}
+.about-hero h1 em{color:#77796f;font-style:italic}
+.about-hero-lead{max-width:650px;margin:0 0 16px;color:#3f443d;font:400 clamp(18px,1.65vw,22px)/1.62 var(--serif)}
+.about-hero-detail{max-width:640px;margin:0;color:#66685f;font:13px/1.85 var(--sans)}
+.about-hero .hero-actions{margin-top:27px;gap:10px}
+.about-hero .hero-actions .button{min-height:48px}
+.about-map-link{display:inline-block;margin-top:19px;color:#79523d;font:600 10px/1.5 var(--sans);letter-spacing:.08em;text-transform:uppercase;text-underline-offset:4px}
+.about-map-link:focus-visible{outline:2px solid var(--rust);outline-offset:4px}
+.about-portrait-plate{min-width:0;margin:0;padding:12px;border:1px solid #bcb8ac;background:#e9e5da;box-shadow:inset 0 0 0 4px #f1efe7}
+.about-portrait-frame{display:flex;align-items:center;justify-content:center;min-height:280px;overflow:hidden;background:#ddd9cd;border:1px solid #cbc6b8}
+.about-portrait-frame img{display:block;width:100%;height:auto;max-height:680px;object-fit:contain}
+.about-portrait-plate figcaption{display:grid;grid-template-columns:1fr auto;gap:5px 15px;align-items:baseline;padding:13px 4px 3px}
+.about-portrait-plate figcaption span{color:#73756b;font:9px/1.4 var(--sans);letter-spacing:.12em}
+.about-portrait-plate figcaption strong{grid-column:1/-1;color:var(--ink);font:400 21px/1.15 var(--serif)}
+.about-approach{padding-top:48px}
+.about-approach .section-heading{align-items:end}
+.about-approach .section-heading h2{max-width:660px}
+.about-approach .section-heading p{max-width:560px}
+.about-pillars{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:38px}
+.about-pillars .pillar{min-height:205px;padding:20px 17px;background:rgba(255,255,255,.22)}
+.about-pillars .pillar-index{display:block;margin-bottom:25px;color:#8a6047;font:italic 10px/1.4 var(--serif);letter-spacing:.09em}
+.about-pillars .pillar strong{display:block;font:400 23px/1.1 var(--serif)}
+.about-pillars .pillar p{margin:10px 0 0;font:11px/1.75 var(--sans)}
+.about-alliance-note{max-width:880px;margin:24px 0 0;padding:15px 18px;border-left:2px solid var(--rust);color:#62645c;background:#ece8de;font:11px/1.8 var(--sans)}
+.about-alliance-note strong{color:#343830}
+.development-plate-wrap{margin:30px 0 34px;padding:12px;border:1px solid #c7c2b6;background:#e9e6dc}
+.development-plate{display:block;width:100%;height:auto;background:#eeece4}
+.plate-kicker{fill:#696c62;font:10px var(--sans);letter-spacing:1.8px}
+.plate-route{fill:none;stroke:#a7a498;stroke-width:1.1;stroke-dasharray:3 7}
+.plate-ring{fill:#f4f1e8;stroke:#77796f;stroke-width:1.2}
+.plate-drawing{fill:none;stroke:#303a34;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.plate-dimension{fill:none;stroke:#77796f;stroke-width:1;stroke-dasharray:3 3}
+.plate-accent{fill:none;stroke:#a95d3c;stroke-width:1.6;stroke-linecap:round}
+.plate-label{fill:#4e534b;font:italic 13px Georgia,serif;letter-spacing:1px}
+.plate-footnote{fill:#77796f;font:8px var(--sans);letter-spacing:1.15px}
+.development-plate-wrap figcaption{padding:9px 5px 2px;color:#77796f;font:10px/1.65 var(--sans)}
+.about-contact{padding:72px 0;border-top:1px solid #c9c4b8;border-bottom:1px solid #c9c4b8;background:#e9e5da}
+.about-contact-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(30px,6vw,84px);align-items:start}
+.about-contact-copy h2{max-width:550px;margin:17px 0;color:var(--ink);font:400 clamp(36px,4.5vw,58px)/1.02 var(--serif);letter-spacing:-.045em}
+.about-contact-copy p{max-width:490px;color:#65675e;font:13px/1.8 var(--sans)}
+.about-contact-paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.about-contact-path{display:flex;min-height:230px;flex-direction:column;align-items:flex-start;padding:20px;border:1px solid #bdb8ac;background:#f4f1e8;color:var(--ink);text-decoration:none;transition:background .18s,border-color .18s,transform .18s}
+.about-contact-path:hover{background:#faf8f2;border-color:#8d8a7e;transform:translateY(-2px)}
+.about-contact-path:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
+.about-contact-path span{color:#8a6047;font:italic 10px/1.4 var(--serif);letter-spacing:.1em}
+.about-contact-path strong{margin:22px 0 9px;font:400 23px/1.1 var(--serif)}
+.about-contact-path small{color:#686a61;font:10px/1.7 var(--sans)}
+.about-contact-path b{margin-top:auto;padding-top:20px;color:#79523d;font:600 9px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:980px){.about-pillars{grid-template-columns:repeat(2,minmax(0,1fr))}.about-contact-grid{grid-template-columns:1fr}}
+@media(max-width:760px){
+  .about-hero{grid-template-columns:1fr;gap:30px;padding:54px 0 60px}
+  .about-hero h1{font-size:clamp(45px,12vw,66px)}
+  .about-hero .hero-actions{align-items:stretch;flex-direction:column}
+  .about-hero .hero-actions .button{width:100%;justify-content:space-between}
+  .about-portrait-plate{max-width:620px}
+  .about-approach{padding-top:40px}
+  .about-pillars{grid-template-columns:1fr 1fr;gap:9px;margin-top:26px}
+  .about-pillars .pillar{min-height:0;padding:16px 13px}
+  .about-pillars .pillar-index{margin-bottom:18px;font-size:9px}
+  .about-pillars .pillar strong{font-size:21px}
+  .about-alliance-note{padding:13px 14px}
+  .development-plate-wrap{margin:22px 0 28px;padding:8px;overflow-x:auto}
+  .development-plate{min-width:760px}
+  .development-plate-wrap figcaption{font-size:9px}
+  .about-contact{padding:54px 0}
+  .about-contact-paths{grid-template-columns:1fr}
+  .about-contact-path{min-height:190px}
+}
+@media(max-width:420px){.about-pillars{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.about-contact-path{transition:none}.about-contact-path:hover{transform:none}}
