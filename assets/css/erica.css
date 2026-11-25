@@ -391,3 +391,32 @@ body{background:var(--paper);color:var(--ink)}
   outline: 2px solid #a95d3c;
   outline-offset: 3px;
 }
+
+
+/* Ficha preliminar de oportunidad: salida editorial para imprimir o guardar como PDF */
+.dossier-local-note{margin:12px 0 0;color:#696b62;font:10px/1.65 var(--sans)}
+.opportunity-dossier-print[hidden]{display:none}
+@media print{
+  @page{size:A4;margin:16mm 15mm}
+  body[data-print-dossier="true"]{background:#fff!important;color:#222!important}
+  body[data-print-dossier="true"]>:not(#opportunity-dossier-print){display:none!important}
+  body[data-print-dossier="true"]>#opportunity-dossier-print{display:block!important;position:static!important;visibility:visible!important}
+  .opportunity-dossier-sheet{max-width:180mm;margin:0 auto;color:#262822;font:10pt/1.55 Georgia,serif}
+  .dossier-sheet-header{padding:0 0 8mm;border-bottom:1px solid #aaa79d}
+  .dossier-brand{margin:0 0 9mm;color:#77766e;font:8pt/1.3 Arial,sans-serif;letter-spacing:.18em}
+  .dossier-sheet-header h1{margin:0 0 4mm;font:normal 27pt/1.05 Georgia,serif;letter-spacing:-.035em}
+  .dossier-status{display:inline-block;margin:0 0 3mm;padding:2mm 3mm;border:1px solid #9b9588;color:#56574f;font:7pt/1.3 Arial,sans-serif;letter-spacing:.09em}
+  .dossier-date{margin:0;color:#696b62;font:8pt/1.4 Arial,sans-serif}
+  .dossier-section{margin:7mm 0 0;break-inside:avoid}
+  .dossier-section h2{margin:0 0 3mm;padding-bottom:2mm;border-bottom:1px solid #c8c4b9;color:#55574f;font:normal 14pt/1.2 Georgia,serif}
+  .dossier-section dl{margin:0}
+  .dossier-row{display:grid;grid-template-columns:38% 1fr;gap:5mm;padding:2mm 0;border-bottom:.25pt solid #e0ddd5;break-inside:avoid}
+  .dossier-row dt{color:#66675e;font:7.5pt/1.45 Arial,sans-serif}
+  .dossier-row dd{margin:0;overflow-wrap:anywhere;font:9pt/1.5 Georgia,serif}
+  .dossier-checks p{margin:0 0 2mm;color:#686a61;font:8pt/1.45 Arial,sans-serif}
+  .dossier-checks ul{margin:0;padding-left:5mm}
+  .dossier-checks li{margin:1.5mm 0;font:8.5pt/1.45 Georgia,serif}
+  .dossier-disclaimers{margin-top:8mm;padding-top:4mm;border-top:1px solid #aaa79d}
+  .dossier-disclaimers p{margin:0 0 2.5mm;color:#5e6058;font:7.5pt/1.5 Arial,sans-serif}
+  .dossier-disclaimers .dossier-local-note-print{margin-top:4mm;color:#77766e;font-style:italic}
+}
