@@ -118,3 +118,23 @@
   outline: 2px solid #a95d3c;
   outline-offset: 3px;
 }
+.map-contact-link {
+  display: inline-flex;
+  align-items: center;
+  margin: 9px 8px 3px 0;
+  padding: 9px 12px;
+  border: 1px solid #243033;
+  background: #243033;
+  color: #f5f2e9;
+  font: 600 10px/1.45 var(--sans);
+  text-decoration: none;
+  transition: background-color .18s ease, border-color .18s ease;
+}
+.map-contact-link:hover {
+  border-color: #a95d3c;
+  background: #a95d3c;
+}
+.map-contact-link:focus-visible {
+  outline: 2px solid #a95d3c;
+  outline-offset: 3px;
+}
