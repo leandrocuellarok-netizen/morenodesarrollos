@@ -171,7 +171,9 @@
   <div class="contact-preview-actions">
     <button class="button" id="copy-contact-message" type="button">Copiar mensaje</button>
     <a class="button dark" id="open-whatsapp" href="https://wa.me/5491141671674" target="_blank" rel="noopener noreferrer">Abrir WhatsApp ↗</a>
+    <button class="button" id="print-opportunity-dossier" type="button">Imprimir ficha / guardar PDF</button>
   </div>
+  <p class="dossier-local-note">La ficha se arma en este navegador. Podés imprimirla o guardarla como PDF desde el diálogo del navegador; no se envía al sitio.</p>
 </section>
 <p class="privacy-note">No adjuntes escrituras, DNI, datos bancarios ni documentación confidencial en el primer contacto. El borrador se prepara en tu navegador; vos decidís si lo copiás o lo compartís por WhatsApp.</p>
 <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
@@ -181,6 +183,7 @@
 </section>
 </main>
 <footer class="site-footer"><span>© Erica M. Acosta · Moreno, Buenos Aires</span><span>Desarrollos inmobiliarios · IA aplicada · Alianzas</span><a href="../">Volver al inicio ↗</a></footer>
+<section class="opportunity-dossier-print" id="opportunity-dossier-print" hidden aria-label="Ficha preliminar de oportunidad para impresión"></section>
 <script src="../assets/js/opportunity-tools.js"></script>
 <script>
 "use strict";
@@ -191,12 +194,93 @@ const contactPreview=document.getElementById("contact-preview");
 const messagePreview=document.getElementById("contact-message-preview");
 const copyMessageButton=document.getElementById("copy-contact-message");
 const openWhatsAppLink=document.getElementById("open-whatsapp");
+const printDossierButton=document.getElementById("print-opportunity-dossier");
+const dossierPrint=document.getElementById("opportunity-dossier-print");
 const readFeasibilityInput=()=>({
   areaRaw:document.getElementById("parcel-area").value,
   fosRaw:document.getElementById("parcel-fos").value,
   fotRaw:document.getElementById("parcel-fot").value,
   referenceRaw:document.getElementById("parcel-reference").value
 });
+function readOpportunityFields(){
+  const formData=new FormData(opportunityForm);
+  const values=Object.fromEntries(formData.entries());
+  values.documentacion=formData.getAll("documentacion");
+  values.verificaciones=formData.getAll("verificaciones");
+  return values;
+}
+function renderOpportunityDossier(dossier){
+  const sheet=document.createElement("article");
+  sheet.className="opportunity-dossier-sheet";
+  const header=document.createElement("header");
+  header.className="dossier-sheet-header";
+  const brand=document.createElement("p");
+  brand.className="dossier-brand";
+  brand.textContent="MORENO / ERICA M. ACOSTA";
+  const title=document.createElement("h1");
+  title.textContent=dossier.title;
+  const status=document.createElement("p");
+  status.className="dossier-status";
+  status.textContent=dossier.status;
+  const date=document.createElement("p");
+  date.className="dossier-date";
+  date.textContent=dossier.generatedAt?"Generada: "+dossier.generatedAt:"Ficha preliminar";
+  header.append(brand,title,status,date);
+  sheet.append(header);
+  dossier.sections.forEach(sectionData=>{
+    const section=document.createElement("section");
+    section.className="dossier-section";
+    const heading=document.createElement("h2");
+    heading.textContent=sectionData.title;
+    const list=document.createElement("dl");
+    sectionData.rows.forEach(row=>{
+      const item=document.createElement("div");
+      item.className="dossier-row";
+      const label=document.createElement("dt");
+      label.textContent=row.label;
+      const value=document.createElement("dd");
+      value.textContent=row.value;
+      item.append(label,value);
+      list.append(item);
+    });
+    section.append(heading,list);
+    sheet.append(section);
+  });
+  const checks=document.createElement("section");
+  checks.className="dossier-section dossier-checks";
+  const checksHeading=document.createElement("h2");
+  checksHeading.textContent="Aspectos a verificar antes de evaluar una operación";
+  const checksNote=document.createElement("p");
+  checksNote.textContent="Lista de control general. Esta ficha no confirma que estos puntos hayan sido revisados.";
+  const checksList=document.createElement("ul");
+  dossier.checks.forEach(entry=>{
+    const item=document.createElement("li");
+    item.textContent=entry;
+    checksList.append(item);
+  });
+  checks.append(checksHeading,checksNote,checksList);
+  sheet.append(checks);
+  const disclaimer=document.createElement("footer");
+  disclaimer.className="dossier-disclaimers";
+  dossier.disclaimers.forEach(entry=>{
+    const paragraph=document.createElement("p");
+    paragraph.textContent=entry;
+    disclaimer.append(paragraph);
+  });
+  const localNote=document.createElement("p");
+  localNote.className="dossier-local-note-print";
+  localNote.textContent="Documento generado localmente por la persona que completó el formulario. No se transmitió al sitio MORENO.";
+  disclaimer.append(localNote);
+  sheet.append(disclaimer);
+  dossierPrint.replaceChildren(sheet);
+  dossierPrint.hidden=false;
+  document.body.dataset.printDossier="true";
+  window.addEventListener("afterprint",()=>{
+    delete document.body.dataset.printDossier;
+    dossierPrint.hidden=true;
+  },{once:true});
+  window.print();
+}
 function showPreliminaryResult(){
   const result=window.MorenoOpportunityTools.calculatePreliminary(readFeasibilityInput());
   if(result.error||result.empty){
@@ -273,10 +357,7 @@ copyMessageButton.addEventListener("click",async()=>{
 opportunityForm.addEventListener("submit",event=>{
   event.preventDefault();
   const calculationInput=readFeasibilityInput();
-  const formData=new FormData(opportunityForm);
-  const values=Object.fromEntries(formData.entries());
-  values.documentacion=formData.getAll("documentacion");
-  values.verificaciones=formData.getAll("verificaciones");
+  const values=readOpportunityFields();
   const message=window.MorenoOpportunityTools.buildContactMessage({
     fields:values,
     calculationInput
@@ -286,6 +367,15 @@ opportunityForm.addEventListener("submit",event=>{
   contactPreview.hidden=false;
   formStatus.textContent="Borrador preparado. Revisá el texto; no se enviará hasta que abras WhatsApp.";
   contactPreview.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+});
+printDossierButton.addEventListener("click",()=>{
+  if(!opportunityForm.reportValidity())return;
+  const dossier=window.MorenoOpportunityTools.buildOpportunityDossier({
+    fields:readOpportunityFields(),
+    calculationInput:readFeasibilityInput(),
+    generatedAt:new Intl.DateTimeFormat("es-AR",{dateStyle:"long",timeStyle:"short"}).format(new Date())
+  });
+  renderOpportunityDossier(dossier);
 });
 </script>
 </body>
