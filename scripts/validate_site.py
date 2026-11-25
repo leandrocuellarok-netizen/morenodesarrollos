@@ -451,8 +451,8 @@ def main() -> None:
                     control_id = f"originacion-check-{check_key}-{field}"
                     if f'id="{control_id}"' not in page_source or f'for="{control_id}"' not in page_source:
                         errors.append(f"Oportunidades: el control {control_id} debe tener una etiqueta asociada")
-            workbench_match = re.search(r'<details\\b[^>]*id="originacion-workbench"[^>]*>(.*?)</details>', page_source, re.DOTALL)
-            if not workbench_match or re.search(r'\\bname\\s*=', workbench_match.group(1)):
+            workbench_match = re.search(r'<details\b[^>]*id="originacion-workbench"[^>]*>(.*?)</details>', page_source, re.DOTALL)
+            if not workbench_match or re.search(r'\bname\s*=', workbench_match.group(1)):
                 errors.append("Oportunidades: la mesa interna no debe añadir campos al mensaje público de contacto")
             if "Los campos internos de originación, negociación y honorarios no forman parte de este mensaje." not in (ROOT / "assets/js/opportunity-tools.js").read_text(encoding="utf-8"):
                 errors.append("Oportunidades: los datos internos deben quedar fuera del borrador de WhatsApp")
