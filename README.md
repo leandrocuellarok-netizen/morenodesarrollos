@@ -286,3 +286,12 @@ La página `erica-acosta/` presenta el perfil de Erica M. Acosta con una jerarqu
 Los accesos para propietarios e inversores enlazan a `/oportunidades/?perfil=propietario` y `/oportunidades/?perfil=inversor`. El formulario reconoce esos parámetros y preselecciona el perfil correspondiente; la persona revisa sus datos y decide si abre WhatsApp. No se envía información automáticamente.
 
 El validador del sitio comprueba la presencia de la lámina accesible, las cinco etapas, los estilos del perfil y los dos recorridos de contacto.
+
+
+## Recorridos comerciales desde la portada
+
+La portada prioriza dos entradas para iniciar una conversación:
+- **Propietarios:** `/oportunidades/?perfil=propietario`, con el perfil correspondiente preseleccionado.
+- **Inversores y desarrolladores:** `/oportunidades/?perfil=inversor`, con el perfil correspondiente preseleccionado.
+
+El acceso al Mapa IA queda como recorrido de investigación complementario. El primer contacto es exploratorio: no constituye tasación, oferta, confirmación de disponibilidad ni compromiso de inversión. El contenido no afirma operaciones cerradas ni resultados comerciales que no estén documentados.
