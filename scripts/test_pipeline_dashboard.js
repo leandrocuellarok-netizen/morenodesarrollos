@@ -45,9 +45,9 @@ const injectionCsv = [
 const injectionParsed = dashboard.parsePipelineCsv(injectionCsv);
 assert.equal(injectionParsed.ok, true);
 const protectedCsv = dashboard.buildSummaryCsv(dashboard.summarizePipeline(injectionParsed.records, "2026-11-25"));
-assert.ok(protectedCsv.includes("\\"'=HYPERLINK"), "una etapa con fórmula debe llevar apóstrofo protector");
-assert.ok(protectedCsv.includes("\\"'  +SUM"), "una fórmula precedida por espacios debe llevar apóstrofo protector");
-assert.ok(protectedCsv.includes("'\t=1+1"), "una celda que comienza con tabulación debe llevar apóstrofo protector");
+assert.ok(protectedCsv.includes(String.fromCharCode(34) + "'=HYPERLINK"), "una etapa con fórmula debe llevar apóstrofo protector");
+assert.ok(protectedCsv.includes(String.fromCharCode(34) + "'  +SUM"), "una fórmula precedida por espacios debe llevar apóstrofo protector");
+assert.ok(protectedCsv.includes("'" + String.fromCharCode(9) + "=1+1"), "una celda que comienza con tabulación debe llevar apóstrofo protector");
 assert.equal(dashboard.parsePipelineCsv(headers.join(";") + "\n").records.length, 0);
 assert.match(dashboard.parsePipelineCsv(headers.join(";") + "\n" + makeRow({id_oportunidad:"M-1",fecha_alta:"2026-02-31"})).error, /fecha real/);
 assert.match(dashboard.parsePipelineCsv(headers.join(";") + "\n" + makeRow({id_oportunidad:"M-1",honorarios_propuestos:"1.000",moneda:"ARS"})).error, /sin separador de miles/);
