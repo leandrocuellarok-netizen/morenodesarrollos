@@ -9,6 +9,7 @@
   const evidenceTemplate = document.getElementById("originacion-evidence-template");
   const status = document.getElementById("originacion-status");
   const MAX_EVIDENCE = 8;
+  let evidenceSequence = 0;
 
   const byId = (id) => document.getElementById(id);
   const value = (id) => byId(id).value.trim();
@@ -26,8 +27,13 @@
     const fragment = evidenceTemplate.content.cloneNode(true);
     const row = fragment.querySelector("[data-evidence-row]");
     const data = entry || {};
+    evidenceSequence += 1;
     row.querySelectorAll("[data-evidence-field]").forEach((control) => {
       const key = control.getAttribute("data-evidence-field");
+      const id = "originacion-evidence-" + evidenceSequence + "-" + key;
+      control.id = id;
+      const label = row.querySelector('[data-evidence-label="' + key + '"]');
+      if (label) label.htmlFor = id;
       control.value = typeof data[key] === "string" ? data[key] : "";
     });
     row.querySelector("[data-remove-evidence]").addEventListener("click", () => {
