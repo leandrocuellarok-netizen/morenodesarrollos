@@ -633,6 +633,28 @@ def main() -> None:
             if required_style not in css_source:
                 errors.append(f"assets/css/erica.css: falta estilo de navegación móvil: {required_style}")
 
+        for required_style in (
+            ".hero .art-panel:after{content:none}",
+            ".hero .art-panel .architecture-drawing{",
+            "filter:grayscale(1) contrast(1.12)",
+        ):
+            if required_style not in css_source:
+                errors.append(f"assets/css/erica.css: falta tratamiento editorial monocromático: {required_style}")
+
+    home_page = ROOT / "index.html"
+    if not home_page.is_file():
+        errors.append("Falta index.html para validar la lámina arquitectónica de portada")
+    else:
+        home_html = home_page.read_text(encoding="utf-8")
+        for required_markup in (
+            'class="art-panel"',
+            'class="architecture-drawing"',
+            'viewBox="0 0 760 820"',
+            'aria-label="Ilustración arquitectónica editorial',
+        ):
+            if required_markup not in home_html:
+                errors.append(f"index.html: falta elemento editorial accesible: {required_markup}")
+
     if errors:
         for error in errors:
             print(f"ERROR: {error}")
