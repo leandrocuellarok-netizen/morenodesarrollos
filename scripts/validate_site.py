@@ -242,6 +242,17 @@ def main() -> None:
                         errors.append(f"assets/css/erica.css: falta estilo del esquema territorial: {required_style}")
 
         if relative == Path("mapa-ia/index.html"):
+            for required_atlas_markup in (
+                'id="atlas-index-status"',
+                'id="atlas-localities-count"',
+                'id="atlas-documented-count"',
+                'id="atlas-hypotheses-count"',
+                'id="atlas-total-count"',
+                "La forma distingue la clase",
+                "El índice cuenta fichas del inventario"
+            ):
+                if required_atlas_markup not in page_source:
+                    errors.append(f"mapa-ia/index.html: falta el índice cartográfico: {required_atlas_markup}")
             if 'id="export-geojson"' not in page_source:
                 errors.append("mapa-ia/index.html: falta la descarga GeoJSON de referencias visibles")
             for review_id in ('id="export-review"', 'id="review-status"'):
@@ -322,6 +333,15 @@ def main() -> None:
                     'card.dataset.mapItem = item.id',
                     'element.addEventListener("click", () => {',
                     "function filterReferences",
+                    "function countInventory(items)",
+                    "function updateAtlasIndex(items)",
+                    'getElementById("atlas-localities-count")',
+                    'getElementById("atlas-documented-count")',
+                    'getElementById("atlas-hypotheses-count")',
+                    'getElementById("atlas-total-count")',
+                    "updateAtlasIndex(shown)",
+                    '"fill-color": "#4a4d46"',
+                    '"line-color": "#444840"',
                     "function buildCsv",
                     "function buildGeoJson(items)",
                     "function normalizeReviewState(raw, items)",
@@ -360,6 +380,11 @@ def main() -> None:
                 map_css = map_css_path.read_text(encoding="utf-8")
                 for required_style in (
                     ".map-canvas .maplibregl-canvas",
+                    ".map-atlas-index",
+                    ".map-atlas-stat",
+                    ".map-pin-hypothesis.is-selected",
+                    ".documented-dot",
+                    ".hypothesis-dot",
                     ".map-pin-locality",
                     ".map-pin-documented",
                     ".map-pin-hypothesis",
