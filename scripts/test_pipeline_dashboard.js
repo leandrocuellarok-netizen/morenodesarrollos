@@ -44,7 +44,9 @@ const injectionCsv = [
 ].join("\n");
 const injectionParsed = dashboard.parsePipelineCsv(injectionCsv);
 assert.equal(injectionParsed.ok, true);
-const protectedCsv = dashboard.buildSummaryCsv(dashboard.summarizePipeline(injectionParsed.records, "2026-11-25"));
+const injectionSummary = dashboard.summarizePipeline(injectionParsed.records, "2026-11-25");
+injectionSummary.stageCounts.push(["  +SUM(1,1)", 1], ["\t=1+1", 1]);
+const protectedCsv = dashboard.buildSummaryCsv(injectionSummary);
 assert.ok(protectedCsv.includes(String.fromCharCode(34) + "'=HYPERLINK"), "una etapa con fórmula debe llevar apóstrofo protector");
 assert.ok(protectedCsv.includes("'  +SUM"), "una fórmula precedida por espacios debe llevar apóstrofo protector");
 assert.ok(protectedCsv.includes("'" + String.fromCharCode(9) + "=1+1"), "una celda que comienza con tabulación debe llevar apóstrofo protector");
