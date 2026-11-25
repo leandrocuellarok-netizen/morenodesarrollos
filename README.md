@@ -85,7 +85,8 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 - La capa base inicial utiliza teselas raster de OpenStreetMap y mantiene visible la atribución a sus colaboradores incluso en móvil, junto con un enlace para reportar errores cartográficos.
 - La selección está sincronizada: al tocar un marcador se abre y revela su ficha en el inventario; al seleccionar una ficha se resalta el marcador correspondiente. El desplazamiento respeta la preferencia del sistema por movimiento reducido.
 - El lienzo cartográfico se presenta en escala monocromática; los marcadores conservan acentos distintos para localidades, contexto documentado e hipótesis.
-- El límite administrativo se solicita por separado a Georef Argentina y se dibuja como GeoJSON cuando el servicio responde.
+- El límite administrativo se solicita por separado a Georef Argentina y se dibuja como GeoJSON cuando el servicio responde. Su encuadre automático solo se aplica si la persona no abrió una referencia compartida ni movió/zoomeó manualmente el mapa; así, la respuesta asíncrona de Georef no pisa la vista elegida.
+- Los movimientos de cámara al abrir una ficha o restablecer el mapa respetan `prefers-reduced-motion`: usan un salto sin animación cuando el dispositivo lo solicita.
 - El servidor estándar de teselas de OpenStreetMap tiene una política de uso propia y no debe tratarse como infraestructura ilimitada. Antes de aumentar tráfico o incorporar funciones intensivas, evaluar un proveedor de teselas OSM o alojamiento propio, respetando sus condiciones.
 - Si MapLibre, las teselas o Georef no responden, las fichas, filtros y fuentes del inventario permanecen disponibles.
 
