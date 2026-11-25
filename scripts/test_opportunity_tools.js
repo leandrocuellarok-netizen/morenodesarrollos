@@ -186,12 +186,35 @@ const dossierExport = tools.buildOpportunityDossierExport({
     detalle: "Consulta de continuidad"
   },
   calculationInput: { areaRaw: "1200", fosRaw: "0,60", referenceRaw: "Certificado aportado" },
+  internalData: {
+    reference: "MOR-2026-001",
+    counterpartyType: "developer",
+    organization: "Desarrolladora de prueba",
+    commercialStage: "negotiation",
+    nextAction: "Solicitar documentación técnica",
+    followUpDate: "2026-11-28",
+    negotiationNotes: "Condiciones preliminares pendientes de revisión.",
+    evidence: [
+      { title: "GeoARBA · referencia pública", classification: "public", url: "https://geo.arba.gov.ar/", consultedAt: "2026-11-25", note: "No acredita una parcela." },
+      { title: "Plano recibido", classification: "technical", url: "", consultedAt: "2026-11-24", note: "Pendiente de revisión profesional." }
+    ],
+    checks: {
+      cadastral: { status: "in_progress", source: "Consulta iniciada", consultedAt: "2026-11-25", note: "Falta contrastar nomenclatura." }
+    },
+    fees: { currency: "ARS", proposed: "1200000", agreed: "", invoiced: "", collected: "" }
+  },
   generatedAt: "25 de noviembre de 2026, 07:40",
   exportedAt: "2026-11-25T10:40:00.000Z"
 });
 assert.equal(dossierExport.schema, "moreno.opportunity-dossier");
-assert.equal(dossierExport.schemaVersion, 2);
+assert.equal(dossierExport.schemaVersion, 3);
 assert.equal(dossierExport.status, "preliminary-unverified");
+assert.equal(dossierExport.internalData.reference, "MOR-2026-001");
+assert.equal(dossierExport.internalData.fees.currency, "ARS");
+assert.match(JSON.stringify(dossierExport.dossier), /Registro de fuentes y evidencia/);
+assert.match(JSON.stringify(dossierExport.dossier), /Control de diligencia/);
+assert.match(JSON.stringify(dossierExport.dossier), /Honorarios · importes independientes/);
+assert.match(JSON.stringify(dossierExport.dossier), /no tiene autenticación/);
 assert.equal(dossierExport.exportedAt, "2026-11-25T10:40:00.000Z");
 assert.equal(Number.isNaN(Date.parse(dossierExport.exportedAt)), false, "la fecha de exportación debe ser ISO 8601");
 assert.equal(dossierExport.dossier.title, "Ficha preliminar de oportunidad");
@@ -207,10 +230,21 @@ assert.equal(importedDossier.fields.nombre, "Contacto de exportación");
 assert.deepEqual(importedDossier.fields.documentacion, ["Plano o mensura"]);
 assert.equal(importedDossier.calculationInput.areaRaw, "1200");
 assert.equal(importedDossier.calculationInput.fosRaw, "0,60");
+assert.equal(importedDossier.internalData.reference, "MOR-2026-001");
+assert.equal(importedDossier.internalData.evidence.length, 2);
+assert.equal(importedDossier.internalData.checks.cadastral.status, "in_progress");
+assert.equal(importedDossier.internalData.fees.proposed, "1200000");
 
 const mergedDossier = tools.mergeImportedOpportunityData({
   fields: { nombre: "Nombre local", zona: "Moreno", documentacion: [], verificaciones: [] },
-  calculationInput: { areaRaw: "900" }
+  calculationInput: { areaRaw: "900" },
+  internalData: {
+    reference: "LOCAL-REF",
+    commercialStage: "first_contact",
+    evidence: [],
+    checks: { cadastral: { status: "pending", source: "", consultedAt: "", note: "" } },
+    fees: { currency: "", proposed: "", agreed: "", invoiced: "", collected: "" }
+  }
 }, importedDossier);
 assert.equal(mergedDossier.fields.nombre, "Nombre local", "la combinación conserva el dato local en conflicto");
 assert.equal(mergedDossier.fields.zona, "Moreno", "la combinación no sobrescribe una zona local distinta");
@@ -221,6 +255,20 @@ assert.equal(mergedDossier.calculationInput.fosRaw, "0,60");
 assert.ok(mergedDossier.conflicts.some(item => item.key === "nombre"));
 assert.ok(mergedDossier.conflicts.some(item => item.key === "zona"));
 assert.ok(mergedDossier.conflicts.some(item => item.key === "areaRaw"));
+assert.equal(mergedDossier.internalData.reference, "LOCAL-REF", "la combinación conserva la referencia interna local");
+assert.equal(mergedDossier.internalData.commercialStage, "first_contact", "la combinación conserva la etapa local en conflicto");
+assert.equal(mergedDossier.internalData.evidence.length, 2, "la combinación completa un registro de fuentes vacío");
+assert.equal(mergedDossier.internalData.fees.proposed, "1200000", "la combinación recupera honorarios no informados");
+assert.ok(mergedDossier.conflicts.some(item => item.key === "internalData.reference"));
+assert.ok(mergedDossier.conflicts.some(item => item.key === "internalData.checks.cadastral.status"));
+
+const versionTwoDossier = JSON.parse(JSON.stringify(dossierExport));
+versionTwoDossier.schemaVersion = 2;
+delete versionTwoDossier.internalData;
+const importedVersionTwo = tools.parseOpportunityDossierImport(versionTwoDossier);
+assert.equal(importedVersionTwo.ok, true);
+assert.equal(importedVersionTwo.version, 2);
+assert.equal(importedVersionTwo.internalData.reference, "");
 
 const legacyDossier = JSON.parse(JSON.stringify(dossierExport));
 legacyDossier.schemaVersion = 1;
@@ -255,4 +303,43 @@ const oversizedFieldDossier = JSON.parse(JSON.stringify(dossierExport));
 oversizedFieldDossier.sourceData.fields.nombre = "x".repeat(91);
 assert.equal(tools.parseOpportunityDossierImport(oversizedFieldDossier).ok, false);
 
-console.log("OK: cálculo, datos parciales, referencias, ficha imprimible, exportación v2, importación v1/v2, validación estructural y combinación con conflictos.");
+const internalValidation = tools.validateInternalDossier(dossierExport.internalData);
+assert.equal(internalValidation.ok, true);
+assert.equal(internalValidation.value.evidence.length, 2);
+const actionWithoutDate = tools.validateInternalDossier({ nextAction: "Llamar al desarrollador" });
+assert.equal(actionWithoutDate.ok, true);
+assert.match(actionWithoutDate.warnings.join(" "), /sin fecha/);
+const invalidSource = tools.validateInternalDossier({
+  evidence: [{ title: "Fuente insegura", classification: "public", url: "javascript:alert(1)", consultedAt: "2026-11-25", note: "" }]
+});
+assert.equal(invalidSource.ok, false);
+assert.match(invalidSource.errors.join(" "), /HTTPS/);
+const invalidEvidenceDate = tools.validateInternalDossier({
+  evidence: [{ title: "Documento", classification: "technical", url: "", consultedAt: "2026-02-31", note: "" }]
+});
+assert.equal(invalidEvidenceDate.ok, false);
+const missingFeeCurrency = tools.validateInternalDossier({ fees: { currency: "", proposed: "150000", agreed: "", invoiced: "", collected: "" } });
+assert.equal(missingFeeCurrency.ok, false);
+assert.match(missingFeeCurrency.errors.join(" "), /moneda/);
+const ambiguousFee = tools.validateInternalDossier({ fees: { currency: "ARS", proposed: "1.200", agreed: "", invoiced: "", collected: "" } });
+assert.equal(ambiguousFee.ok, false);
+const invalidStage = tools.validateInternalDossier({ commercialStage: "won-ish" });
+assert.equal(invalidStage.ok, false);
+const tooManyEvidence = tools.validateInternalDossier({ evidence: Array.from({ length: 9 }, (_, index) => ({ title: "Fuente " + index, classification: "public", url: "", consultedAt: "", note: "" })) });
+assert.equal(tooManyEvidence.ok, false);
+const invalidInternalExport = JSON.parse(JSON.stringify(dossierExport));
+invalidInternalExport.internalData.fees.currency = "";
+assert.equal(tools.parseOpportunityDossierImport(invalidInternalExport).ok, false);
+assert.throws(() => tools.buildOpportunityDossierExport({
+  fields: {},
+  calculationInput: {},
+  internalData: { fees: { currency: "", proposed: "150000", agreed: "", invoiced: "", collected: "" } },
+  exportedAt: "2026-11-25T10:40:00.000Z"
+}), /moneda/);
+const contactExclusion = tools.buildContactMessage({
+  fields: { nombre: "Contacto", perfil: "Propietario/a", interes: "Presentar un terreno o inmueble", zona: "Moreno" },
+  calculationInput: {}
+});
+assert.match(contactExclusion, /campos internos de originación, negociación y honorarios no forman parte/);
+
+console.log("OK: cálculo, ficha preliminar, expediente v3, fuentes, diligencia, honorarios, importación v1/v2/v3, combinación con conflictos y validación de seguridad.");
