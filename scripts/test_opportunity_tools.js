@@ -171,19 +171,82 @@ assert.match(dossierWithoutIndicators.status, /NO VERIFICADOS/);
 assert.doesNotMatch(JSON.stringify(dossierWithoutIndicators), /superficie edificable aprobada/);
 
 const dossierExport = tools.buildOpportunityDossierExport({
-  fields: { nombre: "Contacto de exportación", zona: "Moreno" },
-  calculationInput: {},
+  fields: {
+    nombre: "Contacto de exportación",
+    perfil: "Propietario/a",
+    interes: "Presentar un terreno o inmueble",
+    zona: "La Reja",
+    tipo: "Terreno",
+    ubicacion: "Cerca de la estación",
+    nomenclatura: "Circ. II, Secc. B, Quinta 14",
+    superficie: "1200",
+    documentacion: ["Plano o mensura"],
+    verificaciones: ["Zonificación e indicadores urbanísticos consultados"],
+    referencia_mapa: "RP25 · Darwin Passaponti · Av. San Fernando",
+    detalle: "Consulta de continuidad"
+  },
+  calculationInput: { areaRaw: "1200", fosRaw: "0,60", referenceRaw: "Certificado aportado" },
   generatedAt: "25 de noviembre de 2026, 07:40",
   exportedAt: "2026-11-25T10:40:00.000Z"
 });
 assert.equal(dossierExport.schema, "moreno.opportunity-dossier");
-assert.equal(dossierExport.schemaVersion, 1);
+assert.equal(dossierExport.schemaVersion, 2);
 assert.equal(dossierExport.status, "preliminary-unverified");
 assert.equal(dossierExport.exportedAt, "2026-11-25T10:40:00.000Z");
 assert.equal(Number.isNaN(Date.parse(dossierExport.exportedAt)), false, "la fecha de exportación debe ser ISO 8601");
 assert.equal(dossierExport.dossier.title, "Ficha preliminar de oportunidad");
 assert.equal(dossierExport.dossier.status, "BORRADOR · DATOS APORTADOS, NO VERIFICADOS");
-assert.equal(JSON.parse(JSON.stringify(dossierExport)).schemaVersion, 1);
+assert.equal(JSON.parse(JSON.stringify(dossierExport)).schemaVersion, 2);
+assert.deepEqual(dossierExport.sourceData.fields.documentacion, ["Plano o mensura"]);
+assert.equal(dossierExport.sourceData.calculationInput.fosRaw, "0,60");
 
+const importedDossier = tools.parseOpportunityDossierImport(JSON.stringify(dossierExport));
+assert.equal(importedDossier.ok, true);
+assert.equal(importedDossier.version, 2);
+assert.equal(importedDossier.fields.nombre, "Contacto de exportación");
+assert.deepEqual(importedDossier.fields.documentacion, ["Plano o mensura"]);
+assert.equal(importedDossier.calculationInput.areaRaw, "1200");
+assert.equal(importedDossier.calculationInput.fosRaw, "0,60");
 
-console.log("OK: 14 grupos de pruebas de cálculo, datos parciales, listas declaradas, URL, borrador, ficha imprimible y exportación JSON versionada.");
+const mergedDossier = tools.mergeImportedOpportunityData({
+  fields: { nombre: "Nombre local", zona: "Moreno", documentacion: [], verificaciones: [] },
+  calculationInput: { areaRaw: "900" }
+}, importedDossier);
+assert.equal(mergedDossier.fields.nombre, "Nombre local", "la combinación conserva el dato local en conflicto");
+assert.equal(mergedDossier.fields.zona, "Moreno", "la combinación no sobrescribe una zona local distinta");
+assert.equal(mergedDossier.fields.perfil, "Propietario/a", "la combinación completa campos vacíos");
+assert.deepEqual(mergedDossier.fields.documentacion, ["Plano o mensura"]);
+assert.equal(mergedDossier.calculationInput.areaRaw, "900");
+assert.equal(mergedDossier.calculationInput.fosRaw, "0,60");
+assert.ok(mergedDossier.conflicts.some(item => item.key === "nombre"));
+assert.ok(mergedDossier.conflicts.some(item => item.key === "zona"));
+assert.ok(mergedDossier.conflicts.some(item => item.key === "areaRaw"));
+
+const legacyDossier = JSON.parse(JSON.stringify(dossierExport));
+legacyDossier.schemaVersion = 1;
+delete legacyDossier.sourceData;
+const importedLegacy = tools.parseOpportunityDossierImport(legacyDossier);
+assert.equal(importedLegacy.ok, true);
+assert.equal(importedLegacy.version, 1);
+assert.equal(importedLegacy.fields.nombre, "Contacto de exportación");
+assert.equal(importedLegacy.fields.zona, "La Reja");
+assert.deepEqual(importedLegacy.fields.documentacion, ["Plano o mensura"]);
+assert.equal(importedLegacy.calculationInput.areaRaw, "1200");
+assert.equal(importedLegacy.warnings.length, 1);
+
+assert.equal(tools.parseOpportunityDossierImport("{mal json").ok, false);
+assert.equal(tools.parseOpportunityDossierImport(" ".repeat(1000001)).ok, false);
+const unsupportedDossier = JSON.parse(JSON.stringify(dossierExport));
+unsupportedDossier.schemaVersion = 9;
+assert.equal(tools.parseOpportunityDossierImport(unsupportedDossier).ok, false);
+const wrongStatusDossier = JSON.parse(JSON.stringify(dossierExport));
+wrongStatusDossier.status = "verified";
+assert.equal(tools.parseOpportunityDossierImport(wrongStatusDossier).ok, false);
+const malformedSourceDossier = JSON.parse(JSON.stringify(dossierExport));
+malformedSourceDossier.sourceData.fields.nombre = { unexpected: true };
+assert.equal(tools.parseOpportunityDossierImport(malformedSourceDossier).ok, false);
+const oversizedFieldDossier = JSON.parse(JSON.stringify(dossierExport));
+oversizedFieldDossier.sourceData.fields.nombre = "x".repeat(91);
+assert.equal(tools.parseOpportunityDossierImport(oversizedFieldDossier).ok, false);
+
+console.log("OK: cálculo, datos parciales, referencias, ficha imprimible, exportación v2, importación v1/v2, validación estructural y combinación con conflictos.");
