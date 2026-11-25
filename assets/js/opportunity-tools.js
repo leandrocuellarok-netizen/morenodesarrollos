@@ -172,11 +172,11 @@
     const calculation = calculatePreliminary(calculationInput);
     const internal = validateInternalDossier(data.internalData).value;
 
-    function makeSection(title, entries) {
+    function makeSection(title, entries, emptyLabel) {
       const rows = entries.map(function (entry) {
         return { label: entry[0], value: formatFieldValue(entry[1]) };
       }).filter(function (entry) { return Boolean(entry.value); });
-      if (!rows.length) rows.push({ label: "Información", value: "No informada por el contacto." });
+      if (!rows.length) rows.push({ label: "Información", value: emptyLabel || "No informada por el contacto." });
       return { title: title, rows: rows };
     }
 
@@ -261,7 +261,7 @@
       ["Próxima acción", internal.nextAction],
       ["Fecha de seguimiento", internal.followUpDate],
       ["Notas de negociación", internal.negotiationNotes]
-    ]));
+    ], "Sin datos internos registrados."));
     const evidenceRows = internal.evidence.map(function (entry, index) {
       return [
         "Fuente " + (index + 1),
