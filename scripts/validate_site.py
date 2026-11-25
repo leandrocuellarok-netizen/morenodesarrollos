@@ -245,6 +245,20 @@ def main() -> None:
                 errors.append("mapa-ia/index.html: falta la descarga GeoJSON de referencias visibles")
             if "QGIS u otros sistemas GIS" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar el uso y alcance de la exportación GeoJSON")
+            for required_source_markup in (
+                'id="map-verification-title"',
+                'href="https://mapas.moreno.gob.ar/"',
+                'href="https://arba.gov.ar/geoarba/inicio.asp"',
+                'href="https://www.moreno.gob.ar/catastro.php"',
+                'href="https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf"',
+                "anexo de junio de 2015",
+                "no confirma la normativa vigente",
+                "nomenclatura catastral",
+                "fecha de consulta"
+            ):
+                if required_source_markup not in page_source:
+                    errors.append(f"mapa-ia/index.html: falta fuente o control de verificación: {required_source_markup}")
+
             for required_markup in (
                 'href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css"',
                 'href="../assets/css/mapa-ia.css"',
@@ -319,7 +333,12 @@ def main() -> None:
                     ".map-contact-link",
                     "order: -1",
                     "order: 1",
-                    "height: 480px"
+                    "height: 480px",
+                    ".map-verification-heading",
+                    ".verification-source-grid",
+                    ".verification-caution",
+                    ".verification-checklist",
+                    "@media (max-width: 760px)"
                 ):
                     if required_style not in map_css:
                         errors.append(f"assets/css/mapa-ia.css: falta estilo requerido: {required_style}")
