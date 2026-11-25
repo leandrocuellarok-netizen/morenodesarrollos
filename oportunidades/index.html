@@ -79,7 +79,8 @@
         <div class="pipeline-kpi-grid" id="pipeline-metrics" aria-label="Indicadores de seguimiento"></div>
         <div class="pipeline-dashboard-actions">
           <button class="button dark" id="pipeline-download-summary" type="button" disabled>Descargar resumen agregado CSV ↗</button>
-          <span>Indicadores y honorarios por moneda · sin detalle de inmuebles · texto protegido frente a fórmulas</span>
+          <button class="button" id="pipeline-download-agenda" type="button" disabled>Descargar agenda de seguimiento CSV ↗</button>
+          <span>Vencidas, próximos 7 días y registros sin fecha o acción · sin datos de contacto</span>
         </div>
         <div class="pipeline-report-grid">
           <section class="pipeline-report-panel" aria-labelledby="pipeline-finance-title">
@@ -283,6 +284,7 @@
 <section class="opportunity-dossier-print" id="opportunity-dossier-print" hidden aria-label="Ficha preliminar de oportunidad para impresión"></section>
 <script src="../assets/js/opportunity-tools.js"></script>
 <script src="../assets/js/pipeline-dashboard.js"></script>
+<script src="../assets/js/pipeline-agenda.js"></script>
 <script src="../assets/js/pipeline-dashboard-ui.js"></script>
 <script>
 "use strict";
