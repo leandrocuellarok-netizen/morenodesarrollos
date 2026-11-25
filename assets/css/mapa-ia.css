@@ -582,7 +582,7 @@
     min-height: 76px;
     padding: 12px 10px;
   }
-  .map-atlas-stat:nth-of-type(odd) {
+  .map-atlas-stat:nth-of-type(even) {
     border-left: 0;
   }
   .map-legend {
