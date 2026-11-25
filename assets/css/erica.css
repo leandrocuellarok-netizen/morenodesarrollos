@@ -420,3 +420,83 @@ body{background:var(--paper);color:var(--ink)}
   .dossier-disclaimers p{margin:0 0 2.5mm;color:#5e6058;font:7.5pt/1.5 Arial,sans-serif}
   .dossier-disclaimers .dossier-local-note-print{margin-top:4mm;color:#77766e;font-style:italic}
 }
+
+
+/* MORENO: importación local y combinación explícita de expedientes JSON */
+.dossier-import{
+  margin:0 0 25px;
+  padding:19px 20px;
+  border:1px solid #c7c1b4;
+  border-left:3px solid var(--rust);
+  background:#f2efe6;
+}
+.dossier-import-copy h3{
+  margin:0 0 7px;
+  color:var(--ink);
+  font:400 23px/1.12 var(--serif);
+}
+.dossier-import-copy p{
+  max-width:680px;
+  margin:0;
+  color:#66685f;
+  font:11px/1.7 var(--sans);
+}
+.dossier-import-controls{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:9px 13px;
+  align-items:end;
+  margin-top:15px;
+}
+.dossier-import-controls label{
+  grid-column:1/-1;
+  color:#55584f;
+  font:600 9px/1.4 var(--sans);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.dossier-import-controls input{
+  min-width:0;
+  width:100%;
+  min-height:44px;
+  padding:9px;
+  border:1px solid #c7c1b4;
+  background:#fbfaf6;
+  color:var(--ink);
+  font:11px/1.4 var(--sans);
+}
+.dossier-import-controls input:focus-visible,
+.dossier-import-actions .button:focus-visible,
+.dossier-import-controls .button:focus-visible{
+  outline:2px solid var(--rust);
+  outline-offset:3px;
+}
+.dossier-import-status{
+  margin:12px 0 0;
+  color:#696b62;
+  font:10px/1.65 var(--sans);
+  overflow-wrap:anywhere;
+}
+.dossier-import-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:13px;
+}
+.dossier-import-actions[hidden]{display:none!important}
+.dossier-import-actions .button,
+.dossier-import-controls .button{
+  min-height:44px;
+  justify-content:center;
+  cursor:pointer;
+  font:600 9px/1.4 var(--sans);
+}
+@media(max-width:600px){
+  .dossier-import{padding:16px 13px}
+  .dossier-import-controls{grid-template-columns:1fr}
+  .dossier-import-controls label{grid-column:auto}
+  .dossier-import-controls .button,
+  .dossier-import-actions{width:100%}
+  .dossier-import-actions{flex-direction:column}
+  .dossier-import-actions .button{width:100%;justify-content:space-between}
+}
