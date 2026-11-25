@@ -213,3 +213,12 @@ La secuencia de control exige nomenclatura catastral y plano de mensura, certifi
 - Si fuente, fecha u observación contienen valores no vacíos diferentes en ambos dispositivos, el sistema detecta el conflicto y conserva íntegramente el registro local. No sobrescribe ni combina silenciosamente datos contradictorios.
 - El resumen de importación informa registros nuevos, combinados, conflictos y elementos ignorados. Para resolver un conflicto, revisar ambos archivos exportados y actualizar manualmente la ficha correspondiente.
 - La bitácora continúa siendo un registro interno de trabajo: importar o combinar datos no acredita autenticidad, vigencia, titularidad, disponibilidad ni cumplimiento urbanístico.
+
+
+### Ficha preliminar imprimible de oportunidades
+
+- Desde la vista previa del formulario de `/oportunidades/`, la persona puede generar una ficha para imprimir o guardar como PDF desde el navegador.
+- La ficha reúne únicamente los campos aportados, las listas declaradas y, cuando corresponde, el resultado aritmético preliminar de FOS/FOT.
+- Incluye un estado visible de **borrador / datos no verificados** y una lista general de aspectos que requieren revisión independiente.
+- La salida se construye en el navegador mediante nodos de texto; no se inserta contenido del formulario como HTML, no se transmite información al sitio y no se crea un expediente en el servidor.
+- La ficha no acredita identificación parcelaria, titularidad, disponibilidad, vigencia normativa, capacidad edificable, tasación ni factibilidad. El botón solo abre el diálogo de impresión del navegador; la persona decide si imprime o guarda como PDF.
