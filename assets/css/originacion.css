@@ -137,6 +137,16 @@
 }
 .originacion-fees-grid .form-field { min-width: 0; }
 .originacion-fees-grid .form-field:first-child { grid-column: 1 / -1; max-width: 260px; }
+.originacion-export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.originacion-export-actions .button {
+  min-height: 46px;
+  justify-content: space-between;
+}
 .originacion-status {
   min-height: 1.5em;
   margin: 16px 0 0;
@@ -163,6 +173,10 @@
   .originacion-evidence-row .form-field.full { grid-column: auto; }
   .originacion-fees-grid .form-field:first-child { grid-column: auto; max-width: none; }
   .originacion-evidence-actions,
-  .originacion-evidence-actions .button { width: 100%; }
-  .originacion-evidence-actions .button { justify-content: space-between; }
+  .originacion-evidence-actions .button,
+  .originacion-export-actions,
+  .originacion-export-actions .button { width: 100%; }
+  .originacion-evidence-actions .button,
+  .originacion-export-actions .button { justify-content: space-between; }
+  .originacion-export-actions { flex-direction: column; }
 }
