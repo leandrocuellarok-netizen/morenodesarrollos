@@ -240,13 +240,251 @@
   }
 
 
+
+  const dossierFieldLimits = Object.freeze({
+    nombre: 90, perfil: 60, interes: 90, zona: 120, tipo: 60,
+    ubicacion: 180, nomenclatura: 120, superficie: 60,
+    referencia_mapa: 180, detalle: 1200
+  });
+  const dossierFieldLabels = Object.freeze({
+    nombre: "nombre", perfil: "perfil", interes: "interés", zona: "zona",
+    tipo: "tipo de oportunidad", ubicacion: "ubicación",
+    nomenclatura: "nomenclatura catastral", superficie: "superficie",
+    referencia_mapa: "referencia territorial", detalle: "contexto"
+  });
+  const dossierSelectOptions = Object.freeze({
+    perfil: ["Propietario/a", "Inversor/a", "Profesional o empresa", "Otro"],
+    interes: ["Presentar un terreno o inmueble", "Analizar un proyecto en marcha", "Explorar una inversión", "Buscar un socio o alianza", "Ofrecer servicios profesionales", "Todavía estoy explorando"],
+    tipo: ["No definido", "Terreno", "Inmueble existente", "Proyecto en desarrollo", "Inversión o alianza", "Servicios profesionales"]
+  });
+  const dossierChecklistOptions = Object.freeze({
+    documentacion: ["Ubicación o dirección", "Partida o nomenclatura catastral", "Plano o mensura", "Certificado urbanístico o zonificación", "Antecedentes dominiales (sin adjuntar)", "Información sobre servicios"],
+    verificaciones: ["Identificación catastral consultada", "Zonificación e indicadores urbanísticos consultados", "Titularidad o antecedentes dominiales consultados", "Servicios y accesos consultados", "Restricciones hidráulicas o ambientales consultadas", "Consultas municipales o prefactibilidades"]
+  });
+  const dossierCalculationLimits = Object.freeze({
+    areaRaw: 18, fosRaw: 18, fotRaw: 18, referenceRaw: 180
+  });
+
+  function isRecord(value) {
+    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  }
+
+  function sanitizeImportedFields(source, warnings) {
+    if (!isRecord(source)) throw new Error("La sección de datos del expediente no tiene un formato válido.");
+    const result = {};
+    Object.keys(dossierFieldLimits).forEach(function (key) {
+      if (!Object.prototype.hasOwnProperty.call(source, key) || source[key] == null) return;
+      if (typeof source[key] !== "string") throw new Error("El campo " + dossierFieldLabels[key] + " debe ser texto.");
+      const value = source[key].trim();
+      if (value.length > dossierFieldLimits[key]) throw new Error("El campo " + dossierFieldLabels[key] + " supera el largo permitido.");
+      if (dossierSelectOptions[key] && value && !dossierSelectOptions[key].includes(value)) {
+        warnings.push("Se omitió un valor no reconocido en " + dossierFieldLabels[key] + ".");
+        return;
+      }
+      result[key] = value;
+    });
+    Object.keys(dossierChecklistOptions).forEach(function (key) {
+      if (!Object.prototype.hasOwnProperty.call(source, key) || source[key] == null) {
+        result[key] = [];
+        return;
+      }
+      if (!Array.isArray(source[key]) || source[key].length > 12) {
+        throw new Error("La lista " + key + " no tiene un formato válido.");
+      }
+      const allowed = dossierChecklistOptions[key];
+      const selected = [];
+      source[key].forEach(function (item) {
+        if (typeof item !== "string" || item.length > 120) {
+          throw new Error("La lista " + key + " contiene un valor inválido.");
+        }
+        const value = item.trim();
+        if (allowed.includes(value) && !selected.includes(value)) selected.push(value);
+        else if (value && !allowed.includes(value)) warnings.push("Se omitió una opción no reconocida de " + key + ".");
+      });
+      result[key] = selected;
+    });
+    return result;
+  }
+
+  function sanitizeImportedCalculation(source) {
+    if (!isRecord(source)) throw new Error("Los datos de cálculo no tienen un formato válido.");
+    const result = {};
+    Object.keys(dossierCalculationLimits).forEach(function (key) {
+      if (!Object.prototype.hasOwnProperty.call(source, key) || source[key] == null) return;
+      if (typeof source[key] !== "string") throw new Error("El dato de cálculo " + key + " debe ser texto.");
+      const value = source[key].trim();
+      if (value.length > dossierCalculationLimits[key]) throw new Error("El dato de cálculo " + key + " supera el largo permitido.");
+      result[key] = value;
+    });
+    return result;
+  }
+
+  function extractLegacyDossierData(dossier) {
+    const fields = {};
+    const calculationInput = {};
+    const fieldRows = {
+      "Origen y contacto": {
+        "Nombre": "nombre", "Perfil declarado": "perfil", "Interés declarado": "interes",
+        "Referencia territorial de origen (no parcelaria)": "referencia_mapa"
+      },
+      "Inmueble o proyecto": {
+        "Localidad o zona declarada": "zona", "Tipo de oportunidad declarado": "tipo",
+        "Ubicación o referencia aportada": "ubicacion", "Partida o nomenclatura aportada": "nomenclatura",
+        "Superficie aproximada declarada": "superficie"
+      },
+      "Documentación y consultas declaradas": {
+        "Documentación indicada como disponible": "documentacion",
+        "Consultas o verificaciones declaradas": "verificaciones"
+      },
+      "Contexto adicional aportado": { "Descripción": "detalle" }
+    };
+    const calculationRows = {
+      "Superficie ingresada para cálculo (m²)": "areaRaw",
+      "FOS aportado": "fosRaw",
+      "FOT aportado": "fotRaw",
+      "Fuente o referencia de indicadores aportada": "referenceRaw"
+    };
+    dossier.sections.forEach(function (section) {
+      const fieldMap = fieldRows[section.title];
+      const isCalculationSection = section.title === "Datos urbanísticos aportados";
+      if (!fieldMap && !isCalculationSection) return;
+      section.rows.forEach(function (row) {
+        const value = row.value.trim();
+        if (!value || value === "No informada por el contacto.") return;
+        if (isCalculationSection && calculationRows[row.label]) {
+          calculationInput[calculationRows[row.label]] = value;
+        } else if (fieldMap && fieldMap[row.label]) {
+          const key = fieldMap[row.label];
+          fields[key] = key === "documentacion" || key === "verificaciones"
+            ? value.split(/\s*;\s*/).filter(Boolean)
+            : value;
+        }
+      });
+    });
+    return { fields: fields, calculationInput: calculationInput };
+  }
+
+  function parseOpportunityDossierImport(raw) {
+    let payload;
+    if (typeof raw === "string") {
+      if (raw.length > 1000000) return { ok: false, error: "El archivo supera el límite de 1 MB." };
+      try {
+        payload = JSON.parse(raw);
+      } catch (error) {
+        return { ok: false, error: "El archivo no contiene JSON válido." };
+      }
+    } else {
+      payload = raw;
+    }
+    try {
+      if (!isRecord(payload) || payload.schema !== "moreno.opportunity-dossier") {
+        throw new Error("El archivo no corresponde a un expediente MORENO.");
+      }
+      if (payload.schemaVersion !== 1 && payload.schemaVersion !== 2) {
+        throw new Error("La versión del expediente no es compatible. Se admiten las versiones 1 y 2.");
+      }
+      if (payload.status !== "preliminary-unverified") {
+        throw new Error("El expediente no tiene el estado preliminar esperado.");
+      }
+      const dossier = payload.dossier;
+      if (!isRecord(dossier) || dossier.title !== "Ficha preliminar de oportunidad" ||
+          dossier.status !== "BORRADOR · DATOS APORTADOS, NO VERIFICADOS" ||
+          !Array.isArray(dossier.sections) || dossier.sections.length > 12) {
+        throw new Error("La ficha incluida en el expediente está incompleta o no es compatible.");
+      }
+      dossier.sections.forEach(function (section) {
+        if (!isRecord(section) || typeof section.title !== "string" ||
+            !Array.isArray(section.rows) || section.rows.length > 20) {
+          throw new Error("Una sección del expediente tiene una estructura inválida.");
+        }
+        section.rows.forEach(function (row) {
+          if (!isRecord(row) || typeof row.label !== "string" ||
+              typeof row.value !== "string" || row.label.length > 200 || row.value.length > 3000) {
+            throw new Error("Una fila del expediente tiene una estructura inválida.");
+          }
+        });
+      });
+      if (typeof payload.exportedAt !== "string" || !Number.isFinite(Date.parse(payload.exportedAt))) {
+        throw new Error("La fecha de exportación no es válida.");
+      }
+      const warnings = [];
+      let sourceData;
+      if (payload.schemaVersion === 2) {
+        if (!isRecord(payload.sourceData)) throw new Error("El expediente versión 2 no incluye los datos estructurados necesarios para recuperarlo.");
+        sourceData = payload.sourceData;
+      } else {
+        sourceData = extractLegacyDossierData(dossier);
+        warnings.push("Archivo versión 1: los campos se recuperaron de la ficha legible. Revisá especialmente las listas y los datos que no aparecen en la impresión.");
+      }
+      const fields = sanitizeImportedFields(sourceData.fields, warnings);
+      const calculationInput = sanitizeImportedCalculation(sourceData.calculationInput);
+      return { ok: true, version: payload.schemaVersion, exportedAt: payload.exportedAt, fields: fields, calculationInput: calculationInput, warnings: warnings };
+    } catch (error) {
+      return { ok: false, error: error && error.message ? error.message : "No se pudo validar el expediente." };
+    }
+  }
+
+  function mergeImportedOpportunityData(current, imported) {
+    const local = current || {};
+    const incoming = imported || {};
+    const currentFields = local.fields || {};
+    const incomingFields = incoming.fields || {};
+    const currentCalculation = local.calculationInput || {};
+    const incomingCalculation = incoming.calculationInput || {};
+    const fields = {};
+    const calculationInput = {};
+    const conflicts = [];
+
+    function mergeValue(key, label, currentValue, incomingValue) {
+      const currentIsArray = Array.isArray(currentValue);
+      const incomingIsArray = Array.isArray(incomingValue);
+      const currentEmpty = currentIsArray ? currentValue.length === 0 : String(currentValue == null ? "" : currentValue).trim() === "";
+      const incomingEmpty = incomingIsArray ? incomingValue.length === 0 : String(incomingValue == null ? "" : incomingValue).trim() === "";
+      const same = currentIsArray && incomingIsArray
+        ? JSON.stringify(currentValue) === JSON.stringify(incomingValue)
+        : String(currentValue == null ? "" : currentValue) === String(incomingValue == null ? "" : incomingValue);
+      if (currentEmpty) return incomingValue == null ? (currentIsArray ? [] : "") : incomingValue;
+      if (incomingEmpty || same) return currentValue;
+      conflicts.push({ key: key, label: label, current: currentValue, imported: incomingValue });
+      return currentValue;
+    }
+
+    Object.keys(dossierFieldLimits).concat(Object.keys(dossierChecklistOptions)).forEach(function (key) {
+      fields[key] = mergeValue(key, dossierFieldLabels[key] || key, currentFields[key], incomingFields[key]);
+    });
+    Object.keys(dossierCalculationLimits).forEach(function (key) {
+      calculationInput[key] = mergeValue(key, key, currentCalculation[key], incomingCalculation[key]);
+    });
+    return { fields: fields, calculationInput: calculationInput, conflicts: conflicts };
+  }
+
+  function copyOpportunitySourceData(fields, calculationInput) {
+    const sourceFields = {};
+    const sourceCalculation = {};
+    const inputFields = isRecord(fields) ? fields : {};
+    const inputCalculation = isRecord(calculationInput) ? calculationInput : {};
+    Object.keys(dossierFieldLimits).forEach(function (key) {
+      if (typeof inputFields[key] === "string") sourceFields[key] = inputFields[key];
+    });
+    Object.keys(dossierChecklistOptions).forEach(function (key) {
+      if (Array.isArray(inputFields[key])) {
+        sourceFields[key] = inputFields[key].filter(function (item) { return typeof item === "string"; }).slice(0, 12);
+      }
+    });
+    Object.keys(dossierCalculationLimits).forEach(function (key) {
+      if (typeof inputCalculation[key] === "string") sourceCalculation[key] = inputCalculation[key];
+    });
+    return { fields: sourceFields, calculationInput: sourceCalculation };
+  }
+
   function buildOpportunityDossierExport(input) {
     const data = input || {};
     return {
       schema: "moreno.opportunity-dossier",
-      schemaVersion: 1,
+      schemaVersion: 2,
       exportedAt: String(data.exportedAt || ""),
       status: "preliminary-unverified",
+      sourceData: copyOpportunitySourceData(data.fields, data.calculationInput),
       dossier: buildOpportunityDossier(data)
     };
   }
@@ -263,6 +501,8 @@
     buildContactMessage: buildContactMessage,
     buildOpportunityDossier: buildOpportunityDossier,
     buildOpportunityDossierExport: buildOpportunityDossierExport,
+    parseOpportunityDossierImport: parseOpportunityDossierImport,
+    mergeImportedOpportunityData: mergeImportedOpportunityData,
     buildWhatsAppUrl: buildWhatsAppUrl
   };
 });
