@@ -405,7 +405,7 @@
         });
       });
       if (typeof payload.exportedAt !== "string" ||
-          !/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$/.test(payload.exportedAt) ||
+          !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(payload.exportedAt) ||
           !Number.isFinite(Date.parse(payload.exportedAt)) ||
           new Date(payload.exportedAt).toISOString() !== payload.exportedAt) {
         throw new Error("La fecha de exportación debe ser una fecha ISO 8601 UTC válida.");
