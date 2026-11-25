@@ -27,6 +27,18 @@ const kindLabel = {
   land: "Prospección de suelo"
 };
 
+function getSharedReferenceId(search, items) {
+  const parameters = new URLSearchParams(String(search || ""));
+  const id = parameters.get("ref");
+  return (items || []).some(item => item.id === id) ? id : null;
+}
+
+function buildReferenceUrl(baseUrl, referenceId) {
+  const url = new URL(String(baseUrl));
+  url.searchParams.set("ref", String(referenceId));
+  return url.toString();
+}
+
 function filterReferences(items, options) {
   const settings = options || {};
   const query = String(settings.query || "").toLocaleLowerCase("es-AR").trim();
@@ -135,6 +147,10 @@ function initMapPage(doc) {
   const markers = new Map();
   let map = null;
   let visibleItems = all;
+  let selectedReferenceId = getSharedReferenceId(
+    doc.defaultView && doc.defaultView.location ? doc.defaultView.location.search : "",
+    all
+  );
 
   function showFallback(message) {
     const fallback = doc.createElement("p");
@@ -179,14 +195,28 @@ function initMapPage(doc) {
     const note = doc.createElement("p");
     note.textContent = "Área/corredor aproximado. No representa una parcela ni acredita disponibilidad.";
     box.append(note);
+    const shareLink = doc.createElement("a");
+    shareLink.href = buildReferenceUrl(doc.defaultView.location.href, item.id);
+    shareLink.target = "_blank";
+    shareLink.rel = "noopener noreferrer";
+    shareLink.textContent = "Abrir ficha compartible ↗";
+    box.append(shareLink);
     return box;
   }
 
-  let selectedReferenceId = null;
+  function updateShareUrl(referenceId) {
+    const view = doc.defaultView;
+    if (!view || !view.location || !view.history || typeof view.history.replaceState !== "function") return;
+    const url = new view.URL(view.location.href);
+    if (referenceId) url.searchParams.set("ref", referenceId);
+    else url.searchParams.delete("ref");
+    view.history.replaceState(null, "", url.toString());
+  }
 
   function setActiveReference(item, options) {
     const settings = options || {};
     selectedReferenceId = item.id;
+    updateShareUrl(item.id);
     markers.forEach((marker, id) => {
       marker.getElement().classList.toggle("is-selected", id === item.id);
     });
@@ -224,7 +254,10 @@ function initMapPage(doc) {
       const card = doc.createElement("details");
       card.className = "map-item";
       card.dataset.mapItem = item.id;
-      if (selectedReferenceId === item.id) card.classList.add("is-active");
+      if (selectedReferenceId === item.id) {
+        card.classList.add("is-active");
+        card.open = true;
+      }
       const summary = doc.createElement("summary");
       summary.addEventListener("click", () => setActiveReference(item));
       const title = doc.createElement("strong");
@@ -275,6 +308,14 @@ function initMapPage(doc) {
         focusButton.addEventListener("click", () => focusItem(item));
         body.append(focusButton);
       }
+      const shareLink = doc.createElement("a");
+      shareLink.className = "map-share-link";
+      shareLink.href = buildReferenceUrl(doc.defaultView.location.href, item.id);
+      shareLink.target = "_blank";
+      shareLink.rel = "noopener noreferrer";
+      shareLink.setAttribute("aria-label", "Abrir enlace directo a " + item.name + " en una pestaña nueva");
+      shareLink.textContent = "Abrir ficha compartible ↗";
+      body.append(shareLink);
       card.append(body);
       target.append(card);
     });
@@ -291,6 +332,7 @@ function initMapPage(doc) {
     geoJsonExportButton.disabled = shown.length === 0;
     if (selectedReferenceId && !shown.some(item => item.id === selectedReferenceId)) {
       selectedReferenceId = null;
+      updateShareUrl(null);
       markers.forEach(marker => marker.getElement().classList.remove("is-selected"));
     }
     markers.forEach((marker, id) => {
@@ -301,7 +343,10 @@ function initMapPage(doc) {
     });
     makeCards(shown.filter(item => item.type === "locality"), localityList);
     makeCards(shown.filter(item => item.type === "opportunity"), opportunityList);
-    statusElement.textContent = shown.length + " referencias visibles · capa exploratoria";
+    const selectedItem = all.find(item => item.id === selectedReferenceId);
+    statusElement.textContent = selectedItem
+      ? "Enlace directo · " + selectedItem.name
+      : shown.length + " referencias visibles · capa exploratoria";
   }
 
   function exportVisibleCsv() {
@@ -440,6 +485,8 @@ function initMapPage(doc) {
           console.info("Límite municipal no cargado; el mapa continúa disponible.", error);
         });
         render();
+        const sharedItem = all.find(item => item.id === selectedReferenceId);
+        if (sharedItem) focusItem(sharedItem);
       });
     } catch (error) {
       map = null;
@@ -459,6 +506,8 @@ function initMapPage(doc) {
     doc.getElementById("search").value = "";
     doc.getElementById("category").value = "all";
     doc.getElementById("evidence-filter").value = "all";
+    selectedReferenceId = null;
+    updateShareUrl(null);
     render();
     if (map) map.flyTo({ center: [-58.7914, -34.6508], zoom: 12 });
   });
@@ -466,6 +515,9 @@ function initMapPage(doc) {
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson };
+  module.exports = {
+    localities, opportunities, all, filterReferences, buildCsv, buildGeoJson,
+    getSharedReferenceId, buildReferenceUrl
+  };
 }
 if (typeof document !== "undefined") initMapPage(document);
