@@ -324,7 +324,7 @@ assert.match(mapPage, /ante diferencias, no se sobrescriben automáticamente/i);
 assert.ok(styles.includes(".map-review-toolbar-actions"));
 assert.ok(styles.includes(".map-review-import-note"));
 
-console.log("OK: pruebas del motor MapLibre, datos territoriales, bitácora v2, importación con detección de conflictos y exportaciones CSV/GeoJSON del Mapa IA.");
+
 
 
 const territorialBrief = buildTerritorialBrief(
@@ -369,3 +369,5 @@ assert.ok(source.includes('link.download = "moreno-ficha-prospeccion-" + item.id
 assert.ok(mapPage.includes("Cada tesis del inventario incluye una ficha editorial descargable"));
 assert.ok(styles.includes(".map-brief-intro"));
 assert.ok(styles.includes(".map-brief-button:focus-visible"));
+
+console.log("OK: pruebas del Mapa IA, exportaciones cartográficas y fichas editoriales imprimibles.");

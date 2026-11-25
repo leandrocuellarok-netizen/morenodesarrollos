@@ -253,6 +253,8 @@ def main() -> None:
             ):
                 if required_atlas_markup not in page_source:
                     errors.append(f"mapa-ia/index.html: falta el índice cartográfico: {required_atlas_markup}")
+            if "ficha editorial descargable" not in page_source:
+                errors.append("mapa-ia/index.html: falta explicar la ficha editorial descargable para desarrolladores")
             if 'id="export-geojson"' not in page_source:
                 errors.append("mapa-ia/index.html: falta la descarga GeoJSON de referencias visibles")
             for review_id in ('id="export-review"', 'id="review-status"'):

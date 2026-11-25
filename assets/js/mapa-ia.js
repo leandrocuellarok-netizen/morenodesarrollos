@@ -480,7 +480,7 @@ function buildTerritorialBriefHtml(brief) {
     : "<span>Sin enlace de fuente registrado.</span>";
   const diligenceRows = (Array.isArray(brief.diligence) ? brief.diligence : []).map(task =>
     "<tr><th>" + escapeTerritorialHtml(task.label) +
-    '<\\/th><td><span class="write-line"></span></td><td><span class="date-line"></span></td></tr>'
+    '</th><td><span class="write-line"></span></td><td><span class="date-line"></span></td></tr>'
   ).join("");
   const dataRows = (Array.isArray(brief.dataToComplete) ? brief.dataToComplete : []).map(label =>
     '<li><span class="empty-box" aria-hidden="true"></span>' + escapeTerritorialHtml(label) + "</li>"
@@ -519,7 +519,7 @@ function buildTerritorialBriefHtml(brief) {
     "a{color:#79523d;text-decoration-thickness:1px;text-underline-offset:3px}" +
     "@media(max-width:700px){body{padding:0}.sheet{min-height:0;padding:22px}.grid{grid-template-columns:1fr}h1{font-size:30px}.topline{font-size:8px}}" +
     "@media print{body{padding:0;background:#fff}.sheet{max-width:none;min-height:0;margin:0;padding:0;box-shadow:none}.print-control{display:none}a{color:inherit;text-decoration:none}}" +
-    "</style></head><body><button class="print-control" type="button" onclick="window.print()">Imprimir / guardar como PDF</button>" +
+    '</style></head><body><button class="print-control" type="button" onclick="window.print()">Imprimir / guardar como PDF</button>' +
     '<main class="sheet"><div class="topline"><strong>MORENO · INTELIGENCIA TERRITORIAL</strong><span>Ficha de prospección · ' + dateLabel + "</span></div>" +
     '<p class="eyebrow" style="margin:18px 0 0">Dossier de investigación · ' + escapeTerritorialHtml(reference.id) + "</p>" +
     "<h1>" + escapeTerritorialHtml(reference.name) + "</h1>" +
