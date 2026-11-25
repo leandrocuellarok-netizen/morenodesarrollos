@@ -13,6 +13,16 @@ assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapL
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
 assert.ok(source.includes("attributionControl: { compact: false }"), "la atribución OSM permanece visible también en móvil");
 assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece el enlace para reportar problemas cartográficos");
+const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
+assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye la mesa de verificación documental");
+assert.ok(mapPage.includes('href="https://mapas.moreno.gob.ar/"'), "se enlaza el visor cartográfico oficial de Moreno");
+assert.ok(mapPage.includes('href="https://arba.gov.ar/geoarba/inicio.asp"'), "se enlaza GeoARBA como fuente provincial");
+assert.ok(mapPage.includes('href="https://www.moreno.gob.ar/catastro.php"'), "se enlaza la Dirección de Catastro municipal");
+assert.ok(mapPage.includes('href="https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf"'), "se conserva el plano municipal histórico como antecedente");
+assert.match(mapPage, /anexo de junio de 2015[\s\S]*no confirma la normativa vigente/i, "el plano histórico advierte que no acredita normativa actual");
+assert.match(mapPage, /nomenclatura catastral[\s\S]*certificado o constancia urbanística vigente/i, "la secuencia exige individualización y normativa actual");
+assert.match(mapPage, /organismo o profesional consultado, documento, fecha de consulta/i, "la ficha exige trazabilidad documental");
+
 assert.ok(source.includes("function setActiveReference(item, options)"), "la selección sincroniza mapa e inventario");
 assert.ok(source.includes("function getSharedReferenceId(search, items)"), "las referencias admiten enlaces directos");
 assert.ok(source.includes("function buildReferenceUrl(baseUrl, referenceId)"), "cada ficha puede construir una URL compartible");
