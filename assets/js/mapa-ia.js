@@ -32,9 +32,36 @@ const reviewTasks = Object.freeze([
   Object.freeze({ id: "planning", label: "Normativa vigente, usos e indicadores urbanísticos" }),
   Object.freeze({ id: "legal", label: "Titularidad, antecedentes y restricciones" }),
   Object.freeze({ id: "feasibility", label: "Servicios, accesos y condiciones ambientales e hidráulicas" }),
-  Object.freeze({ id: "traceability", label: "Fuente, documento, fecha y responsable registrados" })
+  Object.freeze({ id: "traceability", label: "Trazabilidad documental y fecha de consulta" })
 ]);
-const REVIEW_STORAGE_KEY = "moreno-map-review-v1";
+const REVIEW_STORAGE_KEY = "moreno-map-review-v2";
+const LEGACY_REVIEW_STORAGE_KEY = "moreno-map-review-v1";
+
+function isValidReviewDate(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value || ""));
+  if (!match) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day;
+}
+
+function normalizeReviewRecord(saved) {
+  if (saved === true) {
+    return { completed: false, legacy_marked: true, source_document: "", consulted_at: "", note: "" };
+  }
+  if (!saved || typeof saved !== "object" || Array.isArray(saved)) return null;
+  const source = String(saved.source_document == null ? "" : saved.source_document).trim().slice(0, 240);
+  const consultedAt = isValidReviewDate(saved.consulted_at) ? String(saved.consulted_at) : "";
+  const note = String(saved.note == null ? "" : saved.note).trim().slice(0, 500);
+  const completed = saved.completed === true && source.length >= 4 && Boolean(consultedAt);
+  const legacyMarked = !completed && (saved.legacy_marked === true || saved.completed === true);
+  if (!completed && !legacyMarked && !source && !consultedAt && !note) return null;
+  return { completed, legacy_marked: legacyMarked, source_document: source, consulted_at: consultedAt, note };
+}
 
 function normalizeReviewState(raw, items) {
   const allowedIds = new Set((items || opportunities).map(item => item.id));
@@ -45,8 +72,11 @@ function normalizeReviewState(raw, items) {
     const saved = raw[referenceId];
     if (!saved || typeof saved !== "object" || Array.isArray(saved)) return;
     const tasks = {};
-    reviewTasks.forEach(task => { tasks[task.id] = saved[task.id] === true; });
-    if (reviewTasks.some(task => tasks[task.id])) normalized[referenceId] = tasks;
+    reviewTasks.forEach(task => {
+      const record = normalizeReviewRecord(saved[task.id]);
+      if (record) tasks[task.id] = record;
+    });
+    if (Object.keys(tasks).length) normalized[referenceId] = tasks;
   });
   return normalized;
 }
@@ -54,8 +84,14 @@ function normalizeReviewState(raw, items) {
 function readReviewState(storage, items) {
   if (!storage || typeof storage.getItem !== "function") return {};
   try {
-    const raw = storage.getItem(REVIEW_STORAGE_KEY);
-    return raw ? normalizeReviewState(JSON.parse(raw), items) : {};
+    const current = storage.getItem(REVIEW_STORAGE_KEY);
+    if (current) return normalizeReviewState(JSON.parse(current), items);
+  } catch (error) {
+    // Si la versión actual está dañada, se intenta recuperar la marca anterior.
+  }
+  try {
+    const legacy = storage.getItem(LEGACY_REVIEW_STORAGE_KEY);
+    return legacy ? normalizeReviewState(JSON.parse(legacy), items) : {};
   } catch (error) {
     return {};
   }
@@ -65,32 +101,50 @@ function writeReviewState(storage, state, items) {
   if (!storage || typeof storage.setItem !== "function") return false;
   try {
     storage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(normalizeReviewState(state, items)));
+    if (typeof storage.removeItem === "function") {
+      try { storage.removeItem(LEGACY_REVIEW_STORAGE_KEY); } catch (error) {}
+    }
     return true;
   } catch (error) {
     return false;
   }
 }
 
-function updateReviewState(state, referenceId, taskId, completed, items) {
+function updateReviewState(state, referenceId, taskId, completed, items, details) {
   const allowedItems = items || opportunities;
   if (!allowedItems.some(item => item.id === referenceId) ||
       !reviewTasks.some(task => task.id === taskId)) {
     return normalizeReviewState(state, allowedItems);
   }
   const next = normalizeReviewState(state, allowedItems);
-  if (!next[referenceId]) {
-    next[referenceId] = {};
-    reviewTasks.forEach(task => { next[referenceId][task.id] = false; });
+  if (!next[referenceId]) next[referenceId] = {};
+  const previous = next[referenceId][taskId] || {};
+  const supplied = details && typeof details === "object" ? details : {};
+  const source = String(supplied.source_document == null ? previous.source_document || "" : supplied.source_document).trim().slice(0, 240);
+  const dateValue = supplied.consulted_at == null ? previous.consulted_at || "" : supplied.consulted_at;
+  const consultedAt = isValidReviewDate(dateValue) ? String(dateValue) : "";
+  const note = String(supplied.note == null ? previous.note || "" : supplied.note).trim().slice(0, 500);
+  const isComplete = completed === true && source.length >= 4 && Boolean(consultedAt);
+  const legacyMarked = !isComplete && previous.legacy_marked === true;
+  if (isComplete || legacyMarked || source || consultedAt || note) {
+    next[referenceId][taskId] = {
+      completed: isComplete,
+      legacy_marked: legacyMarked,
+      source_document: source,
+      consulted_at: consultedAt,
+      note
+    };
+  } else {
+    delete next[referenceId][taskId];
   }
-  next[referenceId][taskId] = completed === true;
-  if (!reviewTasks.some(task => next[referenceId][task.id])) delete next[referenceId];
+  if (!Object.keys(next[referenceId]).length) delete next[referenceId];
   return next;
 }
 
 function getReviewSummary(state, referenceId) {
   const normalized = normalizeReviewState(state, opportunities);
   const entry = normalized[referenceId] || {};
-  const completed = reviewTasks.filter(task => entry[task.id] === true).length;
+  const completed = reviewTasks.filter(task => entry[task.id] && entry[task.id].completed === true).length;
   return { completed, total: reviewTasks.length, percent: Math.round((completed / reviewTasks.length) * 100) };
 }
 
@@ -98,9 +152,9 @@ function buildReviewExport(state, items, generatedAt) {
   const normalized = normalizeReviewState(state, opportunities);
   const visibleIds = new Set((items || opportunities).map(item => item.id));
   return {
-    schema_version: 1,
+    schema_version: 2,
     generated_at: generatedAt || new Date().toISOString(),
-    scope: "Registro interno de revisiones marcadas en este navegador; no es una certificación documental, dominial ni urbanística.",
+    scope: "Registro local de revisiones con fuente o documento y fecha de consulta. No verifica autenticidad, vigencia, titularidad ni cumplimiento normativo; no es una certificación.",
     references: opportunities.filter(item => visibleIds.has(item.id)).map(item => {
       const summary = getReviewSummary(normalized, item.id);
       const entry = normalized[item.id] || {};
@@ -109,11 +163,18 @@ function buildReviewExport(state, items, generatedAt) {
         name: item.name,
         completed_tasks: summary.completed,
         total_tasks: summary.total,
-        tasks: reviewTasks.map(task => ({
-          id: task.id,
-          label: task.label,
-          review_recorded: entry[task.id] === true
-        }))
+        tasks: reviewTasks.map(task => {
+          const record = entry[task.id] || {};
+          return {
+            id: task.id,
+            label: task.label,
+            review_recorded: record.completed === true,
+            source_document: record.source_document || "",
+            consulted_at: record.consulted_at || "",
+            note: record.note || "",
+            legacy_marked: record.legacy_marked === true
+          };
+        })
       };
     })
   };
@@ -388,7 +449,7 @@ function initMapPage(doc) {
 
   function updateReviewProgress(progressElement, item) {
     const summary = getReviewSummary(reviewState, item.id);
-    progressElement.textContent = summary.completed + " de " + summary.total + " revisiones registradas";
+    progressElement.textContent = summary.completed + " de " + summary.total + " revisiones documentadas";
   }
 
   function reviewPanelNode(item) {
@@ -398,7 +459,7 @@ function initMapPage(doc) {
     title.textContent = "Bitácora de verificación";
     const intro = doc.createElement("p");
     intro.className = "map-review-intro";
-    intro.textContent = "Marcá cada punto solo después de revisar el documento o la fuente correspondiente. El registro es interno y no certifica el dato.";
+    intro.textContent = "Para marcar una revisión como registrada, completá una fuente o documento y la fecha de consulta. No ingreses datos personales ni documentación confidencial.";
     const progress = doc.createElement("p");
     progress.className = "map-review-progress";
     progress.setAttribute("role", "status");
@@ -407,26 +468,98 @@ function initMapPage(doc) {
     const fieldset = doc.createElement("fieldset");
     fieldset.className = "map-review-checklist";
     const legend = doc.createElement("legend");
-    legend.textContent = "Control interno · revisión documental";
+    legend.textContent = "Control interno · evidencia y fecha";
     fieldset.append(legend);
+
     reviewTasks.forEach(task => {
-      const label = doc.createElement("label");
+      const saved = reviewState[item.id] && reviewState[item.id][task.id]
+        ? reviewState[item.id][task.id]
+        : {};
+      const row = doc.createElement("div");
+      row.className = "map-review-task";
+      const checkLabel = doc.createElement("label");
+      checkLabel.className = "map-review-check-label";
       const checkbox = doc.createElement("input");
       checkbox.type = "checkbox";
-      checkbox.checked = Boolean(reviewState[item.id] && reviewState[item.id][task.id]);
+      checkbox.checked = saved.completed === true;
+      checkbox.disabled = !checkbox.checked &&
+        !(String(saved.source_document || "").trim().length >= 4 && isValidReviewDate(saved.consulted_at));
       checkbox.setAttribute("aria-label", task.label + " · " + item.name);
-      checkbox.addEventListener("change", () => {
-        reviewState = updateReviewState(reviewState, item.id, task.id, checkbox.checked, opportunities);
+      const taskText = doc.createElement("span");
+      taskText.textContent = task.label;
+      checkLabel.append(checkbox, taskText);
+
+      const fields = doc.createElement("div");
+      fields.className = "map-review-fields";
+      const sourceLabel = doc.createElement("label");
+      sourceLabel.className = "map-review-field";
+      const sourceCaption = doc.createElement("span");
+      sourceCaption.textContent = "Fuente, documento o folio";
+      const sourceInput = doc.createElement("input");
+      sourceInput.type = "text";
+      sourceInput.maxLength = 240;
+      sourceInput.autocomplete = "off";
+      sourceInput.placeholder = "Organismo, enlace o identificación del documento";
+      sourceInput.value = saved.source_document || "";
+      sourceInput.setAttribute("aria-label", "Fuente o documento para " + task.label + " · " + item.name);
+      sourceLabel.append(sourceCaption, sourceInput);
+
+      const dateLabel = doc.createElement("label");
+      dateLabel.className = "map-review-field map-review-date";
+      const dateCaption = doc.createElement("span");
+      dateCaption.textContent = "Fecha de consulta";
+      const dateInput = doc.createElement("input");
+      dateInput.type = "date";
+      dateInput.value = saved.consulted_at || "";
+      dateInput.setAttribute("aria-label", "Fecha de consulta para " + task.label + " · " + item.name);
+      dateLabel.append(dateCaption, dateInput);
+
+      const noteLabel = doc.createElement("label");
+      noteLabel.className = "map-review-field map-review-note";
+      const noteCaption = doc.createElement("span");
+      noteCaption.textContent = "Observación breve (opcional)";
+      const noteInput = doc.createElement("textarea");
+      noteInput.rows = 2;
+      noteInput.maxLength = 500;
+      noteInput.value = saved.note || "";
+      noteInput.placeholder = "Alcance, artículo, folio o punto pendiente; sin datos personales.";
+      noteInput.setAttribute("aria-label", "Observación para " + task.label + " · " + item.name);
+      noteLabel.append(noteCaption, noteInput);
+
+      const help = doc.createElement("small");
+      help.className = "map-review-help";
+      help.textContent = "La revisión cuenta como documentada cuando tiene una fuente de al menos 4 caracteres y una fecha válida.";
+      const legacyNotice = doc.createElement("small");
+      legacyNotice.className = "map-review-legacy";
+      legacyNotice.textContent = "Marca anterior recuperada: completá fuente y fecha para volver a registrarla.";
+      legacyNotice.hidden = saved.legacy_marked !== true;
+
+      function persistTaskRecord() {
+        const details = {
+          source_document: sourceInput.value,
+          consulted_at: dateInput.value,
+          note: noteInput.value
+        };
+        const eligible = details.source_document.trim().length >= 4 && isValidReviewDate(details.consulted_at);
+        if (!eligible && checkbox.checked) checkbox.checked = false;
+        checkbox.disabled = !eligible && !checkbox.checked;
+        reviewState = updateReviewState(reviewState, item.id, task.id, checkbox.checked, opportunities, details);
+        const current = reviewState[item.id] && reviewState[item.id][task.id];
+        legacyNotice.hidden = !(current && current.legacy_marked === true);
         updateReviewProgress(progress, item);
-        const saved = writeReviewState(reviewStorage, reviewState, opportunities);
-        reviewStatusElement.textContent = saved
-          ? "Bitácora actualizada en este navegador."
+        const savedLocally = writeReviewState(reviewStorage, reviewState, opportunities);
+        reviewStatusElement.textContent = savedLocally
+          ? "Bitácora actualizada en este navegador; fuente y fecha quedan asociadas a cada revisión."
           : "No se pudo guardar localmente; descargá la bitácora JSON antes de cerrar.";
-      });
-      const textNode = doc.createElement("span");
-      textNode.textContent = task.label;
-      label.append(checkbox, textNode);
-      fieldset.append(label);
+      }
+
+      checkbox.addEventListener("change", persistTaskRecord);
+      sourceInput.addEventListener("input", persistTaskRecord);
+      dateInput.addEventListener("change", persistTaskRecord);
+      noteInput.addEventListener("input", persistTaskRecord);
+      fields.append(sourceLabel, dateLabel, noteLabel, help, legacyNotice);
+      row.append(checkLabel, fields);
+      fieldset.append(row);
     });
     panel.append(title, intro, progress, fieldset);
     return panel;
@@ -737,7 +870,7 @@ if (typeof module !== "undefined" && module.exports) {
     localities, opportunities, all, filterReferences, buildCsv, buildGeoJson,
     getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY,
-    normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
+    isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
     getReviewSummary, buildReviewExport
   };
 }
