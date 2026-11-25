@@ -520,14 +520,6 @@ def main() -> None:
         except (OSError, UnicodeError, csv.Error) as exc:
             errors.append(f"No se pudo leer la plantilla CSV de seguimiento: {exc}")
 
-    opportunity_page = ROOT / "oportunidades/index.html"
-    if opportunity_page.is_file():
-        opportunity_html = opportunity_page.read_text(encoding="utf-8")
-        if 'href="../docs/plantilla-seguimiento-comercial.csv"' not in opportunity_html:
-            errors.append("Oportunidades debe enlazar la plantilla CSV de seguimiento comercial")
-        if "pipeline-template-guide" not in opportunity_html:
-            errors.append("Oportunidades debe explicar las etapas y la separación de honorarios")
-
     node = shutil.which("node")
     if node:
         for test_name in ("test_opportunity_tools.js", "test_site_navigation.js", "test_mapa_ia.js"):
@@ -568,6 +560,10 @@ def main() -> None:
         errors.append("Falta oportunidades/index.html para la importación de expedientes")
     else:
         opportunity_html = opportunity_page.read_text(encoding="utf-8")
+        if 'href="../docs/plantilla-seguimiento-comercial.csv"' not in opportunity_html:
+            errors.append("Oportunidades debe enlazar la plantilla CSV de seguimiento comercial")
+        if "pipeline-template-guide" not in opportunity_html:
+            errors.append("Oportunidades debe explicar las etapas y la separación de honorarios")
         for required_control in ("dossier-import-file", "validate-dossier-import", "apply-dossier-merge", "apply-dossier-replace"):
             if f'id="{required_control}"' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta control de importación: {required_control}")
