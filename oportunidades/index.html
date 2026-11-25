@@ -374,7 +374,8 @@ function buildDossierInput(){
   return {
     fields:readOpportunityFields(),
     calculationInput:readFeasibilityInput(),
-    generatedAt:new Intl.DateTimeFormat("es-AR",{dateStyle:"long",timeStyle:"short"}).format(new Date())
+    generatedAt:new Intl.DateTimeFormat("es-AR",{dateStyle:"long",timeStyle:"short"}).format(new Date()),
+    exportedAt:new Date().toISOString()
   };
 }
 printDossierButton.addEventListener("click",()=>{
