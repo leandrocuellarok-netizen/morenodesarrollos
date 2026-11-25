@@ -164,6 +164,81 @@
     return lines.join("\n");
   }
 
+
+  function buildOpportunityDossier(input) {
+    const data = input || {};
+    const fields = data.fields || {};
+    const calculationInput = data.calculationInput || {};
+    const calculation = calculatePreliminary(calculationInput);
+
+    function makeSection(title, entries) {
+      const rows = entries.map(function (entry) {
+        return { label: entry[0], value: formatFieldValue(entry[1]) };
+      }).filter(function (entry) { return Boolean(entry.value); });
+      if (!rows.length) rows.push({ label: "Información", value: "No informada por el contacto." });
+      return { title: title, rows: rows };
+    }
+
+    const sections = [
+      makeSection("Origen y contacto", [
+        ["Nombre", fields.nombre],
+        ["Perfil declarado", fields.perfil],
+        ["Interés declarado", fields.interes],
+        ["Referencia territorial de origen (no parcelaria)", fields.referencia_mapa]
+      ]),
+      makeSection("Inmueble o proyecto", [
+        ["Localidad o zona declarada", fields.zona],
+        ["Tipo de oportunidad declarado", fields.tipo],
+        ["Ubicación o referencia aportada", fields.ubicacion],
+        ["Partida o nomenclatura aportada", fields.nomenclatura],
+        ["Superficie aproximada declarada", fields.superficie]
+      ]),
+      makeSection("Documentación y consultas declaradas", [
+        ["Documentación indicada como disponible", fields.documentacion],
+        ["Consultas o verificaciones declaradas", fields.verificaciones]
+      ])
+    ];
+
+    const calculationRows = [
+      ["Superficie ingresada para cálculo (m²)", calculationInput.areaRaw],
+      ["FOS aportado", calculationInput.fosRaw],
+      ["FOT aportado", calculationInput.fotRaw],
+      ["Fuente o referencia de indicadores aportada", calculationInput.referenceRaw]
+    ];
+    if (calculation.ok) {
+      calculationRows.push(["Resultado aritmético preliminar", calculation.summary.join(" ")]);
+    } else if (calculation.error) {
+      calculationRows.push(["Estado del cálculo", "No realizado: " + calculation.error]);
+    } else {
+      calculationRows.push(["Estado del cálculo", "No se ingresaron datos para realizar una cuenta."]);
+    }
+    sections.push(makeSection("Datos urbanísticos aportados", calculationRows));
+
+    if (formatFieldValue(fields.detalle)) {
+      sections.push(makeSection("Contexto adicional aportado", [["Descripción", fields.detalle]]));
+    }
+
+    return {
+      title: "Ficha preliminar de oportunidad",
+      generatedAt: String(data.generatedAt || ""),
+      status: "BORRADOR · DATOS APORTADOS, NO VERIFICADOS",
+      sections: sections,
+      checks: [
+        "Identificación catastral, nomenclatura, mensura y geometría de la parcela.",
+        "Normativa vigente, usos, indicadores, alturas, retiros y afectaciones.",
+        "Titularidad, antecedentes dominiales, gravámenes y restricciones.",
+        "Servicios, accesos y condiciones hidráulicas y ambientales.",
+        "Factibilidad técnica, costos, estructura financiera y demanda."
+      ],
+      disclaimers: [
+        "Esta ficha reúne exclusivamente datos ingresados por el contacto y resultados aritméticos de referencia. No verifica la autenticidad, vigencia o exactitud de fuentes y documentos, ni acredita identidad, titularidad, disponibilidad o situación urbanística.",
+        "Los cálculos FOS/FOT son referencias matemáticas teóricas; no equivalen a superficie efectivamente edificable ni a una aprobación municipal.",
+        "Este documento no constituye tasación, oferta, estudio de factibilidad, recomendación de inversión ni compromiso comercial.",
+        "Las opciones de documentación y consultas reflejan declaraciones del contacto y requieren contraste independiente."
+      ]
+    };
+  }
+
   function buildWhatsAppUrl(message) {
     return "https://wa.me/5491141671674?text=" + encodeURIComponent(String(message == null ? "" : message));
   }
@@ -174,6 +249,7 @@
     buildLeadNote: buildLeadNote,
     readMapReference: readMapReference,
     buildContactMessage: buildContactMessage,
+    buildOpportunityDossier: buildOpportunityDossier,
     buildWhatsAppUrl: buildWhatsAppUrl
   };
 });
