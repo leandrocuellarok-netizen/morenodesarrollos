@@ -580,6 +580,32 @@ def main() -> None:
             if f'<script src="{script_src}"></script>' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta cargar {script_src}")
 
+
+    if relative == Path("erica-acosta/index.html"):
+        about_html = page_source
+        required_markup = (
+            'class="wrap about-hero"',
+            'class="about-portrait-plate"',
+            'class="development-plate"',
+            'aria-labelledby="development-plate-title development-plate-desc"',
+            'class="about-contact-path"',
+            'href="../oportunidades/?perfil=propietario"',
+            'href="../oportunidades/?perfil=inversor"',
+        )
+        for required in required_markup:
+            if required not in about_html:
+                errors.append(f"erica-acosta/index.html: falta componente editorial o recorrido comercial: {required}")
+        if len(re.findall(r'<article class="process-card"', about_html)) != 5:
+            errors.append("erica-acosta/index.html: el marco de desarrollo debe conservar exactamente cinco etapas")
+        if "Esquema conceptual, no representa un inmueble ni un proyecto real" not in about_html:
+            errors.append("erica-acosta/index.html: la ilustración de proceso debe declarar su alcance conceptual")
+        opportunity_path = ROOT / "oportunidades/index.html"
+        opportunity_html = opportunity_path.read_text(encoding="utf-8") if opportunity_path.is_file() else ""
+        if 'if(profileFromLink==="propietario")' not in opportunity_html:
+            errors.append("Oportunidades: falta el prellenado del perfil propietario desde la página de Erica")
+        if 'if(profileFromLink==="inversor")' not in opportunity_html:
+            errors.append("Oportunidades: falta el prellenado del perfil inversor desde la página de Erica")
+
     opportunity_module = ROOT / "assets/js/opportunity-tools.js"
     if not opportunity_module.is_file():
         errors.append("Falta assets/js/opportunity-tools.js")
