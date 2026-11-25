@@ -99,7 +99,13 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 - Si falla el proveedor de teselas, se conserva el inventario de referencias y se informa el estado sin ocultar la investigación.
 
 
-### Exportación del Mapa IA
+### Enlaces directos a referencias del Mapa IA
+
+- Cada ficha y ventana emergente ofrece un enlace directo con el identificador de la referencia en el parámetro `?ref=`.
+- Al abrir ese enlace, el mapa selecciona la ficha, centra el marcador y abre su información; la selección también actualiza la URL sin recargar la página.
+- Los enlaces solo identifican una de las referencias ya publicadas. No agregan datos de parcelas, titularidad, disponibilidad ni zonificación.
+
+## Exportación del Mapa IA
 
 - El botón **Descargar CSV visible** exporta las referencias que quedan luego de aplicar los filtros y la búsqueda, para revisión en hojas de cálculo.
 - El botón **Descargar GeoJSON visible** exporta exactamente el mismo subconjunto filtrado como una colección GeoJSON de puntos, compatible con QGIS y otros sistemas GIS.
