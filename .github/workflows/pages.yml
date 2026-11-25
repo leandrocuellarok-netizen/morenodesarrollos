@@ -30,6 +30,9 @@ jobs:
   deploy:
     if: github.event_name != 'pull_request'
     needs: validate
+    concurrency:
+      group: "pages"
+      cancel-in-progress: true
     permissions:
       contents: read
       pages: write
