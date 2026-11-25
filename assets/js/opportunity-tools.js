@@ -30,7 +30,7 @@
 
     if (!areaRaw && !fosRaw && !fotRaw && !referenceRaw) return { empty: true };
     if (!areaRaw) return { error: "Para calcular, ingresá la superficie del lote." };
-    if (!fosRaw && !fotRaw) return { error: "Ingresá al menos el FOS o el FOT verificado de la parcela." };
+    if (!fosRaw && !fotRaw) return { error: "Ingresá al menos el FOS o el FOT que tengas como referencia para esa parcela." };
 
     const area = parsePositiveDecimal(areaRaw, "la superficie del lote", true);
     if (area.error) return area;
@@ -239,6 +239,18 @@
     };
   }
 
+
+  function buildOpportunityDossierExport(input) {
+    const data = input || {};
+    return {
+      schema: "moreno.opportunity-dossier",
+      schemaVersion: 1,
+      exportedAt: String(data.generatedAt || ""),
+      status: "preliminary-unverified",
+      dossier: buildOpportunityDossier(data)
+    };
+  }
+
   function buildWhatsAppUrl(message) {
     return "https://wa.me/5491141671674?text=" + encodeURIComponent(String(message == null ? "" : message));
   }
@@ -250,6 +262,7 @@
     readMapReference: readMapReference,
     buildContactMessage: buildContactMessage,
     buildOpportunityDossier: buildOpportunityDossier,
+    buildOpportunityDossierExport: buildOpportunityDossierExport,
     buildWhatsAppUrl: buildWhatsAppUrl
   };
 });
