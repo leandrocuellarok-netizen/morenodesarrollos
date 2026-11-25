@@ -446,8 +446,10 @@
       });
     }
 
+    if (input.checks != null && !isRecord(input.checks)) errors.push("Los controles de diligencia deben tener una estructura válida.");
     const rawChecks = isRecord(input.checks) ? input.checks : {};
     Object.keys(internalCheckLabels).forEach(function (key) {
+      if (rawChecks[key] != null && !isRecord(rawChecks[key])) errors.push(internalCheckLabels[key] + ": el registro tiene una estructura inválida.");
       const raw = isRecord(rawChecks[key]) ? rawChecks[key] : {};
       const entry = {
         status: readText(raw, "status", 30, internalCheckLabels[key] + " · estado") || "pending",
@@ -466,6 +468,7 @@
       value.checks[key] = entry;
     });
 
+    if (input.fees != null && !isRecord(input.fees)) errors.push("Los honorarios deben tener una estructura válida.");
     const rawFees = isRecord(input.fees) ? input.fees : {};
     value.fees.currency = readText(rawFees, "currency", 3, "La moneda de honorarios");
     if (value.fees.currency && !["ARS", "USD"].includes(value.fees.currency)) {
@@ -665,7 +668,9 @@
     const currentCalculation = local.calculationInput || {};
     const incomingCalculation = incoming.calculationInput || {};
     const currentInternal = isRecord(local.internalData) ? local.internalData : emptyInternalDossier();
-    const incomingInternal = isRecord(incoming.internalData) ? incoming.internalData : emptyInternalDossier();
+    const incomingInternal = incoming.version && incoming.version < 3
+      ? {}
+      : (isRecord(incoming.internalData) ? incoming.internalData : {});
     const fields = {};
     const calculationInput = {};
     const internalData = emptyInternalDossier();
