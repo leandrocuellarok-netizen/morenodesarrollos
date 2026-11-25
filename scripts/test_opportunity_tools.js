@@ -127,4 +127,46 @@ const noChecklistMessage = tools.buildContactMessage({
 assert.doesNotMatch(noChecklistMessage, /Documentación disponible \(declarada\):/);
 assert.doesNotMatch(noChecklistMessage, /Consultas realizadas \(declaradas\):/);
 
-console.log("OK: 12 grupos de pruebas de cálculo, datos parciales, listas de documentación, consultas declaradas, URL y borrador de contacto.");
+
+const dossier = tools.buildOpportunityDossier({
+  fields: {
+    nombre: "Contacto de prueba",
+    perfil: "Propietario/a",
+    interes: "Presentar un terreno o inmueble",
+    zona: "La Reja",
+    tipo: "Terreno",
+    ubicacion: "Cerca de la estación",
+    nomenclatura: "Circ. II, Secc. B, Quinta 14",
+    documentacion: ["Plano o mensura", "Certificado urbanístico o zonificación"],
+    verificaciones: ["Zonificación e indicadores urbanísticos consultados"],
+    referencia_mapa: "RP25 · Darwin Passaponti (rp25)",
+    detalle: "<script>texto de prueba</script>"
+  },
+  calculationInput: {
+    areaRaw: "1200",
+    fosRaw: "0,60",
+    referenceRaw: "Certificado aportado por el contacto"
+  },
+  generatedAt: "25 de noviembre de 2026, 06:30"
+});
+assert.equal(dossier.title, "Ficha preliminar de oportunidad");
+assert.match(dossier.status, /NO VERIFICADOS/);
+assert.match(JSON.stringify(dossier), /Resultado aritmético preliminar/);
+assert.match(JSON.stringify(dossier), /720 m²/);
+assert.match(JSON.stringify(dossier), /Circ\. II, Secc\. B, Quinta 14/);
+assert.match(JSON.stringify(dossier), /Certificado aportado por el contacto/);
+assert.match(JSON.stringify(dossier), /texto de prueba/);
+assert.match(JSON.stringify(dossier), /Identificación catastral/);
+assert.match(JSON.stringify(dossier), /no constituye tasación/);
+assert.match(JSON.stringify(dossier), /declaraciones del contacto/);
+
+const dossierWithoutIndicators = tools.buildOpportunityDossier({
+  fields: { nombre: "Contacto sin indicadores", zona: "Moreno" },
+  calculationInput: {},
+  generatedAt: "25 de noviembre de 2026"
+});
+assert.match(JSON.stringify(dossierWithoutIndicators), /No se ingresaron datos para realizar una cuenta/);
+assert.match(dossierWithoutIndicators.status, /NO VERIFICADOS/);
+assert.doesNotMatch(JSON.stringify(dossierWithoutIndicators), /superficie edificable aprobada/);
+
+console.log("OK: 13 grupos de pruebas de cálculo, datos parciales, listas declaradas, URL, borrador de contacto y ficha preliminar imprimible.");
