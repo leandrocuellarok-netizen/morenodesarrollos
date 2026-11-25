@@ -173,12 +173,14 @@ assert.doesNotMatch(JSON.stringify(dossierWithoutIndicators), /superficie edific
 const dossierExport = tools.buildOpportunityDossierExport({
   fields: { nombre: "Contacto de exportación", zona: "Moreno" },
   calculationInput: {},
-  generatedAt: "25 de noviembre de 2026, 07:40"
+  generatedAt: "25 de noviembre de 2026, 07:40",
+  exportedAt: "2026-11-25T10:40:00.000Z"
 });
 assert.equal(dossierExport.schema, "moreno.opportunity-dossier");
 assert.equal(dossierExport.schemaVersion, 1);
 assert.equal(dossierExport.status, "preliminary-unverified");
-assert.equal(dossierExport.exportedAt, "25 de noviembre de 2026, 07:40");
+assert.equal(dossierExport.exportedAt, "2026-11-25T10:40:00.000Z");
+assert.equal(Number.isNaN(Date.parse(dossierExport.exportedAt)), false, "la fecha de exportación debe ser ISO 8601");
 assert.equal(dossierExport.dossier.title, "Ficha preliminar de oportunidad");
 assert.equal(dossierExport.dossier.status, "BORRADOR · DATOS APORTADOS, NO VERIFICADOS");
 assert.equal(JSON.parse(JSON.stringify(dossierExport)).schemaVersion, 1);
