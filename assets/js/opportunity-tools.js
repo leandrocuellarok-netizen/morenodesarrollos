@@ -245,7 +245,7 @@
     return {
       schema: "moreno.opportunity-dossier",
       schemaVersion: 1,
-      exportedAt: String(data.generatedAt || ""),
+      exportedAt: String(data.exportedAt || ""),
       status: "preliminary-unverified",
       dossier: buildOpportunityDossier(data)
     };
