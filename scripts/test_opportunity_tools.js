@@ -219,13 +219,13 @@ assert.equal(dossierExport.exportedAt, "2026-11-25T10:40:00.000Z");
 assert.equal(Number.isNaN(Date.parse(dossierExport.exportedAt)), false, "la fecha de exportación debe ser ISO 8601");
 assert.equal(dossierExport.dossier.title, "Ficha preliminar de oportunidad");
 assert.equal(dossierExport.dossier.status, "BORRADOR · DATOS APORTADOS, NO VERIFICADOS");
-assert.equal(JSON.parse(JSON.stringify(dossierExport)).schemaVersion, 2);
+assert.equal(JSON.parse(JSON.stringify(dossierExport)).schemaVersion, 3);
 assert.deepEqual(dossierExport.sourceData.fields.documentacion, ["Plano o mensura"]);
 assert.equal(dossierExport.sourceData.calculationInput.fosRaw, "0,60");
 
 const importedDossier = tools.parseOpportunityDossierImport(JSON.stringify(dossierExport));
 assert.equal(importedDossier.ok, true);
-assert.equal(importedDossier.version, 2);
+assert.equal(importedDossier.version, 3);
 assert.equal(importedDossier.fields.nombre, "Contacto de exportación");
 assert.deepEqual(importedDossier.fields.documentacion, ["Plano o mensura"]);
 assert.equal(importedDossier.calculationInput.areaRaw, "1200");
