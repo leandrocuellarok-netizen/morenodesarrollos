@@ -221,6 +221,6 @@ La secuencia de control exige nomenclatura catastral y plano de mensura, certifi
 - La ficha reúne únicamente los campos aportados, las listas declaradas y, cuando corresponde, el resultado aritmético preliminar de FOS/FOT.
 - Incluye un estado visible de **borrador / datos no verificados** y una lista general de aspectos que requieren revisión independiente.
 - La salida se construye en el navegador mediante nodos de texto; no se inserta contenido del formulario como HTML, no se transmite información al sitio y no se crea un expediente en el servidor.
-- Además de imprimir o guardar como PDF, se puede descargar un JSON con esquema `moreno.opportunity-dossier`, versión 1, fecha de exportación y estado explícito `preliminary-unverified`.
+- Además de imprimir o guardar como PDF, se puede descargar un JSON con esquema `moreno.opportunity-dossier`, versión 1, fecha de exportación ISO 8601 y estado explícito `preliminary-unverified`.
 - El JSON incluye la ficha construida, no una certificación ni una base sincronizada. Quien lo descarga decide dónde conservarlo y con quién compartirlo.
 - La ficha no acredita identificación parcelaria, titularidad, disponibilidad, vigencia normativa, capacidad edificable, tasación ni factibilidad. Tanto la impresión como la exportación se ejecutan localmente en el navegador.
