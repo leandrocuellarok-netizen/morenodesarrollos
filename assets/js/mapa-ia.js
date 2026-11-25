@@ -869,7 +869,7 @@ if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, all, filterReferences, buildCsv, buildGeoJson,
     getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl,
-    shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY,
+    shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
     isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
     getReviewSummary, buildReviewExport
   };
