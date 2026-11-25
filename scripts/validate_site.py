@@ -581,8 +581,11 @@ def main() -> None:
                 errors.append(f"oportunidades/index.html: falta cargar {script_src}")
 
 
-    if relative == Path("erica-acosta/index.html"):
-        about_html = page_source
+    about_page = ROOT / "erica-acosta/index.html"
+    if not about_page.is_file():
+        errors.append("Falta erica-acosta/index.html para validar el perfil editorial")
+    else:
+        about_html = about_page.read_text(encoding="utf-8")
         required_markup = (
             'class="wrap about-hero"',
             'class="about-portrait-plate"',
