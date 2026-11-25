@@ -19,6 +19,16 @@ assert.ok(mapPage.includes('href="https://mapas.moreno.gob.ar/"'), "se enlaza el
 assert.ok(mapPage.includes('href="https://arba.gov.ar/geoarba/inicio.asp"'), "se enlaza GeoARBA como fuente provincial");
 assert.ok(mapPage.includes('href="https://www.moreno.gob.ar/catastro.php"'), "se enlaza la Dirección de Catastro municipal");
 assert.ok(mapPage.includes('href="https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf"'), "se conserva el plano municipal histórico como antecedente");
+for (const sourceUrl of [
+  "https://mapas.moreno.gob.ar/",
+  "https://arba.gov.ar/geoarba/inicio.asp",
+  "https://www.moreno.gob.ar/catastro.php",
+  "https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf"
+]) {
+  const safeAnchor = new RegExp('<a\\\\b(?=[^>]*href="' + sourceUrl.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\assert.ok(mapPage.includes('href="https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf"'), "se conserva el plano municipal histórico como antecedente");") + '")(?=[^>]*target="_blank")(?=[^>]*rel="noopener noreferrer")[^>]*>');
+  assert.match(mapPage, safeAnchor, "las fuentes oficiales abren de forma segura: " + sourceUrl);
+}
+
 assert.match(mapPage, /anexo de junio de 2015[\s\S]*no confirma la normativa vigente/i, "el plano histórico advierte que no acredita normativa actual");
 assert.match(mapPage, /nomenclatura catastral[\s\S]*certificado o constancia urbanística vigente/i, "la secuencia exige individualización y normativa actual");
 assert.match(mapPage, /organismo o profesional consultado, documento, fecha de consulta/i, "la ficha exige trazabilidad documental");
