@@ -360,3 +360,34 @@ body{background:var(--paper);color:var(--ink)}
   .map-canvas{order:1;min-height:420px}
   .map-sidebar{order:2;max-height:none;overflow:visible}
 }
+
+
+/* Contexto transferido desde una referencia del Mapa IA al formulario comercial. */
+.map-reference-context {
+  margin: 18px 0 22px;
+  padding: 15px 17px;
+  border-left: 3px solid #a95d3c;
+  background: #efede5;
+  color: #243033;
+}
+.map-reference-context strong {
+  display: block;
+  margin-bottom: 7px;
+  font: 600 11px/1.4 var(--sans);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.map-reference-context p {
+  margin: 6px 0;
+}
+.map-reference-context a {
+  display: inline-block;
+  margin-top: 7px;
+  color: #80533a;
+  font: 600 11px/1.5 var(--sans);
+  text-underline-offset: 3px;
+}
+.map-reference-context a:focus-visible {
+  outline: 2px solid #a95d3c;
+  outline-offset: 3px;
+}
