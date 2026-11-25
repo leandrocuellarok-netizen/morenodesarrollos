@@ -189,7 +189,7 @@
 <details class="originacion-workbench" id="originacion-workbench">
   <summary><span>Herramienta interna · solo navegador</span><strong>Expediente de originación: evidencia, diligencia y honorarios</strong></summary>
   <div class="originacion-workbench-body">
-    <p class="originacion-warning"><strong>Alcance y privacidad.</strong> Esta mesa no tiene autenticación ni control de acceso: cualquier visitante puede abrirla y usar su propio navegador. Los datos no se transmiten ni se guardan en el sitio; solo salen si descargás el JSON. No ingreses DNI, escrituras, nombres de personas, teléfonos, correos, datos bancarios ni información confidencial. Usala únicamente en un dispositivo confiable y conservá cada exportación bajo tu control.</p>
+    <p class="originacion-warning"><strong>Alcance y privacidad.</strong> Esta mesa no tiene autenticación ni control de acceso: cualquier visitante puede abrirla y usar su propio navegador. Los datos no se transmiten ni se guardan en el sitio; solo salen si descargás el JSON. La exportación interna omite el nombre y el texto libre del formulario público, pero puede incluir ubicación y nomenclatura del inmueble. No ingreses DNI, escrituras, nombres de personas, teléfonos, correos, datos bancarios ni información confidencial. Usala únicamente en un dispositivo confiable y conservá cada exportación bajo tu control.</p>
     <section class="originacion-section" aria-labelledby="originacion-identity-title">
       <h4 id="originacion-identity-title">01 / Identificación operativa y contraparte</h4>
       <div class="originacion-grid">
@@ -246,8 +246,12 @@
         <div class="form-field"><label for="originacion-fee-collected">Cobrados</label><input id="originacion-fee-collected" inputmode="decimal" maxlength="18" autocomplete="off" placeholder="Sin dato"></div>
       </div>
     </section>
-    <p class="originacion-status" id="originacion-status" role="status" aria-live="polite">Los datos de esta mesa no se incorporan al borrador de WhatsApp. Se incluyen únicamente en el expediente JSON y en la ficha imprimible.</p>
-    <p class="originacion-local-note">Antes de compartir el archivo, revisá si contiene información comercial que deba mantenerse reservada. El sitio no ofrece autenticación, cifrado de archivos ni control de permisos.</p>
+    <div class="originacion-export-actions">
+      <button class="button dark" id="originacion-print-dossier" type="button">Imprimir ficha interna / guardar PDF</button>
+      <button class="button" id="originacion-download-dossier" type="button">Descargar expediente interno JSON v3</button>
+    </div>
+    <p class="originacion-status" id="originacion-status" role="status" aria-live="polite">La ficha interna omite el nombre y el texto libre del formulario público. Los datos de esta mesa no se incorporan al borrador de WhatsApp.</p>
+    <p class="originacion-local-note">Antes de compartir el archivo, revisá la ubicación, nomenclatura y notas comerciales. El sitio no ofrece autenticación, cifrado de archivos ni control de permisos; no reemplaza un CRM con acceso restringido.</p>
   </div>
 </details>
 <div class="form-grid">
