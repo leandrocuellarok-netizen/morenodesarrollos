@@ -367,6 +367,17 @@ assert.ok(source.includes('briefButton.className = "map-brief-button"'));
 assert.ok(source.includes("function downloadTerritorialBrief(item)"));
 assert.ok(source.includes('link.download = "moreno-ficha-prospeccion-" + item.id + ".html"'));
 assert.ok(mapPage.includes("Cada tesis del inventario incluye una ficha editorial descargable"));
+assert.equal((mapPage.match(/class="verification-source"/g) || []).length, 4, "la mesa de verificación presenta cuatro rutas institucionales");
+for (const officialResource of [
+  "https://geo.arba.gov.ar/geoserver/idera/wms?request=GetCapabilities&amp;service=WMS",
+  "https://geo.arba.gov.ar/geoserver/idera/wfs?request=GetCapabilities&amp;service=WFS",
+  "https://moreno.gob.ar/catastro-contribuyentes.php",
+  "https://moreno.gob.ar/catastro.php?c=agrimensores",
+  "https://iduar.moreno.gob.ar/obras-particulares/",
+  "https://moreno.gob.ar/docs/catastro/codigo_zonificacion.pdf"
+]) assert.ok(mapPage.includes(officialResource), "falta el recurso institucional verificado: " + officialResource);
+assert.ok(mapPage.includes("MORENO no recibe DNI, escrituras ni planos"), "la página debe advertir que no se envía documentación sensible a MORENO");
+assert.ok(styles.includes(".verification-source-grid {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));"), "las cuatro rutas institucionales deben organizarse en dos columnas");
 assert.ok(styles.includes(".map-brief-intro"));
 assert.ok(styles.includes(".map-brief-button:focus-visible"));
 
