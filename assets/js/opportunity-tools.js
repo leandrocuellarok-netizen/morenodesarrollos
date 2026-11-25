@@ -375,7 +375,7 @@
 
   function validISODate(value) {
     return !value || (
-      /^\\d{4}-\\d{2}-\\d{2}$/.test(value) &&
+      /^\d{4}-\d{2}-\d{2}$/.test(value) &&
       Number.isFinite(Date.parse(value + "T00:00:00Z")) &&
       new Date(value + "T00:00:00Z").toISOString().slice(0, 10) === value
     );
@@ -439,7 +439,7 @@
         if (entry.title || entry.classification || entry.url || entry.consultedAt || entry.note) {
           if (!entry.title) errors.push(label + ": indicá un título o nombre de documento.");
           if (!internalEvidenceClasses.includes(entry.classification)) errors.push(label + ": seleccioná una clasificación de evidencia.");
-          if (entry.url && !/^https:\\/\\/[^\\s]+$/i.test(entry.url)) errors.push(label + ": la fuente debe usar una URL HTTPS válida.");
+          if (entry.url && !/^https:\/\/[^\s]+$/i.test(entry.url)) errors.push(label + ": la fuente debe usar una URL HTTPS válida.");
           if (!validISODate(entry.consultedAt)) errors.push(label + ": la fecha debe ser válida AAAA-MM-DD.");
           value.evidence.push(entry);
         }
@@ -475,7 +475,7 @@
     ["proposed", "agreed", "invoiced", "collected"].forEach(function (key) {
       const label = "Honorarios " + key;
       const amount = readText(rawFees, key, 18, label);
-      if (amount && (!/^\\d+(?:[,.]\\d{1,2})?$/.test(amount) || /^\\d{1,3}[,.]\\d{3}$/.test(amount) || !Number.isFinite(Number(amount.replace(",", "."))) || Number(amount.replace(",", ".")) < 0)) {
+      if (amount && (!/^\d+(?:[,.]\d{1,2})?$/.test(amount) || /^\d{1,3}[,.]\d{3}$/.test(amount) || !Number.isFinite(Number(amount.replace(",", "."))) || Number(amount.replace(",", ".")) < 0)) {
         errors.push(label + ": ingresá un importe no negativo, sin separador de miles y con hasta dos decimales.");
       }
       value.fees[key] = amount;
@@ -696,7 +696,15 @@
     });
     internalData.evidence = mergeValue("internalData.evidence", "registro de fuentes", currentInternal.evidence, incomingInternal.evidence);
     Object.keys(internalCheckLabels).forEach(function (key) {
-      internalData.checks[key] = mergeValue("internalData.checks." + key, internalCheckLabels[key], currentInternal.checks && currentInternal.checks[key], incomingInternal.checks && incomingInternal.checks[key]);
+      internalData.checks[key] = {};
+      ["status", "source", "consultedAt", "note"].forEach(function (field) {
+        internalData.checks[key][field] = mergeValue(
+          "internalData.checks." + key + "." + field,
+          internalCheckLabels[key] + " · " + field,
+          currentInternal.checks && currentInternal.checks[key] && currentInternal.checks[key][field],
+          incomingInternal.checks && incomingInternal.checks[key] && incomingInternal.checks[key][field]
+        );
+      });
     });
     ["currency", "proposed", "agreed", "invoiced", "collected"].forEach(function (key) {
       internalData.fees[key] = mergeValue("internalData.fees." + key, "honorarios " + key, currentInternal.fees && currentInternal.fees[key], incomingInternal.fees && incomingInternal.fees[key]);
