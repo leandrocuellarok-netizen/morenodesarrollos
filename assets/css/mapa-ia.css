@@ -215,7 +215,8 @@
   font: 400 23px/1.15 var(--serif);
 }
 .verification-source a,
-.verification-caution > a {
+.verification-caution > a,
+.verification-caution-links a {
   display: inline-block;
   margin-top: 15px;
   color: #80533a;

@@ -137,7 +137,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 
 ### Control automático antes de publicar
 
-- El workflow de GitHub Pages ejecuta `scripts/validate_site.py` antes de subir el sitio.
+- GitHub Actions ejecuta `scripts/validate_site.py` en cada pull request hacia `main` y antes de publicar; el despliegue de Pages queda reservado a `main` y a la ejecución manual.
 - El control comprueba que existan las cuatro páginas públicas, que tengan idioma, título y descripción, y que no haya IDs duplicados ni imágenes sin texto alternativo.
 - Comprueba referencias internas, archivos locales, fragmentos de navegación y JSON-LD.
 - Si Node.js está disponible en el runner, valida la sintaxis de los módulos JavaScript y de los bloques inline, y ejecuta `scripts/test_opportunity_tools.js`, `scripts/test_site_navigation.js` y `scripts/test_mapa_ia.js`. Las pruebas del Mapa IA cubren datos, filtros, evidencias, CSV y GeoJSON (orden longitud/latitud y advertencias de no parcelario).
