@@ -200,9 +200,11 @@
     };
   }
 
-  function csvCell(value) {
+  function spreadsheetSafeCell(value) {
     const text = String(value == null ? "" : value);
-    return /[;"\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+    const formulaLike = /^[\t\r\n]/.test(text) || /^[\s\uFEFF]*[=+\-@]/.test(text);
+    const safeText = formulaLike ? "'" + text : text;
+    return /[;"\r\n]/.test(safeText) ? '"' + safeText.replace(/"/g, '""') + '"' : safeText;
   }
 
   function buildSummaryCsv(summary) {
@@ -228,7 +230,7 @@
         rows.push([summary.today, "honorarios", fieldName, currency, amount]);
       });
     });
-    return "\uFEFF" + rows.map(function (row) { return row.map(csvCell).join(";"); }).join("\r\n") + "\r\n";
+    return "\uFEFF" + rows.map(function (row) { return row.map(spreadsheetSafeCell).join(";"); }).join("\r\n") + "\r\n";
   }
 
   return {
