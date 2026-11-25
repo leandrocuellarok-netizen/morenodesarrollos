@@ -105,6 +105,13 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 - Al abrir ese enlace, el mapa selecciona la ficha, centra el marcador y abre su información; la selección también actualiza la URL sin recargar la página.
 - Los enlaces solo identifican una de las referencias ya publicadas. No agregan datos de parcelas, titularidad, disponibilidad ni zonificación.
 
+## Integridad de referencias en consultas comerciales
+
+- Los enlaces desde el Mapa IA transfieren únicamente el identificador estable de la referencia (map_ref).
+- El formulario resuelve el nombre desde un catálogo canónico local; ignora cualquier etiqueta map_name agregada o modificada en la URL.
+- Los identificadores desconocidos se descartan. Esto evita que un enlace alterado presente una referencia inventada como si perteneciera al inventario público.
+- La referencia sigue siendo territorial y aproximada: no acredita parcela, titularidad, disponibilidad, zonificación ni factibilidad.
+
 ## Exportación del Mapa IA
 
 - El botón **Descargar CSV visible** exporta las referencias que quedan luego de aplicar los filtros y la búsqueda, para revisión en hojas de cálculo.
