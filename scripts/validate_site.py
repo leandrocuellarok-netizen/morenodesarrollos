@@ -534,7 +534,7 @@ def main() -> None:
             elif unit_test.stdout.strip():
                 print(unit_test.stdout.strip())
 
-        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js", ROOT / "assets/js/mapa-ia.js", ROOT / "assets/js/pipeline-dashboard.js", ROOT / "assets/js/pipeline-dashboard-ui.js"):
+        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js", ROOT / "assets/js/mapa-ia.js", ROOT / "assets/js/pipeline-dashboard.js", ROOT / "assets/js/pipeline-agenda.js", ROOT / "assets/js/pipeline-dashboard-ui.js"):
             if script_path.is_file():
                 syntax_check = subprocess.run([node, "--check", str(script_path)], capture_output=True, text=True, check=False)
                 if syntax_check.returncode:
@@ -564,6 +564,10 @@ def main() -> None:
             errors.append("Oportunidades debe enlazar la plantilla CSV de seguimiento comercial")
         if "pipeline-template-guide" not in opportunity_html:
             errors.append("Oportunidades debe explicar las etapas y la separación de honorarios")
+        if 'id="pipeline-download-agenda"' not in opportunity_html:
+            errors.append("Oportunidades debe ofrecer la descarga de la agenda de seguimiento")
+        if 'src="../assets/js/pipeline-agenda.js"' not in opportunity_html:
+            errors.append("Oportunidades debe cargar el módulo de agenda comercial")
         for required_control in ("dossier-import-file", "validate-dossier-import", "apply-dossier-merge", "apply-dossier-replace"):
             if f'id="{required_control}"' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta control de importación: {required_control}")
@@ -586,16 +590,21 @@ def main() -> None:
                 errors.append(f"assets/js/opportunity-tools.js: falta lógica de expediente: {required_logic}")
 
     pipeline_module = ROOT / "assets/js/pipeline-dashboard.js"
+    pipeline_agenda_module = ROOT / "assets/js/pipeline-agenda.js"
     pipeline_ui_module = ROOT / "assets/js/pipeline-dashboard-ui.js"
-    if not pipeline_module.is_file() or not pipeline_ui_module.is_file():
-        errors.append("Faltan los módulos del tablero comercial local")
+    if not pipeline_module.is_file() or not pipeline_agenda_module.is_file() or not pipeline_ui_module.is_file():
+        errors.append("Faltan los módulos del tablero comercial local o de su agenda")
     else:
         pipeline_source = pipeline_module.read_text(encoding="utf-8")
+        pipeline_agenda_source = pipeline_agenda_module.read_text(encoding="utf-8")
         pipeline_ui_source = pipeline_ui_module.read_text(encoding="utf-8")
         for required_logic in ("parsePipelineCsv", "summarizePipeline", "buildSummaryCsv", "spreadsheetSafeCell", "MAX_ROWS", "MAX_FILE_CHARS"):
             if required_logic not in pipeline_source:
                 errors.append(f"assets/js/pipeline-dashboard.js: falta lógica requerida: {required_logic}")
-        for required_logic in ("MorenoPipelineDashboard", "file.text()", "textContent", "pipeline-csv-file", "currentSummary = null", "downloadSummaryButton.disabled = true", "identificacion_catastral", "fuente_origen", "tipo_operacion"):
+        for required_logic in ("agendaItems", "buildAgendaCsv", "spreadsheetSafeCell"):
+            if required_logic not in pipeline_agenda_source:
+                errors.append(f"assets/js/pipeline-agenda.js: falta lógica requerida: {required_logic}")
+        for required_logic in ("MorenoPipelineDashboard", "file.text()", "textContent", "pipeline-csv-file", "currentSummary = null", "downloadSummaryButton.disabled = true", "downloadAgendaButton.disabled = true", "buildAgendaCsv", "pipeline-download-agenda", "identificacion_catastral", "fuente_origen", "tipo_operacion"):
             if required_logic not in pipeline_ui_source:
                 errors.append(f"assets/js/pipeline-dashboard-ui.js: falta lógica requerida: {required_logic}")
         for forbidden_logic in ("localStorage", "sessionStorage", "fetch(", "XMLHttpRequest", "innerHTML"):

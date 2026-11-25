@@ -3,6 +3,7 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const vm = require("node:vm");
 const dashboard = require("../assets/js/pipeline-dashboard.js");
+require("../assets/js/pipeline-agenda.js");
 
 class Element {
   constructor(id) {
@@ -26,7 +27,7 @@ class Element {
 (async function () {
   const ids = [
     "pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset",
-    "pipeline-download-summary", "pipeline-filter-stage", "pipeline-filter-text", "pipeline-metrics",
+    "pipeline-download-summary", "pipeline-download-agenda", "pipeline-filter-stage", "pipeline-filter-text", "pipeline-metrics",
     "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions",
     "pipeline-records-body", "pipeline-records-count", "pipeline-warnings"
   ];
@@ -49,10 +50,12 @@ class Element {
   vm.runInNewContext(source, { window, document, Blob, Intl, Date });
   const fileInput = elements["pipeline-csv-file"];
   const download = elements["pipeline-download-summary"];
+  const agendaDownload = elements["pipeline-download-agenda"];
   const reset = elements["pipeline-reset"];
   const stageFilter = elements["pipeline-filter-stage"];
   const textFilter = elements["pipeline-filter-text"];
-  assert.equal(download.disabled, true, "la descarga debe comenzar deshabilitada");
+  assert.equal(download.disabled, true, "la descarga del resumen debe comenzar deshabilitada");
+  assert.equal(agendaDownload.disabled, true, "la descarga de agenda debe comenzar deshabilitada");
 
   const headers = dashboard.headers;
   function makeRow(overrides) {
@@ -72,7 +75,11 @@ class Element {
   fileInput.files = [{size:validCsv.length, text:async () => validCsv}];
   textFilter.value = "filtro anterior";
   await fileInput.listeners.change();
-  assert.equal(download.disabled, false, "la descarga se habilita después de una importación válida");
+  assert.equal(download.disabled, false, "la descarga del resumen se habilita después de una importación válida");
+  assert.equal(agendaDownload.disabled, false, "la descarga de agenda se habilita después de una importación válida");
+  agendaDownload.listeners.click();
+  assert.equal(objectUrlCalls, 1, "la agenda válida debe generar un archivo descargable");
+  assert.match(elements["pipeline-status"].textContent, /Agenda descargada/);
   assert.equal(textFilter.value, "", "la búsqueda anterior se limpia al importar otro CSV");
   assert.equal(elements["pipeline-dashboard-output"].hidden, false);
   textFilter.value = "PARCELA-123";
@@ -83,15 +90,19 @@ class Element {
   fileInput.files = [{size:invalidCsv.length, text:async () => invalidCsv}];
   await fileInput.listeners.change();
   assert.equal(download.disabled, true, "un CSV inválido no debe permitir exportar el resumen anterior");
+  assert.equal(agendaDownload.disabled, true, "un CSV inválido no debe permitir exportar la agenda anterior");
   assert.equal(elements["pipeline-dashboard-output"].hidden, true);
   download.listeners.click();
-  assert.equal(objectUrlCalls, 0, "no debe generarse un archivo con datos de una importación anterior");
+  agendaDownload.listeners.click();
+  assert.equal(objectUrlCalls, 1, "no debe generarse ningún archivo con datos de una importación anterior");
 
   fileInput.files = [{size:validCsv.length, text:async () => validCsv}];
   await fileInput.listeners.change();
   assert.equal(download.disabled, false);
+  assert.equal(agendaDownload.disabled, false);
   reset.listeners.click();
   assert.equal(download.disabled, true, "limpiar la sesión invalida también el resumen");
+  assert.equal(agendaDownload.disabled, true, "limpiar la sesión invalida también la agenda");
   assert.equal(elements["pipeline-dashboard-output"].hidden, true);
   assert.equal(textFilter.value, "");
   assert.equal(stageFilter.children.length, 1);
