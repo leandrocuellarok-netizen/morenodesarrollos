@@ -21,6 +21,7 @@ assert.equal(onlyFot.items[0].amount, "1.200 m²");
 
 const missingFactors = tools.calculatePreliminary({ areaRaw: "1200" });
 assert.match(missingFactors.error, /FOS o el FOT/);
+assert.doesNotMatch(missingFactors.error, /verificado/i, "la calculadora no debe presentar como verificado un indicador que solo fue ingresado");
 
 const partialLead = tools.buildLeadNote({ areaRaw: "1200", referenceRaw: "Dato del propietario" });
 assert.equal(partialLead.empty, false);
@@ -169,4 +170,18 @@ assert.match(JSON.stringify(dossierWithoutIndicators), /No se ingresaron datos p
 assert.match(dossierWithoutIndicators.status, /NO VERIFICADOS/);
 assert.doesNotMatch(JSON.stringify(dossierWithoutIndicators), /superficie edificable aprobada/);
 
-console.log("OK: 13 grupos de pruebas de cálculo, datos parciales, listas declaradas, URL, borrador de contacto y ficha preliminar imprimible.");
+const dossierExport = tools.buildOpportunityDossierExport({
+  fields: { nombre: "Contacto de exportación", zona: "Moreno" },
+  calculationInput: {},
+  generatedAt: "25 de noviembre de 2026, 07:40"
+});
+assert.equal(dossierExport.schema, "moreno.opportunity-dossier");
+assert.equal(dossierExport.schemaVersion, 1);
+assert.equal(dossierExport.status, "preliminary-unverified");
+assert.equal(dossierExport.exportedAt, "25 de noviembre de 2026, 07:40");
+assert.equal(dossierExport.dossier.title, "Ficha preliminar de oportunidad");
+assert.equal(dossierExport.dossier.status, "BORRADOR · DATOS APORTADOS, NO VERIFICADOS");
+assert.equal(JSON.parse(JSON.stringify(dossierExport)).schemaVersion, 1);
+
+
+console.log("OK: 14 grupos de pruebas de cálculo, datos parciales, listas declaradas, URL, borrador, ficha imprimible y exportación JSON versionada.");
