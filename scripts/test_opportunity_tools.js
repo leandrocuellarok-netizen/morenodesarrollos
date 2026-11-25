@@ -269,6 +269,18 @@ const importedVersionTwo = tools.parseOpportunityDossierImport(versionTwoDossier
 assert.equal(importedVersionTwo.ok, true);
 assert.equal(importedVersionTwo.version, 2);
 assert.equal(importedVersionTwo.internalData.reference, "");
+const legacyMerge = tools.mergeImportedOpportunityData({
+  fields: {},
+  calculationInput: {},
+  internalData: {
+    reference: "LOCAL-ONLY",
+    checks: { cadastral: { status: "in_progress", source: "Control local", consultedAt: "2026-11-25", note: "" } },
+    fees: { currency: "ARS", proposed: "500000", agreed: "", invoiced: "", collected: "" }
+  }
+}, importedVersionTwo);
+assert.equal(legacyMerge.internalData.reference, "LOCAL-ONLY", "un expediente v1/v2 no debe borrar la mesa interna actual");
+assert.equal(legacyMerge.internalData.checks.cadastral.status, "in_progress");
+assert.equal(legacyMerge.internalData.fees.proposed, "500000");
 
 const legacyDossier = JSON.parse(JSON.stringify(dossierExport));
 legacyDossier.schemaVersion = 1;
@@ -330,6 +342,12 @@ assert.equal(tooManyEvidence.ok, false);
 const invalidInternalExport = JSON.parse(JSON.stringify(dossierExport));
 invalidInternalExport.internalData.fees.currency = "";
 assert.equal(tools.parseOpportunityDossierImport(invalidInternalExport).ok, false);
+const malformedChecksExport = JSON.parse(JSON.stringify(dossierExport));
+malformedChecksExport.internalData.checks = [];
+assert.equal(tools.parseOpportunityDossierImport(malformedChecksExport).ok, false);
+const malformedFeesExport = JSON.parse(JSON.stringify(dossierExport));
+malformedFeesExport.internalData.fees = [];
+assert.equal(tools.parseOpportunityDossierImport(malformedFeesExport).ok, false);
 assert.throws(() => tools.buildOpportunityDossierExport({
   fields: {},
   calculationInput: {},
