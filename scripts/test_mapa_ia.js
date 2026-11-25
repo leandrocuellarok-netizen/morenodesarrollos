@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion } = require(modulePath);
+const { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -15,6 +15,9 @@ assert.ok(source.includes("attributionControl: { compact: false }"), "la atribuc
 assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece el enlace para reportar problemas cartográficos");
 const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
 assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye la mesa de verificación documental");
+assert.ok(mapPage.includes('id="export-review"'), "el Mapa IA permite exportar la bitácora local");
+assert.ok(mapPage.includes('id="review-status"'), "el Mapa IA explica el estado y alcance del guardado local");
+assert.match(mapPage, /no se envían al servidor[\s\S]*Exportar bitácora JSON/i, "la página explica que la bitácora no se transmite y puede exportarse");
 assert.ok(mapPage.includes('href="https://mapas.moreno.gob.ar/"'), "se enlaza el visor cartográfico oficial de Moreno");
 assert.ok(mapPage.includes('href="https://arba.gov.ar/geoarba/inicio.asp"'), "se enlaza GeoARBA como fuente provincial");
 assert.ok(mapPage.includes('href="https://www.moreno.gob.ar/catastro.php"'), "se enlaza la Dirección de Catastro municipal");
@@ -169,6 +172,50 @@ assert.equal(
   11,
   "GeoJSON puede serializarse como JSON válido"
 );
+
+
+assert.equal(reviewTasks.length, 5, "cada tesis tiene cinco controles internos de diligencia");
+assert.deepEqual(getReviewSummary({}, "rp25"), { completed: 0, total: 5, percent: 0 });
+const firstReviewState = updateReviewState({}, "rp25", "cadastral", true, opportunities);
+assert.equal(getReviewSummary(firstReviewState, "rp25").completed, 1);
+assert.equal(getReviewSummary(firstReviewState, "rp25").percent, 20);
+assert.equal(getReviewSummary(firstReviewState, "norte").completed, 0);
+assert.deepEqual(updateReviewState(firstReviewState, "rp25", "task-inventada", true, opportunities), firstReviewState);
+assert.deepEqual(updateReviewState(firstReviewState, "referencia-inexistente", "cadastral", true, opportunities), firstReviewState);
+assert.deepEqual(
+  normalizeReviewState({
+    rp25: { cadastral: true, planning: false, tarea_inventada: true },
+    referencia_inexistente: { cadastral: true }
+  }, opportunities),
+  { rp25: { cadastral: true, planning: false, legal: false, feasibility: false, traceability: false } }
+);
+const restoredReviewState = readReviewState({
+  getItem: key => key === REVIEW_STORAGE_KEY ? JSON.stringify(firstReviewState) : null
+}, opportunities);
+assert.deepEqual(restoredReviewState, firstReviewState);
+assert.deepEqual(readReviewState({ getItem: () => "{json roto" }, opportunities), {});
+let savedReviewPayload = null;
+assert.equal(writeReviewState({
+  setItem: (key, value) => { savedReviewPayload = { key, value }; }
+}, firstReviewState, opportunities), true);
+assert.equal(savedReviewPayload.key, REVIEW_STORAGE_KEY);
+assert.deepEqual(JSON.parse(savedReviewPayload.value), firstReviewState);
+assert.equal(writeReviewState({ setItem: () => { throw new Error("storage bloqueado"); } }, firstReviewState, opportunities), false);
+const reviewExport = buildReviewExport(firstReviewState, all, "2026-11-25T06:00:00.000Z");
+assert.equal(reviewExport.schema_version, 1);
+assert.equal(reviewExport.generated_at, "2026-11-25T06:00:00.000Z");
+assert.equal(reviewExport.references.length, 5, "la exportación excluye localidades y conserva las cinco tesis visibles");
+const exportedRp25 = reviewExport.references.find(reference => reference.id === "rp25");
+assert.equal(exportedRp25.completed_tasks, 1);
+assert.equal(exportedRp25.total_tasks, 5);
+assert.equal(exportedRp25.tasks.find(task => task.id === "cadastral").review_recorded, true);
+assert.equal(exportedRp25.tasks.find(task => task.id === "planning").review_recorded, false);
+assert.match(reviewExport.scope, /no es una certificación/i);
+assert.ok(source.includes("localStorage"));
+assert.ok(source.includes("function exportVisibleReview()"));
+assert.ok(source.includes('link.download = "moreno-mapa-ia-bitacora.json"'));
+assert.ok(styles.includes(".map-review-panel"));
+assert.ok(styles.includes(".map-review-toolbar"));
 
 
 console.log("OK: pruebas del motor MapLibre, datos territoriales, filtros, evidencias y exportaciones CSV/GeoJSON del Mapa IA.");
