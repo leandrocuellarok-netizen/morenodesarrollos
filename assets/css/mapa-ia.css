@@ -98,3 +98,23 @@
   outline: 2px solid #a95d3c;
   outline-offset: 3px;
 }
+
+
+/* Enlaces directos para compartir una ficha territorial concreta. */
+.map-share-link {
+  display: inline-flex;
+  align-items: center;
+  margin: 9px 0 3px;
+  padding: 8px 0;
+  color: #80533a;
+  font: 600 10px/1.5 var(--sans);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.map-share-link:hover {
+  color: #a95d3c;
+}
+.map-share-link:focus-visible {
+  outline: 2px solid #a95d3c;
+  outline-offset: 3px;
+}
