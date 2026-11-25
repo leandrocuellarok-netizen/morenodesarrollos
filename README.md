@@ -198,10 +198,14 @@ Cada localidad o tesis territorial puede abrir el formulario de oportunidades co
 
 El Mapa IA incorpora un directorio operativo de fuentes oficiales para pasar de una referencia aproximada a una parcela individualizada:
 
-- **IDE Moreno**: visor cartográfico municipal. La fecha y el alcance deben revisarse capa por capa: https://mapas.moreno.gob.ar/
-- **GeoARBA**: portal provincial de geoservicios WMS/WFS y descargas vectoriales de objetos catastrales por partido. Revisar metadatos, fecha de actualización y condiciones de uso: https://arba.gov.ar/geoarba/inicio.asp
-- **Dirección de Catastro de Moreno**: información de trámites y contacto institucional: https://www.moreno.gob.ar/catastro.php
-- **Plano de zonificación municipal, anexo junio de 2015**: antecedente histórico disponible en el portal municipal. No confirma normativa vigente ni indicadores actuales; toda evaluación requiere consulta municipal actualizada: https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf
+- **IDE Moreno**: visor cartográfico municipal. La fecha, escala y alcance deben revisarse capa por capa: https://mapas.moreno.gob.ar/
+- **GeoARBA**: catálogo provincial de metadatos y geoservicios. El WMS permite visualizar capas; el WFS, consultar objetos y atributos. También publica descargas vectoriales por partido. Revisar metadatos, fecha de actualización y condiciones de uso: https://arba.gov.ar/geoarba/inicio.asp · [WMS GetCapabilities](https://geo.arba.gov.ar/geoserver/idera/wms?request=GetCapabilities&service=WMS) · [WFS GetCapabilities](https://geo.arba.gov.ar/geoserver/idera/wfs?request=GetCapabilities&service=WFS)
+- **Dirección de Catastro de Moreno**: contacto y trámites: https://www.moreno.gob.ar/catastro.php · [Consulta de plancheta y requisitos](https://moreno.gob.ar/catastro-contribuyentes.php) · [Mensura y visado](https://moreno.gob.ar/catastro.php?c=agrimensores)
+- **Obras Particulares / IDUAR**: guía municipal de permisos de construcción y aprobación de planos: https://iduar.moreno.gob.ar/obras-particulares/
+- **Código de Zonificación publicado por el Municipio**: documento de referencia que debe contrastarse con modificatorias y el texto vigente: https://moreno.gob.ar/docs/catastro/codigo_zonificacion.pdf
+- **Plano de zonificación municipal, anexo junio de 2015**: antecedente histórico; no confirma normativa vigente ni indicadores actuales: https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf
+
+La página agrupa estas fuentes en cuatro rutas operativas: visor territorial, servicios GIS, Catastro/mensura y Obras Particulares. No se reciben documentos personales ni planos a través de MORENO. Las fuentes no se descargan ni interpretan automáticamente; cada dato debe registrarse con procedencia, documento y fecha de consulta, y las conclusiones requieren revisión técnica, dominial y urbanística.
 
 La secuencia de control exige nomenclatura catastral y plano de mensura, certificado o constancia urbanística vigente, revisión dominial y de restricciones, factibilidad de servicios/accesos y trazabilidad de fuente, documento y fecha de consulta. Estas fuentes no se descargan ni interpretan automáticamente en MORENO: no se presentan parcelas ni zonificaciones como verificadas hasta incorporar geometría, metadatos y validación profesional.
 

@@ -266,21 +266,27 @@ def main() -> None:
                 errors.append("mapa-ia/index.html: falta explicar el uso y alcance de la exportación GeoJSON")
             for required_source_markup in (
                 'id="map-verification-title"',
-                'href="https://mapas.moreno.gob.ar/"',
-                'href="https://arba.gov.ar/geoarba/inicio.asp"',
-                'href="https://www.moreno.gob.ar/catastro.php"',
-                'href="https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf"',
                 'href="https://mapas.moreno.gob.ar/" target="_blank" rel="noopener noreferrer"',
                 'href="https://arba.gov.ar/geoarba/inicio.asp" target="_blank" rel="noopener noreferrer"',
+                'href="https://geo.arba.gov.ar/geoserver/idera/wms?request=GetCapabilities&amp;service=WMS"',
+                'href="https://geo.arba.gov.ar/geoserver/idera/wfs?request=GetCapabilities&amp;service=WFS"',
                 'href="https://www.moreno.gob.ar/catastro.php" target="_blank" rel="noopener noreferrer"',
+                'href="https://moreno.gob.ar/catastro-contribuyentes.php" target="_blank" rel="noopener noreferrer"',
+                'href="https://moreno.gob.ar/catastro.php?c=agrimensores" target="_blank" rel="noopener noreferrer"',
+                'href="https://iduar.moreno.gob.ar/obras-particulares/" target="_blank" rel="noopener noreferrer"',
+                'href="https://moreno.gob.ar/docs/catastro/codigo_zonificacion.pdf" target="_blank" rel="noopener noreferrer"',
                 'href="https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf" target="_blank" rel="noopener noreferrer"',
                 "anexo de junio de 2015",
                 "no confirma la normativa vigente",
+                "modificatorias y el texto vigente",
                 "nomenclatura catastral",
-                "fecha de consulta"
+                "fecha de consulta",
+                "MORENO no recibe DNI, escrituras ni planos"
             ):
                 if required_source_markup not in page_source:
                     errors.append(f"mapa-ia/index.html: falta fuente o control de verificación: {required_source_markup}")
+            if len(re.findall(r'<article class="verification-source"', page_source)) != 4:
+                errors.append("mapa-ia/index.html: la mesa de verificación debe presentar cuatro rutas institucionales")
 
             for required_markup in (
                 'href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css"',

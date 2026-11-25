@@ -170,7 +170,7 @@
 }
 .verification-source-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
@@ -178,9 +178,27 @@
   min-width: 0;
   padding: 23px 22px 25px 0;
 }
-.verification-source + .verification-source {
+.verification-source:nth-child(even) {
   padding-left: 22px;
   border-left: 1px solid var(--line);
+}
+.verification-source:nth-child(3),
+.verification-source:nth-child(4) {
+  border-top: 1px solid var(--line);
+}
+.verification-source-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 17px;
+  margin-top: 15px;
+}
+.verification-source-links a {
+  margin-top: 0;
+}
+.verification-contact {
+  margin: 12px 0 0;
+  color: #77796f;
+  font: 10px/1.7 var(--sans);
 }
 .verification-index {
   display: block;
@@ -227,6 +245,13 @@
   font: 12px/1.8 var(--sans);
 }
 .verification-caution > a { white-space: nowrap; }
+.verification-caution-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px 18px;
+}
+.verification-caution-links a { margin-top: 0; white-space: nowrap; }
 .verification-checklist {
   display: grid;
   grid-template-columns: minmax(220px, .8fr) minmax(0, 1.2fr);
@@ -272,12 +297,17 @@
   .verification-checklist { grid-template-columns: 1fr; gap: 14px; }
   .verification-source-grid { grid-template-columns: 1fr; }
   .verification-source,
-  .verification-source + .verification-source {
+  .verification-source + .verification-source,
+  .verification-source:nth-child(3),
+  .verification-source:nth-child(4) {
     padding: 19px 0 21px;
     border-left: 0;
+    border-top: 0;
     border-bottom: 1px solid var(--line);
   }
   .verification-source:last-child { border-bottom: 0; }
+  .verification-source-links { gap: 8px 14px; }
+  .verification-caution-links { display: grid; gap: 5px; }
   .verification-caution { grid-template-columns: 1fr; gap: 4px; padding: 19px; }
   .verification-caution > a { white-space: normal; }
 }
