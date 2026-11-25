@@ -606,3 +606,8 @@ body{background:var(--paper);color:var(--ink)}
   .pipeline-records-heading{align-items:flex-start;flex-direction:column;gap:5px}
   .pipeline-filter-row{grid-template-columns:1fr}
 }
+
+.pipeline-dashboard-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:8px 0 18px}
+.pipeline-dashboard-actions .button{cursor:pointer}
+.pipeline-dashboard-actions>span{color:#6e7068;font:9px/1.55 var(--sans);letter-spacing:.08em;text-transform:uppercase}
+@media(max-width:600px){.pipeline-dashboard-actions{align-items:stretch;flex-direction:column}.pipeline-dashboard-actions .button{width:100%;justify-content:space-between}}

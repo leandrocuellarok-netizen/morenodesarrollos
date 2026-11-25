@@ -5,8 +5,10 @@
   const status = document.getElementById("pipeline-status");
   const output = document.getElementById("pipeline-dashboard-output");
   const resetButton = document.getElementById("pipeline-reset");
-  if (!api || !fileInput || !status || !output || !resetButton) return;
+  const downloadSummaryButton = document.getElementById("pipeline-download-summary");
+  if (!api || !fileInput || !status || !output || !resetButton || !downloadSummaryButton) return;
   let records = [];
+  let currentSummary = null;
   const stageFilter = document.getElementById("pipeline-filter-stage");
   const textFilter = document.getElementById("pipeline-filter-text");
   const metrics = document.getElementById("pipeline-metrics");
@@ -165,6 +167,7 @@
   }
   function render() {
     const summary = api.summarizePipeline(records, localDate());
+    currentSummary = summary;
     renderMetrics(summary);
     renderFinance(summary.finance);
     renderStages(summary.stageCounts);
@@ -212,6 +215,24 @@
       resetButton.disabled = false;
     }
   }
+  downloadSummaryButton.addEventListener("click", function () {
+    if (!currentSummary) return;
+    try {
+      const blob = new Blob([api.buildSummaryCsv(currentSummary)], { type: "text/csv;charset=utf-8" });
+      const objectUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = "moreno-resumen-comercial-" + currentSummary.today + ".csv";
+      link.style.display = "none";
+      document.body.append(link);
+      link.click();
+      link.remove();
+      window.setTimeout(function () { window.URL.revokeObjectURL(objectUrl); }, 1000);
+      status.textContent = "Resumen agregado descargado. No contiene identificadores de oportunidad ni datos de contacto.";
+    } catch (error) {
+      status.textContent = "No se pudo generar el resumen CSV en este navegador.";
+    }
+  });
   fileInput.addEventListener("change", importFile);
   resetButton.addEventListener("click", () => {
     records = [];

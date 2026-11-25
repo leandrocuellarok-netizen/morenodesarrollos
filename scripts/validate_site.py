@@ -567,7 +567,7 @@ def main() -> None:
         for required_control in ("dossier-import-file", "validate-dossier-import", "apply-dossier-merge", "apply-dossier-replace"):
             if f'id="{required_control}"' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta control de importación: {required_control}")
-        for required_control in ("pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset", "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions", "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-text"):
+        for required_control in ("pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset", "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions", "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-text", "pipeline-download-summary"):
             if f'id="{required_control}"' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta control del tablero comercial: {required_control}")
         for script_src in ("../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-dashboard-ui.js"):
@@ -590,7 +590,7 @@ def main() -> None:
     else:
         pipeline_source = pipeline_module.read_text(encoding="utf-8")
         pipeline_ui_source = pipeline_ui_module.read_text(encoding="utf-8")
-        for required_logic in ("parsePipelineCsv", "summarizePipeline", "MAX_ROWS", "MAX_FILE_CHARS"):
+        for required_logic in ("parsePipelineCsv", "summarizePipeline", "buildSummaryCsv", "MAX_ROWS", "MAX_FILE_CHARS"):
             if required_logic not in pipeline_source:
                 errors.append(f"assets/js/pipeline-dashboard.js: falta lógica requerida: {required_logic}")
         for required_logic in ("MorenoPipelineDashboard", "file.text()", "textContent", "pipeline-csv-file"):

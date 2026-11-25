@@ -200,8 +200,39 @@
     };
   }
 
+  function csvCell(value) {
+    const text = String(value == null ? "" : value);
+    return /[;"\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+  }
+
+  function buildSummaryCsv(summary) {
+    const rows = [["fecha_corte", "tipo", "indicador", "moneda", "valor"]];
+    [
+      ["oportunidades", summary.total],
+      ["en_seguimiento", summary.active],
+      ["seguimientos_vencidos", summary.overdue],
+      ["seguimientos_proximos_7_dias", summary.dueSoon],
+      ["sin_fecha_de_seguimiento", summary.missingFollowUp]
+    ].forEach(function (entry) {
+      rows.push([summary.today, "pipeline", entry[0], "", String(entry[1])]);
+    });
+    summary.stageCounts.forEach(function (entry) {
+      rows.push([summary.today, "etapa", entry[0], "", String(entry[1])]);
+    });
+    Object.keys(summary.finance).sort().forEach(function (currency) {
+      const values = summary.finance[currency];
+      AMOUNT_FIELDS.forEach(function (fieldName) {
+        const amount = values.counts[fieldName]
+          ? values[fieldName].toFixed(2).replace(".", ",")
+          : "";
+        rows.push([summary.today, "honorarios", fieldName, currency, amount]);
+      });
+    });
+    return "\uFEFF" + rows.map(function (row) { return row.map(csvCell).join(";"); }).join("\r\n") + "\r\n";
+  }
+
   return {
     headers: HEADERS.slice(), parsePipelineCsv: parsePipelineCsv, summarizePipeline: summarizePipeline,
-    normalizeStage: normalizeStage, validDate: validDate
+    buildSummaryCsv: buildSummaryCsv, normalizeStage: normalizeStage, validDate: validDate
   };
 });

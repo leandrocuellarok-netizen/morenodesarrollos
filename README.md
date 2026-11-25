@@ -262,3 +262,5 @@ La sección desplegable de /oportunidades/ permite importar la plantilla CSV com
 - La lectura y los cálculos se ejecutan en memoria en la pestaña actual. No hay almacenamiento local, sincronización, solicitudes de red ni almacenamiento en el servidor; al recargar se debe importar otra vez el CSV.
 - No ingresar nombres, teléfonos, correos, datos bancarios, direcciones confidenciales ni documentación dominial sensible en la plantilla. Para datos de contacto, utilizar un sistema con acceso controlado.
 - scripts/test_pipeline_dashboard.js cubre delimitadores y comillas, fechas, importes, duplicados, columnas no admitidas, límites y sumas separadas por moneda.
+
+- El tablero permite descargar un resumen agregado CSV con fecha de corte, recuentos por etapa y honorarios por moneda. El reporte no incluye IDs de oportunidades, localidades ni datos de contacto; las divisas permanecen separadas y las celdas sin importe quedan vacías.
