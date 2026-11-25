@@ -46,6 +46,18 @@ function buildOpportunityContactUrl(baseUrl, item) {
   return url.toString();
 }
 
+function shouldFitMunicipalBounds(selectedReferenceId, userHasNavigated) {
+  return !selectedReferenceId && !userHasNavigated;
+}
+
+function prefersReducedMotion(view) {
+  return Boolean(
+    view &&
+    typeof view.matchMedia === "function" &&
+    view.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
 function filterReferences(items, options) {
   const settings = options || {};
   const query = String(settings.query || "").toLocaleLowerCase("es-AR").trim();
@@ -158,6 +170,7 @@ function initMapPage(doc) {
     doc.defaultView && doc.defaultView.location ? doc.defaultView.location.search : "",
     all
   );
+  let userHasNavigated = false;
 
   function showFallback(message) {
     const fallback = doc.createElement("p");
@@ -261,7 +274,9 @@ function initMapPage(doc) {
     const marker = markers.get(item.id);
     if (!map || !marker) return;
     setActiveReference(item, { reveal: true });
-    map.flyTo({ center: [item.lng, item.lat], zoom: 14, essential: true });
+    const camera = { center: [item.lng, item.lat], zoom: 14 };
+    if (prefersReducedMotion(doc.defaultView)) map.jumpTo(camera);
+    else map.flyTo({ ...camera, essential: true });
     const popup = marker.getPopup();
     if (popup && !popup.isOpen()) marker.togglePopup();
   }
@@ -422,6 +437,12 @@ function initMapPage(doc) {
         renderWorldCopies: false
       });
       map.addControl(new maplibregl.NavigationControl({ showCompass: true }), "top-right");
+      const markUserNavigation = () => {
+        userHasNavigated = true;
+      };
+      map.on("dragstart", markUserNavigation);
+      map.on("zoomstart", markUserNavigation);
+      map.on("rotatestart", markUserNavigation);
       map.on("error", event => {
         if (event && event.sourceId === "osm-raster") {
           statusElement.textContent = "Teselas OSM no disponibles · inventario y filtros conservados";
@@ -496,7 +517,9 @@ function initMapPage(doc) {
           geo.features.forEach(feature => {
             if (feature.geometry) collectCoordinates(feature.geometry.coordinates);
           });
-          if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 36, maxZoom: 12, duration: 0 });
+          if (!bounds.isEmpty() && shouldFitMunicipalBounds(selectedReferenceId, userHasNavigated)) {
+            map.fitBounds(bounds, { padding: 36, maxZoom: 12, duration: 0 });
+          }
           boundaryElement.textContent = "Límite municipal: cargado desde Georef";
         }).catch(error => {
           boundaryElement.textContent = "Límite municipal: no disponible ahora";
@@ -527,7 +550,11 @@ function initMapPage(doc) {
     selectedReferenceId = null;
     updateShareUrl(null);
     render();
-    if (map) map.flyTo({ center: [-58.7914, -34.6508], zoom: 12 });
+    if (map) {
+      const home = { center: [-58.7914, -34.6508], zoom: 12 };
+      if (prefersReducedMotion(doc.defaultView)) map.jumpTo(home);
+      else map.flyTo({ ...home, essential: true });
+    }
   });
   render();
 }
@@ -535,7 +562,8 @@ function initMapPage(doc) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, all, filterReferences, buildCsv, buildGeoJson,
-    getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl
+    getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl,
+    shouldFitMunicipalBounds, prefersReducedMotion
   };
 }
 if (typeof document !== "undefined") initMapPage(document);
