@@ -2,6 +2,7 @@
 """Dependency-free quality gate for the public MORENO website."""
 from __future__ import annotations
 
+import csv
 import json
 import re
 import shutil
@@ -496,6 +497,36 @@ def main() -> None:
                 errors.append(f"sitemap.xml debe listar exactamente las {len(expected)} páginas públicas canónicas")
         except (ET.ParseError, OSError) as exc:
             errors.append(f"sitemap.xml inválido: {exc}")
+
+
+    pipeline_template = ROOT / "docs/plantilla-seguimiento-comercial.csv"
+    if not pipeline_template.is_file():
+        errors.append("Falta docs/plantilla-seguimiento-comercial.csv")
+    else:
+        expected_headers = [
+            "id_oportunidad", "fecha_alta", "referencia_origen", "localidad", "tipo_activo",
+            "identificacion_catastral", "fuente_origen", "tipo_contraparte", "tipo_operacion",
+            "etapa_comercial", "estado_documental", "proxima_accion", "fecha_proximo_seguimiento",
+            "honorarios_propuestos", "honorarios_acordados", "honorarios_facturados",
+            "honorarios_cobrados", "moneda", "fecha_ultima_actualizacion", "observaciones_no_sensibles",
+        ]
+        try:
+            with pipeline_template.open("r", encoding="utf-8-sig", newline="") as template_file:
+                template_rows = list(csv.reader(template_file, delimiter=";"))
+            if not template_rows or template_rows[0] != expected_headers:
+                errors.append("La plantilla CSV no coincide con el esquema de seguimiento comercial esperado")
+            if len(template_rows) != 1:
+                errors.append("La plantilla CSV debe permanecer vacía, sin oportunidades de ejemplo")
+        except (OSError, UnicodeError, csv.Error) as exc:
+            errors.append(f"No se pudo leer la plantilla CSV de seguimiento: {exc}")
+
+    opportunity_page = ROOT / "oportunidades/index.html"
+    if opportunity_page.is_file():
+        opportunity_html = opportunity_page.read_text(encoding="utf-8")
+        if 'href="../docs/plantilla-seguimiento-comercial.csv"' not in opportunity_html:
+            errors.append("Oportunidades debe enlazar la plantilla CSV de seguimiento comercial")
+        if "pipeline-template-guide" not in opportunity_html:
+            errors.append("Oportunidades debe explicar las etapas y la separación de honorarios")
 
     node = shutil.which("node")
     if node:
