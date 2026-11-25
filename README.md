@@ -50,6 +50,8 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 
 - / — Inicio: presentación del proyecto, desarrollo inmobiliario, inteligencia territorial e IA aplicada.
 - /mapa-ia/ — Mapa IA: mapa interactivo del Partido de Moreno, localidades y cinco tesis preliminares de oportunidad.
+- El índice editorial del Mapa IA cuenta dinámicamente las localidades, los contextos con fuente pública, las hipótesis y el total visible tras cada filtro. Es un recuento de fichas, no de inmuebles disponibles.
+- La cartografía usa símbolos monocromáticos por forma (círculo, cuadrado y rombo) para distinguir clases sin depender del color; las coordenadas siguen siendo referencias territoriales aproximadas.
 - /erica-acosta/ — Sobre Erica: perfil personal y enfoque de trabajo, con énfasis en residencia local, iniciativa emprendedora y alianzas.
 - /oportunidades/ — Captación inicial: formulario opcional para propietarios, inversores y aliados, con ubicación y nomenclatura catastral cuando estén disponibles.
 
