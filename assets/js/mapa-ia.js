@@ -394,6 +394,156 @@ function buildGeoJson(items) {
   };
 }
 
+
+function escapeTerritorialHtml(value) {
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function safeTerritorialSource(value) {
+  try {
+    const url = new URL(String(value || ""));
+    return url.protocol === "https:" ? url.toString() : "";
+  } catch (error) {
+    return "";
+  }
+}
+
+function buildTerritorialBrief(item, generatedAt) {
+  if (!item || item.type !== "opportunity" ||
+      !["documented", "hypothesis"].includes(item.stage)) return null;
+  const latitude = Number(item.lat);
+  const longitude = Number(item.lng);
+  const timestamp = typeof generatedAt === "string" && Number.isFinite(Date.parse(generatedAt))
+    ? new Date(generatedAt).toISOString()
+    : new Date().toISOString();
+  const localityScope = "Centro aproximado de corredor o área; no identifica una parcela.";
+  const stageLabel = item.stage === "hypothesis"
+    ? "Hipótesis de prospección"
+    : "Contexto con fuente pública";
+  return {
+    schema: "moreno.territorial-brief",
+    schemaVersion: 1,
+    generatedAt: timestamp,
+    classification: { value: item.stage, label: stageLabel },
+    reference: {
+      id: String(item.id || "").trim().slice(0, 40),
+      name: String(item.name || "Referencia territorial").trim().slice(0, 180),
+      category: kindLabel[item.kind] || String(item.kind || "Tesis territorial").slice(0, 80),
+      coordinates: {
+        latitude: Number.isFinite(latitude) ? latitude : null,
+        longitude: Number.isFinite(longitude) ? longitude : null,
+        scope: localityScope
+      },
+      lineToInvestigate: String(item.business || "").trim().slice(0, 1200),
+      evidence: String(item.evidence || "").trim().slice(0, 1600),
+      verificationStatus: String(item.status || "").trim().slice(0, 800),
+      nextStep: String(item.next || "").trim().slice(0, 1000),
+      sourceUrl: safeTerritorialSource(item.source)
+    },
+    diligence: reviewTasks.map(task => ({
+      id: task.id, label: task.label, sourceDocument: "", consultedAt: "", recorded: false
+    })),
+    dataToComplete: [
+      "Partida y nomenclatura catastral del inmueble concreto.",
+      "Plano de mensura, superficie y geometría parcelaria.",
+      "Certificado urbanístico vigente, usos e indicadores aplicables.",
+      "Titularidad, antecedentes dominiales, gravámenes y restricciones.",
+      "Servicios, accesos y condiciones ambientales e hidráulicas.",
+      "Disponibilidad y condiciones económicas respaldadas por una fuente y fecha."
+    ],
+    disclaimers: [
+      "Esta ficha organiza una línea de investigación territorial; no identifica ni ofrece un inmueble.",
+      "Las coordenadas son aproximadas y no representan una parcela.",
+      "Una fuente pública o una publicación de un operador no equivale a verificación independiente, vigencia normativa ni disponibilidad.",
+      "No constituye tasación, oferta, estudio de factibilidad, certificación urbanística ni recomendación de inversión."
+    ]
+  };
+}
+
+function buildTerritorialBriefHtml(brief) {
+  if (!brief || brief.schema !== "moreno.territorial-brief" ||
+      brief.schemaVersion !== 1 || !brief.reference) return "";
+  const reference = brief.reference;
+  const safeSource = safeTerritorialSource(reference.sourceUrl);
+  const coordinates = reference.coordinates || {};
+  const coordinateText = Number.isFinite(coordinates.latitude) && Number.isFinite(coordinates.longitude)
+    ? coordinates.latitude.toFixed(5) + ", " + coordinates.longitude.toFixed(5)
+    : "No informadas";
+  const sourceMarkup = safeSource
+    ? '<a href="' + escapeTerritorialHtml(safeSource) + '" target="_blank" rel="noopener noreferrer">' +
+      escapeTerritorialHtml(safeSource) + "</a>"
+    : "<span>Sin enlace de fuente registrado.</span>";
+  const diligenceRows = (Array.isArray(brief.diligence) ? brief.diligence : []).map(task =>
+    "<tr><th>" + escapeTerritorialHtml(task.label) +
+    '<\\/th><td><span class="write-line"></span></td><td><span class="date-line"></span></td></tr>'
+  ).join("");
+  const dataRows = (Array.isArray(brief.dataToComplete) ? brief.dataToComplete : []).map(label =>
+    '<li><span class="empty-box" aria-hidden="true"></span>' + escapeTerritorialHtml(label) + "</li>"
+  ).join("");
+  const disclaimerRows = (Array.isArray(brief.disclaimers) ? brief.disclaimers : []).map(note =>
+    "<li>" + escapeTerritorialHtml(note) + "</li>"
+  ).join("");
+  const dateLabel = escapeTerritorialHtml(String(brief.generatedAt || "").slice(0, 10));
+  return '<!doctype html><html lang="es-AR"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<meta name="robots" content="noindex,nofollow">' +
+    "<title>Ficha de prospección · " + escapeTerritorialHtml(reference.name) + "</title>" +
+    "<style>" +
+    "@page{size:A4;margin:13mm}" +
+    ":root{color-scheme:light;--ink:#292e2a;--muted:#686b62;--line:#c9c5b9;--paper:#fbfaf6;--rust:#8b5b43}" +
+    "*{box-sizing:border-box}body{margin:0;padding:24px;background:#e9e6dd;color:var(--ink);font:12px/1.65 Arial,sans-serif}" +
+    ".sheet{max-width:210mm;min-height:267mm;margin:0 auto;padding:15mm;background:var(--paper);box-shadow:0 8px 30px #20282018}" +
+    ".topline{display:flex;justify-content:space-between;gap:20px;padding-bottom:12px;border-bottom:2px solid var(--ink);font-size:9px;letter-spacing:.16em;text-transform:uppercase}" +
+    ".eyebrow{color:var(--rust);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}" +
+    "h1{max-width:680px;margin:18px 0 8px;font:400 35px/1.04 Georgia,serif;letter-spacing:-.035em}" +
+    ".subhead{margin:0 0 18px;color:var(--muted);font-size:11px}" +
+    ".badge{display:inline-block;padding:5px 8px;border:1px solid var(--ink);font-size:9px;letter-spacing:.09em;text-transform:uppercase}" +
+    ".lead{margin:18px 0;padding:15px 18px;border-left:3px solid var(--rust);background:#f0ede5}" +
+    ".lead p{margin:6px 0 0;font:400 18px/1.35 Georgia,serif}" +
+    ".grid{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin-top:16px}" +
+    "section{margin:0 0 17px;break-inside:avoid}h2{margin:0 0 7px;padding-bottom:6px;border-bottom:1px solid var(--line);font:400 18px/1.2 Georgia,serif}" +
+    "p{margin:0 0 7px}.muted{color:var(--muted)}.source{overflow-wrap:anywhere;font-size:10px}" +
+    ".coordinate{padding:8px 10px;border:1px solid var(--line);font:600 11px/1.5 monospace}" +
+    "table{width:100%;border-collapse:collapse;font-size:10px}th,td{padding:8px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{width:48%;font-weight:600}" +
+    "td{width:32%}.write-line{display:block;height:17px;border-bottom:1px dotted #8d8b80}.date-line{display:block;height:17px;border-bottom:1px dotted #8d8b80}" +
+    ".data-list,.disclaimers{margin:0;padding:0;list-style:none}.data-list li{display:flex;gap:9px;padding:5px 0;border-bottom:1px solid #dedbd2}" +
+    ".empty-box{flex:0 0 11px;width:11px;height:11px;margin-top:3px;border:1px solid #77796f}" +
+    ".disclaimers{display:grid;gap:4px;color:var(--muted);font-size:9px}.disclaimers li:before{content:'— ';color:var(--rust)}" +
+    "footer{margin-top:15px;padding-top:9px;border-top:1px solid var(--ink);color:var(--muted);font-size:8px;letter-spacing:.04em}" +
+    ".print-control{display:block;margin:0 auto 14px;padding:10px 15px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-weight:700;cursor:pointer}" +
+    "a{color:#79523d;text-decoration-thickness:1px;text-underline-offset:3px}" +
+    "@media(max-width:700px){body{padding:0}.sheet{min-height:0;padding:22px}.grid{grid-template-columns:1fr}h1{font-size:30px}.topline{font-size:8px}}" +
+    "@media print{body{padding:0;background:#fff}.sheet{max-width:none;min-height:0;margin:0;padding:0;box-shadow:none}.print-control{display:none}a{color:inherit;text-decoration:none}}" +
+    "</style></head><body><button class="print-control" type="button" onclick="window.print()">Imprimir / guardar como PDF</button>" +
+    '<main class="sheet"><div class="topline"><strong>MORENO · INTELIGENCIA TERRITORIAL</strong><span>Ficha de prospección · ' + dateLabel + "</span></div>" +
+    '<p class="eyebrow" style="margin:18px 0 0">Dossier de investigación · ' + escapeTerritorialHtml(reference.id) + "</p>" +
+    "<h1>" + escapeTerritorialHtml(reference.name) + "</h1>" +
+    '<p class="subhead"><span class="badge">' + escapeTerritorialHtml(brief.classification.label) + "</span> &nbsp; " +
+    escapeTerritorialHtml(reference.category) + "</p>" +
+    '<section class="lead"><span class="eyebrow">Línea de investigación · no es una propuesta confirmada</span><p>' +
+    escapeTerritorialHtml(reference.lineToInvestigate) + "</p></section>" +
+    '<div class="grid"><section><h2>Evidencia disponible</h2><p>' + escapeTerritorialHtml(reference.evidence) +
+    '</p><p class="muted">La clasificación indica el tipo de respaldo registrado en el inventario; no certifica exactitud o vigencia.</p></section>' +
+    "<section><h2>Estado de verificación</h2><p>" + escapeTerritorialHtml(reference.verificationStatus) +
+    '</p><p class="muted">La disponibilidad y la identificación parcelaria no se presuponen.</p></section>' +
+    "<section><h2>Próximo paso sugerido</h2><p>" + escapeTerritorialHtml(reference.nextStep) + "</p></section>" +
+    '<section><h2>Referencia cartográfica</h2><p class="coordinate">' + escapeTerritorialHtml(coordinateText) +
+    "</p><p class=\"muted\">" + escapeTerritorialHtml(coordinates.scope || "Referencia aproximada; no parcelaria.") + "</p></section></div>" +
+    '<section class="source"><h2>Fuente de origen</h2><p>' + sourceMarkup +
+    '</p><p class="muted">Enlace consignado en el inventario MORENO. Consultar el documento original y su fecha antes de utilizarlo en una evaluación.</p></section>' +
+    '<section><h2>Bitácora para diligencia documental</h2><table><thead><tr><th>Control</th><th>Documento / fuente</th><th>Fecha</th></tr></thead><tbody>' +
+    diligenceRows + "</tbody></table></section>" +
+    '<section><h2>Datos a completar para evaluar un inmueble concreto</h2><ul class="data-list">' + dataRows + "</ul></section>" +
+    '<section><h2>Alcance y cautelas</h2><ul class="disclaimers">' + disclaimerRows + "</ul></section>" +
+    "<footer>ERICA M. ACOSTA · MORENO · Documento generado localmente desde el inventario público. Revisar fuentes y completar verificaciones antes de compartir como antecedente de una operación.</footer>" +
+    "</main></body></html>";
+}
+
 function initMapPage(doc) {
   const mapElement = doc.getElementById("map");
   if (!mapElement) return;
@@ -713,7 +863,15 @@ function initMapPage(doc) {
         }
       }
 
-      if (item.type === "opportunity") body.append(reviewPanelNode(item));
+      if (item.type === "opportunity") {
+        const briefButton = doc.createElement("button");
+        briefButton.type = "button";
+        briefButton.className = "map-brief-button";
+        briefButton.textContent = "Descargar ficha editorial ↧";
+        briefButton.setAttribute("aria-label", "Descargar ficha editorial de " + item.name);
+        briefButton.addEventListener("click", () => downloadTerritorialBrief(item));
+        body.append(briefButton, reviewPanelNode(item));
+      }
 
       if (map) {
         const focusButton = doc.createElement("button");
@@ -865,6 +1023,24 @@ function initMapPage(doc) {
     link.remove();
     view.setTimeout(() => view.URL.revokeObjectURL(url), 1500);
     reviewStatusElement.textContent = "Bitácora JSON exportada: " + visibleOpportunities.length + " tesis visibles.";
+  }
+
+
+  function downloadTerritorialBrief(item) {
+    const brief = buildTerritorialBrief(item);
+    if (!brief) return;
+    const content = buildTerritorialBriefHtml(brief);
+    const view = doc.defaultView;
+    const blob = new view.Blob([content], { type: "text/html;charset=utf-8" });
+    const url = view.URL.createObjectURL(blob);
+    const link = doc.createElement("a");
+    link.href = url;
+    link.download = "moreno-ficha-prospeccion-" + item.id + ".html";
+    doc.body.append(link);
+    link.click();
+    link.remove();
+    view.setTimeout(() => view.URL.revokeObjectURL(url), 1500);
+    statusElement.textContent = "Ficha editorial preparada: " + item.name;
   }
 
   if (typeof maplibregl === "undefined") {
@@ -1026,7 +1202,8 @@ if (typeof module !== "undefined" && module.exports) {
     getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
     isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
-    getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates
+    getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates,
+    buildTerritorialBrief, buildTerritorialBriefHtml
   };
 }
 if (typeof document !== "undefined") initMapPage(document);

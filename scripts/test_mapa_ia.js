@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson, buildTerritorialBrief, buildTerritorialBriefHtml, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -325,3 +325,47 @@ assert.ok(styles.includes(".map-review-toolbar-actions"));
 assert.ok(styles.includes(".map-review-import-note"));
 
 console.log("OK: pruebas del motor MapLibre, datos territoriales, bitácora v2, importación con detección de conflictos y exportaciones CSV/GeoJSON del Mapa IA.");
+
+
+const territorialBrief = buildTerritorialBrief(
+  opportunities.find(item => item.id === "rp25"),
+  "2026-11-25T21:00:00.000Z"
+);
+assert.equal(territorialBrief.schema, "moreno.territorial-brief");
+assert.equal(territorialBrief.schemaVersion, 1);
+assert.equal(territorialBrief.generatedAt, "2026-11-25T21:00:00.000Z");
+assert.equal(territorialBrief.classification.label, "Contexto con fuente pública");
+assert.equal(territorialBrief.reference.name, "RP25 · Darwin Passaponti · Av. San Fernando");
+assert.equal(territorialBrief.reference.sourceUrl, opportunities.find(item => item.id === "rp25").source);
+assert.equal(territorialBrief.reference.coordinates.scope, "Centro aproximado de corredor o área; no identifica una parcela.");
+assert.equal(territorialBrief.diligence.length, reviewTasks.length);
+assert.equal(territorialBrief.diligence.every(task => task.recorded === false), true);
+assert.equal(territorialBrief.dataToComplete.length, 6);
+assert.equal(buildTerritorialBrief(localities[0]), null, "las localidades no se presentan como tesis inmobiliarias");
+const territorialHtml = buildTerritorialBriefHtml(territorialBrief);
+assert.match(territorialHtml, /<!doctype html>/i);
+assert.match(territorialHtml, /Evidencia disponible/);
+assert.match(territorialHtml, /Próximo paso sugerido/);
+assert.match(territorialHtml, /Bitácora para diligencia documental/);
+assert.match(territorialHtml, /Imprimir \/ guardar como PDF/);
+assert.match(territorialHtml, /@page\{size:A4/);
+assert.match(territorialHtml, /no identifica una parcela/);
+assert.match(territorialHtml, /https:\/\/sibom\.slyt\.gba\.gob\.ar/);
+assert.ok(!/<script\b/i.test(territorialHtml), "la ficha no necesita scripts ni recursos externos");
+const hostileTerritorialBrief = buildTerritorialBrief({
+  ...opportunities[0],
+  name: '<img src=x onerror="alert(1)">',
+  business: '<svg onload="alert(1)">',
+  source: "javascript:alert(1)"
+}, "2026-11-25T21:00:00.000Z");
+const hostileTerritorialHtml = buildTerritorialBriefHtml(hostileTerritorialBrief);
+assert.ok(hostileTerritorialHtml.includes("&lt;img src=x onerror=&quot;alert(1)&quot;&gt;"));
+assert.ok(!hostileTerritorialHtml.includes("<img src=x"), "el contenido de la ficha se escapa antes de generar HTML");
+assert.ok(!hostileTerritorialHtml.includes("javascript:"));
+assert.ok(!/<svg onload/i.test(hostileTerritorialHtml));
+assert.ok(source.includes('briefButton.className = "map-brief-button"'));
+assert.ok(source.includes("function downloadTerritorialBrief(item)"));
+assert.ok(source.includes('link.download = "moreno-ficha-prospeccion-" + item.id + ".html"'));
+assert.ok(mapPage.includes("Cada tesis del inventario incluye una ficha editorial descargable"));
+assert.ok(styles.includes(".map-brief-intro"));
+assert.ok(styles.includes(".map-brief-button:focus-visible"));

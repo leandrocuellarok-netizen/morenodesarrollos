@@ -297,3 +297,17 @@ La portada prioriza dos entradas para iniciar una conversación:
 - **Inversores y desarrolladores:** `/oportunidades/?perfil=inversor`, con el perfil correspondiente preseleccionado.
 
 El acceso al Mapa IA queda como recorrido de investigación complementario. El primer contacto es exploratorio: no constituye tasación, oferta, confirmación de disponibilidad ni compromiso de inversión. El contenido no afirma operaciones cerradas ni resultados comerciales que no estén documentados.
+
+
+### Ficha editorial de prospección territorial
+
+Cada tesis del inventario del Mapa IA incorpora la descarga local de una ficha HTML autónoma, preparada para revisión interna o para imprimir/guardar como PDF antes de una conversación con desarrolladores.
+
+- La ficha distingue **contexto con fuente pública** de **hipótesis de prospección** y conserva la línea a investigar, la evidencia registrada, el estado, el próximo paso, la coordenada aproximada y el enlace de origen.
+- Incluye una bitácora imprimible de diligencia y una lista de datos que deben reunirse antes de evaluar un inmueble concreto: nomenclatura, mensura, normativa vigente, dominio, restricciones, servicios, condiciones ambientales, disponibilidad y condiciones económicas.
+- No agrega parcelas, titulares, superficies, precios, disponibilidad ni factibilidad que no estén documentados en la referencia original.
+- La clasificación “contexto con fuente pública” no equivale a verificación independiente, vigencia normativa ni disponibilidad. La fuente debe abrirse y revisarse en origen.
+- Las coordenadas se describen como centros aproximados de corredor o área y nunca como geometría parcelaria.
+- El HTML se genera en el navegador, sin servidor, recursos externos ni transmisión de datos. Puede imprimirse o guardarse como PDF desde el navegador.
+- Los campos de diligencia quedan en blanco para que el equipo registre documento/fuente y fecha de consulta fuera del sitio. No completar la ficha pública con datos personales o información confidencial.
+- scripts/test_mapa_ia.js prueba el esquema, la clasificación, la advertencia parcelaria, el enlace HTTPS, la salida imprimible y el escape de contenido potencialmente malicioso.

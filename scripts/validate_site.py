@@ -344,6 +344,12 @@ def main() -> None:
                     '"line-color": "#444840"',
                     "function buildCsv",
                     "function buildGeoJson(items)",
+                    "function buildTerritorialBrief(item, generatedAt)",
+                    "function buildTerritorialBriefHtml(brief)",
+                    "function downloadTerritorialBrief(item)",
+                    'briefButton.className = "map-brief-button"',
+                    'link.download = "moreno-ficha-prospeccion-" + item.id + ".html",'
+
                     "function normalizeReviewState(raw, items)",
                     "function isValidReviewDate(value)",
                     "LEGACY_REVIEW_STORAGE_KEY",
@@ -391,6 +397,10 @@ def main() -> None:
                     ".map-pin.is-selected",
                     ".map-item.is-active",
                     ".map-share-link",
+                    ".map-brief-intro",
+                    ".map-brief-button",
+                    ".map-brief-button:focus-visible",
+
                     ".map-contact-link",
                     ".map-review-toolbar",
                     ".map-review-toolbar-actions",
