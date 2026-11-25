@@ -691,9 +691,18 @@ def main() -> None:
             'class="architecture-drawing"',
             'viewBox="0 0 760 820"',
             'aria-label="Ilustración arquitectónica editorial',
+            'class="hero-actions hero-commercial-actions"',
+            'href="./oportunidades/?perfil=propietario"',
+            'href="./oportunidades/?perfil=inversor"',
+            'class="hero-commercial-note"',
+            'Conecto propietarios, inversores y desarrolladores en Moreno.',
         ):
             if required_markup not in home_html:
-                errors.append(f"index.html: falta elemento editorial accesible: {required_markup}")
+                errors.append(f"index.html: falta componente editorial o recorrido comercial: {required_markup}")
+        if 'Conocé el Mapa IA' not in home_html:
+            errors.append("index.html: falta el acceso secundario al Mapa IA desde la portada")
+        if "no implica tasación, oferta ni compromiso de inversión" not in home_html:
+            errors.append("index.html: falta aclarar el alcance exploratorio del primer contacto")
 
     if errors:
         for error in errors:

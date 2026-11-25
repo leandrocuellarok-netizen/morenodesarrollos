@@ -710,3 +710,49 @@ body{background:var(--paper);color:var(--ink)}
 }
 @media(max-width:420px){.about-pillars{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.about-contact-path{transition:none}.about-contact-path:hover{transform:none}}
+
+
+/* Portada: dos recorridos comerciales claros desde el primer pantallazo. */
+.hero-commercial-actions {
+  margin-top: 30px;
+  align-items: stretch;
+}
+.hero-commercial-actions .button {
+  min-height: 54px;
+  justify-content: space-between;
+  gap: 14px;
+}
+.hero-commercial-note {
+  max-width: 560px;
+  margin: 16px 0 0;
+  color: #77796f;
+  font: 11px/1.7 var(--sans);
+}
+.hero-commercial-note a {
+  margin-left: 4px;
+  color: #80533a;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.hero-commercial-note a:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 4px;
+}
+@media (max-width: 760px) {
+  .hero-commercial-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .hero-commercial-actions .button {
+    width: 100%;
+    min-height: 52px;
+  }
+  .hero-commercial-note {
+    font-size: 10px;
+  }
+  .hero-commercial-note a {
+    display: inline-block;
+    margin: 6px 0 0;
+  }
+}
