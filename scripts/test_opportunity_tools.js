@@ -169,6 +169,7 @@ const dossierWithoutIndicators = tools.buildOpportunityDossier({
 assert.match(JSON.stringify(dossierWithoutIndicators), /No se ingresaron datos para realizar una cuenta/);
 assert.match(dossierWithoutIndicators.status, /NO VERIFICADOS/);
 assert.doesNotMatch(JSON.stringify(dossierWithoutIndicators), /superficie edificable aprobada/);
+assert.match(JSON.stringify(dossierWithoutIndicators), /Sin datos internos registrados/);
 
 const dossierExport = tools.buildOpportunityDossierExport({
   fields: {
