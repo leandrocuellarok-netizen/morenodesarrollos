@@ -108,15 +108,27 @@
       .join("; ");
   }
 
+  const mapReferenceNames = Object.freeze({
+    moreno: "Moreno Centro",
+    paso: "Paso del Rey",
+    lareja: "La Reja",
+    alvarez: "Francisco Álvarez",
+    trujui: "Trujui",
+    cuartel: "Cuartel V",
+    rp25: "RP25 · Darwin Passaponti · Av. San Fernando",
+    ecoparque: "Nodo RP24/RP25 · Ecoparque Industrial",
+    ribera: "Paso del Rey · Camino de la Ribera",
+    roggero: "Distrito Ecológico Roggero",
+    norte: "Cuartel V · Trujui · La Reja"
+  });
+
   function readMapReference(search) {
     const parameters = new URLSearchParams(String(search || ""));
     const id = String(parameters.get("map_ref") || "").trim();
-    const name = String(parameters.get("map_name") || "")
-      .replace(/[\u0000-\u001f\u007f]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-    if (!/^[a-z0-9-]{1,40}$/.test(id) || !name || name.length > 120) return null;
-    return { id: id, name: name };
+    if (!/^[a-z0-9-]{1,40}$/.test(id) || !Object.prototype.hasOwnProperty.call(mapReferenceNames, id)) {
+      return null;
+    }
+    return { id: id, name: mapReferenceNames[id] };
   }
 
   function buildContactMessage(input) {
