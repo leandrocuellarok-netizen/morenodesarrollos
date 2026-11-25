@@ -588,6 +588,8 @@ def main() -> None:
             'class="about-portrait-plate"',
             'class="development-plate"',
             'aria-labelledby="development-plate-title development-plate-desc"',
+            'id="development-plate-title"',
+            'id="development-plate-desc"',
             'class="about-contact-path"',
             'href="../oportunidades/?perfil=propietario"',
             'href="../oportunidades/?perfil=inversor"',
@@ -597,7 +599,7 @@ def main() -> None:
                 errors.append(f"erica-acosta/index.html: falta componente editorial o recorrido comercial: {required}")
         if len(re.findall(r'<article class="process-card"', about_html)) != 5:
             errors.append("erica-acosta/index.html: el marco de desarrollo debe conservar exactamente cinco etapas")
-        if "Esquema conceptual, no representa un inmueble ni un proyecto real" not in about_html:
+        if "esquema conceptual, no representa un inmueble ni un proyecto real" not in about_html.lower():
             errors.append("erica-acosta/index.html: la ilustración de proceso debe declarar su alcance conceptual")
         opportunity_path = ROOT / "oportunidades/index.html"
         opportunity_html = opportunity_path.read_text(encoding="utf-8") if opportunity_path.is_file() else ""
@@ -666,6 +668,15 @@ def main() -> None:
         ):
             if required_style not in css_source:
                 errors.append(f"assets/css/erica.css: falta tratamiento editorial monocromático: {required_style}")
+
+        for required_style in (
+            ".about-hero{",
+            ".about-pillars{",
+            ".development-plate{",
+            ".about-contact-path:focus-visible",
+        ):
+            if required_style not in css_source:
+                errors.append(f"assets/css/erica.css: falta estilo de perfil editorial: {required_style}")
 
     home_page = ROOT / "index.html"
     if not home_page.is_file():
