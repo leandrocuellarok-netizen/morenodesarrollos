@@ -254,7 +254,8 @@ La misma página incorpora una sección plegable para el trabajo interno de orig
 - Ordena seis frentes de diligencia: catastral y mensura; dominial y legal; urbanística y normativa; ambiental e hidráulica; servicios y accesos; mercado y demanda.
 - Registra honorarios propuestos, acordados, facturados y cobrados como importes independientes, en una única moneda por expediente. No suma ni convierte divisas.
 - Los estados y clasificaciones son registros del operador; la herramienta no valida automáticamente la autenticidad de fuentes ni la situación del inmueble.
-- La mesa no tiene autenticación, cifrado ni control de acceso. Los datos se procesan en el navegador, no usan almacenamiento persistente y no se transmiten al sitio. No debe utilizarse para DNI, escrituras, datos personales o información confidencial.
+- La exportación interna independiente no exige completar los campos obligatorios del contacto y omite el nombre y el texto libre del formulario público. Puede conservar ubicación y nomenclatura del inmueble; revisá el JSON antes de compartirlo.
+- La mesa no tiene autenticación, cifrado ni control de acceso. Los datos se procesan en el navegador, no usan almacenamiento persistente y no se transmiten al sitio. No debe utilizarse para DNI, escrituras, nombres de personas, teléfonos, correos, datos bancarios o información confidencial.
 
 ## Seguimiento comercial de oportunidades
 
