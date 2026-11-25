@@ -88,6 +88,22 @@
 <div class="map-reference-context" id="map-reference-context" hidden aria-live="polite"></div>
 <input type="hidden" id="map-reference-value" name="referencia_mapa" value="">
 <p class="form-intro">Los campos marcados son necesarios para orientar la conversación. Si todavía no tenés algún dato, podés indicarlo.</p>
+<section class="dossier-import" aria-labelledby="dossier-import-title">
+  <div class="dossier-import-copy">
+    <h3 id="dossier-import-title">Continuar un expediente guardado</h3>
+    <p>Seleccioná un JSON de MORENO para recuperar los datos en este formulario. Primero se valida el archivo; después podés completar campos vacíos o reemplazar explícitamente el contenido actual.</p>
+  </div>
+  <div class="dossier-import-controls">
+    <label for="dossier-import-file">Expediente JSON</label>
+    <input id="dossier-import-file" type="file" accept=".json,application/json">
+    <button class="button" id="validate-dossier-import" type="button">Validar expediente</button>
+  </div>
+  <p class="dossier-import-status" id="dossier-import-status" role="status" aria-live="polite">La importación se realiza en este navegador. El archivo no se transmite ni se guarda en MORENO.</p>
+  <div class="dossier-import-actions" id="dossier-import-actions" hidden>
+    <button class="button dark" id="apply-dossier-merge" type="button">Completar campos vacíos</button>
+    <button class="button" id="apply-dossier-replace" type="button">Reemplazar formulario con el archivo</button>
+  </div>
+</section>
 <div class="form-grid">
 <div class="form-field">
 <label for="contact-name">Tu nombre *</label>
@@ -197,6 +213,13 @@ const copyMessageButton=document.getElementById("copy-contact-message");
 const openWhatsAppLink=document.getElementById("open-whatsapp");
 const printDossierButton=document.getElementById("print-opportunity-dossier");
 const downloadDossierButton=document.getElementById("download-opportunity-dossier");
+const dossierImportFile=document.getElementById("dossier-import-file");
+const validateDossierImportButton=document.getElementById("validate-dossier-import");
+const dossierImportStatus=document.getElementById("dossier-import-status");
+const dossierImportActions=document.getElementById("dossier-import-actions");
+const applyDossierMergeButton=document.getElementById("apply-dossier-merge");
+const applyDossierReplaceButton=document.getElementById("apply-dossier-replace");
+let pendingDossierImport=null;
 const dossierPrint=document.getElementById("opportunity-dossier-print");
 const readFeasibilityInput=()=>({
   areaRaw:document.getElementById("parcel-area").value,
@@ -401,6 +424,118 @@ downloadDossierButton.addEventListener("click",()=>{
   }catch(error){
     formStatus.textContent="No se pudo generar el expediente JSON en este navegador. Podés utilizar la opción de impresión o guardar como PDF.";
   }
+});
+
+function applyDossierFormData(data){
+  const fields=data.fields||{};
+  const calculationInput=data.calculationInput||{};
+  const controlIds={
+    nombre:"contact-name",perfil:"contact-profile",interes:"contact-interest",
+    zona:"contact-zone",tipo:"contact-type",ubicacion:"contact-address",
+    nomenclatura:"contact-cadastral",superficie:"contact-area",
+    referencia_mapa:"map-reference-value",detalle:"contact-message"
+  };
+  Object.entries(controlIds).forEach(([key,id])=>{
+    const control=document.getElementById(id);
+    if(control)control.value=fields[key]||"";
+  });
+  ["documentacion","verificaciones"].forEach(name=>{
+    const selected=Array.isArray(fields[name])?fields[name]:[];
+    opportunityForm.querySelectorAll('input[name="'+name+'"]').forEach(input=>{
+      input.checked=selected.includes(input.value);
+    });
+  });
+  document.getElementById("parcel-area").value=calculationInput.areaRaw||"";
+  document.getElementById("parcel-fos").value=calculationInput.fosRaw||"";
+  document.getElementById("parcel-fot").value=calculationInput.fotRaw||"";
+  document.getElementById("parcel-reference").value=calculationInput.referenceRaw||"";
+  const contextPanel=document.getElementById("map-reference-context");
+  contextPanel.replaceChildren();
+  if(fields.referencia_mapa){
+    const heading=document.createElement("strong");
+    heading.textContent="Referencia territorial recuperada del expediente";
+    const value=document.createElement("p");
+    value.textContent=fields.referencia_mapa;
+    const note=document.createElement("p");
+    note.textContent="Dato importado del archivo; no se valida como referencia oficial del Mapa IA ni identifica una parcela.";
+    contextPanel.append(heading,value,note);
+    contextPanel.hidden=false;
+  }else{
+    contextPanel.hidden=true;
+  }
+  contactPreview.hidden=true;
+  messagePreview.value="";
+  dossierPrint.hidden=true;
+  delete document.body.dataset.printDossier;
+  feasibilityResults.textContent="Datos recuperados. Si querés una cuenta matemática preliminar, revisá los indicadores y volvé a calcular.";
+  feasibilityResults.removeAttribute("data-state");
+}
+async function readSelectedDossierFile(){
+  const file=dossierImportFile.files&&dossierImportFile.files[0];
+  if(!file){
+    dossierImportStatus.textContent="Seleccioná primero un archivo JSON.";
+    return;
+  }
+  if(file.size>1000000){
+    dossierImportStatus.textContent="El archivo supera el límite de 1 MB. No se abrió ni se procesó.";
+    return;
+  }
+  try{
+    const raw=await file.text();
+    const result=window.MorenoOpportunityTools.parseOpportunityDossierImport(raw);
+    if(!result.ok){
+      pendingDossierImport=null;
+      dossierImportActions.hidden=true;
+      dossierImportStatus.textContent=result.error;
+      return;
+    }
+    pendingDossierImport=result;
+    dossierImportActions.hidden=false;
+    const warningText=result.warnings.length?" Advertencias: "+result.warnings.join(" "):"";
+    dossierImportStatus.textContent="Expediente válido, versión "+result.version+", exportado el "+result.exportedAt+". Elegí cómo aplicar los datos."+warningText;
+  }catch(error){
+    pendingDossierImport=null;
+    dossierImportActions.hidden=true;
+    dossierImportStatus.textContent="No se pudo leer el archivo en este navegador. Intentá seleccionar el JSON nuevamente.";
+  }
+}
+function applyPendingDossierImport(mode){
+  if(!pendingDossierImport)return;
+  const imported=pendingDossierImport;
+  let data;
+  let conflictCount=0;
+  if(mode==="replace"){
+    data={fields:imported.fields,calculationInput:imported.calculationInput};
+  }else{
+    data=window.MorenoOpportunityTools.mergeImportedOpportunityData({
+      fields:readOpportunityFields(),
+      calculationInput:readFeasibilityInput()
+    },imported);
+    conflictCount=data.conflicts.length;
+  }
+  applyDossierFormData(data);
+  pendingDossierImport=null;
+  dossierImportActions.hidden=true;
+  dossierImportFile.value="";
+  if(mode==="replace"){
+    dossierImportStatus.textContent="Expediente aplicado. Se reemplazaron los campos del formulario con los datos estructurados del archivo; revisalos antes de continuar.";
+  }else if(conflictCount){
+    const labels=data.conflicts.map(item=>item.label).join(", ");
+    dossierImportStatus.textContent="Se completaron los campos vacíos y se conservaron los valores actuales en "+conflictCount+" conflicto(s): "+labels+". Para reemplazarlos, validá e importá nuevamente el archivo y elegí la opción de reemplazo.";
+  }else{
+    dossierImportStatus.textContent="Expediente aplicado. Se completaron los campos vacíos sin sobrescribir información existente.";
+  }
+  formStatus.textContent="Datos recuperados localmente. Revisá el formulario y prepará un nuevo borrador cuando esté listo.";
+}
+validateDossierImportButton.addEventListener("click",readSelectedDossierFile);
+applyDossierMergeButton.addEventListener("click",()=>applyPendingDossierImport("merge"));
+applyDossierReplaceButton.addEventListener("click",()=>applyPendingDossierImport("replace"));
+dossierImportFile.addEventListener("change",()=>{
+  pendingDossierImport=null;
+  dossierImportActions.hidden=true;
+  dossierImportStatus.textContent=dossierImportFile.files&&dossierImportFile.files[0]
+    ?"Archivo seleccionado. Presioná «Validar expediente» para revisar su estructura."
+    :"Seleccioná un archivo JSON de MORENO.";
 });
 </script>
 </body>
