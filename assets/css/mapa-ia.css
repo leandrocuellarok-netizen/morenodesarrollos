@@ -362,3 +362,90 @@
   .map-review-toolbar .map-export { width: 100%; }
   .map-review-panel { padding: 13px; }
 }
+
+
+/* Registro de evidencia por tarea: campos legibles, sin exponer datos personales. */
+.map-review-task {
+  padding: 11px 0 12px;
+  border-top: 1px solid var(--line);
+}
+.map-review-check-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: #343a36;
+  font: 600 11px/1.5 var(--sans);
+  cursor: pointer;
+}
+.map-review-check-label input {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 1px 0 0;
+  accent-color: #80533a;
+}
+.map-review-check-label input:disabled {
+  cursor: not-allowed;
+  opacity: .58;
+}
+.map-review-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(145px, .38fr);
+  gap: 9px 12px;
+  margin: 10px 0 0 25px;
+}
+.map-review-field {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  color: #62645c;
+  font: 600 9px/1.4 var(--sans);
+  letter-spacing: .035em;
+}
+.map-review-field input,
+.map-review-field textarea {
+  width: 100%;
+  height: auto;
+  min-width: 0;
+  min-height: 38px;
+  padding: 9px 10px;
+  border: 1px solid #c9c5b9;
+  border-radius: 0;
+  background: #faf8f1;
+  color: #303733;
+  font: 11px/1.5 var(--sans);
+  letter-spacing: normal;
+}
+.map-review-field textarea {
+  min-height: 54px;
+  resize: vertical;
+}
+.map-review-field input:focus-visible,
+.map-review-field textarea:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+}
+.map-review-note,
+.map-review-help,
+.map-review-legacy {
+  grid-column: 1 / -1;
+}
+.map-review-help,
+.map-review-legacy {
+  display: block;
+  color: #77796f;
+  font: 10px/1.55 var(--sans);
+}
+.map-review-legacy { color: #8a5b34; }
+.map-review-legacy[hidden] { display: none; }
+@media (max-width: 760px) {
+  .map-review-fields {
+    grid-template-columns: 1fr;
+    margin-left: 0;
+  }
+  .map-review-field input,
+  .map-review-field textarea {
+    min-height: 42px;
+    font-size: 16px;
+  }
+}
