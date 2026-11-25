@@ -102,10 +102,11 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 
 ### Bitácora local de verificación del Mapa IA
 
-- Cada tesis de oportunidad incorpora cinco controles internos: individualización catastral, normativa vigente, revisión jurídica, factibilidad y trazabilidad documental.
-- Las marcas comienzan pendientes y solo las registra manualmente quien haya revisado la fuente o el documento correspondiente. No se autocompletan por existir un enlace público.
-- El estado se conserva en `localStorage` del navegador actual. No se transmite al sitio, no sincroniza entre dispositivos y no debe utilizarse para guardar datos personales, dominiales sensibles ni documentación confidencial.
-- La descarga JSON incluye únicamente las tesis visibles y sus estados de revisión. Es un registro operativo, no una certificación ni una conclusión técnica, dominial o urbanística.
+- Cada una de las cinco tareas por tesis conserva una fuente, documento o folio (hasta 240 caracteres), fecha de consulta y observación breve opcional (hasta 500 caracteres).
+- Una tarea solo cuenta como **revisión documentada** cuando se completa una fuente/documento de al menos cuatro caracteres y una fecha ISO válida. La casilla permanece deshabilitada mientras falte alguno de esos dos datos.
+- La versión anterior guardaba casillas sin procedencia. Al actualizar, esas marcas se migran como pendientes de documentar; no se presentan como verificaciones completas ni se descartan silenciosamente.
+- El estado se conserva en `localStorage` del navegador actual. No se transmite al sitio, no sincroniza entre dispositivos y no debe utilizarse para guardar nombres de personas, datos personales, información dominial sensible ni documentación confidencial.
+- La descarga JSON v2 incluye, para cada tarea visible, su estado, fuente/documento, fecha y observación. Es un registro operativo: no verifica autenticidad, vigencia ni cumplimiento, y no constituye una certificación técnica, dominial o urbanística.
 - Si el navegador bloquea el almacenamiento local, la bitácora sigue disponible durante la sesión y la exportación permite conservar el estado antes de cerrar.
 
 ### Enlaces directos a referencias del Mapa IA
