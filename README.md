@@ -235,3 +235,15 @@ La secuencia de control exige nomenclatura catastral y plano de mensura, certifi
 - La importación no certifica datos, no combina documentación dominial ni verifica fuentes. La persona debe revisar el formulario antes de generar un nuevo borrador.
 - Lectura, validación y combinación se ejecutan en el navegador. El archivo no se transmite ni se almacena en el servidor de MORENO.
 - `scripts/test_opportunity_tools.js` comprueba exportación v2, lectura heredada v1, rechazo de archivos incompatibles y combinación con conflictos.
+
+
+## Seguimiento comercial de oportunidades
+
+La página pública de Oportunidades ofrece una [plantilla CSV vacía](docs/plantilla-seguimiento-comercial.csv) para organizar el seguimiento fuera del sitio. Contiene una fila de encabezados y no incorpora contactos, inmuebles, precios ni operaciones ficticias.
+
+- Una fila representa una oportunidad u operación; el identificador interno no reemplaza la nomenclatura catastral ni el ID de una referencia del mapa.
+- Las etapas comerciales se registran separadas del estado documental. Una negociación o un cierre no prueban titularidad, disponibilidad ni factibilidad.
+- Los honorarios propuestos, acordados, facturados y cobrados tienen columnas distintas. Una operación ganada no implica que el dinero haya sido cobrado.
+- Las fechas usan formato ISO `AAAA-MM-DD`; los importes se registran como números y la moneda se indica en su propia columna. No mezclar monedas en una misma fila.
+- La plantilla omite nombres, teléfonos y correos. No incluir datos personales, bancarios, dominiales sensibles ni direcciones confidenciales en las observaciones. Usar un sistema con acceso controlado para los datos de contacto.
+- Las celdas vacías significan que no hay dato registrado; no deben interpretarse como cero. No hay fórmulas ni valuaciones precargadas.
