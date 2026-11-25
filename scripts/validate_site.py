@@ -532,6 +532,24 @@ def main() -> None:
     else:
         print("WARN: Node.js no está disponible; se omite la comprobación sintáctica de JavaScript.")
 
+    opportunity_page = ROOT / "oportunidades/index.html"
+    if not opportunity_page.is_file():
+        errors.append("Falta oportunidades/index.html para la importación de expedientes")
+    else:
+        opportunity_html = opportunity_page.read_text(encoding="utf-8")
+        for required_control in ("dossier-import-file", "validate-dossier-import", "apply-dossier-merge", "apply-dossier-replace"):
+            if f'id="{required_control}"' not in opportunity_html:
+                errors.append(f"oportunidades/index.html: falta control de importación: {required_control}")
+
+    opportunity_module = ROOT / "assets/js/opportunity-tools.js"
+    if not opportunity_module.is_file():
+        errors.append("Falta assets/js/opportunity-tools.js")
+    else:
+        opportunity_source = opportunity_module.read_text(encoding="utf-8")
+        for required_logic in ("parseOpportunityDossierImport", "mergeImportedOpportunityData", "schemaVersion: 2"):
+            if required_logic not in opportunity_source:
+                errors.append(f"assets/js/opportunity-tools.js: falta lógica de expediente: {required_logic}")
+
     navigation_module = ROOT / "assets/js/site-navigation.js"
     if not navigation_module.is_file():
         errors.append("Falta assets/js/site-navigation.js")
