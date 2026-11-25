@@ -39,6 +39,13 @@ function buildReferenceUrl(baseUrl, referenceId) {
   return url.toString();
 }
 
+function buildOpportunityContactUrl(baseUrl, item) {
+  const url = new URL("../oportunidades/", String(baseUrl));
+  url.searchParams.set("map_ref", String(item.id));
+  url.searchParams.set("map_name", String(item.name));
+  return url.toString();
+}
+
 function filterReferences(items, options) {
   const settings = options || {};
   const query = String(settings.query || "").toLocaleLowerCase("es-AR").trim();
@@ -175,6 +182,7 @@ function initMapPage(doc) {
     box.append(title);
     if (item.type === "locality") {
       addLine("Lectura:", item.info);
+      box.append(contactLinkNode(item, "map-contact-link"));
       return box;
     }
     const stage = doc.createElement("small");
@@ -200,8 +208,18 @@ function initMapPage(doc) {
     shareLink.target = "_blank";
     shareLink.rel = "noopener noreferrer";
     shareLink.textContent = "Abrir ficha compartible ↗";
-    box.append(shareLink);
+    box.append(shareLink, contactLinkNode(item, "map-contact-link"));
     return box;
+  }
+
+  function contactLinkNode(item, className) {
+    const link = doc.createElement("a");
+    link.className = className;
+    link.href = buildOpportunityContactUrl(doc.baseURI || doc.defaultView.location.href, item);
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Consultar sobre esta referencia ↗";
+    return link;
   }
 
   function updateShareUrl(referenceId) {
@@ -315,7 +333,7 @@ function initMapPage(doc) {
       shareLink.rel = "noopener noreferrer";
       shareLink.setAttribute("aria-label", "Abrir enlace directo a " + item.name + " en una pestaña nueva");
       shareLink.textContent = "Abrir ficha compartible ↗";
-      body.append(shareLink);
+      body.append(shareLink, contactLinkNode(item, "map-contact-link"));
       card.append(body);
       target.append(card);
     });
@@ -517,7 +535,7 @@ function initMapPage(doc) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, all, filterReferences, buildCsv, buildGeoJson,
-    getSharedReferenceId, buildReferenceUrl
+    getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl
   };
 }
 if (typeof document !== "undefined") initMapPage(document);
