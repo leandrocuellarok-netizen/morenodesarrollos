@@ -264,3 +264,14 @@ La sección desplegable de /oportunidades/ permite importar la plantilla CSV com
 - scripts/test_pipeline_dashboard.js cubre delimitadores y comillas, fechas, importes, duplicados, columnas no admitidas, límites y sumas separadas por moneda.
 
 - El tablero permite descargar un resumen agregado CSV con fecha de corte, recuentos por etapa y honorarios por moneda. El reporte no incluye IDs de oportunidades, localidades ni datos de contacto; las divisas permanecen separadas y las celdas sin importe quedan vacías.
+
+
+### Agenda operativa de seguimiento
+
+El tablero local de `/oportunidades/` permite descargar una agenda CSV separada del resumen financiero:
+
+- Incluye oportunidades activas con seguimiento vencido, fecha dentro de los próximos siete días, fecha pendiente o próxima acción sin definir.
+- Excluye etapas cerradas o pausadas y no limita la exportación a las veinte tarjetas visibles.
+- Ordena vencidas, próximas, registros sin fecha y acciones todavía no definidas.
+- Incluye ID interno, localidad, tipo de activo, etapa, estado documental, próxima acción y fecha; no incorpora datos de contacto, observaciones ni datos bancarios.
+- Se genera en el navegador con protección frente a fórmulas. No se transmite ni se almacena en el servidor.
