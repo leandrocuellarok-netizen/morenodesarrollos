@@ -275,3 +275,5 @@ El tablero local de `/oportunidades/` permite descargar una agenda CSV separada 
 - Ordena vencidas, próximas, registros sin fecha y acciones todavía no definidas.
 - Incluye ID interno, localidad, tipo de activo, etapa, estado documental, próxima acción y fecha; no incorpora datos de contacto, observaciones ni datos bancarios.
 - Se genera en el navegador con protección frente a fórmulas. No se transmite ni se almacena en el servidor.
+
+- La agenda marca por separado los seguimientos vencidos, los próximos, los registros sin fecha y las oportunidades sin próxima acción; no asigna probabilidades de cierre ni importes estimados.
