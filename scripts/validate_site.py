@@ -350,8 +350,7 @@ def main() -> None:
                     "function buildTerritorialBriefHtml(brief)",
                     "function downloadTerritorialBrief(item)",
                     'briefButton.className = "map-brief-button"',
-                    'link.download = "moreno-ficha-prospeccion-" + item.id + ".html",'
-
+                    'link.download = "moreno-ficha-prospeccion-" + item.id + ".html",',
                     "function normalizeReviewState(raw, items)",
                     "function isValidReviewDate(value)",
                     "LEGACY_REVIEW_STORAGE_KEY",
