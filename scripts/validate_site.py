@@ -282,6 +282,7 @@ def main() -> None:
                     "function getSharedReferenceId(search, items)",
                     "function buildReferenceUrl(baseUrl, referenceId)",
                     "function buildOpportunityContactUrl(baseUrl, item)",
+                    'url.searchParams.delete("map_name")',
                     'link.textContent = "Consultar sobre esta referencia ↗"',
                     'contactLinkNode(item, "map-contact-link")',
                     "updateShareUrl(item.id)",
