@@ -221,6 +221,17 @@ La secuencia de control exige nomenclatura catastral y plano de mensura, certifi
 - La ficha reúne únicamente los campos aportados, las listas declaradas y, cuando corresponde, el resultado aritmético preliminar de FOS/FOT.
 - Incluye un estado visible de **borrador / datos no verificados** y una lista general de aspectos que requieren revisión independiente.
 - La salida se construye en el navegador mediante nodos de texto; no se inserta contenido del formulario como HTML, no se transmite información al sitio y no se crea un expediente en el servidor.
-- Además de imprimir o guardar como PDF, se puede descargar un JSON con esquema `moreno.opportunity-dossier`, versión 1, fecha de exportación ISO 8601 y estado explícito `preliminary-unverified`.
+- Además de imprimir o guardar como PDF, se puede descargar un JSON con esquema `moreno.opportunity-dossier`, versión 2, fecha de exportación ISO 8601 y estado explícito `preliminary-unverified`.
 - El JSON incluye la ficha construida, no una certificación ni una base sincronizada. Quien lo descarga decide dónde conservarlo y con quién compartirlo.
 - La ficha no acredita identificación parcelaria, titularidad, disponibilidad, vigencia normativa, capacidad edificable, tasación ni factibilidad. Tanto la impresión como la exportación se ejecutan localmente en el navegador.
+
+### Importación local y combinación de expedientes de oportunidades
+
+- La página `/oportunidades/` permite seleccionar un expediente JSON descargado previamente y validarlo antes de modificar el formulario.
+- Se admiten los esquemas `moreno.opportunity-dossier` versión 2 y versión 1. La versión 2 conserva los campos estructurados originales en `sourceData`; la versión 1 se recupera desde las filas legibles de la ficha y muestra una advertencia porque algunas listas antiguas podían haberse exportado como texto.
+- El archivo está limitado a 1 MB. Se validan esquema, versión, estado preliminar, estructura de la ficha, tipos de datos y longitudes. Los valores de listas y selectores se contrastan con las opciones conocidas del formulario; los valores desconocidos se omiten con advertencia.
+- **Completar campos vacíos** conserva todos los valores actuales y solo incorpora los datos que faltan. Si dos valores no vacíos difieren, el sistema registra el conflicto y mantiene el dato local.
+- **Reemplazar formulario con el archivo** es una acción separada y explícita; sustituye los campos actuales por los datos estructurados del expediente importado.
+- La importación no certifica datos, no combina documentación dominial ni verifica fuentes. La persona debe revisar el formulario antes de generar un nuevo borrador.
+- Lectura, validación y combinación se ejecutan en el navegador. El archivo no se transmite ni se almacena en el servidor de MORENO.
+- `scripts/test_opportunity_tools.js` comprueba exportación v2, lectura heredada v1, rechazo de archivos incompatibles y combinación con conflictos.
