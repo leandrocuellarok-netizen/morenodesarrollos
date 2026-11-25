@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -258,4 +258,50 @@ assert.ok(styles.includes(".map-review-task"));
 assert.ok(styles.includes(".map-review-legacy"));
 
 
-console.log("OK: pruebas del motor MapLibre, datos territoriales, filtros, evidencias y exportaciones CSV/GeoJSON del Mapa IA.");
+
+const parsedReviewImport = parseReviewImport(reviewExport, opportunities);
+assert.equal(parsedReviewImport.ok, true);
+assert.equal(getReviewSummary(parsedReviewImport.state, "rp25").completed, 1);
+assert.equal(parseReviewImport({ schema_version: 1, references: [] }, opportunities).ok, false);
+assert.equal(parseReviewImport("{json inválido", opportunities).ok, false);
+const importWithUnknowns = parseReviewImport({ schema_version: 2, references: [
+  { id: "parcela-inventada", tasks: [{ id: "cadastral", review_recorded: true }] },
+  { id: "rp25", tasks: [{ id: "tarea-desconocida", review_recorded: true }] }
+]}, opportunities);
+assert.equal(importWithUnknowns.ok, true);
+assert.equal(importWithUnknowns.ignoredReferences, 1);
+assert.equal(importWithUnknowns.skippedTasks, 1);
+assert.deepEqual(importWithUnknowns.state, {});
+const complementaryLocal = updateReviewState({}, "rp25", "cadastral", false, opportunities, { source_document: "Ordenanza 7443/25", consulted_at: "", note: "" });
+const complementaryIncoming = parseReviewImport({ schema_version: 2, references: [{ id: "rp25", tasks: [{
+  id: "cadastral", review_recorded: false, source_document: "", consulted_at: "2026-11-25", note: "Fecha contrastada en el portal."
+}]}]}, opportunities);
+const complementaryMerge = mergeReviewStates(complementaryLocal, complementaryIncoming.state, opportunities);
+assert.equal(complementaryMerge.conflicts.length, 0);
+assert.equal(complementaryMerge.state.rp25.cadastral.source_document, "Ordenanza 7443/25");
+assert.equal(complementaryMerge.state.rp25.cadastral.consulted_at, "2026-11-25");
+assert.equal(complementaryMerge.state.rp25.cadastral.note, "Fecha contrastada en el portal.");
+const conflictingLocal = updateReviewState({}, "rp25", "cadastral", true, opportunities, {
+  source_document: "Fuente local original", consulted_at: "2026-11-20", note: "Revisión local"
+});
+const conflictingIncoming = parseReviewImport({ schema_version: 2, references: [{ id: "rp25", tasks: [{
+  id: "cadastral", review_recorded: true, source_document: "Fuente importada diferente",
+  consulted_at: "2026-11-21", note: "Revisión de otro dispositivo"
+}]}]}, opportunities);
+const conflictMerge = mergeReviewStates(conflictingLocal, conflictingIncoming.state, opportunities);
+assert.equal(conflictMerge.conflicts.length, 1);
+assert.deepEqual(conflictMerge.conflicts[0].fields, ["source_document", "consulted_at", "note"]);
+assert.equal(conflictMerge.state.rp25.cadastral.source_document, "Fuente local original");
+assert.equal(conflictMerge.state.rp25.cadastral.consulted_at, "2026-11-20");
+assert.equal(conflictMerge.state.rp25.cadastral.note, "Revisión local");
+assert.ok(source.includes("function parseReviewImport(payload, items)"));
+assert.ok(source.includes("function mergeReviewStates(localState, importedState, items)"));
+assert.ok(source.includes("file.size > 1000000"));
+assert.ok(source.includes('reviewImportInput.addEventListener("change"'));
+assert.ok(mapPage.includes('id="import-review"'));
+assert.ok(mapPage.includes('id="import-review-file"'));
+assert.match(mapPage, /ante diferencias, no se sobrescriben automáticamente/i);
+assert.ok(styles.includes(".map-review-toolbar-actions"));
+assert.ok(styles.includes(".map-review-import-note"));
+
+console.log("OK: pruebas del motor MapLibre, datos territoriales, bitácora v2, importación con detección de conflictos y exportaciones CSV/GeoJSON del Mapa IA.");

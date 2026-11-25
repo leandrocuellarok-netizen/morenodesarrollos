@@ -202,3 +202,14 @@ El Mapa IA incorpora un directorio operativo de fuentes oficiales para pasar de 
 - **Plano de zonificación municipal, anexo junio de 2015**: antecedente histórico disponible en el portal municipal. No confirma normativa vigente ni indicadores actuales; toda evaluación requiere consulta municipal actualizada: https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf
 
 La secuencia de control exige nomenclatura catastral y plano de mensura, certificado o constancia urbanística vigente, revisión dominial y de restricciones, factibilidad de servicios/accesos y trazabilidad de fuente, documento y fecha de consulta. Estas fuentes no se descargan ni interpretan automáticamente en MORENO: no se presentan parcelas ni zonificaciones como verificadas hasta incorporar geometría, metadatos y validación profesional.
+
+
+### Importación y combinación segura de bitácoras MORENO
+
+- El Mapa IA permite importar una exportación JSON de bitácora con `schema_version: 2`; se rechazan archivos mal formados, versiones no compatibles y archivos mayores a 1 MB.
+- La importación se procesa íntegramente en el navegador. No sube el archivo ni transmite los registros a un servidor.
+- Solo se admiten identificadores de las cinco tesis y de las cinco tareas conocidas. Las referencias o tareas desconocidas se omiten y se informan.
+- Los registros importados completan datos locales faltantes cuando no hay contradicciones.
+- Si fuente, fecha u observación contienen valores no vacíos diferentes en ambos dispositivos, el sistema detecta el conflicto y conserva íntegramente el registro local. No sobrescribe ni combina silenciosamente datos contradictorios.
+- El resumen de importación informa registros nuevos, combinados, conflictos y elementos ignorados. Para resolver un conflicto, revisar ambos archivos exportados y actualizar manualmente la ficha correspondiente.
+- La bitácora continúa siendo un registro interno de trabajo: importar o combinar datos no acredita autenticidad, vigencia, titularidad, disponibilidad ni cumplimiento urbanístico.

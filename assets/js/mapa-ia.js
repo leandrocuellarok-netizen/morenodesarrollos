@@ -180,6 +180,83 @@ function buildReviewExport(state, items, generatedAt) {
   };
 }
 
+
+function parseReviewImport(payload, items) {
+  let parsed;
+  try { parsed = typeof payload === "string" ? JSON.parse(payload) : payload; }
+  catch (error) { return { ok: false, error: "El archivo no contiene JSON válido." }; }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed) || parsed.schema_version !== 2 || !Array.isArray(parsed.references)) {
+    return { ok: false, error: "Formato no compatible: se requiere una bitácora MORENO JSON versión 2." };
+  }
+  const allowedIds = new Set((items || opportunities).map(item => item.id));
+  const knownTasks = new Set(reviewTasks.map(task => task.id));
+  const incoming = {};
+  const seen = new Set();
+  let ignoredReferences = 0;
+  let skippedTasks = 0;
+  parsed.references.forEach(reference => {
+    if (!reference || typeof reference !== "object" || Array.isArray(reference) || !allowedIds.has(reference.id) || !Array.isArray(reference.tasks) || seen.has(reference.id)) {
+      ignoredReferences += 1;
+      return;
+    }
+    seen.add(reference.id);
+    reference.tasks.forEach(task => {
+      if (!task || typeof task !== "object" || Array.isArray(task) || !knownTasks.has(task.id)) {
+        skippedTasks += 1;
+        return;
+      }
+      const record = normalizeReviewRecord({
+        completed: task.review_recorded === true,
+        legacy_marked: task.legacy_marked === true,
+        source_document: task.source_document,
+        consulted_at: task.consulted_at,
+        note: task.note
+      });
+      if (!record) return;
+      if (!incoming[reference.id]) incoming[reference.id] = {};
+      incoming[reference.id][task.id] = record;
+    });
+  });
+  return { ok: true, state: normalizeReviewState(incoming, items || opportunities), ignoredReferences, skippedTasks };
+}
+
+function mergeReviewStates(localState, importedState, items) {
+  const allowedItems = items || opportunities;
+  const merged = normalizeReviewState(localState, allowedItems);
+  const imported = normalizeReviewState(importedState, allowedItems);
+  const conflicts = [];
+  let addedRecords = 0;
+  let combinedRecords = 0;
+  Object.keys(imported).forEach(referenceId => {
+    Object.keys(imported[referenceId]).forEach(taskId => {
+      const incoming = imported[referenceId][taskId];
+      const existing = merged[referenceId] && merged[referenceId][taskId];
+      if (!existing) {
+        if (!merged[referenceId]) merged[referenceId] = {};
+        merged[referenceId][taskId] = { ...incoming };
+        addedRecords += 1;
+        return;
+      }
+      const fields = ["source_document", "consulted_at", "note"];
+      const differingFields = fields.filter(field =>
+        String(existing[field] || "") && String(incoming[field] || "") && String(existing[field]) !== String(incoming[field])
+      );
+      if (differingFields.length) {
+        conflicts.push({ reference_id: referenceId, task_id: taskId, fields: differingFields });
+        return;
+      }
+      const source = existing.source_document || incoming.source_document || "";
+      const consultedAt = existing.consulted_at || incoming.consulted_at || "";
+      const note = existing.note || incoming.note || "";
+      const completed = (existing.completed === true || incoming.completed === true) && source.length >= 4 && isValidReviewDate(consultedAt);
+      const legacyMarked = !completed && (existing.legacy_marked === true || incoming.legacy_marked === true);
+      merged[referenceId][taskId] = { completed, legacy_marked: legacyMarked, source_document: source, consulted_at: consultedAt, note };
+      combinedRecords += 1;
+    });
+  });
+  return { state: normalizeReviewState(merged, allowedItems), addedRecords, combinedRecords, conflicts };
+}
+
 function getSharedReferenceId(search, items) {
   const parameters = new URLSearchParams(String(search || ""));
   const id = parameters.get("ref");
@@ -317,6 +394,8 @@ function initMapPage(doc) {
   const exportButton = doc.getElementById("export-csv");
   const geoJsonExportButton = doc.getElementById("export-geojson");
   const reviewExportButton = doc.getElementById("export-review");
+  const reviewImportButton = doc.getElementById("import-review");
+  const reviewImportInput = doc.getElementById("import-review-file");
   const reviewStatusElement = doc.getElementById("review-status");
   const markers = new Map();
   let map = null;
@@ -698,6 +777,47 @@ function initMapPage(doc) {
     view.setTimeout(() => view.URL.revokeObjectURL(url), 1500);
   }
 
+
+  function importReviewFile(file) {
+    if (!file) return;
+    if (file.size > 1000000) {
+      reviewStatusElement.textContent = "El archivo supera el límite de 1 MB. Exportá una bitácora más pequeña e intentá nuevamente.";
+      return;
+    }
+    if (typeof file.text !== "function") {
+      reviewStatusElement.textContent = "Este navegador no permite leer el archivo seleccionado. Podés continuar usando la exportación JSON.";
+      return;
+    }
+    Promise.resolve().then(() => file.text()).then(content => {
+      const parsed = parseReviewImport(content, opportunities);
+      if (!parsed.ok) {
+        reviewStatusElement.textContent = parsed.error;
+        return;
+      }
+      const result = mergeReviewStates(reviewState, parsed.state, opportunities);
+      reviewState = result.state;
+      const saved = writeReviewState(reviewStorage, reviewState, opportunities);
+      render();
+      const conflictDetails = result.conflicts.slice(0, 3).map(conflict => {
+        const reference = opportunities.find(item => item.id === conflict.reference_id);
+        const task = reviewTasks.find(item => item.id === conflict.task_id);
+        return (reference ? reference.name : conflict.reference_id) + " · " + (task ? task.label : conflict.task_id) + " (" + conflict.fields.join(", ") + ")";
+      });
+      const conflictText = result.conflicts.length
+        ? " Conflictos: " + result.conflicts.length + ". Se conservaron los datos locales en: " + conflictDetails.join("; ") + (result.conflicts.length > conflictDetails.length ? "; y otros." : ".")
+        : " No se detectaron conflictos.";
+      const ignoredText = parsed.ignoredReferences || parsed.skippedTasks
+        ? " Elementos ignorados: " + parsed.ignoredReferences + " referencias y " + parsed.skippedTasks + " tareas desconocidas."
+        : "";
+      const persistenceText = saved
+        ? " Los cambios quedaron guardados en este navegador."
+        : " El almacenamiento local no está disponible; los cambios siguen en esta sesión. Exportá la bitácora antes de cerrar.";
+      reviewStatusElement.textContent = "Importación revisada: " + result.addedRecords + " registros nuevos y " + result.combinedRecords + " registros combinados." + conflictText + ignoredText + persistenceText;
+    }).catch(() => {
+      reviewStatusElement.textContent = "No se pudo leer el archivo. Verificá que sea un JSON válido y volvé a intentarlo.";
+    }).finally(() => { reviewImportInput.value = ""; });
+  }
+
   function exportVisibleReview() {
     const visibleOpportunities = visibleItems.filter(item => item.type === "opportunity");
     if (!visibleOpportunities.length) return;
@@ -846,6 +966,9 @@ function initMapPage(doc) {
   geoJsonExportButton.addEventListener("click", exportVisibleGeoJson);
   reviewExportButton.hidden = false;
   reviewExportButton.addEventListener("click", exportVisibleReview);
+  reviewImportButton.hidden = false;
+  reviewImportButton.addEventListener("click", () => reviewImportInput.click());
+  reviewImportInput.addEventListener("change", event => importReviewFile(event.target.files && event.target.files[0]));
   doc.getElementById("search").addEventListener("input", render);
   doc.getElementById("category").addEventListener("change", render);
   doc.getElementById("evidence-filter").addEventListener("change", render);
@@ -871,7 +994,7 @@ if (typeof module !== "undefined" && module.exports) {
     getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
     isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
-    getReviewSummary, buildReviewExport
+    getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates
   };
 }
 if (typeof document !== "undefined") initMapPage(document);
