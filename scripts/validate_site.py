@@ -243,6 +243,11 @@ def main() -> None:
         if relative == Path("mapa-ia/index.html"):
             if 'id="export-geojson"' not in page_source:
                 errors.append("mapa-ia/index.html: falta la descarga GeoJSON de referencias visibles")
+            for review_id in ('id="export-review"', 'id="review-status"'):
+                if review_id not in page_source:
+                    errors.append(f"mapa-ia/index.html: falta el control de bitácora local {review_id}")
+            if "no se envían al servidor" not in page_source or "no certifica" not in page_source:
+                errors.append("mapa-ia/index.html: falta explicar privacidad y alcance de la bitácora")
             if "QGIS u otros sistemas GIS" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar el uso y alcance de la exportación GeoJSON")
             for required_source_markup in (
@@ -318,6 +323,16 @@ def main() -> None:
                     "function filterReferences",
                     "function buildCsv",
                     "function buildGeoJson(items)",
+                    "function normalizeReviewState(raw, items)",
+                    "function readReviewState(storage, items)",
+                    "function writeReviewState(storage, state, items)",
+                    "function updateReviewState(state, referenceId, taskId, completed, items)",
+                    "function getReviewSummary(state, referenceId)",
+                    "function buildReviewExport(state, items, generatedAt)",
+                    "function exportVisibleReview()",
+                    'getElementById("export-review")',
+                    'getElementById("review-status")',
+                    "REVIEW_STORAGE_KEY",
                     "line_to_investigate:",
                     "function exportVisibleGeoJson()",
                     'getElementById("export-geojson")',
@@ -342,6 +357,9 @@ def main() -> None:
                     ".map-item.is-active",
                     ".map-share-link",
                     ".map-contact-link",
+                    ".map-review-toolbar",
+                    ".map-review-panel",
+                    ".map-review-checklist",
                     "order: -1",
                     "order: 1",
                     "height: 480px",
