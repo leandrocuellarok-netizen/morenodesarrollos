@@ -484,7 +484,7 @@
       value.fees[key] = amount;
     });
     if ([value.fees.proposed, value.fees.agreed, value.fees.invoiced, value.fees.collected].some(Boolean) && !value.fees.currency) {
-      errors.push("Seleccioná ARS o USD para interpretar los importes de honorarios.");
+      errors.push("Seleccioná una moneda (ARS o USD) para interpretar los importes de honorarios.");
     }
 
     return { ok: errors.length === 0, errors: errors, warnings: warnings, value: value };
