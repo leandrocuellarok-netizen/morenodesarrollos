@@ -85,6 +85,8 @@
 </aside>
 <form class="opportunity-form" id="opportunity-form">
 <h2>Presentá tu oportunidad</h2>
+<div class="map-reference-context" id="map-reference-context" hidden aria-live="polite"></div>
+<input type="hidden" id="map-reference-value" name="referencia_mapa" value="">
 <p class="form-intro">Los campos marcados son necesarios para orientar la conversación. Si todavía no tenés algún dato, podés indicarlo.</p>
 <div class="form-grid">
 <div class="form-field">
@@ -232,6 +234,26 @@ document.getElementById("feasibility-calculate").addEventListener("click",showPr
 const profileFromLink=new URLSearchParams(window.location.search).get("perfil");
 if(profileFromLink==="propietario")opportunityForm.elements.perfil.value="Propietario/a";
 if(profileFromLink==="inversor")opportunityForm.elements.perfil.value="Inversor/a";
+const mapReference=window.MorenoOpportunityTools.readMapReference(window.location.search);
+if(mapReference){
+  const referenceValue=mapReference.name+" ("+mapReference.id+")";
+  document.getElementById("map-reference-value").value=referenceValue;
+  const contextPanel=document.getElementById("map-reference-context");
+  const heading=document.createElement("strong");
+  heading.textContent="Consulta iniciada desde el Mapa IA";
+  const referenceName=document.createElement("p");
+  referenceName.textContent=mapReference.name;
+  const note=document.createElement("p");
+  note.textContent="Referencia territorial aproximada. No identifica una parcela ni acredita titularidad, disponibilidad, zonificación o factibilidad.";
+  const returnLink=document.createElement("a");
+  returnLink.href="../mapa-ia/?ref="+encodeURIComponent(mapReference.id);
+  returnLink.textContent="Volver a esta referencia en el mapa ↗";
+  contextPanel.append(heading,referenceName,note,returnLink);
+  contextPanel.hidden=false;
+  const detailField=document.getElementById("contact-message");
+  const contextNote="Consulta originada desde el Mapa IA de MORENO. Referencia indicada: "+mapReference.name+". Es una referencia territorial aproximada; no identifica una parcela ni acredita titularidad, disponibilidad, zonificación o factibilidad.";
+  detailField.value=detailField.value.trim()?contextNote+"\n\n"+detailField.value:contextNote;
+}
 copyMessageButton.addEventListener("click",async()=>{
   try{
     if(navigator.clipboard&&window.isSecureContext){
