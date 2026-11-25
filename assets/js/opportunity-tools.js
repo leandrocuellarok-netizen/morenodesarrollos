@@ -637,8 +637,8 @@
       }
       const warnings = [];
       let sourceData;
-      if (payload.schemaVersion === 2) {
-        if (!isRecord(payload.sourceData)) throw new Error("El expediente versión 2 no incluye los datos estructurados necesarios para recuperarlo.");
+      if (payload.schemaVersion === 2 || payload.schemaVersion === 3) {
+        if (!isRecord(payload.sourceData)) throw new Error("El expediente versión " + payload.schemaVersion + " no incluye los datos estructurados necesarios para recuperarlo.");
         sourceData = payload.sourceData;
       } else {
         sourceData = extractLegacyDossierData(dossier);
