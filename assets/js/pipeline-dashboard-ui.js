@@ -136,8 +136,11 @@
       if (selectedStage === "__sin_etapa__" && fields.etapa_comercial) return false;
       if (selectedStage && selectedStage !== "__sin_etapa__" && fields.etapa_comercial !== selectedStage) return false;
       if (!query) return true;
-      return [record.id, fields.localidad, fields.tipo_activo, fields.etapa_comercial, fields.estado_documental, fields.proxima_accion]
-        .some(value => api.normalizeStage(value).includes(query));
+      return [
+        record.id, fields.localidad, fields.tipo_activo, fields.identificacion_catastral,
+        fields.referencia_origen, fields.fuente_origen, fields.tipo_contraparte,
+        fields.tipo_operacion, fields.etapa_comercial, fields.estado_documental, fields.proxima_accion
+      ].some(value => api.normalizeStage(value).includes(query));
     });
     recordsTable.replaceChildren();
     filtered.forEach(record => {
@@ -155,6 +158,8 @@
     });
     recordsCount.textContent = "Mostrando " + filtered.length + " de " + records.length + " oportunidades.";
   }
+  downloadSummaryButton.disabled = true;
+
   function renderWarnings(items) {
     warnings.replaceChildren();
     if (!items.length) { warnings.hidden = true; return; }
@@ -168,6 +173,7 @@
   function render() {
     const summary = api.summarizePipeline(records, localDate());
     currentSummary = summary;
+    downloadSummaryButton.disabled = false;
     renderMetrics(summary);
     renderFinance(summary.finance);
     renderStages(summary.stageCounts);
@@ -184,6 +190,11 @@
   async function importFile() {
     const file = fileInput.files && fileInput.files[0];
     records = [];
+    currentSummary = null;
+    downloadSummaryButton.disabled = true;
+    stageFilter.replaceChildren(node("option", "", "Todas las etapas"));
+    stageFilter.value = "";
+    textFilter.value = "";
     output.hidden = true;
     warnings.replaceChildren();
     warnings.hidden = true;
@@ -236,7 +247,12 @@
   fileInput.addEventListener("change", importFile);
   resetButton.addEventListener("click", () => {
     records = [];
+    currentSummary = null;
+    downloadSummaryButton.disabled = true;
     fileInput.value = "";
+    stageFilter.replaceChildren(node("option", "", "Todas las etapas"));
+    stageFilter.value = "";
+    textFilter.value = "";
     output.hidden = true;
     warnings.hidden = true;
     status.textContent = "Sesión local limpiada. Seleccioná un CSV cuando quieras revisar el seguimiento.";
