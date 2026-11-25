@@ -500,3 +500,27 @@ body{background:var(--paper);color:var(--ink)}
   .dossier-import-actions{flex-direction:column}
   .dossier-import-actions .button{width:100%;justify-content:space-between}
 }
+
+
+/* Plantilla de seguimiento comercial: herramienta descargable, sin datos precargados. */
+.pipeline-template{margin:0 auto 72px;padding:34px clamp(18px,3.2vw,42px);border-top:1px solid #aaa79b;border-bottom:1px solid #aaa79b;background:#e7e4d9}
+.pipeline-template-heading{display:grid;grid-template-columns:minmax(0,.9fr) minmax(260px,1.1fr);gap:clamp(24px,5vw,72px);align-items:end}
+.pipeline-template-heading h2{max-width:620px;margin:13px 0 0;color:var(--ink);font:400 clamp(31px,4.2vw,52px)/1.02 var(--serif);letter-spacing:-.04em}
+.pipeline-template-heading>p{max-width:590px;margin:0 0 3px;color:#5f625a;font:15px/1.75 var(--serif)}
+.pipeline-template-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:25px}
+.pipeline-template-actions>span{color:#686a61;font:9px/1.5 var(--sans);letter-spacing:.12em;text-transform:uppercase}
+.pipeline-template-guide{margin-top:25px;border-top:1px solid #c4c0b4}
+.pipeline-template-guide summary{width:max-content;max-width:100%;padding:15px 25px 3px 0;color:#5e5146;font:600 10px/1.5 var(--sans);letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.pipeline-template-guide summary:focus-visible{outline:2px solid var(--rust);outline-offset:4px}
+.pipeline-template-guide-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 30px;padding:13px 0 0}
+.pipeline-template-guide-body p{margin:0;color:#64665e;font:11px/1.75 var(--sans)}
+.pipeline-template-guide-body strong{color:#353832;font-weight:600}
+@media(max-width:760px){
+  .pipeline-template{margin-bottom:54px;padding:25px 18px}
+  .pipeline-template-heading{grid-template-columns:1fr;gap:14px}
+  .pipeline-template-heading>p{font-size:14px}
+  .pipeline-template-actions{align-items:stretch;flex-direction:column}
+  .pipeline-template-actions .button{width:100%;justify-content:space-between}
+  .pipeline-template-actions>span{line-height:1.6}
+  .pipeline-template-guide-body{grid-template-columns:1fr;gap:12px}
+}
