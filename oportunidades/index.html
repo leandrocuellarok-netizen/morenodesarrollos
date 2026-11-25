@@ -17,6 +17,7 @@
 <meta name="twitter:description" content="Terrenos, proyectos, inversión y alianzas en Moreno.">
 <link rel="canonical" href="https://leandrocuellarok-netizen.github.io/morenodesarrollos/oportunidades/">
 <link rel="stylesheet" href="../assets/css/erica.css">
+<link rel="stylesheet" href="../assets/css/originacion.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ContactPage","name":"Presentar una oportunidad — MORENO","url":"https://leandrocuellarok-netizen.github.io/morenodesarrollos/oportunidades/","description":"Canal de primer contacto para propietarios, inversores y profesionales interesados en explorar proyectos inmobiliarios en Moreno.","about":{"@type":"Person","name":"Erica M. Acosta","address":{"@type":"PostalAddress","addressLocality":"Moreno","addressRegion":"Buenos Aires","addressCountry":"AR"}}}</script>
 <script defer src="../assets/js/site-navigation.js"></script></head>
 <body>
@@ -185,6 +186,70 @@
     <button class="button" id="apply-dossier-replace" type="button">Reemplazar formulario con el archivo</button>
   </div>
 </section>
+<details class="originacion-workbench" id="originacion-workbench">
+  <summary><span>Herramienta interna · solo navegador</span><strong>Expediente de originación: evidencia, diligencia y honorarios</strong></summary>
+  <div class="originacion-workbench-body">
+    <p class="originacion-warning"><strong>Alcance y privacidad.</strong> Esta mesa no tiene autenticación ni control de acceso: cualquier visitante puede abrirla y usar su propio navegador. Los datos no se transmiten ni se guardan en el sitio; solo salen si descargás el JSON. No ingreses DNI, escrituras, nombres de personas, teléfonos, correos, datos bancarios ni información confidencial. Usala únicamente en un dispositivo confiable y conservá cada exportación bajo tu control.</p>
+    <section class="originacion-section" aria-labelledby="originacion-identity-title">
+      <h4 id="originacion-identity-title">01 / Identificación operativa y contraparte</h4>
+      <div class="originacion-grid">
+        <div class="form-field"><label for="originacion-reference">Referencia interna</label><input id="originacion-reference" maxlength="50" autocomplete="off" placeholder="Ej.: MOR-OP-001"></div>
+        <div class="form-field"><label for="originacion-counterparty-type">Tipo de contraparte</label><select id="originacion-counterparty-type"><option value="">Sin definir</option><option value="owner">Propietario/a</option><option value="representative">Representante</option><option value="developer">Desarrollador/a</option><option value="investor">Inversor/a</option><option value="company">Profesional o empresa</option><option value="other">Otro</option></select></div>
+        <div class="form-field"><label for="originacion-organization">Organización o empresa</label><input id="originacion-organization" maxlength="120" autocomplete="off" placeholder="Solo razón social o nombre comercial"></div>
+        <div class="form-field"><label for="originacion-commercial-stage">Etapa comercial</label><select id="originacion-commercial-stage"><option value="">Sin definir</option><option value="not_started">Sin iniciar</option><option value="first_contact">Primer contacto</option><option value="response">Respuesta recibida</option><option value="meeting">Reunión</option><option value="documents">Documentación solicitada</option><option value="analysis">Análisis preliminar</option><option value="proposal">Propuesta enviada</option><option value="negotiation">Negociación</option><option value="won">Ganada</option><option value="lost">No concretada</option><option value="paused">Pausada</option></select></div>
+      </div>
+    </section>
+    <section class="originacion-section" aria-labelledby="originacion-evidence-title">
+      <h4 id="originacion-evidence-title">02 / Registro de fuentes y evidencia</h4>
+      <p>Clasificá el origen de cada dato. La etiqueta es un registro de quien opera; MORENO no comprueba automáticamente documentos, enlaces ni declaraciones.</p>
+      <div class="originacion-evidence-list" id="originacion-evidence-list" aria-live="polite"></div>
+      <template id="originacion-evidence-template">
+        <div class="originacion-evidence-row" data-evidence-row>
+          <div class="form-field"><label>Fuente o documento</label><input type="text" data-evidence-field="title" maxlength="140" autocomplete="off" placeholder="Título del documento o capa"></div>
+          <div class="form-field"><label>Clasificación de origen</label><select data-evidence-field="classification"><option value="">Seleccionar</option><option value="counterparty">Declaración de contraparte</option><option value="public">Fuente pública</option><option value="technical">Documento técnico recibido</option><option value="checked">Contraste registrado por quien opera</option></select></div>
+          <div class="form-field full"><label>URL de referencia (solo HTTPS)</label><input type="text" data-evidence-field="url" maxlength="500" inputmode="url" autocomplete="off" placeholder="https://..."></div>
+          <div class="form-field"><label>Fecha de consulta</label><input type="date" data-evidence-field="consultedAt"></div>
+          <div class="form-field"><label>Nota / alcance / limitación</label><input type="text" data-evidence-field="note" maxlength="300" autocomplete="off" placeholder="Qué respalda y qué no permite concluir"></div>
+          <button class="originacion-evidence-remove" type="button" data-remove-evidence>Quitar fuente</button>
+        </div>
+      </template>
+      <div class="originacion-evidence-actions"><button class="button" id="originacion-add-evidence" type="button">Añadir fuente ↗</button><span>Hasta ocho fuentes por expediente.</span></div>
+    </section>
+    <section class="originacion-section" aria-labelledby="originacion-checks-title">
+      <h4 id="originacion-checks-title">03 / Control de diligencia</h4>
+      <p>Los estados son anotaciones operativas, no certificaciones. “Fuente o documento cargado” no significa que un profesional haya validado su contenido.</p>
+      <div class="originacion-check-grid">
+        <article class="originacion-check-card" data-check-id="cadastral"><h5>Catastral y mensura</h5><div class="form-field"><label>Estado</label><select data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label>Fuente / documento</label><input type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label>Fecha</label><input type="date" data-check-field="consultedAt"></div><div class="form-field"><label>Nota</label><input type="text" data-check-field="note" maxlength="300"></div></article>
+        <article class="originacion-check-card" data-check-id="legal"><h5>Dominial y legal</h5><div class="form-field"><label>Estado</label><select data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label>Fuente / documento</label><input type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label>Fecha</label><input type="date" data-check-field="consultedAt"></div><div class="form-field"><label>Nota</label><input type="text" data-check-field="note" maxlength="300"></div></article>
+        <article class="originacion-check-card" data-check-id="zoning"><h5>Urbanística y normativa</h5><div class="form-field"><label>Estado</label><select data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label>Fuente / documento</label><input type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label>Fecha</label><input type="date" data-check-field="consultedAt"></div><div class="form-field"><label>Nota</label><input type="text" data-check-field="note" maxlength="300"></div></article>
+        <article class="originacion-check-card" data-check-id="environment"><h5>Ambiental e hidráulica</h5><div class="form-field"><label>Estado</label><select data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label>Fuente / documento</label><input type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label>Fecha</label><input type="date" data-check-field="consultedAt"></div><div class="form-field"><label>Nota</label><input type="text" data-check-field="note" maxlength="300"></div></article>
+        <article class="originacion-check-card" data-check-id="services"><h5>Servicios y accesos</h5><div class="form-field"><label>Estado</label><select data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label>Fuente / documento</label><input type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label>Fecha</label><input type="date" data-check-field="consultedAt"></div><div class="form-field"><label>Nota</label><input type="text" data-check-field="note" maxlength="300"></div></article>
+        <article class="originacion-check-card" data-check-id="market"><h5>Mercado y demanda</h5><div class="form-field"><label>Estado</label><select data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label>Fuente / documento</label><input type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label>Fecha</label><input type="date" data-check-field="consultedAt"></div><div class="form-field"><label>Nota</label><input type="text" data-check-field="note" maxlength="300"></div></article>
+      </div>
+    </section>
+    <section class="originacion-section" aria-labelledby="originacion-followup-title">
+      <h4 id="originacion-followup-title">04 / Próximo paso comercial</h4>
+      <div class="originacion-grid">
+        <div class="form-field full"><label for="originacion-next-action">Próxima acción</label><input id="originacion-next-action" maxlength="180" autocomplete="off" placeholder="Ej.: solicitar certificado urbanístico vigente"></div>
+        <div class="form-field"><label for="originacion-follow-up-date">Fecha de seguimiento</label><input id="originacion-follow-up-date" type="date"></div>
+        <div class="form-field full"><label for="originacion-negotiation-notes">Notas de negociación (sin datos personales)</label><textarea id="originacion-negotiation-notes" maxlength="800" placeholder="Condiciones generales, documentación pendiente o puntos a resolver."></textarea></div>
+      </div>
+    </section>
+    <section class="originacion-section" aria-labelledby="originacion-fees-title">
+      <h4 id="originacion-fees-title">05 / Honorarios</h4>
+      <p>Los importes son campos independientes. No se suman entre sí ni se convierten. Todas las cifras de este expediente deben usar una misma moneda.</p>
+      <div class="originacion-fees-grid">
+        <div class="form-field"><label for="originacion-fee-currency">Moneda</label><select id="originacion-fee-currency"><option value="">Sin definir</option><option value="ARS">ARS</option><option value="USD">USD</option></select></div>
+        <div class="form-field"><label for="originacion-fee-proposed">Propuestos</label><input id="originacion-fee-proposed" inputmode="decimal" maxlength="18" autocomplete="off" placeholder="Sin dato"></div>
+        <div class="form-field"><label for="originacion-fee-agreed">Acordados</label><input id="originacion-fee-agreed" inputmode="decimal" maxlength="18" autocomplete="off" placeholder="Sin dato"></div>
+        <div class="form-field"><label for="originacion-fee-invoiced">Facturados</label><input id="originacion-fee-invoiced" inputmode="decimal" maxlength="18" autocomplete="off" placeholder="Sin dato"></div>
+        <div class="form-field"><label for="originacion-fee-collected">Cobrados</label><input id="originacion-fee-collected" inputmode="decimal" maxlength="18" autocomplete="off" placeholder="Sin dato"></div>
+      </div>
+    </section>
+    <p class="originacion-status" id="originacion-status" role="status" aria-live="polite">Los datos de esta mesa no se incorporan al borrador de WhatsApp. Se incluyen únicamente en el expediente JSON y en la ficha imprimible.</p>
+    <p class="originacion-local-note">Antes de compartir el archivo, revisá si contiene información comercial que deba mantenerse reservada. El sitio no ofrece autenticación, cifrado de archivos ni control de permisos.</p>
+  </div>
+</details>
 <div class="form-grid">
 <div class="form-field">
 <label for="contact-name">Tu nombre *</label>
@@ -283,6 +348,7 @@
 <footer class="site-footer"><span>© Erica M. Acosta · Moreno, Buenos Aires</span><span>Desarrollos inmobiliarios · IA aplicada · Alianzas</span><a href="../">Volver al inicio ↗</a></footer>
 <section class="opportunity-dossier-print" id="opportunity-dossier-print" hidden aria-label="Ficha preliminar de oportunidad para impresión"></section>
 <script src="../assets/js/opportunity-tools.js"></script>
+<script src="../assets/js/originacion-workbench.js"></script>
 <script src="../assets/js/pipeline-dashboard.js"></script>
 <script src="../assets/js/pipeline-agenda.js"></script>
 <script src="../assets/js/pipeline-dashboard-ui.js"></script>
@@ -481,17 +547,32 @@ function buildDossierInput(){
   return {
     fields:readOpportunityFields(),
     calculationInput:readFeasibilityInput(),
+    internalData:window.MorenoOriginacionWorkbench.read(),
     generatedAt:new Intl.DateTimeFormat("es-AR",{dateStyle:"long",timeStyle:"short"}).format(new Date()),
     exportedAt:new Date().toISOString()
   };
 }
+function validateOriginacionForExport(){
+  const result=window.MorenoOriginacionWorkbench.validate();
+  const status=document.getElementById("originacion-status");
+  if(!result.ok){
+    status.dataset.state="error";
+    status.textContent="No se puede exportar el expediente: "+result.errors.join(" ");
+    return false;
+  }
+  status.removeAttribute("data-state");
+  status.textContent=result.warnings.length
+    ?"Control local completado con advertencias: "+result.warnings.join(" ")
+    :"Control local completado. Las fuentes y verificaciones siguen siendo responsabilidad de quien registra.";
+  return true;
+}
 printDossierButton.addEventListener("click",()=>{
-  if(!opportunityForm.reportValidity())return;
+  if(!opportunityForm.reportValidity()||!validateOriginacionForExport())return;
   const dossier=window.MorenoOpportunityTools.buildOpportunityDossier(buildDossierInput());
   renderOpportunityDossier(dossier);
 });
 downloadDossierButton.addEventListener("click",()=>{
-  if(!opportunityForm.reportValidity())return;
+  if(!opportunityForm.reportValidity()||!validateOriginacionForExport())return;
   try{
     const payload=window.MorenoOpportunityTools.buildOpportunityDossierExport(buildDossierInput());
     const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"});
@@ -533,6 +614,7 @@ function applyDossierFormData(data){
   document.getElementById("parcel-fos").value=calculationInput.fosRaw||"";
   document.getElementById("parcel-fot").value=calculationInput.fotRaw||"";
   document.getElementById("parcel-reference").value=calculationInput.referenceRaw||"";
+  window.MorenoOriginacionWorkbench.apply(data.internalData||{});
   const contextPanel=document.getElementById("map-reference-context");
   contextPanel.replaceChildren();
   if(fields.referencia_mapa){
@@ -576,7 +658,7 @@ async function readSelectedDossierFile(){
     pendingDossierImport=result;
     dossierImportActions.hidden=false;
     const warningText=result.warnings.length?" Advertencias: "+result.warnings.join(" "):"";
-    dossierImportStatus.textContent="Expediente válido, versión "+result.version+", exportado el "+result.exportedAt+". Elegí cómo aplicar los datos."+warningText;
+    dossierImportStatus.textContent="Expediente válido, versión "+result.version+", exportado el "+result.exportedAt+". Incluye los datos internos de originación si la versión los contiene. Elegí cómo aplicar los datos."+warningText;
   }catch(error){
     pendingDossierImport=null;
     dossierImportActions.hidden=true;
@@ -589,11 +671,12 @@ function applyPendingDossierImport(mode){
   let data;
   let conflictCount=0;
   if(mode==="replace"){
-    data={fields:imported.fields,calculationInput:imported.calculationInput};
+    data={fields:imported.fields,calculationInput:imported.calculationInput,internalData:imported.internalData};
   }else{
     data=window.MorenoOpportunityTools.mergeImportedOpportunityData({
       fields:readOpportunityFields(),
-      calculationInput:readFeasibilityInput()
+      calculationInput:readFeasibilityInput(),
+      internalData:window.MorenoOriginacionWorkbench.read()
     },imported);
     conflictCount=data.conflicts.length;
   }
