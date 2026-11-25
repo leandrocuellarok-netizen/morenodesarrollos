@@ -36,7 +36,7 @@ const contactUrl = new URL(buildOpportunityContactUrl("https://example.org/proye
 }));
 assert.equal(contactUrl.pathname, "/proyecto/oportunidades/", "el CTA lleva al formulario de oportunidades");
 assert.equal(contactUrl.searchParams.get("map_ref"), "rp25", "el contacto conserva el identificador de la referencia");
-assert.equal(contactUrl.searchParams.get("map_name"), "RP25 · Darwin Passaponti", "el contacto conserva el nombre de la referencia");
+assert.equal(contactUrl.searchParams.has("map_name"), false, "el contacto no confía en etiquetas editables de la URL");
 
 assert.ok(source.includes("card.dataset.mapItem = item.id"), "cada ficha tiene una identidad enlazable");
 assert.ok(source.includes('element.addEventListener("click", () => {'), "seleccionar un marcador abre su ficha asociada");
