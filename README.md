@@ -277,3 +277,12 @@ El tablero local de `/oportunidades/` permite descargar una agenda CSV separada 
 - Se genera en el navegador con protección frente a fórmulas. No se transmite ni se almacena en el servidor.
 
 - La agenda marca por separado los seguimientos vencidos, los próximos, los registros sin fecha y las oportunidades sin próxima acción; no asigna probabilidades de cierre ni importes estimados.
+
+
+## Perfil editorial de Erica y recorridos de contacto
+
+La página `erica-acosta/` presenta el perfil de Erica M. Acosta con una jerarquía editorial, el retrato existente y una lámina SVG monocromática de cinco etapas del desarrollo inmobiliario. La lámina es conceptual: no representa un inmueble, parcela, obra, factibilidad ni oportunidad identificada.
+
+Los accesos para propietarios e inversores enlazan a `/oportunidades/?perfil=propietario` y `/oportunidades/?perfil=inversor`. El formulario reconoce esos parámetros y preselecciona el perfil correspondiente; la persona revisa sus datos y decide si abre WhatsApp. No se envía información automáticamente.
+
+El validador del sitio comprueba la presencia de la lámina accesible, las cinco etapas, los estilos del perfil y los dos recorridos de contacto.
