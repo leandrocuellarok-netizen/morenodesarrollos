@@ -352,7 +352,7 @@ def main() -> None:
                 errors.append("Falta assets/js/opportunity-tools.js")
             else:
                 module_source = module_path.read_text(encoding="utf-8")
-                for required_logic in ("area.value * fos.value", "area.value * fot.value", "buildLeadNote", "readMapReference", "buildContactMessage", "buildWhatsAppUrl", "formatFieldValue", "Documentación disponible (declarada)", "Consultas realizadas (declaradas)", "no constituyen verificación independiente", "Ubicación o referencia", "Referencia del Mapa IA", "Partida o nomenclatura catastral", "No se realizó el cálculo", "Este resultado es matemático y orientativo"):
+                for required_logic in ("area.value * fos.value", "area.value * fot.value", "buildLeadNote", "readMapReference", "mapReferenceNames = Object.freeze({", "mapReferenceNames[id]", "Object.prototype.hasOwnProperty.call(mapReferenceNames, id)", "buildContactMessage", "buildWhatsAppUrl", "formatFieldValue", "Documentación disponible (declarada)", "Consultas realizadas (declaradas)", "no constituyen verificación independiente", "Ubicación o referencia", "Referencia del Mapa IA", "Partida o nomenclatura catastral", "No se realizó el cálculo", "Este resultado es matemático y orientativo"):
                     if required_logic not in module_source:
                         errors.append(f"assets/js/opportunity-tools.js: falta lógica requerida: {required_logic}")
             if 'id="contact-message-preview"' in page_source and 'id="contact-message-preview" rows="12" readonly' not in page_source:
