@@ -27,6 +27,98 @@ const kindLabel = {
   land: "Prospección de suelo"
 };
 
+const reviewTasks = Object.freeze([
+  Object.freeze({ id: "cadastral", label: "Individualización catastral y plano de mensura" }),
+  Object.freeze({ id: "planning", label: "Normativa vigente, usos e indicadores urbanísticos" }),
+  Object.freeze({ id: "legal", label: "Titularidad, antecedentes y restricciones" }),
+  Object.freeze({ id: "feasibility", label: "Servicios, accesos y condiciones ambientales e hidráulicas" }),
+  Object.freeze({ id: "traceability", label: "Fuente, documento, fecha y responsable registrados" })
+]);
+const REVIEW_STORAGE_KEY = "moreno-map-review-v1";
+
+function normalizeReviewState(raw, items) {
+  const allowedIds = new Set((items || opportunities).map(item => item.id));
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+  const normalized = {};
+  Object.keys(raw).forEach(referenceId => {
+    if (!allowedIds.has(referenceId)) return;
+    const saved = raw[referenceId];
+    if (!saved || typeof saved !== "object" || Array.isArray(saved)) return;
+    const tasks = {};
+    reviewTasks.forEach(task => { tasks[task.id] = saved[task.id] === true; });
+    if (reviewTasks.some(task => tasks[task.id])) normalized[referenceId] = tasks;
+  });
+  return normalized;
+}
+
+function readReviewState(storage, items) {
+  if (!storage || typeof storage.getItem !== "function") return {};
+  try {
+    const raw = storage.getItem(REVIEW_STORAGE_KEY);
+    return raw ? normalizeReviewState(JSON.parse(raw), items) : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function writeReviewState(storage, state, items) {
+  if (!storage || typeof storage.setItem !== "function") return false;
+  try {
+    storage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(normalizeReviewState(state, items)));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function updateReviewState(state, referenceId, taskId, completed, items) {
+  const allowedItems = items || opportunities;
+  if (!allowedItems.some(item => item.id === referenceId) ||
+      !reviewTasks.some(task => task.id === taskId)) {
+    return normalizeReviewState(state, allowedItems);
+  }
+  const next = normalizeReviewState(state, allowedItems);
+  if (!next[referenceId]) {
+    next[referenceId] = {};
+    reviewTasks.forEach(task => { next[referenceId][task.id] = false; });
+  }
+  next[referenceId][taskId] = completed === true;
+  if (!reviewTasks.some(task => next[referenceId][task.id])) delete next[referenceId];
+  return next;
+}
+
+function getReviewSummary(state, referenceId) {
+  const normalized = normalizeReviewState(state, opportunities);
+  const entry = normalized[referenceId] || {};
+  const completed = reviewTasks.filter(task => entry[task.id] === true).length;
+  return { completed, total: reviewTasks.length, percent: Math.round((completed / reviewTasks.length) * 100) };
+}
+
+function buildReviewExport(state, items, generatedAt) {
+  const normalized = normalizeReviewState(state, opportunities);
+  const visibleIds = new Set((items || opportunities).map(item => item.id));
+  return {
+    schema_version: 1,
+    generated_at: generatedAt || new Date().toISOString(),
+    scope: "Registro interno de revisiones marcadas en este navegador; no es una certificación documental, dominial ni urbanística.",
+    references: opportunities.filter(item => visibleIds.has(item.id)).map(item => {
+      const summary = getReviewSummary(normalized, item.id);
+      const entry = normalized[item.id] || {};
+      return {
+        id: item.id,
+        name: item.name,
+        completed_tasks: summary.completed,
+        total_tasks: summary.total,
+        tasks: reviewTasks.map(task => ({
+          id: task.id,
+          label: task.label,
+          review_recorded: entry[task.id] === true
+        }))
+      };
+    })
+  };
+}
+
 function getSharedReferenceId(search, items) {
   const parameters = new URLSearchParams(String(search || ""));
   const id = parameters.get("ref");
@@ -163,9 +255,21 @@ function initMapPage(doc) {
   const opportunityList = doc.getElementById("opportunity-list");
   const exportButton = doc.getElementById("export-csv");
   const geoJsonExportButton = doc.getElementById("export-geojson");
+  const reviewExportButton = doc.getElementById("export-review");
+  const reviewStatusElement = doc.getElementById("review-status");
   const markers = new Map();
   let map = null;
   let visibleItems = all;
+  let reviewStorage = null;
+  try {
+    reviewStorage = doc.defaultView ? doc.defaultView.localStorage : null;
+  } catch (error) {
+    reviewStorage = null;
+  }
+  let reviewState = readReviewState(reviewStorage, opportunities);
+  reviewStatusElement.textContent = reviewStorage
+    ? "Las marcas se guardan en este navegador; no se envían al servidor."
+    : "El almacenamiento local no está disponible; exportá la bitácora para conservar las marcas mientras trabajás.";
   let selectedReferenceId = getSharedReferenceId(
     doc.defaultView && doc.defaultView.location ? doc.defaultView.location.search : "",
     all
@@ -281,6 +385,53 @@ function initMapPage(doc) {
     if (popup && !popup.isOpen()) marker.togglePopup();
   }
 
+
+  function updateReviewProgress(progressElement, item) {
+    const summary = getReviewSummary(reviewState, item.id);
+    progressElement.textContent = summary.completed + " de " + summary.total + " revisiones registradas";
+  }
+
+  function reviewPanelNode(item) {
+    const panel = doc.createElement("section");
+    panel.className = "map-review-panel";
+    const title = doc.createElement("h4");
+    title.textContent = "Bitácora de verificación";
+    const intro = doc.createElement("p");
+    intro.className = "map-review-intro";
+    intro.textContent = "Marcá cada punto solo después de revisar el documento o la fuente correspondiente. El registro es interno y no certifica el dato.";
+    const progress = doc.createElement("p");
+    progress.className = "map-review-progress";
+    progress.setAttribute("role", "status");
+    progress.setAttribute("aria-live", "polite");
+    updateReviewProgress(progress, item);
+    const fieldset = doc.createElement("fieldset");
+    fieldset.className = "map-review-checklist";
+    const legend = doc.createElement("legend");
+    legend.textContent = "Control interno · revisión documental";
+    fieldset.append(legend);
+    reviewTasks.forEach(task => {
+      const label = doc.createElement("label");
+      const checkbox = doc.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = Boolean(reviewState[item.id] && reviewState[item.id][task.id]);
+      checkbox.setAttribute("aria-label", task.label + " · " + item.name);
+      checkbox.addEventListener("change", () => {
+        reviewState = updateReviewState(reviewState, item.id, task.id, checkbox.checked, opportunities);
+        updateReviewProgress(progress, item);
+        const saved = writeReviewState(reviewStorage, reviewState, opportunities);
+        reviewStatusElement.textContent = saved
+          ? "Bitácora actualizada en este navegador."
+          : "No se pudo guardar localmente; descargá la bitácora JSON antes de cerrar.";
+      });
+      const textNode = doc.createElement("span");
+      textNode.textContent = task.label;
+      label.append(checkbox, textNode);
+      fieldset.append(label);
+    });
+    panel.append(title, intro, progress, fieldset);
+    return panel;
+  }
+
   function makeCards(items, target) {
     target.replaceChildren();
     items.forEach(item => {
@@ -332,6 +483,8 @@ function initMapPage(doc) {
         }
       }
 
+      if (item.type === "opportunity") body.append(reviewPanelNode(item));
+
       if (map) {
         const focusButton = doc.createElement("button");
         focusButton.type = "button";
@@ -363,6 +516,7 @@ function initMapPage(doc) {
     visibleItems = shown;
     exportButton.disabled = shown.length === 0;
     geoJsonExportButton.disabled = shown.length === 0;
+    reviewExportButton.disabled = !shown.some(item => item.type === "opportunity");
     if (selectedReferenceId && !shown.some(item => item.id === selectedReferenceId)) {
       selectedReferenceId = null;
       updateShareUrl(null);
@@ -409,6 +563,23 @@ function initMapPage(doc) {
     link.click();
     link.remove();
     view.setTimeout(() => view.URL.revokeObjectURL(url), 1500);
+  }
+
+  function exportVisibleReview() {
+    const visibleOpportunities = visibleItems.filter(item => item.type === "opportunity");
+    if (!visibleOpportunities.length) return;
+    const content = JSON.stringify(buildReviewExport(reviewState, visibleOpportunities), null, 2);
+    const view = doc.defaultView;
+    const blob = new view.Blob([content], { type: "application/json;charset=utf-8" });
+    const url = view.URL.createObjectURL(blob);
+    const link = doc.createElement("a");
+    link.href = url;
+    link.download = "moreno-mapa-ia-bitacora.json";
+    doc.body.append(link);
+    link.click();
+    link.remove();
+    view.setTimeout(() => view.URL.revokeObjectURL(url), 1500);
+    reviewStatusElement.textContent = "Bitácora JSON exportada: " + visibleOpportunities.length + " tesis visibles.";
   }
 
   if (typeof maplibregl === "undefined") {
@@ -540,6 +711,8 @@ function initMapPage(doc) {
   exportButton.hidden = false;
   geoJsonExportButton.hidden = false;
   geoJsonExportButton.addEventListener("click", exportVisibleGeoJson);
+  reviewExportButton.hidden = false;
+  reviewExportButton.addEventListener("click", exportVisibleReview);
   doc.getElementById("search").addEventListener("input", render);
   doc.getElementById("category").addEventListener("change", render);
   doc.getElementById("evidence-filter").addEventListener("change", render);
@@ -563,7 +736,9 @@ if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, all, filterReferences, buildCsv, buildGeoJson,
     getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl,
-    shouldFitMunicipalBounds, prefersReducedMotion
+    shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY,
+    normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
+    getReviewSummary, buildReviewExport
   };
 }
 if (typeof document !== "undefined") initMapPage(document);
