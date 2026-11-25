@@ -100,6 +100,14 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 - Si falla el proveedor de teselas, se conserva el inventario de referencias y se informa el estado sin ocultar la investigación.
 
 
+### Bitácora local de verificación del Mapa IA
+
+- Cada tesis de oportunidad incorpora cinco controles internos: individualización catastral, normativa vigente, revisión jurídica, factibilidad y trazabilidad documental.
+- Las marcas comienzan pendientes y solo las registra manualmente quien haya revisado la fuente o el documento correspondiente. No se autocompletan por existir un enlace público.
+- El estado se conserva en `localStorage` del navegador actual. No se transmite al sitio, no sincroniza entre dispositivos y no debe utilizarse para guardar datos personales, dominiales sensibles ni documentación confidencial.
+- La descarga JSON incluye únicamente las tesis visibles y sus estados de revisión. Es un registro operativo, no una certificación ni una conclusión técnica, dominial o urbanística.
+- Si el navegador bloquea el almacenamiento local, la bitácora sigue disponible durante la sesión y la exportación permite conservar el estado antes de cerrar.
+
 ### Enlaces directos a referencias del Mapa IA
 
 - Cada ficha y ventana emergente ofrece un enlace directo con el identificador de la referencia en el parámetro `?ref=`.
