@@ -60,7 +60,7 @@ const contactMessage = tools.buildContactMessage({
   },
   calculationInput: { areaRaw: "1200", referenceRaw: "Dato aportado" }
 });
-assert.match(contactMessage, /Referencia del Mapa IA: RP25 · Darwin Passaponti \\(rp25\\)/);
+assert.match(contactMessage, /Referencia del Mapa IA: RP25 · Darwin Passaponti \(rp25\)/);
 assert.match(contactMessage, /Ubicación o referencia: Cerca de la estación/);
 assert.match(contactMessage, /Partida o nomenclatura catastral: Circ\. II, Secc\. B, Quinta 14/);
 assert.match(contactMessage, /Superficie declarada en calculadora: 1200 m²/);
@@ -97,4 +97,4 @@ const noChecklistMessage = tools.buildContactMessage({
 assert.doesNotMatch(noChecklistMessage, /Documentación disponible \(declarada\):/);
 assert.doesNotMatch(noChecklistMessage, /Consultas realizadas \(declaradas\):/);
 
-console.log("OK: 11 grupos de pruebas de cálculo, datos parciales, listas de documentación, consultas declaradas, URL y borrador de contacto.");
+console.log("OK: 12 grupos de pruebas de cálculo, datos parciales, listas de documentación, consultas declaradas, URL y borrador de contacto.");
