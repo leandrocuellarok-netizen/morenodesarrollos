@@ -36,6 +36,18 @@ assert.match(summaryCsv, /fecha_corte;tipo;indicador;moneda;valor/);
 assert.match(summaryCsv, /honorarios;honorarios_cobrados;ARS;550,00/);
 assert.match(summaryCsv, /pipeline;seguimientos_vencidos;;1/);
 assert.doesNotMatch(summaryCsv, /M-001|Propietario|Solicitar plano/);
+const injectionCsv = [
+  headers.join(";"),
+  makeRow({id_oportunidad:"SAFE-1",etapa_comercial:'=HYPERLINK("https://example.invalid","Abrir")'}),
+  makeRow({id_oportunidad:"SAFE-2",etapa_comercial:"  +SUM(1,1)"}),
+  makeRow({id_oportunidad:"SAFE-3",etapa_comercial:"\\t=1+1"})
+].join("\\n");
+const injectionParsed = dashboard.parsePipelineCsv(injectionCsv);
+assert.equal(injectionParsed.ok, true);
+const protectedCsv = dashboard.buildSummaryCsv(dashboard.summarizePipeline(injectionParsed.records, "2026-11-25"));
+assert.match(protectedCsv, /"'=HYPERLINK/);
+assert.match(protectedCsv, /"'  \\+SUM/);
+assert.match(protectedCsv, /'\\t=1\\+1/);
 assert.equal(dashboard.parsePipelineCsv(headers.join(";") + "\n").records.length, 0);
 assert.match(dashboard.parsePipelineCsv(headers.join(";") + "\n" + makeRow({id_oportunidad:"M-1",fecha_alta:"2026-02-31"})).error, /fecha real/);
 assert.match(dashboard.parsePipelineCsv(headers.join(";") + "\n" + makeRow({id_oportunidad:"M-1",honorarios_propuestos:"1.000",moneda:"ARS"})).error, /sin separador de miles/);
