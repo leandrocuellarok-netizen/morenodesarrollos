@@ -460,10 +460,10 @@ def main() -> None:
                 errors.append(f"{relative.as_posix()}: falta el destino de WhatsApp del formulario")
             if "El sitio no recibe ni almacena estos datos" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta la explicación de privacidad del formulario")
-            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral", "documentation-checklist", "verification-checklist", "contact-preview", "contact-message-preview", "copy-contact-message", "open-whatsapp", "download-opportunity-dossier", "originacion-workbench", "originacion-evidence-list", "originacion-evidence-template", "originacion-add-evidence", "originacion-status", "originacion-fee-currency", "originacion-commercial-stage", "originacion-follow-up-date"):
+            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral", "documentation-checklist", "verification-checklist", "contact-preview", "contact-message-preview", "copy-contact-message", "open-whatsapp", "download-opportunity-dossier", "originacion-workbench", "originacion-evidence-list", "originacion-evidence-template", "originacion-add-evidence", "originacion-status", "originacion-fee-currency", "originacion-commercial-stage", "originacion-follow-up-date", "originacion-print-dossier", "originacion-download-dossier"):
                 if required_id not in parser.ids:
                     errors.append(f"{relative.as_posix()}: falta control de cálculo {required_id}")
-            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.readMapReference", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", "MorenoOpportunityTools.buildOpportunityDossierExport", "MorenoOriginacionWorkbench.read()", "MorenoOriginacionWorkbench.apply", "validateOriginacionForExport", "internalData:window.MorenoOriginacionWorkbench.read()", 'formData.getAll("documentacion")', 'formData.getAll("verificaciones")', "navigator.clipboard.writeText", "Consulta iniciada desde el Mapa IA"):
+            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.readMapReference", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", "MorenoOpportunityTools.buildOpportunityDossierExport", "MorenoOriginacionWorkbench.read()", "MorenoOriginacionWorkbench.apply", "validateOriginacionForExport", "buildInternalDossierInput()", 'data.fields.nombre=""', 'data.fields.detalle=""', "internalData:window.MorenoOriginacionWorkbench.read()", 'formData.getAll("documentacion")', 'formData.getAll("verificaciones")', "navigator.clipboard.writeText", "Consulta iniciada desde el Mapa IA"):
                 if required_logic not in page_source:
                     errors.append(f"{relative.as_posix()}: falta integración de la lógica de oportunidades: {required_logic}")
             if not re.search(r"contactPreview\.hidden\s*=\s*false", page_source):
@@ -486,7 +486,7 @@ def main() -> None:
                 errors.append("Falta assets/css/originacion.css")
             else:
                 originacion_style = originacion_css.read_text(encoding="utf-8")
-                for required_style in (".originacion-workbench", ".originacion-warning", ".originacion-check-grid", ".originacion-evidence-row", ".originacion-fees-grid", ".originacion-status", "@media (max-width: 760px)"):
+                for required_style in (".originacion-workbench", ".originacion-warning", ".originacion-check-grid", ".originacion-evidence-row", ".originacion-fees-grid", ".originacion-export-actions", ".originacion-status", "@media (max-width: 760px)"):
                     if required_style not in originacion_style:
                         errors.append(f"assets/css/originacion.css: falta estilo requerido: {required_style}")
             module_path = ROOT / "assets/js/opportunity-tools.js"
