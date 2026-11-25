@@ -522,7 +522,7 @@ def main() -> None:
 
     node = shutil.which("node")
     if node:
-        for test_name in ("test_opportunity_tools.js", "test_site_navigation.js", "test_mapa_ia.js", "test_pipeline_dashboard.js"):
+        for test_name in ("test_opportunity_tools.js", "test_site_navigation.js", "test_mapa_ia.js", "test_pipeline_dashboard.js", "test_pipeline_dashboard_ui.js"):
             test_script = ROOT / "scripts" / test_name
             if not test_script.is_file():
                 errors.append(f"Falta scripts/{test_name}")
@@ -570,6 +570,8 @@ def main() -> None:
         for required_control in ("pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset", "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions", "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-text", "pipeline-download-summary"):
             if f'id="{required_control}"' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta control del tablero comercial: {required_control}")
+        if 'id="pipeline-download-summary" type="button" disabled' not in opportunity_html:
+            errors.append("Oportunidades debe mantener deshabilitada la exportación hasta validar un CSV.")
         for script_src in ("../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-dashboard-ui.js"):
             if f'<script src="{script_src}"></script>' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta cargar {script_src}")
@@ -590,10 +592,10 @@ def main() -> None:
     else:
         pipeline_source = pipeline_module.read_text(encoding="utf-8")
         pipeline_ui_source = pipeline_ui_module.read_text(encoding="utf-8")
-        for required_logic in ("parsePipelineCsv", "summarizePipeline", "buildSummaryCsv", "MAX_ROWS", "MAX_FILE_CHARS"):
+        for required_logic in ("parsePipelineCsv", "summarizePipeline", "buildSummaryCsv", "spreadsheetSafeCell", "MAX_ROWS", "MAX_FILE_CHARS"):
             if required_logic not in pipeline_source:
                 errors.append(f"assets/js/pipeline-dashboard.js: falta lógica requerida: {required_logic}")
-        for required_logic in ("MorenoPipelineDashboard", "file.text()", "textContent", "pipeline-csv-file"):
+        for required_logic in ("MorenoPipelineDashboard", "file.text()", "textContent", "pipeline-csv-file", "currentSummary = null", "downloadSummaryButton.disabled = true", "identificacion_catastral", "fuente_origen", "tipo_operacion"):
             if required_logic not in pipeline_ui_source:
                 errors.append(f"assets/js/pipeline-dashboard-ui.js: falta lógica requerida: {required_logic}")
         for forbidden_logic in ("localStorage", "sessionStorage", "fetch(", "XMLHttpRequest", "innerHTML"):
