@@ -180,3 +180,15 @@ Las cuatro páginas públicas comparten un menú móvil desplegable, controlable
 ## Conversión comercial desde el Mapa IA
 
 Cada localidad o tesis territorial puede abrir el formulario de oportunidades con su identificador y nombre como contexto de origen. El formulario muestra esa referencia, incorpora una nota explícita sobre su alcance aproximado y la incluye en el borrador de WhatsApp para que la persona lo revise. La referencia no se transforma en identificación parcelaria ni acredita titularidad, disponibilidad, zonificación o factibilidad. El sitio no envía ni almacena el contacto automáticamente.
+
+
+## Mesa de verificación parcelaria y urbanística
+
+El Mapa IA incorpora un directorio operativo de fuentes oficiales para pasar de una referencia aproximada a una parcela individualizada:
+
+- **IDE Moreno**: visor cartográfico municipal. La fecha y el alcance deben revisarse capa por capa: https://mapas.moreno.gob.ar/
+- **GeoARBA**: portal provincial de geoservicios WMS/WFS y descargas vectoriales de objetos catastrales por partido. Revisar metadatos, fecha de actualización y condiciones de uso: https://arba.gov.ar/geoarba/inicio.asp
+- **Dirección de Catastro de Moreno**: información de trámites y contacto institucional: https://www.moreno.gob.ar/catastro.php
+- **Plano de zonificación municipal, anexo junio de 2015**: antecedente histórico disponible en el portal municipal. No confirma normativa vigente ni indicadores actuales; toda evaluación requiere consulta municipal actualizada: https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf
+
+La secuencia de control exige nomenclatura catastral y plano de mensura, certificado o constancia urbanística vigente, revisión dominial y de restricciones, factibilidad de servicios/accesos y trazabilidad de fuente, documento y fecha de consulta. Estas fuentes no se descargan ni interpretan automáticamente en MORENO: no se presentan parcelas ni zonificaciones como verificadas hasta incorporar geometría, metadatos y validación profesional.
