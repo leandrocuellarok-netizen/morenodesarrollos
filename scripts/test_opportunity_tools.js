@@ -38,9 +38,16 @@ assert.match(ambiguousArea.error, /ambiguo/);
 const emptyLead = tools.buildLeadNote({});
 assert.equal(emptyLead.empty, true);
 
+const mapReference = tools.readMapReference("?map_ref=rp25&map_name=RP25+%C2%B7+Darwin+Passaponti");
+assert.deepEqual(mapReference, { id: "rp25", name: "RP25 · Darwin Passaponti" });
+assert.equal(tools.readMapReference("?map_ref=bad%2Fid&map_name=Zona"), null);
+assert.equal(tools.readMapReference("?map_ref=rp25"), null);
+assert.deepEqual(tools.readMapReference("?map_ref=rp25&map_name=%3Cscript%3E"), { id: "rp25", name: "<script>" });
+
 const contactMessage = tools.buildContactMessage({
   fields: {
     nombre: "Contacto de prueba",
+    referencia_mapa: "RP25 · Darwin Passaponti (rp25)",
     perfil: "Propietario/a",
     interes: "Presentar un terreno o inmueble",
     zona: "La Reja",
@@ -53,6 +60,7 @@ const contactMessage = tools.buildContactMessage({
   },
   calculationInput: { areaRaw: "1200", referenceRaw: "Dato aportado" }
 });
+assert.match(contactMessage, /Referencia del Mapa IA: RP25 · Darwin Passaponti \\(rp25\\)/);
 assert.match(contactMessage, /Ubicación o referencia: Cerca de la estación/);
 assert.match(contactMessage, /Partida o nomenclatura catastral: Circ\. II, Secc\. B, Quinta 14/);
 assert.match(contactMessage, /Superficie declarada en calculadora: 1200 m²/);
