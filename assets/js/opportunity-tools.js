@@ -108,6 +108,17 @@
       .join("; ");
   }
 
+  function readMapReference(search) {
+    const parameters = new URLSearchParams(String(search || ""));
+    const id = String(parameters.get("map_ref") || "").trim();
+    const name = String(parameters.get("map_name") || "")
+      .replace(/[\u0000-\u001f\u007f]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!/^[a-z0-9-]{1,40}$/.test(id) || !name || name.length > 120) return null;
+    return { id: id, name: name };
+  }
+
   function buildContactMessage(input) {
     const data = input || {};
     const fields = data.fields || {};
@@ -124,6 +135,7 @@
       ["Superficie aproximada", "superficie"],
       ["Documentación disponible (declarada)", "documentacion"],
       ["Consultas realizadas (declaradas)", "verificaciones"],
+      ["Referencia del Mapa IA", "referencia_mapa"],
       ["Contexto", "detalle"]
     ];
     const lines = ["Hola Erica, quiero iniciar una conversación sobre una oportunidad en MORENO.", ""];
@@ -148,6 +160,7 @@
     parsePositiveDecimal: parsePositiveDecimal,
     calculatePreliminary: calculatePreliminary,
     buildLeadNote: buildLeadNote,
+    readMapReference: readMapReference,
     buildContactMessage: buildContactMessage,
     buildWhatsAppUrl: buildWhatsAppUrl
   };
