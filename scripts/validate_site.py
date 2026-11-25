@@ -281,6 +281,9 @@ def main() -> None:
                     "function setActiveReference(item, options)",
                     "function getSharedReferenceId(search, items)",
                     "function buildReferenceUrl(baseUrl, referenceId)",
+                    "function buildOpportunityContactUrl(baseUrl, item)",
+                    'link.textContent = "Consultar sobre esta referencia ↗"',
+                    'contactLinkNode(item, "map-contact-link")',
                     "updateShareUrl(item.id)",
                     'shareLink.textContent = "Abrir ficha compartible ↗"',
                     "if (sharedItem) focusItem(sharedItem)",
@@ -312,6 +315,7 @@ def main() -> None:
                     ".map-pin.is-selected",
                     ".map-item.is-active",
                     ".map-share-link",
+                    ".map-contact-link",
                     "order: -1",
                     "order: 1",
                     "height: 480px"
@@ -326,6 +330,9 @@ def main() -> None:
                     errors.append(f"{relative.as_posix()}: falta campo obligatorio {required_field}")
             if 'id="opportunity-form"' not in page_source:
                 errors.append(f"{relative.as_posix()}: falta el formulario de oportunidades")
+            for required_id in ("map-reference-context", "map-reference-value"):
+                if required_id not in parser.ids:
+                    errors.append(f"{relative.as_posix()}: falta el contexto comercial del Mapa IA: {required_id}")
             if "https://wa.me/5491141671674?text=" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta el destino de WhatsApp del formulario")
             if "El sitio no recibe ni almacena estos datos" not in page_source:
@@ -333,7 +340,7 @@ def main() -> None:
             for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral", "documentation-checklist", "verification-checklist", "contact-preview", "contact-message-preview", "copy-contact-message", "open-whatsapp"):
                 if required_id not in parser.ids:
                     errors.append(f"{relative.as_posix()}: falta control de cálculo {required_id}")
-            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", 'formData.getAll("documentacion")', 'formData.getAll("verificaciones")', "navigator.clipboard.writeText"):
+            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.readMapReference", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", 'formData.getAll("documentacion")', 'formData.getAll("verificaciones")', "navigator.clipboard.writeText", "Consulta iniciada desde el Mapa IA"):
                 if required_logic not in page_source:
                     errors.append(f"{relative.as_posix()}: falta integración de la lógica de oportunidades: {required_logic}")
             if not re.search(r"contactPreview\.hidden\s*=\s*false", page_source):
@@ -345,7 +352,7 @@ def main() -> None:
                 errors.append("Falta assets/js/opportunity-tools.js")
             else:
                 module_source = module_path.read_text(encoding="utf-8")
-                for required_logic in ("area.value * fos.value", "area.value * fot.value", "buildLeadNote", "buildContactMessage", "buildWhatsAppUrl", "formatFieldValue", "Documentación disponible (declarada)", "Consultas realizadas (declaradas)", "no constituyen verificación independiente", "Ubicación o referencia", "Partida o nomenclatura catastral", "No se realizó el cálculo", "Este resultado es matemático y orientativo"):
+                for required_logic in ("area.value * fos.value", "area.value * fot.value", "buildLeadNote", "readMapReference", "buildContactMessage", "buildWhatsAppUrl", "formatFieldValue", "Documentación disponible (declarada)", "Consultas realizadas (declaradas)", "no constituyen verificación independiente", "Ubicación o referencia", "Referencia del Mapa IA", "Partida o nomenclatura catastral", "No se realizó el cálculo", "Este resultado es matemático y orientativo"):
                     if required_logic not in module_source:
                         errors.append(f"assets/js/opportunity-tools.js: falta lógica requerida: {required_logic}")
             if 'id="contact-message-preview"' in page_source and 'id="contact-message-preview" rows="12" readonly' not in page_source:
@@ -362,6 +369,9 @@ def main() -> None:
                 errors.append(f"{relative.as_posix()}: se esperaban al menos cinco opciones de consultas realizadas")
             if "no constituyen verificación independiente" not in page_source and "no constituyen verificación independiente" not in module_source:
                 errors.append(f"{relative.as_posix()}: falta aclarar que las selecciones no son verificaciones independientes")
+            opportunity_css = ROOT / "assets/css/erica.css"
+            if not opportunity_css.is_file() or ".map-reference-context" not in opportunity_css.read_text(encoding="utf-8"):
+                errors.append("assets/css/erica.css: falta estilo del contexto comercial transferido desde el Mapa IA")
 
         for script_kind, source in parser.scripts:
             if script_kind == "json":
