@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -15,6 +15,10 @@ assert.ok(source.includes("attributionControl: { compact: false }"), "la atribuc
 assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece el enlace para reportar problemas cartográficos");
 const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
 assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye la mesa de verificación documental");
+for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-documented-count", "atlas-hypotheses-count", "atlas-total-count"]) {
+  assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
+}
+assert.ok(mapPage.includes("La forma distingue la clase"), "la leyenda explica la semántica de los símbolos sin depender del color");
 assert.ok(mapPage.includes('id="export-review"'), "el Mapa IA permite exportar la bitácora local");
 assert.ok(mapPage.includes('id="review-status"'), "el Mapa IA explica el estado y alcance del guardado local");
 assert.match(mapPage, /no se envían al servidor[\s\S]*Exportar bitácora JSON/i, "la página explica que la bitácora no se transmite y puede exportarse");
@@ -79,6 +83,10 @@ assert.ok(source.includes('element.addEventListener("click", () => {'), "selecci
 assert.ok(source.includes('card.scrollIntoView({'), "la ficha seleccionada se revela en el inventario");
 assert.ok(source.includes('matchMedia("(prefers-reduced-motion: reduce)")'), "el desplazamiento respeta la preferencia de movimiento reducido");
 assert.ok(styles.includes(".map-pin.is-selected"), "el marcador seleccionado tiene un estado visual");
+assert.ok(styles.includes(".map-pin-hypothesis.is-selected"), "el rombo conserva su forma al seleccionarse");
+assert.ok(styles.includes(".map-atlas-index"), "el índice editorial tiene una composición propia");
+assert.ok(styles.includes(".documented-dot"), "la leyenda diferencia el contexto con fuente por forma");
+assert.ok(styles.includes(".hypothesis-dot"), "la leyenda diferencia la hipótesis por forma");
 assert.ok(styles.includes(".map-item.is-active"), "la ficha seleccionada tiene un estado visual");
 assert.ok(source.includes('getElementById("export-geojson")'), "el inventario ofrece exportación GeoJSON");
 assert.ok(source.includes("function exportVisibleGeoJson()"), "la descarga GeoJSON usa las referencias visibles");
@@ -90,6 +98,17 @@ assert.equal(localities.length, 6, "se conservan las seis localidades");
 assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
 assert.equal(all.length, 11, "el inventario completo contiene once referencias");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
+assert.deepEqual(countInventory(all), { localities: 6, documented: 4, hypotheses: 1, total: 11 });
+assert.deepEqual(
+  countInventory(filterReferences(all, { evidence: "documented" })),
+  { localities: 0, documented: 4, hypotheses: 0, total: 4 },
+  "el índice refleja el filtro de contextos con fuente"
+);
+assert.deepEqual(
+  countInventory(filterReferences(all, { evidence: "hypothesis" })),
+  { localities: 0, documented: 0, hypotheses: 1, total: 1 },
+  "el índice separa las hipótesis de los contextos con fuente"
+);
 
 for (const item of all) {
   assert.ok(Number.isFinite(item.lat) && item.lat > -35 && item.lat < -34, "latitud plausible para Moreno: " + item.name);
