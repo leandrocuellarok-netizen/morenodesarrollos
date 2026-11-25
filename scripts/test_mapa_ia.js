@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport } = require(modulePath);
+const { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -174,48 +174,88 @@ assert.equal(
 );
 
 
-assert.equal(reviewTasks.length, 5, "cada tesis tiene cinco controles internos de diligencia");
+assert.equal(reviewTasks.length, 5, "cada tesis conserva cinco controles internos de diligencia");
+assert.equal(isValidReviewDate("2026-11-25"), true);
+assert.equal(isValidReviewDate("2026-02-29"), false, "se rechazan fechas inexistentes");
+assert.equal(isValidReviewDate("25/11/2026"), false, "la fecha usa el formato ISO del control date");
 assert.deepEqual(getReviewSummary({}, "rp25"), { completed: 0, total: 5, percent: 0 });
-const firstReviewState = updateReviewState({}, "rp25", "cadastral", true, opportunities);
+const firstReviewState = updateReviewState({}, "rp25", "cadastral", true, opportunities, {
+  source_document: "Ordenanza municipal 7443/25 · SIBOM",
+  consulted_at: "2026-11-25",
+  note: "La rezonificación documentada corresponde a polígonos individualizados."
+});
 assert.equal(getReviewSummary(firstReviewState, "rp25").completed, 1);
 assert.equal(getReviewSummary(firstReviewState, "rp25").percent, 20);
 assert.equal(getReviewSummary(firstReviewState, "norte").completed, 0);
+const incompleteReview = updateReviewState({}, "rp25", "planning", true, opportunities, {
+  source_document: "Certificado municipal",
+  consulted_at: "",
+  note: ""
+});
+assert.equal(getReviewSummary(incompleteReview, "rp25").completed, 0, "una marca sin fecha no cuenta como revisión documentada");
+const invalidDateReview = updateReviewState({}, "rp25", "planning", true, opportunities, {
+  source_document: "Certificado municipal",
+  consulted_at: "2026-02-29"
+});
+assert.equal(getReviewSummary(invalidDateReview, "rp25").completed, 0);
 assert.deepEqual(updateReviewState(firstReviewState, "rp25", "task-inventada", true, opportunities), firstReviewState);
 assert.deepEqual(updateReviewState(firstReviewState, "referencia-inexistente", "cadastral", true, opportunities), firstReviewState);
-assert.deepEqual(
-  normalizeReviewState({
-    rp25: { cadastral: true, planning: false, tarea_inventada: true },
-    referencia_inexistente: { cadastral: true }
-  }, opportunities),
-  { rp25: { cadastral: true, planning: false, legal: false, feasibility: false, traceability: false } }
-);
+const legacyReviewState = normalizeReviewState({
+  rp25: { cadastral: true, planning: false, tarea_inventada: true },
+  referencia_inexistente: { cadastral: true }
+}, opportunities);
+assert.deepEqual(legacyReviewState, {
+  rp25: {
+    cadastral: {
+      completed: false,
+      legacy_marked: true,
+      source_document: "",
+      consulted_at: "",
+      note: ""
+    }
+  }
+}, "las marcas antiguas se recuperan como pendientes de documentar, no como verificaciones completas");
 const restoredReviewState = readReviewState({
-  getItem: key => key === REVIEW_STORAGE_KEY ? JSON.stringify(firstReviewState) : null
+  getItem: key => key === "moreno-map-review-v2" ? JSON.stringify(firstReviewState) : null
 }, opportunities);
 assert.deepEqual(restoredReviewState, firstReviewState);
+assert.deepEqual(readReviewState({ getItem: key => key === LEGACY_REVIEW_STORAGE_KEY ? JSON.stringify({rp25:{cadastral:true}}) : null }, opportunities), legacyReviewState);
 assert.deepEqual(readReviewState({ getItem: () => "{json roto" }, opportunities), {});
 let savedReviewPayload = null;
+let removedLegacyKey = null;
 assert.equal(writeReviewState({
-  setItem: (key, value) => { savedReviewPayload = { key, value }; }
+  setItem: (key, value) => { savedReviewPayload = { key, value }; },
+  removeItem: key => { removedLegacyKey = key; }
 }, firstReviewState, opportunities), true);
-assert.equal(savedReviewPayload.key, REVIEW_STORAGE_KEY);
+assert.equal(savedReviewPayload.key, "moreno-map-review-v2");
+assert.equal(removedLegacyKey, LEGACY_REVIEW_STORAGE_KEY);
 assert.deepEqual(JSON.parse(savedReviewPayload.value), firstReviewState);
 assert.equal(writeReviewState({ setItem: () => { throw new Error("storage bloqueado"); } }, firstReviewState, opportunities), false);
 const reviewExport = buildReviewExport(firstReviewState, all, "2026-11-25T06:00:00.000Z");
-assert.equal(reviewExport.schema_version, 1);
+assert.equal(reviewExport.schema_version, 2);
 assert.equal(reviewExport.generated_at, "2026-11-25T06:00:00.000Z");
 assert.equal(reviewExport.references.length, 5, "la exportación excluye localidades y conserva las cinco tesis visibles");
 const exportedRp25 = reviewExport.references.find(reference => reference.id === "rp25");
 assert.equal(exportedRp25.completed_tasks, 1);
 assert.equal(exportedRp25.total_tasks, 5);
 assert.equal(exportedRp25.tasks.find(task => task.id === "cadastral").review_recorded, true);
+assert.equal(exportedRp25.tasks.find(task => task.id === "cadastral").source_document, "Ordenanza municipal 7443/25 · SIBOM");
+assert.equal(exportedRp25.tasks.find(task => task.id === "cadastral").consulted_at, "2026-11-25");
 assert.equal(exportedRp25.tasks.find(task => task.id === "planning").review_recorded, false);
 assert.match(reviewExport.scope, /no es una certificación/i);
 assert.ok(source.includes("localStorage"));
+assert.ok(source.includes("function isValidReviewDate(value)"));
+assert.ok(source.includes("LEGACY_REVIEW_STORAGE_KEY"));
+assert.ok(source.includes("source_document"));
+assert.ok(source.includes("consulted_at"));
 assert.ok(source.includes("function exportVisibleReview()"));
 assert.ok(source.includes('link.download = "moreno-mapa-ia-bitacora.json"'));
+assert.ok(source.includes("Para marcar una revisión como registrada, completá una fuente o documento y la fecha de consulta."));
 assert.ok(styles.includes(".map-review-panel"));
 assert.ok(styles.includes(".map-review-toolbar"));
+assert.ok(styles.includes(".map-review-fields"));
+assert.ok(styles.includes(".map-review-task"));
+assert.ok(styles.includes(".map-review-legacy"));
 
 
 console.log("OK: pruebas del motor MapLibre, datos territoriales, filtros, evidencias y exportaciones CSV/GeoJSON del Mapa IA.");
