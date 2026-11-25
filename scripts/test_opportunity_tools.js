@@ -56,7 +56,7 @@ assert.deepEqual(
 );
 assert.equal(tools.readMapReference("?map_ref=bad%2Fid"), null);
 assert.equal(tools.readMapReference("?map_ref=unknown&map_name=Zona"), null);
-assert.equal(tools.readMapReference("?map_ref=rp25"), mapReference);
+assert.deepEqual(tools.readMapReference("?map_ref=rp25"), mapReference);
 assert.deepEqual(
   tools.readMapReference("?map_ref=ecoparque"),
   { id: "ecoparque", name: "Nodo RP24/RP25 · Ecoparque Industrial" }
