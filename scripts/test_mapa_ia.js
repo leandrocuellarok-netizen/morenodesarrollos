@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl } = require(modulePath);
+const { localities, opportunities, all, filterReferences, buildCsv, buildGeoJson, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -18,6 +18,9 @@ assert.ok(source.includes("function getSharedReferenceId(search, items)"), "las 
 assert.ok(source.includes("function buildReferenceUrl(baseUrl, referenceId)"), "cada ficha puede construir una URL compartible");
 assert.ok(source.includes("updateShareUrl(item.id)"), "la selección actualiza la URL sin recargar");
 assert.ok(source.includes('shareLink.textContent = "Abrir ficha compartible ↗"'), "las fichas y ventanas emergentes ofrecen enlaces compartibles");
+assert.ok(source.includes('link.textContent = "Consultar sobre esta referencia ↗"'), "las fichas conectan con el formulario comercial");
+assert.ok(source.includes("function buildOpportunityContactUrl(baseUrl, item)"), "el enlace comercial conserva la referencia de origen");
+assert.ok(source.includes('contactLinkNode(item, "map-contact-link")'), "el CTA comercial aparece en fichas y ventanas emergentes");
 assert.ok(source.includes("if (sharedItem) focusItem(sharedItem)"), "un enlace directo centra y abre la referencia al cargar");
 assert.ok(styles.includes(".map-share-link"), "los enlaces compartibles tienen un estilo identificable");
 assert.equal(getSharedReferenceId("?ref=rp25", all), "rp25", "se reconoce una referencia válida desde la URL");
@@ -27,6 +30,13 @@ const sharedUrl = new URL(buildReferenceUrl("https://example.org/mapa-ia/?layer=
 assert.equal(sharedUrl.searchParams.get("ref"), "rp25", "la URL compartible identifica la referencia");
 assert.equal(sharedUrl.searchParams.get("layer"), "all", "la URL compartible conserva otros parámetros");
 assert.equal(sharedUrl.hash, "#inventario", "la URL compartible conserva el fragmento existente");
+const contactUrl = new URL(buildOpportunityContactUrl("https://example.org/proyecto/mapa-ia/", {
+  id: "rp25",
+  name: "RP25 · Darwin Passaponti"
+}));
+assert.equal(contactUrl.pathname, "/proyecto/oportunidades/", "el CTA lleva al formulario de oportunidades");
+assert.equal(contactUrl.searchParams.get("map_ref"), "rp25", "el contacto conserva el identificador de la referencia");
+assert.equal(contactUrl.searchParams.get("map_name"), "RP25 · Darwin Passaponti", "el contacto conserva el nombre de la referencia");
 
 assert.ok(source.includes("card.dataset.mapItem = item.id"), "cada ficha tiene una identidad enlazable");
 assert.ok(source.includes('element.addEventListener("click", () => {'), "seleccionar un marcador abre su ficha asociada");
