@@ -247,3 +247,18 @@ La página pública de Oportunidades ofrece una [plantilla CSV vacía](docs/plan
 - Las fechas usan formato ISO `AAAA-MM-DD`; los importes se registran como números y la moneda se indica en su propia columna. No mezclar monedas en una misma fila.
 - La plantilla omite nombres, teléfonos y correos. No incluir datos personales, bancarios, dominiales sensibles ni direcciones confidenciales en las observaciones. Usar un sistema con acceso controlado para los datos de contacto.
 - Las celdas vacías significan que no hay dato registrado; no deben interpretarse como cero. No hay fórmulas ni valuaciones precargadas.
+
+
+### Tablero local de seguimiento comercial
+
+La sección desplegable de /oportunidades/ permite importar la plantilla CSV completada y revisar el estado de la cartera en el navegador.
+
+- Solo admite los 20 encabezados de docs/plantilla-seguimiento-comercial.csv; rechaza columnas faltantes, duplicadas o adicionales. Así evita importar accidentalmente campos de contacto u otras columnas no previstas.
+- El archivo está limitado a 2 MB y 10.000 oportunidades. Cada registro requiere un ID interno único; las fechas deben ser fechas reales AAAA-MM-DD, y los honorarios deben ser números sin separador de miles, con hasta dos decimales.
+- Los importes requieren una moneda de tres letras. Los totales se agrupan por moneda y nunca se convierten entre ARS, USD u otras divisas.
+- Las celdas monetarias vacías no se consideran cero: el tablero muestra “Sin dato” cuando no hay importes registrados para una columna.
+- El resumen distingue oportunidades activas, seguimientos vencidos, fechas próximas y registros sin próxima acción. Las etapas ganada, no concretada y pausada no se cuentan como activas.
+- El detalle permite filtrar por etapa y buscar por ID, localidad, tipo de activo, estado documental o próxima acción. No muestra ni necesita datos de contacto.
+- La lectura y los cálculos se ejecutan en memoria en la pestaña actual. No hay almacenamiento local, sincronización, solicitudes de red ni almacenamiento en el servidor; al recargar se debe importar otra vez el CSV.
+- No ingresar nombres, teléfonos, correos, datos bancarios, direcciones confidenciales ni documentación dominial sensible en la plantilla. Para datos de contacto, utilizar un sistema con acceso controlado.
+- scripts/test_pipeline_dashboard.js cubre delimitadores y comillas, fechas, importes, duplicados, columnas no admitidas, límites y sumas separadas por moneda.

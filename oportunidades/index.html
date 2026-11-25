@@ -56,6 +56,63 @@
     </div>
   </details>
 </section>
+<section class="wrap pipeline-workbench-shell" aria-label="Tablero local de seguimiento comercial">
+  <details class="pipeline-workbench">
+    <summary><span>Herramienta local · sin sincronización</span><strong>Revisar el pipeline desde un CSV ↗</strong></summary>
+    <div class="pipeline-workbench-body">
+      <div class="pipeline-workbench-intro">
+        <div class="eyebrow">Control de gestión · Solo en este navegador</div>
+        <h2>Qué está activo, qué requiere seguimiento y qué honorarios ingresaron.</h2>
+        <p>Importá la planilla que completaste. El tablero valida sus 20 columnas, detecta fechas e importes inconsistentes y resume la actividad. No convierte monedas ni interpreta campos vacíos como cero.</p>
+      </div>
+      <div class="pipeline-workbench-import">
+        <div class="pipeline-workbench-file">
+          <label for="pipeline-csv-file">Seleccionar planilla CSV</label>
+          <input id="pipeline-csv-file" type="file" accept=".csv,text/csv" aria-describedby="pipeline-file-help">
+          <small id="pipeline-file-help">Hasta 2 MB y 10.000 oportunidades. Solo se admite el esquema MORENO; se rechazan columnas adicionales para evitar importar datos personales por error.</small>
+        </div>
+        <button class="button" id="pipeline-reset" type="button" disabled>Limpiar sesión local</button>
+      </div>
+      <p class="pipeline-status" id="pipeline-status" role="status" aria-live="polite">Seleccioná un CSV generado a partir de la plantilla MORENO. La planilla no se transmite ni se guarda en el sitio.</p>
+      <div class="pipeline-warnings" id="pipeline-warnings" hidden></div>
+      <div class="pipeline-dashboard-output" id="pipeline-dashboard-output" hidden>
+        <div class="pipeline-kpi-grid" id="pipeline-metrics" aria-label="Indicadores de seguimiento"></div>
+        <div class="pipeline-report-grid">
+          <section class="pipeline-report-panel" aria-labelledby="pipeline-finance-title">
+            <div class="eyebrow">Honorarios · Sin conversión de moneda</div>
+            <h3 id="pipeline-finance-title">Importes registrados por moneda</h3>
+            <p class="pipeline-report-note">Cada columna suma solo las celdas con importes cargados. “Sin dato” no equivale a cero.</p>
+            <div class="pipeline-table-wrap" id="pipeline-finance-summary"></div>
+          </section>
+          <section class="pipeline-report-panel" aria-labelledby="pipeline-stage-title">
+            <div class="eyebrow">Cartera comercial</div>
+            <h3 id="pipeline-stage-title">Oportunidades por etapa</h3>
+            <div class="pipeline-table-wrap" id="pipeline-stage-summary"></div>
+          </section>
+        </div>
+        <section class="pipeline-report-panel pipeline-next-panel" aria-labelledby="pipeline-next-title">
+          <div class="eyebrow">Agenda de seguimiento</div>
+          <h3 id="pipeline-next-title">Vencidas y próximas acciones</h3>
+          <ol class="pipeline-upcoming-list" id="pipeline-next-actions"></ol>
+        </section>
+        <section class="pipeline-report-panel pipeline-records-panel" aria-labelledby="pipeline-records-title">
+          <div class="pipeline-records-heading"><div><div class="eyebrow">Detalle de la planilla</div><h3 id="pipeline-records-title">Oportunidades importadas</h3></div><p id="pipeline-records-count" aria-live="polite"></p></div>
+          <div class="pipeline-filter-row">
+            <div><label for="pipeline-filter-stage">Filtrar por etapa</label><select id="pipeline-filter-stage"><option value="">Todas las etapas</option></select></div>
+            <div><label for="pipeline-filter-text">Buscar por ID, localidad o acción</label><input id="pipeline-filter-text" type="search" autocomplete="off" placeholder="Escribí para filtrar"></div>
+          </div>
+          <div class="pipeline-table-wrap pipeline-records-table-wrap">
+            <table class="pipeline-table pipeline-records-table">
+              <thead><tr><th scope="col">ID</th><th scope="col">Localidad</th><th scope="col">Activo</th><th scope="col">Etapa</th><th scope="col">Estado documental</th><th scope="col">Próxima acción</th><th scope="col">Fecha</th><th scope="col">Cobrados</th></tr></thead>
+              <tbody id="pipeline-records-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+      <p class="pipeline-local-disclaimer">Privacidad: la lectura y los cálculos se realizan en memoria en esta pestaña. No se usa almacenamiento local, no hay sincronización y al recargar la página deberás importar nuevamente el CSV. No agregues nombres, teléfonos, correos, datos bancarios ni documentación dominial sensible a la plantilla.</p>
+    </div>
+  </details>
+</section>
 <section class="wrap feasibility-tool" aria-labelledby="feasibility-title">
   <div class="feasibility-intro">
     <div class="eyebrow">Una primera lectura técnica</div>
@@ -221,6 +278,8 @@
 <footer class="site-footer"><span>© Erica M. Acosta · Moreno, Buenos Aires</span><span>Desarrollos inmobiliarios · IA aplicada · Alianzas</span><a href="../">Volver al inicio ↗</a></footer>
 <section class="opportunity-dossier-print" id="opportunity-dossier-print" hidden aria-label="Ficha preliminar de oportunidad para impresión"></section>
 <script src="../assets/js/opportunity-tools.js"></script>
+<script src="../assets/js/pipeline-dashboard.js"></script>
+<script src="../assets/js/pipeline-dashboard-ui.js"></script>
 <script>
 "use strict";
 const feasibilityResults=document.getElementById("feasibility-results");

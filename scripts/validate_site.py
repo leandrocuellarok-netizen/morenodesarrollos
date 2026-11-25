@@ -522,7 +522,7 @@ def main() -> None:
 
     node = shutil.which("node")
     if node:
-        for test_name in ("test_opportunity_tools.js", "test_site_navigation.js", "test_mapa_ia.js"):
+        for test_name in ("test_opportunity_tools.js", "test_site_navigation.js", "test_mapa_ia.js", "test_pipeline_dashboard.js"):
             test_script = ROOT / "scripts" / test_name
             if not test_script.is_file():
                 errors.append(f"Falta scripts/{test_name}")
@@ -534,7 +534,7 @@ def main() -> None:
             elif unit_test.stdout.strip():
                 print(unit_test.stdout.strip())
 
-        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js", ROOT / "assets/js/mapa-ia.js"):
+        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js", ROOT / "assets/js/mapa-ia.js", ROOT / "assets/js/pipeline-dashboard.js", ROOT / "assets/js/pipeline-dashboard-ui.js"):
             if script_path.is_file():
                 syntax_check = subprocess.run([node, "--check", str(script_path)], capture_output=True, text=True, check=False)
                 if syntax_check.returncode:
@@ -567,6 +567,12 @@ def main() -> None:
         for required_control in ("dossier-import-file", "validate-dossier-import", "apply-dossier-merge", "apply-dossier-replace"):
             if f'id="{required_control}"' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta control de importación: {required_control}")
+        for required_control in ("pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset", "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions", "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-text"):
+            if f'id="{required_control}"' not in opportunity_html:
+                errors.append(f"oportunidades/index.html: falta control del tablero comercial: {required_control}")
+        for script_src in ("../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-dashboard-ui.js"):
+            if f'<script src="{script_src}"></script>' not in opportunity_html:
+                errors.append(f"oportunidades/index.html: falta cargar {script_src}")
 
     opportunity_module = ROOT / "assets/js/opportunity-tools.js"
     if not opportunity_module.is_file():
@@ -576,6 +582,23 @@ def main() -> None:
         for required_logic in ("parseOpportunityDossierImport", "mergeImportedOpportunityData", "schemaVersion: 2"):
             if required_logic not in opportunity_source:
                 errors.append(f"assets/js/opportunity-tools.js: falta lógica de expediente: {required_logic}")
+
+    pipeline_module = ROOT / "assets/js/pipeline-dashboard.js"
+    pipeline_ui_module = ROOT / "assets/js/pipeline-dashboard-ui.js"
+    if not pipeline_module.is_file() or not pipeline_ui_module.is_file():
+        errors.append("Faltan los módulos del tablero comercial local")
+    else:
+        pipeline_source = pipeline_module.read_text(encoding="utf-8")
+        pipeline_ui_source = pipeline_ui_module.read_text(encoding="utf-8")
+        for required_logic in ("parsePipelineCsv", "summarizePipeline", "MAX_ROWS", "MAX_FILE_CHARS"):
+            if required_logic not in pipeline_source:
+                errors.append(f"assets/js/pipeline-dashboard.js: falta lógica requerida: {required_logic}")
+        for required_logic in ("MorenoPipelineDashboard", "file.text()", "textContent", "pipeline-csv-file"):
+            if required_logic not in pipeline_ui_source:
+                errors.append(f"assets/js/pipeline-dashboard-ui.js: falta lógica requerida: {required_logic}")
+        for forbidden_logic in ("localStorage", "sessionStorage", "fetch(", "XMLHttpRequest", "innerHTML"):
+            if forbidden_logic in pipeline_ui_source:
+                errors.append(f"assets/js/pipeline-dashboard-ui.js: no debe usar {forbidden_logic} para procesar datos locales")
 
     navigation_module = ROOT / "assets/js/site-navigation.js"
     if not navigation_module.is_file():
@@ -610,7 +633,7 @@ def main() -> None:
         "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, navegación móvil, MapLibre/OpenStreetMap, referencias DOM y módulos JavaScript correctos."
     )
     if node:
-        print("OK: sintaxis JavaScript y pruebas unitarias de oportunidades y navegación móvil validadas con Node.js.")
+        print("OK: sintaxis JavaScript y pruebas unitarias de oportunidades, navegación móvil y tablero comercial local validadas con Node.js.")
 
 
 if __name__ == "__main__":
