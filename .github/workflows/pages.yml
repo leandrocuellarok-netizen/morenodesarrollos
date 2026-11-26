@@ -26,6 +26,20 @@ jobs:
           node-version: "22"
       - name: Validate site before publishing
         run: python scripts/validate_site.py
+      - name: Install Playwright
+        run: npm install --no-save --package-lock=false playwright@1.56.1
+      - name: Install Chromium for responsive checks
+        run: npx playwright install --with-deps chromium
+      - name: Run desktop and mobile browser audit
+        run: node scripts/test_visual_audit.cjs
+      - name: Upload responsive screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: moreno-responsive-audit-${{ github.run_number }}
+          path: test-results/visual/
+          if-no-files-found: ignore
+          retention-days: 7
 
   deploy:
     if: github.event_name != 'pull_request'
