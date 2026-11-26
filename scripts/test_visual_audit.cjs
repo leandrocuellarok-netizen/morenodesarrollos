@@ -360,6 +360,7 @@ async function auditOpportunityFlow(browser) {
     check(await page.locator("#copy-contact-message").isEnabled(), "oportunidades: copiar vuelve a habilitarse tras regenerar el borrador");
     check(await page.locator("#contact-message-preview").isEnabled(), "oportunidades: el texto vuelve a estar disponible para revisar al regenerar");
 
+    await page.locator("#feasibility-disclosure > summary").click();
     await page.locator("#parcel-area").fill("1200");
     check(await page.locator("#contact-preview-stale").isVisible(), "oportunidades: modificar los indicadores también invalida el borrador");
     check(await page.locator("#open-whatsapp").getAttribute("href") === null, "oportunidades: no se puede abrir WhatsApp con indicadores modificados y borrador antiguo");
