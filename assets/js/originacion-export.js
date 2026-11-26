@@ -227,7 +227,17 @@
         if (typeof root.confirm === "function" && !root.confirm("¿Vaciar todos los campos de este borrador local?")) return;
         importSequence += 1;
         workbench.clear();
-        if (importFile) {
+        if (importFile) importFile.value = "";
+        if (importButton) importButton.disabled = false;
+        if (importStatus) {
+          importStatus.removeAttribute("aria-busy");
+          importStatus.textContent = "Importación cancelada. Seleccioná un expediente guardado.";
+        }
+        setStatus("Borrador local vaciado. No se modificaron archivos descargados.", false);
+      });
+    }
+
+    if (importFile) {
       importFile.addEventListener("change", () => {
         importSequence += 1;
         if (importButton) importButton.disabled = false;
