@@ -700,11 +700,11 @@ def main() -> None:
         errors.append("Falta la ruta histórica web/mapa-moreno/index.html")
     else:
         legacy_map_html = legacy_map_path.read_text(encoding="utf-8")
-        if not re.search(r'<meta\\s+name="robots"\\s+content="noindex,follow"', legacy_map_html, re.IGNORECASE):
+        if '<meta name="robots" content="noindex,follow">' not in legacy_map_html:
             errors.append("La ruta histórica del mapa debe declarar noindex,follow")
         if 'rel="canonical" href="' + PAGE_URLS[Path("mapa-ia/index.html")] + '"' not in legacy_map_html:
             errors.append("La ruta histórica del mapa debe canonicalizar hacia /mapa-ia/")
-        if not re.search(r'<meta\\s+http-equiv="refresh"\\s+content="0;\\s*url=../../mapa-ia/"', legacy_map_html, re.IGNORECASE):
+        if '<meta http-equiv="refresh" content="0;url=../../mapa-ia/">' not in legacy_map_html:
             errors.append("La ruta histórica del mapa debe redirigir inmediatamente a /mapa-ia/")
         if 'href="../../mapa-ia/"' not in legacy_map_html or "Ir al Mapa IA actualizado" not in legacy_map_html:
             errors.append("La ruta histórica del mapa debe conservar un enlace de acceso alternativo")
