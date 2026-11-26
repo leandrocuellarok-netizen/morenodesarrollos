@@ -824,13 +824,13 @@ function initResponsiveDisclosures(doc) {
   const media = view.matchMedia("(max-width: 760px)");
   const disclosures = Array.from(doc.querySelectorAll("details[data-mobile-collapsible]"));
   if (!disclosures.length) return;
-  const mobileChoices = new WeakSet();
+  const mobileStates = new WeakMap();
 
   disclosures.forEach(disclosure => {
     const summary = disclosure.querySelector("summary");
     if (summary) {
       summary.addEventListener("click", () => {
-        if (media.matches) mobileChoices.add(disclosure);
+        if (media.matches) mobileStates.set(disclosure, !disclosure.open);
       });
     }
   });
@@ -838,7 +838,7 @@ function initResponsiveDisclosures(doc) {
   const applyViewportDefault = isMobile => {
     disclosures.forEach(disclosure => {
       if (!isMobile) disclosure.open = true;
-      else if (!mobileChoices.has(disclosure)) disclosure.open = false;
+      else disclosure.open = mobileStates.has(disclosure) ? mobileStates.get(disclosure) : false;
     });
   };
 

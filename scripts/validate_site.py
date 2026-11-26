@@ -332,6 +332,8 @@ def main() -> None:
                 map_js = map_js_path.read_text(encoding="utf-8")
                 for required_logic in (
                     "function initResponsiveDisclosures(doc)",
+                    "const mobileStates = new WeakMap()",
+                    "mobileStates.get(disclosure)",
                     'matchMedia("(max-width: 760px)")',
                     'doc.querySelectorAll("details[data-mobile-collapsible]")',
                     'summary: doc.getElementById("atlas-index-summary")',
