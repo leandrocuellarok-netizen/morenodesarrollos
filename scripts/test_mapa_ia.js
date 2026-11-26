@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson, buildTerritorialBrief, buildTerritorialBriefHtml, getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson, buildTerritorialBrief, buildTerritorialBriefHtml, getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -80,10 +80,64 @@ assert.ok(styles.includes(".map-toolbar-actions"), "las acciones del mapa se agr
 assert.equal(getSharedReferenceId("?ref=rp25", all), "rp25", "se reconoce una referencia válida desde la URL");
 assert.equal(getSharedReferenceId("?ref=no-existe", all), null, "se descarta una referencia desconocida");
 assert.equal(getSharedReferenceId("", all), null, "sin parámetro no se fuerza una selección");
-const sharedUrl = new URL(buildReferenceUrl("https://example.org/mapa-ia/?layer=all#inventario", "rp25"));
+const parsedMapView = parseMapViewState(
+  "?q=log%C3%ADstica&tipo=opportunity&sector=industrial&evidencia=documented&ref=rp25",
+  all
+);
+assert.deepEqual(parsedMapView, {
+  query: "logística",
+  category: "opportunity",
+  kind: "industrial",
+  evidence: "documented",
+  ref: "rp25"
+}, "la URL restaura búsqueda, tipo, sector, evidencia y referencia");
+assert.deepEqual(parseMapViewState("?tipo=desconocido&sector=ilegal&evidencia=pendiente&ref=falso", all), {
+  query: "", category: "all", kind: "all", evidence: "all", ref: null
+}, "los parámetros no permitidos vuelven a valores seguros");
+assert.equal(parseMapViewState("?q=" + "x".repeat(140), all).query.length, 100, "la búsqueda compartida se limita a cien caracteres");
+const normalizedMapView = normalizeMapViewState({
+  query: "  suelo  ",
+  category: "opportunity",
+  kind: "land",
+  evidence: "hypothesis",
+  ref: "cuartel"
+}, all);
+assert.equal(normalizedMapView.query, "suelo");
+const mapViewUrl = new URL(buildMapViewUrl(
+  "https://example.org/mapa-ia/?utm_source=mail&q=viejo&sector=tourism#inventario",
+  parsedMapView,
+  all
+));
+assert.equal(mapViewUrl.searchParams.get("utm_source"), "mail", "se conservan parámetros ajenos al mapa");
+assert.equal(mapViewUrl.searchParams.get("q"), "logística");
+assert.equal(mapViewUrl.searchParams.get("tipo"), "opportunity");
+assert.equal(mapViewUrl.searchParams.get("sector"), "industrial");
+assert.equal(mapViewUrl.searchParams.get("evidencia"), "documented");
+assert.equal(mapViewUrl.searchParams.get("ref"), "rp25");
+assert.equal(mapViewUrl.hash, "#inventario", "la URL compartida conserva el fragmento");
+const defaultMapViewUrl = new URL(buildMapViewUrl(
+  "https://example.org/mapa-ia/?q=viejo&tipo=locality&sector=land&evidencia=hypothesis&ref=rp25",
+  {},
+  all
+));
+assert.equal(["q", "tipo", "sector", "evidencia", "ref"].some(key => defaultMapViewUrl.searchParams.has(key)), false, "restablecer elimina todos los parámetros del mapa");
+const sharedUrl = new URL(buildReferenceUrl("https://example.org/mapa-ia/?layer=all&sector=industrial&q=dep%C3%B3sitos#inventario", "rp25"));
 assert.equal(sharedUrl.searchParams.get("ref"), "rp25", "la URL compartible identifica la referencia");
 assert.equal(sharedUrl.searchParams.get("layer"), "all", "la URL compartible conserva otros parámetros");
+assert.equal(sharedUrl.searchParams.get("sector"), "industrial", "la ficha compartible conserva los filtros activos");
+assert.equal(sharedUrl.searchParams.get("q"), "depósitos", "la ficha compartible conserva la búsqueda activa");
 assert.equal(sharedUrl.hash, "#inventario", "la URL compartible conserva el fragmento existente");
+assert.ok(mapPage.includes('id="share-map-view"'), "el atlas ofrece una acción para compartir la vista filtrada");
+assert.ok(mapPage.includes('id="map-share-status"'), "la acción anuncia el resultado de compartir");
+assert.ok(mapPage.includes('id="map-share-url"'), "existe una alternativa manual si el portapapeles no está disponible");
+assert.ok(mapPage.includes("no comparte la bitácora local"), "el enlace compartible excluye la bitácora privada del navegador");
+assert.ok(source.includes("function parseMapViewState(search, items)"), "la URL se puede restaurar al abrir el enlace");
+assert.ok(source.includes("function buildMapViewUrl(baseUrl, state, items)"), "la vista completa se serializa en una URL");
+assert.ok(source.includes("function shareCurrentView()"), "la interfaz ofrece compartir o copiar la vista");
+assert.ok(source.includes('shareViewButton.addEventListener("click", shareCurrentView)'), "el botón está conectado a la acción de compartir");
+assert.ok(source.includes("navigator.clipboard"), "se usa el portapapeles con alternativa manual");
+assert.ok(styles.includes(".map-share-status"), "el estado de compartir tiene presentación accesible");
+assert.ok(styles.includes(".map-share-fallback"), "la alternativa manual tiene estilos propios");
 const contactUrl = new URL(buildOpportunityContactUrl("https://example.org/proyecto/mapa-ia/", {
   id: "rp25",
   name: "RP25 · Darwin Passaponti"
