@@ -588,6 +588,236 @@ function buildTerritorialBriefHtml(brief) {
     "</main></body></html>";
 }
 
+
+
+function buildTerritorialDossier(items, filters, generatedAt) {
+  const known = new Map(all.map(item => [item.id, item]));
+  const seen = new Set();
+  const selected = (Array.isArray(items) ? items : []).map(entry => {
+    const id = entry && typeof entry.id === "string" ? entry.id : "";
+    if (!id || seen.has(id) || !known.has(id)) return null;
+    seen.add(id);
+    return known.get(id);
+  }).filter(Boolean);
+  if (!selected.length) return null;
+
+  const state = normalizeMapViewState(filters, all);
+  const categoryLabels = { all: "Todas las capas", locality: "Localidades", opportunity: "Tesis de oportunidad" };
+  const evidenceLabels = { all: "Todos los niveles", documented: "Contextos con fuente pública", hypothesis: "Hipótesis de prospección" };
+  const filterLabels = [];
+  if (state.query) filterLabels.push("Búsqueda: " + state.query);
+  if (state.category !== "all") filterLabels.push("Tipo: " + categoryLabels[state.category]);
+  if (state.kind !== "all") filterLabels.push("Sector: " + (kindLabel[state.kind] || state.kind));
+  if (state.evidence !== "all") filterLabels.push("Evidencia: " + evidenceLabels[state.evidence]);
+  if (state.ref) {
+    const selectedReference = selected.find(item => item.id === state.ref);
+    if (selectedReference) filterLabels.push("Referencia destacada: " + selectedReference.name);
+  }
+  if (!filterLabels.length) filterLabels.push("Inventario completo · sin filtros adicionales");
+
+  const references = selected.map((item, index) => {
+    const isLocality = item.type === "locality";
+    const latitude = Number(item.lat);
+    const longitude = Number(item.lng);
+    return {
+      index: index + 1,
+      id: item.id,
+      name: item.name,
+      type: item.type,
+      classification: isLocality
+        ? { value: "locality", label: "Localidad · referencia territorial" }
+        : {
+            value: item.stage,
+            label: item.stage === "hypothesis" ? "Hipótesis de prospección" : "Contexto con fuente pública"
+          },
+      category: isLocality ? "Localidad" : (kindLabel[item.kind] || "Tesis territorial"),
+      coordinates: {
+        latitude: Number.isFinite(latitude) ? latitude : null,
+        longitude: Number.isFinite(longitude) ? longitude : null,
+        scope: isLocality
+          ? "Centro aproximado de localidad; no identifica una parcela."
+          : "Centro aproximado de corredor o área; no identifica una parcela."
+      },
+      lineToInvestigate: isLocality ? String(item.info || "") : String(item.business || ""),
+      evidence: isLocality
+        ? "Referencia geográfica de localidad; no es una evaluación parcelaria."
+        : String(item.evidence || ""),
+      verificationStatus: isLocality
+        ? "No identifica un inmueble ni acredita titularidad o disponibilidad."
+        : String(item.status || ""),
+      nextStep: isLocality
+        ? "Definir un área concreta y reunir información catastral, urbanística y de servicios."
+        : String(item.next || ""),
+      sourceUrl: safeTerritorialSource(item.source)
+    };
+  });
+
+  const counts = countInventory(selected);
+  const timestamp = typeof generatedAt === "string" && Number.isFinite(Date.parse(generatedAt))
+    ? new Date(generatedAt).toISOString()
+    : new Date().toISOString();
+  const title = state.kind !== "all"
+    ? "Dossier sectorial · " + (kindLabel[state.kind] || state.kind)
+    : (state.category !== "all" || state.evidence !== "all" || state.query
+      ? "Dossier de selección territorial"
+      : "Dossier territorial · Moreno");
+
+  return {
+    schema: "moreno.territorial-dossier",
+    schemaVersion: 1,
+    generatedAt: timestamp,
+    title,
+    filters: state,
+    filterLabels,
+    counts,
+    references,
+    disclaimers: [
+      "Este dossier organiza referencias territoriales visibles en el Mapa IA; no identifica ni ofrece inmuebles.",
+      "Las coordenadas son aproximadas y no representan parcelas, límites administrativos ni geometrías catastrales.",
+      "Una fuente pública o una publicación de un operador no equivale a verificación independiente, vigencia normativa ni disponibilidad.",
+      "No constituye tasación, oferta, estudio de factibilidad, certificación urbanística ni recomendación de inversión.",
+      "La bitácora local de diligencia, los datos del navegador y los expedientes internos no se incorporan al documento."
+    ]
+  };
+}
+
+function buildTerritorialDossierDiagram(references) {
+  const points = (Array.isArray(references) ? references : []).filter(reference =>
+    reference && reference.coordinates &&
+    Number.isFinite(reference.coordinates.latitude) &&
+    Number.isFinite(reference.coordinates.longitude)
+  );
+  if (!points.length) return '<p class="muted">No hay coordenadas de referencia disponibles para esta selección.</p>';
+  const longitudes = points.map(point => point.coordinates.longitude);
+  const latitudes = points.map(point => point.coordinates.latitude);
+  const minLng = Math.min.apply(null, longitudes);
+  const maxLng = Math.max.apply(null, longitudes);
+  const minLat = Math.min.apply(null, latitudes);
+  const maxLat = Math.max.apply(null, latitudes);
+  const lngRange = Math.max(maxLng - minLng, 0.0001);
+  const latRange = Math.max(maxLat - minLat, 0.0001);
+  const marks = points.map(reference => {
+    const x = 74 + ((reference.coordinates.longitude - minLng) / lngRange) * 852;
+    const y = 54 + ((maxLat - reference.coordinates.latitude) / latRange) * 252;
+    const cx = Math.round(x);
+    const cy = Math.round(y);
+    const number = String(reference.index).padStart(2, "0");
+    let shape = "";
+    if (reference.type === "locality") {
+      shape = '<circle cx="' + cx + '" cy="' + cy + '" r="12" class="schematic-locality"/>';
+    } else if (reference.classification.value === "hypothesis") {
+      shape = '<path d="M ' + cx + " " + (cy - 14) + " L " + (cx + 14) + " " + cy + " L " + cx + " " + (cy + 14) + " L " + (cx - 14) + " " + cy + ' Z" class="schematic-hypothesis"/>';
+    } else {
+      shape = '<rect x="' + (cx - 11) + '" y="' + (cy - 11) + '" width="22" height="22" class="schematic-documented"/>';
+    }
+    return '<g><title>' + escapeTerritorialHtml(number + " · " + reference.name) + '</title>' +
+      shape + '<text x="' + cx + '" y="' + (cy + 4) + '" class="schematic-number">' + number + '</text></g>';
+  }).join("");
+  return '<svg class="dossier-schematic" viewBox="0 0 1000 360" role="img" aria-labelledby="dossier-map-title dossier-map-desc" xmlns="http://www.w3.org/2000/svg">' +
+    '<title id="dossier-map-title">Distribución relativa de referencias seleccionadas</title>' +
+    '<desc id="dossier-map-desc">Esquema construido con las coordenadas aproximadas de las fichas. No es cartografía oficial, no tiene escala y no representa parcelas ni límites municipales.</desc>' +
+    '<rect x="1" y="1" width="998" height="358" class="schematic-frame"/>' +
+    '<g class="schematic-grid"><path d="M250 1V359M500 1V359M750 1V359M1 90H999M1 180H999M1 270H999"/></g>' +
+    '<text x="24" y="28" class="schematic-direction">NORTE ↑</text><text x="976" y="338" text-anchor="end" class="schematic-direction">ESTE →</text>' +
+    marks +
+    '</svg>';
+}
+
+function buildTerritorialDossierHtml(dossier) {
+  if (!dossier || dossier.schema !== "moreno.territorial-dossier" ||
+      dossier.schemaVersion !== 1 || !Array.isArray(dossier.references) ||
+      !dossier.references.length || dossier.references.length > 100) return "";
+  const dateLabel = escapeTerritorialHtml(String(dossier.generatedAt || "").slice(0, 10));
+  const title = escapeTerritorialHtml(dossier.title || "Dossier territorial · Moreno");
+  const counts = dossier.counts || {};
+  const filterMarkup = (Array.isArray(dossier.filterLabels) ? dossier.filterLabels : [])
+    .map(label => '<li>' + escapeTerritorialHtml(label) + '</li>').join("");
+  const indexMarkup = dossier.references.map(reference =>
+    '<li><span>' + String(Number(reference.index) || 0).padStart(2, "0") + '</span><strong>' +
+    escapeTerritorialHtml(reference.name) + '</strong><small>' +
+    escapeTerritorialHtml(reference.classification && reference.classification.label || "Referencia territorial") +
+    '</small></li>'
+  ).join("");
+  const referenceMarkup = dossier.references.map(reference => {
+    const coordinates = reference.coordinates || {};
+    const coordinateText = Number.isFinite(coordinates.latitude) && Number.isFinite(coordinates.longitude)
+      ? coordinates.latitude.toFixed(5) + ", " + coordinates.longitude.toFixed(5)
+      : "No informadas";
+    const source = safeTerritorialSource(reference.sourceUrl);
+    const sourceMarkup = source
+      ? '<a href="' + escapeTerritorialHtml(source) + '" target="_blank" rel="noopener noreferrer">Consultar fuente original ↗</a>'
+      : '<span class="muted">No hay una fuente enlazada para esta referencia.</span>';
+    return '<article class="reference-card">' +
+      '<header><span class="reference-number">' + String(Number(reference.index) || 0).padStart(2, "0") + '</span><div>' +
+      '<p class="eyebrow">' + escapeTerritorialHtml(reference.classification && reference.classification.label || "Referencia territorial") +
+      ' · ' + escapeTerritorialHtml(reference.category || "") + '</p><h2>' +
+      escapeTerritorialHtml(reference.name) + '</h2></div></header>' +
+      '<div class="reference-grid">' +
+      '<section><h3>Línea a investigar</h3><p>' + escapeTerritorialHtml(reference.lineToInvestigate) + '</p></section>' +
+      '<section><h3>Evidencia registrada</h3><p>' + escapeTerritorialHtml(reference.evidence) + '</p></section>' +
+      '<section><h3>Estado de verificación</h3><p>' + escapeTerritorialHtml(reference.verificationStatus) + '</p></section>' +
+      '<section><h3>Próximo paso</h3><p>' + escapeTerritorialHtml(reference.nextStep) + '</p></section>' +
+      '<section><h3>Coordenada orientativa</h3><p class="coordinate">' + escapeTerritorialHtml(coordinateText) + '</p><p class="muted">' +
+      escapeTerritorialHtml(coordinates.scope || "Referencia aproximada; no parcelaria.") + '</p></section>' +
+      '<section><h3>Fuente de origen</h3><p class="source-link">' + sourceMarkup + '</p><p class="muted">Revisar el documento original, su alcance y su vigencia antes de utilizarlo en una evaluación.</p></section>' +
+      '</div></article>';
+  }).join("");
+  const disclaimerMarkup = (Array.isArray(dossier.disclaimers) ? dossier.disclaimers : [])
+    .map(note => '<li>' + escapeTerritorialHtml(note) + '</li>').join("");
+  const diagram = buildTerritorialDossierDiagram(dossier.references);
+  const total = Number(counts.total) || dossier.references.length;
+  return '<!doctype html><html lang="es-AR"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<meta name="robots" content="noindex,nofollow,noarchive">' +
+    '<title>' + title + '</title><style>' +
+    '@page{size:A4;margin:14mm}' +
+    ':root{color-scheme:light;--ink:#292e2a;--muted:#696b63;--line:#c9c5b9;--paper:#fbfaf6;--rust:#8b5b43}' +
+    '*{box-sizing:border-box}body{margin:0;padding:24px;background:#e9e6dd;color:var(--ink);font:11px/1.65 Arial,sans-serif}' +
+    '.sheet{max-width:210mm;margin:0 auto 22px;padding:15mm;background:var(--paper);box-shadow:0 8px 30px #20282018}' +
+    '.cover{min-height:265mm;display:flex;flex-direction:column;justify-content:space-between;break-after:page}' +
+    '.topline{display:flex;justify-content:space-between;gap:18px;padding-bottom:12px;border-bottom:2px solid var(--ink);font-size:8px;letter-spacing:.16em;text-transform:uppercase}' +
+    '.eyebrow{margin:0;color:var(--rust);font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}' +
+    'h1{max-width:700px;margin:24px 0 12px;font:400 43px/1.02 Georgia,serif;letter-spacing:-.04em}' +
+    '.cover-copy{max-width:560px;color:var(--muted);font:17px/1.5 Georgia,serif}' +
+    '.cover-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}' +
+    '.cover-stat{padding:14px 10px 14px 0;border-right:1px solid var(--line)}.cover-stat:last-child{border:0}' +
+    '.cover-stat strong{display:block;font:400 29px/1 Georgia,serif}.cover-stat span{display:block;margin-top:7px;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.1em}' +
+    '.filter-list{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0;padding:0;list-style:none}.filter-list li{padding:5px 8px;border:1px solid var(--line);font-size:8px}' +
+    '.map-page{break-after:page}.section-title{margin:0 0 10px;font:400 25px/1.1 Georgia,serif}' +
+    '.schematic-frame{fill:#f4f1e8;stroke:#bdb9ad;stroke-width:1}.schematic-grid{fill:none;stroke:#d5d1c6;stroke-width:1}' +
+    '.dossier-schematic{display:block;width:100%;height:auto;margin:18px 0 10px}.schematic-locality,.schematic-documented,.schematic-hypothesis{fill:#f7f5ed;stroke:#343a33;stroke-width:2}' +
+    '.schematic-hypothesis{stroke-dasharray:3 2}.schematic-number{fill:#343a33;text-anchor:middle;font:700 8px Arial,sans-serif}.schematic-direction{fill:#6c6d64;font:700 9px Arial,sans-serif;letter-spacing:1px}' +
+    '.diagram-legend{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0 16px;color:var(--muted);font-size:9px}.legend-mark{display:inline-block;width:9px;height:9px;margin-right:5px;border:1.5px solid var(--ink);vertical-align:middle}.legend-circle{border-radius:50%}.legend-diamond{transform:rotate(45deg);border-style:dashed}' +
+    '.index-list{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;margin:12px 0;padding:0;list-style:none}.index-list li{display:grid;grid-template-columns:28px 1fr;gap:2px 8px;padding:8px 0;border-bottom:1px solid var(--line)}.index-list li>span{grid-row:span 2;color:var(--rust);font:15px Georgia,serif}.index-list strong{font-size:10px}.index-list small{color:var(--muted);font-size:8px}' +
+    '.reference-card{padding:18px 0;border-top:1px solid var(--ink);break-inside:avoid;page-break-inside:avoid}.reference-card header{display:flex;align-items:flex-start;gap:13px;margin-bottom:13px}.reference-number{flex:0 0 34px;color:var(--rust);font:400 26px/1 Georgia,serif}.reference-card h2{margin:4px 0 0;font:400 24px/1.08 Georgia,serif}.reference-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 22px}.reference-grid section{break-inside:avoid}.reference-grid h3{margin:0 0 5px;padding-bottom:4px;border-bottom:1px solid var(--line);font:700 8px/1.4 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}.reference-grid p{margin:0 0 5px}.coordinate{font-family:monospace}.source-link{overflow-wrap:anywhere}.muted{color:var(--muted)}a{color:#79523d;text-decoration-thickness:1px;text-underline-offset:3px}' +
+    '.caution{margin-top:18px;padding:12px 14px;border-left:3px solid var(--rust);background:#efede5}.caution ul{margin:6px 0 0;padding-left:17px}.caution li{margin:3px 0}.print-control{display:block;margin:0 auto 14px;padding:10px 15px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-weight:700;cursor:pointer}' +
+    'footer{margin-top:20px;padding-top:10px;border-top:1px solid var(--ink);color:var(--muted);font-size:8px;letter-spacing:.04em}' +
+    '@media(max-width:700px){body{padding:0}.sheet{min-height:0;margin:0 0 12px;padding:22px}.cover{min-height:85vh}.cover-stats{grid-template-columns:1fr 1fr}.cover-stat:nth-child(2){border-right:0}.cover-stat:nth-child(-n+2){border-bottom:1px solid var(--line)}.index-list,.reference-grid{grid-template-columns:1fr}h1{font-size:34px}}' +
+    '@media print{body{padding:0;background:#fff}.sheet{max-width:none;margin:0;padding:0;box-shadow:none}.cover{min-height:255mm;break-after:page}.map-page{break-after:page}.print-control{display:none}a{color:inherit;text-decoration:none}}' +
+    '</style></head><body><button class="print-control" type="button" onclick="window.print()">Imprimir / guardar como PDF</button>' +
+    '<main><section class="sheet cover"><div><div class="topline"><strong>MORENO · INTELIGENCIA TERRITORIAL</strong><span>Documento de trabajo · ' + dateLabel + '</span></div>' +
+    '<p class="eyebrow" style="margin-top:26px">Lectura territorial · ' + total + ' referencias seleccionadas</p><h1>' + title + '</h1>' +
+    '<p class="cover-copy">Una síntesis de las referencias visibles en el Mapa IA para ordenar una conversación de prospección. La selección no constituye un inventario de inmuebles ni acredita disponibilidad.</p></div>' +
+    '<div><div class="cover-stats"><div class="cover-stat"><strong>' + String(Number(counts.localities) || 0).padStart(2, "0") + '</strong><span>Localidades</span></div>' +
+    '<div class="cover-stat"><strong>' + String(Number(counts.documented) || 0).padStart(2, "0") + '</strong><span>Contextos con fuente</span></div>' +
+    '<div class="cover-stat"><strong>' + String(Number(counts.hypotheses) || 0).padStart(2, "0") + '</strong><span>Hipótesis</span></div>' +
+    '<div class="cover-stat"><strong>' + total + '</strong><span>Referencias incluidas</span></div></div>' +
+    '<p class="eyebrow" style="margin-top:18px">Criterios de selección</p><ul class="filter-list">' + filterMarkup + '</ul>' +
+    '<footer>ERICA M. ACOSTA · MORENO · Generado localmente desde la vista filtrada del inventario.</footer></div></section>' +
+    '<section class="sheet map-page"><p class="eyebrow">Lámina de conjunto · esquema sin escala</p><h2 class="section-title">Distribución relativa de las referencias.</h2>' +
+    '<p class="muted">Los puntos se ordenan únicamente por sus coordenadas aproximadas. El esquema no contiene cartografía base, límites municipales, calles ni geometrías parcelarias.</p>' +
+    diagram +
+    '<div class="diagram-legend"><span><i class="legend-mark legend-circle"></i> Localidad</span><span><i class="legend-mark"></i> Contexto con fuente</span><span><i class="legend-mark legend-diamond"></i> Hipótesis</span></div>' +
+    '<h2 class="section-title">Índice de referencias.</h2><ol class="index-list">' + indexMarkup + '</ol>' +
+    '<div class="caution"><strong>Alcance de esta lámina</strong><ul><li>Es un esquema relativo, no un mapa oficial ni un plano a escala.</li><li>Los números identifican las referencias del índice; no representan parcelas ni predios disponibles.</li><li>Las coordenadas no sustituyen la individualización catastral ni la consulta de normativa vigente.</li></ul></div></section>' +
+    '<section class="sheet"><p class="eyebrow">Fichas de referencia · ' + total + ' registros</p><h2 class="section-title">Evidencia, estado y próximos pasos.</h2>' +
+    referenceMarkup +
+    '<div class="caution"><strong>Advertencias de uso</strong><ul>' + disclaimerMarkup + '</ul></div>' +
+    '<footer>Documento de trabajo de MORENO · Las fuentes externas deben consultarse en origen y contrastarse antes de cualquier decisión o presentación como antecedente de una operación.</footer></section></main></body></html>';
+}
+
+
+
 function initMapPage(doc) {
   const mapElement = doc.getElementById("map");
   if (!mapElement) return;
@@ -602,6 +832,8 @@ function initMapPage(doc) {
   const shareViewStatus = doc.getElementById("map-share-status");
   const shareFallbackWrap = doc.getElementById("map-share-fallback-wrap");
   const shareFallbackInput = doc.getElementById("map-share-url");
+  const dossierExportButton = doc.getElementById("export-dossier");
+  const dossierStatusElement = doc.getElementById("dossier-status");
   const localityList = doc.getElementById("locality-list");
   const opportunityList = doc.getElementById("opportunity-list");
   const exportButton = doc.getElementById("export-csv");
@@ -1031,6 +1263,7 @@ function initMapPage(doc) {
     updateAtlasIndex(shown);
     exportButton.disabled = shown.length === 0;
     geoJsonExportButton.disabled = shown.length === 0;
+    dossierExportButton.disabled = shown.length === 0;
     reviewExportButton.disabled = !shown.some(item => item.type === "opportunity");
     if (selectedReferenceId && !shown.some(item => item.id === selectedReferenceId)) {
       selectedReferenceId = null;
@@ -1081,6 +1314,34 @@ function initMapPage(doc) {
     view.setTimeout(() => view.URL.revokeObjectURL(url), 1500);
   }
 
+
+
+  function downloadTerritorialDossier() {
+    const dossier = buildTerritorialDossier(visibleItems, currentMapViewState(), new Date().toISOString());
+    if (!dossier) {
+      dossierStatusElement.textContent = "No hay referencias visibles para preparar un dossier.";
+      return;
+    }
+    const content = buildTerritorialDossierHtml(dossier);
+    if (!content) {
+      dossierStatusElement.textContent = "No se pudo preparar el documento con esta selección.";
+      return;
+    }
+    const view = doc.defaultView;
+    const blob = new view.Blob([content], { type: "text/html;charset=utf-8" });
+    const url = view.URL.createObjectURL(blob);
+    const link = doc.createElement("a");
+    link.href = url;
+    link.download = dossier.filters.kind === "all"
+      ? "moreno-dossier-territorial.html"
+      : "moreno-dossier-" + dossier.filters.kind + ".html";
+    doc.body.append(link);
+    link.click();
+    link.remove();
+    view.setTimeout(() => view.URL.revokeObjectURL(url), 1500);
+    dossierStatusElement.textContent = "Dossier preparado localmente: " + dossier.references.length +
+      " referencias. No incluye bitácora, datos del navegador ni expedientes internos.";
+  }
 
   function importReviewFile(file) {
     if (!file) return;
@@ -1296,6 +1557,7 @@ function initMapPage(doc) {
   kindInput.addEventListener("change", render);
   evidenceInput.addEventListener("change", render);
   shareViewButton.addEventListener("click", shareCurrentView);
+  dossierExportButton.addEventListener("click", downloadTerritorialDossier);
   doc.getElementById("reset-map").addEventListener("click", () => {
     searchInput.value = "";
     categoryInput.value = "all";
@@ -1321,7 +1583,8 @@ if (typeof module !== "undefined" && module.exports) {
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
     isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
     getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates,
-    buildTerritorialBrief, buildTerritorialBriefHtml
+    buildTerritorialBrief, buildTerritorialBriefHtml,
+    buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml
   };
 }
 if (typeof document !== "undefined") initMapPage(document);

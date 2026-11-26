@@ -354,3 +354,15 @@ La Mesa Operativa no tiene autenticación, contraseña, cifrado ni control de ac
 - Los expedientes internos se generan sin datos del formulario público. La exportación y la importación se realizan localmente.
 - `assets/js/originacion-export.js` separa el ciclo de importación, impresión y exportación del expediente interno.
 - `scripts/test_originacion_export.js` comprueba que el expediente interno no incorpore campos de contacto y que el JSON v3 pueda recuperarse.
+
+
+### Dossier editorial de la vista filtrada
+
+El Mapa IA permite descargar un dossier HTML autónomo a partir de las referencias que permanecen visibles después de aplicar la búsqueda y los filtros. El archivo puede abrirse localmente e imprimirse o guardarse como PDF desde el navegador.
+
+- Incluye portada, criterios de selección, recuentos por clase de referencia, esquema relativo de coordenadas e índice numerado.
+- Cada ficha resume clasificación, línea a investigar, evidencia registrada, estado de verificación, próximo paso, coordenada orientativa y fuente HTTPS cuando existe.
+- El esquema se construye únicamente con las coordenadas aproximadas de las referencias visibles. No es cartografía oficial, no tiene escala y no dibuja límites ni parcelas.
+- Las localidades se presentan como referencias territoriales; no se convierten en oportunidades inmobiliarias.
+- El documento no incorpora la bitácora local, datos del navegador ni expedientes internos. Se genera íntegramente en el navegador y no transmite información al servidor.
+- La exportación se deshabilita cuando no hay referencias visibles. Las pruebas del Mapa IA comprueban filtros sectoriales, recuentos, fuentes, coordenadas, salida imprimible y escape de contenido.
