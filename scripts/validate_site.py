@@ -510,6 +510,10 @@ def main() -> None:
                     errors.append(f"{relative.as_posix()}: falta campo obligatorio {required_field}")
             if 'id="opportunity-form"' not in page_source:
                 errors.append(f"{relative.as_posix()}: falta el formulario de oportunidades")
+            if 'href="#opportunity-form"' not in page_source or 'class="opportunity-hero-actions"' not in page_source:
+                errors.append(f"{relative.as_posix()}: falta el acceso directo al formulario desde el encabezado")
+            if 'id="opportunity-form" tabindex="-1"' not in page_source:
+                errors.append(f"{relative.as_posix()}: el destino del acceso directo debe poder recibir el foco")
             for required_id in ("map-reference-context", "map-reference-value"):
                 if required_id not in parser.ids:
                     errors.append(f"{relative.as_posix()}: falta el contexto comercial del Mapa IA: {required_id}")
@@ -818,6 +822,10 @@ def main() -> None:
             errors.append("Oportunidades: falta el prellenado del perfil inversor desde la página de Erica")
         if "const interestByLink={" not in opportunity_html or "Object.prototype.hasOwnProperty.call(interestByLink,interestFromLink)" not in opportunity_html:
             errors.append("Oportunidades: falta la preselección de intención mediante una lista permitida")
+        opportunity_css_path = ROOT / "assets/css/erica.css"
+        opportunity_css = opportunity_css_path.read_text(encoding="utf-8") if opportunity_css_path.is_file() else ""
+        if "#opportunity-form{scroll-margin-top:112px}" not in opportunity_css or ".opportunity-hero-actions" not in opportunity_css:
+            errors.append("assets/css/erica.css: falta el desplazamiento accesible del acceso directo al formulario")
         if "function revealPropertyDetails()" not in opportunity_html:
             errors.append("Oportunidades: falta la apertura contextual de los datos del inmueble")
         for disclosure_id in ("feasibility-disclosure", "dossier-import-disclosure", "property-data-disclosure", "evidence-disclosure", "context-disclosure"):
