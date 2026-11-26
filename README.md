@@ -57,6 +57,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 - /erica-acosta/ — Sobre Erica: perfil personal y enfoque de trabajo, con énfasis en residencia local, iniciativa emprendedora y alianzas.
 - /oportunidades/ — Captación inicial: formulario opcional para propietarios, inversores y aliados, con ubicación y nomenclatura catastral cuando estén disponibles.
 - El formulario prioriza nombre, perfil, interés y zona; agrupa calculadora FOS/FOT, datos del inmueble, documentación, verificaciones y contexto en secciones opcionales. Los enlaces de portada preseleccionan perfil e intención mediante valores permitidos.
+- Al importar un expediente, se abren automáticamente las secciones opcionales que contienen datos recuperados (inmueble, documentación, contexto o cálculo) y se cierra el panel de importación. Así se evita que la información cargada quede oculta para quien continúa el formulario.
 
 ### Identidad visual y contenido
 
