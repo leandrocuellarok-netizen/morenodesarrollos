@@ -7,12 +7,13 @@
   const resetButton = document.getElementById("pipeline-reset");
   const downloadSummaryButton = document.getElementById("pipeline-download-summary");
   const downloadAgendaButton = document.getElementById("pipeline-download-agenda");
-  if (!api || !fileInput || !status || !output || !resetButton || !downloadSummaryButton || !downloadAgendaButton) return;
+  if (!api || !fileInput || !status || !output || !resetButton || !downloadSummaryButton || !downloadAgendaButton || !followUpFilter) return;
   let records = [];
   let currentSummary = null;
   let importSequence = 0;
   const stageFilter = document.getElementById("pipeline-filter-stage");
   const textFilter = document.getElementById("pipeline-filter-text");
+  const followUpFilter = document.getElementById("pipeline-filter-followup");
   const metrics = document.getElementById("pipeline-metrics");
   const financeTable = document.getElementById("pipeline-finance-summary");
   const stageTable = document.getElementById("pipeline-stage-summary");
@@ -30,6 +31,37 @@
   function localDate() {
     const now = new Date();
     return [now.getFullYear(), String(now.getMonth() + 1).padStart(2, "0"), String(now.getDate()).padStart(2, "0")].join("-");
+  }
+  function addDays(dateString, days) {
+    const parts = dateString.split("-").map(Number);
+    return new Date(Date.UTC(parts[0], parts[1] - 1, parts[2] + days)).toISOString().slice(0, 10);
+  }
+  function isActiveRecord(record) {
+    return !["ganada", "no concretada", "pausada"].includes(api.normalizeStage(record.fields.etapa_comercial));
+  }
+  function updateFollowUpFilter(summary) {
+    const active = records.filter(isActiveRecord);
+    const endOfWindow = addDays(summary.today, 7);
+    const counts = {
+      overdue: active.filter(record => record.fields.fecha_proximo_seguimiento && record.fields.fecha_proximo_seguimiento < summary.today).length,
+      dueSoon: active.filter(record => record.fields.fecha_proximo_seguimiento && record.fields.fecha_proximo_seguimiento >= summary.today && record.fields.fecha_proximo_seguimiento <= endOfWindow).length,
+      missingDate: active.filter(record => !record.fields.fecha_proximo_seguimiento).length,
+      missingAction: active.filter(record => !String(record.fields.proxima_accion || "").trim()).length
+    };
+    const options = [
+      ["", "Todos los seguimientos (" + records.length + ")"],
+      ["overdue", "Vencidas (" + counts.overdue + ")"],
+      ["due-soon", "Próximos 7 días (" + counts.dueSoon + ")"],
+      ["missing-date", "Sin fecha (" + counts.missingDate + ")"],
+      ["missing-action", "Sin próxima acción (" + counts.missingAction + ")"]
+    ];
+    followUpFilter.replaceChildren();
+    options.forEach(entry => {
+      const option = node("option", "", entry[1]);
+      option.value = entry[0];
+      followUpFilter.append(option);
+    });
+    followUpFilter.value = "";
   }
   function displayDate(value) {
     if (!value) return "Sin fecha";
@@ -132,11 +164,20 @@
   }
   function renderRecords() {
     const selectedStage = stageFilter.value;
+    const selectedFollowUp = followUpFilter.value;
     const query = api.normalizeStage(textFilter.value);
+    const today = currentSummary ? currentSummary.today : localDate();
+    const endOfWindow = addDays(today, 7);
     const filtered = records.filter(record => {
       const fields = record.fields;
+      const active = isActiveRecord(record);
+      const followUpDate = fields.fecha_proximo_seguimiento;
       if (selectedStage === "__sin_etapa__" && fields.etapa_comercial) return false;
       if (selectedStage && selectedStage !== "__sin_etapa__" && fields.etapa_comercial !== selectedStage) return false;
+      if (selectedFollowUp === "overdue" && (!active || !followUpDate || followUpDate >= today)) return false;
+      if (selectedFollowUp === "due-soon" && (!active || !followUpDate || followUpDate < today || followUpDate > endOfWindow)) return false;
+      if (selectedFollowUp === "missing-date" && (!active || followUpDate)) return false;
+      if (selectedFollowUp === "missing-action" && (!active || String(fields.proxima_accion || "").trim())) return false;
       if (!query) return true;
       return [
         record.id, fields.localidad, fields.tipo_activo, fields.identificacion_catastral,
@@ -182,6 +223,7 @@
     renderFinance(summary.finance);
     renderStages(summary.stageCounts);
     renderNextActions(summary);
+    updateFollowUpFilter(summary);
     stageFilter.replaceChildren(node("option", "", "Todas las etapas"));
     summary.stageCounts.forEach(entry => {
       const option = node("option", "", entry[0]);
@@ -200,6 +242,8 @@
     downloadAgendaButton.disabled = true;
     stageFilter.replaceChildren(node("option", "", "Todas las etapas"));
     stageFilter.value = "";
+    followUpFilter.replaceChildren(node("option", "", "Todos los seguimientos"));
+    followUpFilter.value = "";
     textFilter.value = "";
     output.hidden = true;
     warnings.replaceChildren();
@@ -289,5 +333,6 @@
     resetButton.disabled = true;
   });
   stageFilter.addEventListener("change", renderRecords);
+  followUpFilter.addEventListener("change", renderRecords);
   textFilter.addEventListener("input", renderRecords);
 })();
