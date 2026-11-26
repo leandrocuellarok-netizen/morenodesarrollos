@@ -36,6 +36,9 @@ assert.ok(mapPage.includes('id="clear-review"'), "el Mapa IA permite borrar la b
 assert.match(mapPage, /almacenamiento local del navegador sin cifrado/i, "la bitácora explica que el almacenamiento local no está cifrado");
 assert.ok(source.includes("function clearReviewState(storage)"), "el motor expone una operación controlada de borrado");
 assert.ok(source.includes('reviewClearButton.addEventListener("click"'), "el control de borrado está conectado a la interfaz");
+assert.ok(source.includes("let reviewImportSequence = 0;"), "la importación de bitácora controla solicitudes concurrentes");
+assert.ok(source.includes("requestId !== reviewImportSequence"), "las lecturas obsoletas no pueden aplicar cambios ni limpiar el estado de una importación nueva");
+assert.ok(source.includes('reviewStatusElement.setAttribute("aria-busy", "true")'), "el estado de lectura se comunica a tecnologías de asistencia");
 assert.match(mapPage, /no se envían al servidor[\s\S]*Exportar bitácora JSON/i, "la página explica que la bitácora no se transmite y puede exportarse");
 assert.ok(mapPage.includes('href="https://mapas.moreno.gob.ar/"'), "se enlaza el visor cartográfico oficial de Moreno");
 assert.ok(mapPage.includes('href="https://arba.gov.ar/geoarba/inicio.asp"'), "se enlaza GeoARBA como fuente provincial");
