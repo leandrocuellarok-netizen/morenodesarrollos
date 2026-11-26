@@ -1,0 +1,194 @@
+"use strict";
+
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const { spawn } = require("node:child_process");
+const { chromium } = require("playwright");
+
+const ROOT = path.resolve(__dirname, "..");
+const PORT = 4173;
+const BASE_URL = \`http://127.0.0.1:\${PORT}\`;
+const ROUTES = [
+  { slug: "inicio", path: "/", navigation: true },
+  { slug: "mapa-ia", path: "/mapa-ia/", navigation: true },
+  { slug: "sobre-erica", path: "/erica-acosta/", navigation: true },
+  { slug: "oportunidades", path: "/oportunidades/", navigation: true },
+  { slug: "mesa-operativa", path: "/mesa-operativa/", navigation: false }
+];
+const WIDTHS = [320, 360, 390, 768, 1024, 1440];
+const failures = [];
+
+function check(condition, message) {
+  if (!condition) {
+    failures.push(message);
+    console.error(\`FAIL: \${message}\`);
+  }
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function startServer() {
+  const server = spawn("python3", ["-m", "http.server", String(PORT), "--bind", "127.0.0.1"], {
+    cwd: ROOT,
+    stdio: "ignore"
+  });
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    try {
+      const response = await fetch(BASE_URL);
+      if (response.ok) return server;
+    } catch (_) {
+      await delay(200);
+    }
+  }
+  server.kill("SIGTERM");
+  throw new Error("No se pudo iniciar el servidor HTTP local para la auditoría.");
+}
+
+async function auditRoute(browser, route) {
+  const page = await browser.newPage({
+    viewport: { width: 1440, height: 1000 },
+    deviceScaleFactor: 1
+  });
+  const pageErrors = [];
+  const localRequestFailures = [];
+  page.on("pageerror", error => pageErrors.push(error.message));
+  page.on("requestfailed", request => {
+    try {
+      const url = new URL(request.url());
+      if (url.hostname === "127.0.0.1") localRequestFailures.push(url.pathname);
+    } catch (_) {}
+  });
+
+  try {
+    const response = await page.goto(BASE_URL + route.path, { waitUntil: "domcontentloaded" });
+    check(Boolean(response && response.ok()), \`\${route.slug}: HTTP \${response ? response.status() : "sin respuesta"}\`);
+
+    await page.locator("main#main-content").waitFor({ state: "attached", timeout: 5000 }).catch(() => {});
+    const title = await page.title();
+    const h1Count = await page.locator("main h1").count();
+    check(Boolean(title.trim()), \`\${route.slug}: falta título de documento\`);
+    check(h1Count === 1, \`\${route.slug}: se esperaba un H1 dentro de main y se encontraron \${h1Count}\`);
+    check(await page.locator(".skip-link[href='#main-content']").count() === 1, \`\${route.slug}: falta el enlace único para saltar al contenido\`);
+    check(await page.locator("main#main-content[tabindex='-1']").count() === 1, \`\${route.slug}: falta el destino de foco del enlace de salto\`);
+
+    await page.keyboard.press("Tab");
+    const skipFocused = await page.evaluate(() => document.activeElement?.matches(".skip-link") === true);
+    check(skipFocused, \`\${route.slug}: el primer foco de teclado no llega al enlace de salto\`);
+    if (skipFocused) {
+      await page.keyboard.press("Enter");
+      const mainFocused = await page.evaluate(() => document.activeElement?.id === "main-content");
+      check(mainFocused, \`\${route.slug}: el enlace de salto no mueve el foco a main\`);
+    }
+
+    const imageResults = await page.locator("img").evaluateAll(async images => {
+      return Promise.all(images.map(async image => {
+        image.loading = "eager";
+        try {
+          await image.decode();
+          return null;
+        } catch (_) {
+          return image.currentSrc || image.src || "(imagen sin URL)";
+        }
+      }));
+    });
+    for (const broken of imageResults.filter(Boolean)) {
+      check(false, \`\${route.slug}: imagen no decodificable: \${broken}\`);
+    }
+
+    if (route.navigation) {
+      const currentLinks = await page.locator("#primary-navigation a[aria-current='page']").count();
+      check(currentLinks === 1, \`\${route.slug}: se esperaba un único enlace activo en la navegación\`);
+
+      await page.setViewportSize({ width: 390, height: 844 });
+      const menu = page.locator(".mobile-menu");
+      const nav = page.locator("#primary-navigation");
+      check(await menu.isVisible(), \`\${route.slug}: el botón de menú no es visible en móvil\`);
+      check(!(await nav.isVisible()), \`\${route.slug}: el menú móvil debe iniciar cerrado\`);
+
+      if (await menu.isVisible()) {
+        await menu.click();
+        check(await nav.isVisible(), \`\${route.slug}: el menú no se abre al activar el botón\`);
+        check(await menu.getAttribute("aria-expanded") === "true", \`\${route.slug}: aria-expanded no cambia al abrir\`);
+        await page.keyboard.press("Escape");
+        check(!(await nav.isVisible()), \`\${route.slug}: Escape no cierra el menú\`);
+        check(await page.evaluate(() => document.activeElement?.classList.contains("mobile-menu") === true), \`\${route.slug}: Escape no devuelve el foco al botón\`);
+        check(await menu.getAttribute("aria-expanded") === "false", \`\${route.slug}: aria-expanded no se restablece al cerrar\`);
+
+        await menu.click();
+        await page.locator("main").click({ position: { x: 5, y: 5 }, force: true });
+        check(!(await nav.isVisible()), \`\${route.slug}: un clic fuera no cierra el menú\`);
+        check(await menu.getAttribute("aria-expanded") === "false", \`\${route.slug}: el estado ARIA no se actualiza al hacer clic fuera\`);
+      }
+
+      await page.setViewportSize({ width: 1440, height: 1000 });
+      check(await page.locator("#primary-navigation").isVisible(), \`\${route.slug}: la navegación de escritorio no está visible\`);
+      check(!(await page.locator(".mobile-menu").isVisible()), \`\${route.slug}: el botón móvil aparece en escritorio\`);
+    }
+
+    for (const width of WIDTHS) {
+      await page.setViewportSize({ width, height: 900 });
+      await delay(60);
+      const dimensions = await page.evaluate(() => ({
+        viewport: window.innerWidth,
+        document: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth)
+      }));
+      check(
+        dimensions.document <= dimensions.viewport + 1,
+        \`\${route.slug}: desbordamiento horizontal a \${width}px (documento \${dimensions.document}px)\`
+      );
+    }
+
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await delay(120);
+    const screenshotDir = path.join(ROOT, "test-results", "visual");
+    fs.mkdirSync(screenshotDir, { recursive: true });
+    await page.screenshot({
+      path: path.join(screenshotDir, \`\${route.slug}-desktop.png\`),
+      fullPage: true,
+      animations: "disabled"
+    });
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await delay(120);
+    await page.screenshot({
+      path: path.join(screenshotDir, \`\${route.slug}-mobile.png\`),
+      fullPage: true,
+      animations: "disabled"
+    });
+
+    check(pageErrors.length === 0, \`\${route.slug}: errores JavaScript: \${pageErrors.join(" | ")}\`);
+    check(localRequestFailures.length === 0, \`\${route.slug}: recursos locales fallidos: \${localRequestFailures.join(", ")}\`);
+    console.log(\`PASS: \${route.slug} — escritorio, móvil, teclado y recursos\`);
+  } catch (error) {
+    check(false, \`\${route.slug}: auditoría interrumpida: \${error.message}\`);
+  } finally {
+    await page.close();
+  }
+}
+
+(async function main() {
+  let server;
+  let browser;
+  try {
+    server = await startServer();
+    browser = await chromium.launch({ headless: true });
+    for (const route of ROUTES) {
+      await auditRoute(browser, route);
+    }
+  } catch (error) {
+    check(false, error.message);
+  } finally {
+    if (browser) await browser.close();
+    if (server) server.kill("SIGTERM");
+  }
+
+  if (failures.length) {
+    console.error(\`\${failures.length} comprobación(es) fallaron.\`);
+    process.exitCode = 1;
+  } else {
+    console.log(\`Auditoría responsive aprobada: \${ROUTES.length} rutas, \${WIDTHS.length} anchos y capturas de escritorio/móvil.\`);
+  }
+})();
