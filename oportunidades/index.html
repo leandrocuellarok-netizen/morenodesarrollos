@@ -221,12 +221,13 @@
     <div class="eyebrow">Antes de compartir tus datos</div>
     <h3 id="contact-preview-title">Revisá el mensaje</h3>
     <p>Podés corregir el formulario y volver a prepararlo. El mensaje no se envía hasta que elijas abrir WhatsApp.</p>
+    <p class="contact-preview-stale" id="contact-preview-stale" role="status" hidden>El formulario cambió después de preparar este mensaje. Volvé a pulsar «Preparar borrador» para actualizarlo antes de copiarlo o abrir WhatsApp.</p>
   </div>
   <label class="contact-preview-label" for="contact-message-preview">Borrador de WhatsApp</label>
   <textarea id="contact-message-preview" rows="12" readonly spellcheck="false"></textarea>
   <div class="contact-preview-actions">
-    <button class="button" id="copy-contact-message" type="button">Copiar mensaje</button>
-    <a class="button dark" id="open-whatsapp" href="https://wa.me/5491141671674" target="_blank" rel="noopener noreferrer">Abrir WhatsApp ↗</a>
+    <button class="button" id="copy-contact-message" type="button" disabled>Copiar mensaje</button>
+    <a class="button dark" id="open-whatsapp" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">Abrir WhatsApp ↗</a>
     <button class="button" id="print-opportunity-dossier" type="button">Imprimir ficha / guardar PDF</button>
     <button class="button" id="download-opportunity-dossier" type="button">Descargar expediente JSON</button>
   </div>
@@ -253,6 +254,7 @@ const opportunityForm=document.getElementById("opportunity-form");
 const formStatus=document.getElementById("form-status");
 const contactPreview=document.getElementById("contact-preview");
 const messagePreview=document.getElementById("contact-message-preview");
+const stalePreviewNotice=document.getElementById("contact-preview-stale");
 const copyMessageButton=document.getElementById("copy-contact-message");
 const openWhatsAppLink=document.getElementById("open-whatsapp");
 const printDossierButton=document.getElementById("print-opportunity-dossier");
@@ -265,6 +267,33 @@ const applyDossierMergeButton=document.getElementById("apply-dossier-merge");
 const applyDossierReplaceButton=document.getElementById("apply-dossier-replace");
 let pendingDossierImport=null;
 const dossierPrint=document.getElementById("opportunity-dossier-print");
+function invalidateContactPreview(){
+  if(contactPreview.hidden||contactPreview.dataset.stale==="true")return;
+  contactPreview.dataset.stale="true";
+  stalePreviewNotice.hidden=false;
+  copyMessageButton.disabled=true;
+  openWhatsAppLink.removeAttribute("href");
+  openWhatsAppLink.setAttribute("aria-disabled","true");
+  openWhatsAppLink.setAttribute("tabindex","-1");
+  formStatus.textContent="Cambiaste datos después de preparar el borrador. Volvé a prepararlo para compartir la versión actualizada.";
+}
+function activateContactPreview(message){
+  messagePreview.value=message;
+  openWhatsAppLink.href=window.MorenoOpportunityTools.buildWhatsAppUrl(message);
+  openWhatsAppLink.removeAttribute("aria-disabled");
+  openWhatsAppLink.removeAttribute("tabindex");
+  copyMessageButton.disabled=false;
+  stalePreviewNotice.hidden=true;
+  delete contactPreview.dataset.stale;
+  contactPreview.hidden=false;
+}
+opportunityForm.addEventListener("input",invalidateContactPreview);
+opportunityForm.addEventListener("change",invalidateContactPreview);
+["parcel-area","parcel-fos","parcel-fot","parcel-reference"].forEach(id=>{
+  const field=document.getElementById(id);
+  field.addEventListener("input",invalidateContactPreview);
+  field.addEventListener("change",invalidateContactPreview);
+});
 const readFeasibilityInput=()=>({
   areaRaw:document.getElementById("parcel-area").value,
   fosRaw:document.getElementById("parcel-fos").value,
@@ -453,9 +482,7 @@ opportunityForm.addEventListener("submit",event=>{
     fields:values,
     calculationInput
   });
-  messagePreview.value=message;
-  openWhatsAppLink.href=window.MorenoOpportunityTools.buildWhatsAppUrl(message);
-  contactPreview.hidden=false;
+  activateContactPreview(message);
   formStatus.textContent="Borrador preparado. Revisá el texto; no se enviará hasta que abras WhatsApp.";
   contactPreview.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
 });
@@ -498,6 +525,7 @@ function hasImportedText(value){
   return typeof value==="string"&&value.trim().length>0;
 }
 function applyDossierFormData(data){
+  invalidateContactPreview();
   const fields=data.fields||{};
   const calculationInput=data.calculationInput||{};
   const controlIds={
