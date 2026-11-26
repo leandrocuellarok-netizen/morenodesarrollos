@@ -70,6 +70,14 @@ async function auditRoute(browser, route) {
     const h1Count = await page.locator("main h1").count();
     check(Boolean(title.trim()), `${route.slug}: falta título de documento`);
     check(h1Count === 1, `${route.slug}: se esperaba un H1 dentro de main y se encontraron ${h1Count}`);
+    if (route.slug === "inicio") {
+      const ownerLinks = await page.locator("a[href*='perfil=propietario']").evaluateAll(links => links.map(link => link.href));
+      const investorLinks = await page.locator("a[href*='perfil=inversor']").evaluateAll(links => links.map(link => link.href));
+      check(ownerLinks.length >= 2, "inicio: se esperan accesos de propietario en portada y cierre comercial");
+      check(investorLinks.length >= 2, "inicio: se esperan accesos de inversor en portada y cierre comercial");
+      check(ownerLinks.every(href => new URL(href).searchParams.get("interes") === "terreno"), "inicio: los accesos de propietario transmiten la intención correcta");
+      check(investorLinks.every(href => new URL(href).searchParams.get("interes") === "inversion"), "inicio: los accesos de inversor transmiten la intención correcta");
+    }
     check(await page.locator(".skip-link[href='#main-content']").count() === 1, `${route.slug}: falta el enlace único para saltar al contenido`);
     check(await page.locator("main#main-content[tabindex='-1']").count() === 1, `${route.slug}: falta el destino de foco del enlace de salto`);
 
@@ -250,6 +258,7 @@ async function auditOpportunityFlow(browser) {
     check(await page.locator("#contact-profile").inputValue() === "Propietario/a", "oportunidades: el enlace de propietario preselecciona el perfil");
     check(await page.locator("#contact-interest").inputValue() === "Presentar un terreno o inmueble", "oportunidades: el enlace de propietario preselecciona la intención");
     check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: el recorrido de propietario abre los datos del inmueble");
+    check(await page.locator("#contact-type").isVisible(), "oportunidades: el tipo de oportunidad aparece dentro de los detalles al abrirlos");
 
     const investorResponse = await page.goto(BASE_URL + "/oportunidades/?perfil=inversor&interes=inversion", { waitUntil: "domcontentloaded" });
     check(Boolean(investorResponse && investorResponse.ok()), "oportunidades: el enlace de inversor responde");
@@ -271,6 +280,7 @@ async function auditOpportunityFlow(browser) {
     for (const id of ["contact-name","contact-profile","contact-interest","contact-zone"]) {
       check(await page.locator("#" + id).isVisible(), "oportunidades: el campo esencial " + id + " permanece visible");
     }
+    check(!(await page.locator("#contact-type").isVisible()), "oportunidades: el tipo de oportunidad queda dentro de los detalles opcionales");
 
     await page.locator("#contact-name").fill("Contacto de prueba");
     await page.locator("#contact-profile").selectOption("Propietario/a");
@@ -278,11 +288,13 @@ async function auditOpportunityFlow(browser) {
     await page.locator("#contact-zone").fill("La Reja");
     check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: elegir una consulta de inmueble revela sus campos opcionales");
 
+    await page.locator("#contact-type").selectOption("Terreno");
     await page.locator("#contact-address").fill("Calle de prueba 123");
     await page.locator("#contact-cadastral").fill("Circ. II, Secc. B, Quinta 14");
     await page.locator("#contact-area").fill("1200");
     await page.locator("#property-data-disclosure > summary").click();
     check(!(await page.locator("#property-data-disclosure").evaluate(element => element.open)), "oportunidades: los datos del inmueble pueden volver a contraerse");
+    check(!(await page.locator("#contact-type").isVisible()), "oportunidades: el tipo de oportunidad se oculta al contraer detalles sin perder su valor");
 
     await page.locator("#evidence-disclosure > summary").click();
     await page.locator('input[name="documentacion"][value="Plano o mensura"]').check();
@@ -296,6 +308,7 @@ async function auditOpportunityFlow(browser) {
     await page.locator("#contact-preview").waitFor({ state: "visible", timeout: 3000 });
     const message = await page.locator("#contact-message-preview").inputValue();
     for (const expected of [
+      "Terreno",
       "Calle de prueba 123",
       "Circ. II, Secc. B, Quinta 14",
       "1200",
