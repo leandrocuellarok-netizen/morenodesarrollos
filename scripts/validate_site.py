@@ -276,6 +276,12 @@ def main() -> None:
                 errors.append("mapa-ia/index.html: falta explicar el uso y alcance de la exportación GeoJSON")
             for required_source_markup in (
                 'id="map-verification-title"',
+                'id="map-refine-filters"',
+                'id="atlas-index-disclosure"',
+                'id="atlas-index-summary"',
+                'id="map-review-disclosure"',
+                'id="map-verification-disclosure"',
+                'data-mobile-collapsible',
                 'href="https://mapas.moreno.gob.ar/" target="_blank" rel="noopener noreferrer"',
                 'href="https://arba.gov.ar/geoarba/inicio.asp" target="_blank" rel="noopener noreferrer"',
                 'href="https://geo.arba.gov.ar/geoserver/idera/wms?request=GetCapabilities&amp;service=WMS"',
@@ -303,6 +309,8 @@ def main() -> None:
                 for required_style in (".map-dossier-export", ".map-dossier-status"):
                     if required_style not in map_css_source:
                         errors.append(f"assets/css/mapa-ia.css: falta el estilo del dossier: {required_style}")
+            if len(re.findall(r'<details\b[^>]*data-mobile-collapsible', page_source)) != 4:
+                errors.append("mapa-ia/index.html: se esperaban cuatro disclosures progresivos para móvil")
             if len(re.findall(r'<article class="verification-source"', page_source)) != 4:
                 errors.append("mapa-ia/index.html: la mesa de verificación debe presentar cuatro rutas institucionales")
 
@@ -323,6 +331,13 @@ def main() -> None:
             else:
                 map_js = map_js_path.read_text(encoding="utf-8")
                 for required_logic in (
+                    "function initResponsiveDisclosures(doc)",
+                    "const mobileStates = new WeakMap()",
+                    "mobileStates.get(disclosure)",
+                    'matchMedia("(max-width: 760px)")',
+                    'doc.querySelectorAll("details[data-mobile-collapsible]")',
+                    'summary: doc.getElementById("atlas-index-summary")',
+                    "atlasCounts.summary.textContent",
                     "new maplibregl.Map(",
                 "mapElement.replaceChildren();",
                     "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -430,6 +445,12 @@ def main() -> None:
                 for required_style in (
                     ".map-canvas .maplibregl-canvas",
                     ".map-atlas-index",
+                    ".map-mobile-disclosure",
+                    ".map-filter-refine",
+                    ".map-atlas-index-disclosure",
+                    ".map-review-disclosure",
+                    ".map-verification-disclosure",
+                    ".map-mobile-disclosure > summary:focus-visible",
                     ".map-filter-group",
                     ".map-filter-field",
                     ".map-toolbar-actions",

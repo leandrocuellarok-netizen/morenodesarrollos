@@ -7,15 +7,7 @@
       <span>Buscar referencias</span>
       <input id="search" type="search" maxlength="100" placeholder="Localidad, actividad, evidencia o próximo paso…" aria-label="Buscar en el mapa">
     </label>
-    <label class="map-filter-field" for="category">
-      <span>Tipo de referencia</span>
-      <select id="category" aria-label="Filtrar tipo de referencia">
-        <option value="all">Todas las capas</option>
-        <option value="locality">Localidades</option>
-        <option value="opportunity">Tesis de oportunidad</option>
-      </select>
-    </label>
-    <label class="map-filter-field" for="kind-filter">
+    <label class="map-filter-field map-filter-sector" for="kind-filter">
       <span>Sector / línea de desarrollo</span>
       <select id="kind-filter" aria-label="Filtrar sector o línea de desarrollo">
         <option value="all">Todos los sectores</option>
@@ -25,14 +17,27 @@
         <option value="land">Prospección de suelo</option>
       </select>
     </label>
-    <label class="map-filter-field" for="evidence-filter">
-      <span>Nivel de evidencia</span>
-      <select id="evidence-filter" aria-label="Filtrar nivel de evidencia">
-        <option value="all">Todo el estado de evidencia</option>
-        <option value="documented">Contexto con fuente pública</option>
-        <option value="hypothesis">Hipótesis de prospección</option>
-      </select>
-    </label>
+    <details id="map-refine-filters" class="map-mobile-disclosure map-filter-refine" data-mobile-collapsible open>
+      <summary><span>Refinar filtros</span><small>Tipo de referencia y nivel de evidencia</small></summary>
+      <div class="map-filter-refine-grid">
+        <label class="map-filter-field" for="category">
+          <span>Tipo de referencia</span>
+          <select id="category" aria-label="Filtrar tipo de referencia">
+            <option value="all">Todas las capas</option>
+            <option value="locality">Localidades</option>
+            <option value="opportunity">Tesis de oportunidad</option>
+          </select>
+        </label>
+        <label class="map-filter-field" for="evidence-filter">
+          <span>Nivel de evidencia</span>
+          <select id="evidence-filter" aria-label="Filtrar nivel de evidencia">
+            <option value="all">Todo el estado de evidencia</option>
+            <option value="documented">Contexto con fuente pública</option>
+            <option value="hypothesis">Hipótesis de prospección</option>
+          </select>
+        </label>
+      </div>
+    </details>
   </div>
   <div class="map-toolbar-actions">
     <button class="map-reset" id="reset-map" type="button">Restablecer filtros</button>
@@ -49,17 +54,35 @@
     <button class="map-export" id="export-geojson" type="button" hidden>Descargar GeoJSON visible ↓</button>
     <span class="eyebrow" id="map-status" aria-live="polite">Mapa de trabajo · datos en revisión</span>
   </div>
-</div><section class="map-atlas-index" aria-label="Índice del inventario territorial">
-  <div class="map-atlas-index-heading">
-    <span class="map-atlas-kicker">ÍNDICE / ESTADO DEL INVENTARIO</span>
-    <p id="atlas-index-status" role="status" aria-live="polite">11 de 11 referencias visibles · 6 localidades, 4 contextos con fuente pública y 1 hipótesis.</p>
+</div><details id="atlas-index-disclosure" class="map-mobile-disclosure map-atlas-index-disclosure" data-mobile-collapsible open>
+  <summary><span>Estado del inventario</span><span id="atlas-index-summary">11 referencias · 6 localidades · 4 contextos con fuente · 1 hipótesis</span></summary>
+  <section class="map-atlas-index" aria-label="Índice del inventario territorial">
+    <div class="map-atlas-index-heading">
+      <span class="map-atlas-kicker">ÍNDICE / ESTADO DEL INVENTARIO</span>
+      <p id="atlas-index-status" role="status" aria-live="polite">11 de 11 referencias visibles · 6 localidades, 4 contextos con fuente pública y 1 hipótesis.</p>
+    </div>
+    <div class="map-atlas-stat"><strong id="atlas-localities-count">06</strong><span>Localidades visibles</span></div>
+    <div class="map-atlas-stat"><strong id="atlas-documented-count">04</strong><span>Contextos con fuente</span></div>
+    <div class="map-atlas-stat"><strong id="atlas-hypotheses-count">01</strong><span>Hipótesis visibles</span></div>
+    <div class="map-atlas-stat"><strong id="atlas-total-count">11 / 11</strong><span>Referencias visibles</span></div>
+  </section>
+</details><p class="map-brief-intro">Podés compartir una vista filtrada del atlas mediante un enlace; la bitácora de diligencia permanece en este navegador. Cada tesis del inventario incluye una ficha editorial descargable para revisión interna o conversación con desarrolladores. La ficha conserva la fuente, el nivel de evidencia, el alcance aproximado de la coordenada y los puntos pendientes; no presenta parcelas ni disponibilidad como verificadas.</p><details id="map-review-disclosure" class="map-mobile-disclosure map-review-disclosure" data-mobile-collapsible open>
+  <summary><span>Bitácora local</span><small>Registro interno · se guarda en este navegador</small></summary>
+  <div class="map-review-toolbar">
+    <div class="map-review-toolbar-copy">
+      <p id="review-status" role="status" aria-live="polite">La bitácora registra tareas internas, no certificaciones. Las marcas se guardan en este navegador y no se envían al servidor.</p>
+      <p class="map-review-import-note">Podés mover el registro entre dispositivos importando un JSON v2. Los datos entrantes se comparan con los locales; ante diferencias, no se sobrescriben automáticamente.</p>
+    </div>
+    <div class="map-review-toolbar-actions">
+      <button class="map-export" id="export-review" type="button" hidden>Exportar bitácora JSON ↓</button>
+      <button class="map-export" id="import-review" type="button" hidden>Importar bitácora JSON ↑</button>
+      <input id="import-review-file" type="file" accept=".json,application/json" aria-label="Seleccionar archivo JSON de bitácora" hidden>
+    </div>
   </div>
-  <div class="map-atlas-stat"><strong id="atlas-localities-count">06</strong><span>Localidades visibles</span></div>
-  <div class="map-atlas-stat"><strong id="atlas-documented-count">04</strong><span>Contextos con fuente</span></div>
-  <div class="map-atlas-stat"><strong id="atlas-hypotheses-count">01</strong><span>Hipótesis visibles</span></div>
-  <div class="map-atlas-stat"><strong id="atlas-total-count">11 / 11</strong><span>Referencias visibles</span></div>
-</section><p class="map-brief-intro">Podés compartir una vista filtrada del atlas mediante un enlace; la bitácora de diligencia permanece en este navegador. Cada tesis del inventario incluye una ficha editorial descargable para revisión interna o conversación con desarrolladores. La ficha conserva la fuente, el nivel de evidencia, el alcance aproximado de la coordenada y los puntos pendientes; no presenta parcelas ni disponibilidad como verificadas.</p><div class="map-review-toolbar"><div class="map-review-toolbar-copy"><p id="review-status" role="status" aria-live="polite">La bitácora registra tareas internas, no certificaciones. Las marcas se guardan en este navegador y no se envían al servidor.</p><p class="map-review-import-note">Podés mover el registro entre dispositivos importando un JSON v2. Los datos entrantes se comparan con los locales; ante diferencias, no se sobrescriben automáticamente.</p></div><div class="map-review-toolbar-actions"><button class="map-export" id="export-review" type="button" hidden>Exportar bitácora JSON ↓</button><button class="map-export" id="import-review" type="button" hidden>Importar bitácora JSON ↑</button><input id="import-review-file" type="file" accept=".json,application/json" aria-label="Seleccionar archivo JSON de bitácora" hidden></div></div><div class="map-legend" aria-label="Leyenda del mapa"><span><i class="legend-dot locality-dot"></i> Localidad · círculo</span><span><i class="legend-dot documented-dot"></i> Contexto con fuente · cuadrado</span><span><i class="legend-dot hypothesis-dot"></i> Hipótesis · rombo</span><span class="map-legend-note">La forma distingue la clase; no indica disponibilidad.</span><span class="boundary-state" id="boundary-status" aria-live="polite">Límite municipal: verificando</span></div><div class="map-layout"><aside class="map-sidebar"><div class="eyebrow">Lectura territorial</div><h2>Moreno, capa por capa.</h2><p>Seleccioná un marcador para abrir su ficha, o una ficha para resaltar su punto en el mapa. Cada ficha incluye un enlace directo para compartir esa referencia. Cada tesis distingue el contexto respaldado por una fuente pública de aquello que todavía es una hipótesis por comprobar. Desde cada referencia también podés iniciar una consulta comercial sin perder el contexto territorial.</p><div id="locality-list"></div><h2 style="margin-top:30px">Tesis preliminares</h2><div id="opportunity-list"></div></aside><div id="map" class="map-canvas" role="application" aria-label="Mapa interactivo del Partido de Moreno"><p class="map-loading">Cargando cartografía…</p></div></div><p class="map-note">El índice cuenta fichas del inventario, no inmuebles disponibles. Las ubicaciones de las oportunidades son referencias aproximadas de corredores o áreas; no identifican parcelas ni acreditan titularidad, disponibilidad, zonificación o rentabilidad. Las descargas CSV y GeoJSON incluyen únicamente las referencias que quedan visibles tras aplicar la búsqueda y los filtros. El GeoJSON permite continuar el análisis en QGIS u otros sistemas GIS; sus puntos tampoco representan geometrías parcelarias. El límite municipal es una referencia administrativa. Antes de avanzar se debe verificar nomenclatura catastral, dominio, normativa vigente, FOS/FOT, usos, restricciones ambientales e hidráulicas, servicios y accesos.</p>
-<section class="map-verification" aria-labelledby="map-verification-title">
+</details><div class="map-legend" aria-label="Leyenda del mapa"><span><i class="legend-dot locality-dot"></i> Localidad · círculo</span><span><i class="legend-dot documented-dot"></i> Contexto con fuente · cuadrado</span><span><i class="legend-dot hypothesis-dot"></i> Hipótesis · rombo</span><span class="map-legend-note">La forma distingue la clase; no indica disponibilidad.</span><span class="boundary-state" id="boundary-status" aria-live="polite">Límite municipal: verificando</span></div><div class="map-layout"><aside class="map-sidebar"><div class="eyebrow">Lectura territorial</div><h2>Moreno, capa por capa.</h2><p>Seleccioná un marcador para abrir su ficha, o una ficha para resaltar su punto en el mapa. Cada ficha incluye un enlace directo para compartir esa referencia. Cada tesis distingue el contexto respaldado por una fuente pública de aquello que todavía es una hipótesis por comprobar. Desde cada referencia también podés iniciar una consulta comercial sin perder el contexto territorial.</p><div id="locality-list"></div><h2 style="margin-top:30px">Tesis preliminares</h2><div id="opportunity-list"></div></aside><div id="map" class="map-canvas" role="application" aria-label="Mapa interactivo del Partido de Moreno"><p class="map-loading">Cargando cartografía…</p></div></div><p class="map-note">El índice cuenta fichas del inventario, no inmuebles disponibles. Las ubicaciones de las oportunidades son referencias aproximadas de corredores o áreas; no identifican parcelas ni acreditan titularidad, disponibilidad, zonificación o rentabilidad. Las descargas CSV y GeoJSON incluyen únicamente las referencias que quedan visibles tras aplicar la búsqueda y los filtros. El GeoJSON permite continuar el análisis en QGIS u otros sistemas GIS; sus puntos tampoco representan geometrías parcelarias. El límite municipal es una referencia administrativa. Antes de avanzar se debe verificar nomenclatura catastral, dominio, normativa vigente, FOS/FOT, usos, restricciones ambientales e hidráulicas, servicios y accesos.</p>
+<details id="map-verification-disclosure" class="map-mobile-disclosure map-verification-disclosure" data-mobile-collapsible open>
+  <summary><span>Fuentes oficiales y diligencia</span><small>IDE Moreno · GeoARBA · Catastro · Obras Particulares</small></summary>
+  <section class="map-verification" aria-labelledby="map-verification-title">
   <div class="map-verification-heading">
     <div class="eyebrow">Mesa de verificación · fuentes oficiales</div>
     <h2 id="map-verification-title">Del área de interés a una parcela <em>comprobable.</em></h2>
@@ -131,6 +154,7 @@
     </ol>
   </div>
   <p class="verification-footnote">Estas fuentes son puntos de consulta, no una certificación automática. MORENO no descarga ni interpreta todavía parcelas individuales desde esos portales. Cada dato debe registrarse con su procedencia y fecha; las conclusiones requieren revisión técnica, dominial y urbanística.</p>
-</section></section></main><footer class="site-footer"><span>© Erica M. Acosta · Moreno, Buenos Aires</span><span>Mapa IA · Versión exploratoria</span><a href="../">Volver al inicio ↗</a></footer>
+</section>
+</details></section></main><footer class="site-footer"><span>© Erica M. Acosta · Moreno, Buenos Aires</span><span>Mapa IA · Versión exploratoria</span><a href="../">Volver al inicio ↗</a></footer>
 <noscript><div class="map-fallback"><h3>Consulta del territorio sin mapa interactivo</h3><p>La cartografía requiere JavaScript. Esta lista conserva las referencias y sus fuentes principales.</p><h4>Localidades</h4><ul><li>Moreno Centro</li><li>Paso del Rey</li><li>La Reja</li><li>Francisco Álvarez</li><li>Trujui</li><li>Cuartel V</li></ul><h4>Tesis territoriales</h4><ul><li>RP25 · Darwin Passaponti · Av. San Fernando — Ordenanza 7443/25: <a href="https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465">fuente municipal</a></li><li>Nodo RP24/RP25 · Ecoparque Industrial — <a href="https://ecoparque.com.ar/">información publicada por el operador</a></li><li>Paso del Rey · Camino de la Ribera — <a href="https://www.gba.gob.ar/node/51424">información provincial</a></li><li>Distrito Ecológico Roggero — <a href="https://iduar.moreno.gob.ar/2025/08/12/distrito-ecologico-roggero-un-espacio-natural-para-descubrir/">información de IDUAR</a></li><li>Cuartel V · Trujui · La Reja — <a href="https://www.zonaprop.com.ar/terrenos-venta-moreno-mas-9000-m2.html">pista de prospección inmobiliaria</a>, no disponibilidad verificada</li></ul><p>Las referencias de oportunidades son áreas o corredores aproximados, no parcelas verificadas.</p></div></noscript>
 </body></html>
