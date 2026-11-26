@@ -7,13 +7,13 @@
   const resetButton = document.getElementById("pipeline-reset");
   const downloadSummaryButton = document.getElementById("pipeline-download-summary");
   const downloadAgendaButton = document.getElementById("pipeline-download-agenda");
+  const followUpFilter = document.getElementById("pipeline-filter-followup");
   if (!api || !fileInput || !status || !output || !resetButton || !downloadSummaryButton || !downloadAgendaButton || !followUpFilter) return;
   let records = [];
   let currentSummary = null;
   let importSequence = 0;
   const stageFilter = document.getElementById("pipeline-filter-stage");
   const textFilter = document.getElementById("pipeline-filter-text");
-  const followUpFilter = document.getElementById("pipeline-filter-followup");
   const metrics = document.getElementById("pipeline-metrics");
   const financeTable = document.getElementById("pipeline-finance-summary");
   const stageTable = document.getElementById("pipeline-stage-summary");
