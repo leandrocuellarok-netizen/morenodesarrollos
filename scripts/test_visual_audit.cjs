@@ -272,6 +272,14 @@ async function auditOpportunityFlow(browser) {
     check((await page.locator(".opportunity-hero-note").innerText()).includes("cuatro datos"), "oportunidades: se explica que la consulta puede comenzar con cuatro datos");
     check(await page.locator(".opportunity-hero-secondary").getAttribute("href") === "#feasibility-disclosure", "oportunidades: la calculadora FOS/FOT queda como recorrido secundario");
     await quickStart.click();
+    await page.waitForFunction(() => {
+      const target = document.querySelector("#opportunity-form");
+      const header = document.querySelector(".site-header");
+      if (!target || !header) return false;
+      const targetTop = target.getBoundingClientRect().top;
+      const headerBottom = header.getBoundingClientRect().bottom;
+      return targetTop >= headerBottom + 4 && targetTop < window.innerHeight;
+    }, null, { timeout: 3000 });
     const jumpGeometry = await page.evaluate(() => ({
       targetTop: document.querySelector("#opportunity-form").getBoundingClientRect().top,
       headerBottom: document.querySelector(".site-header").getBoundingClientRect().bottom,
