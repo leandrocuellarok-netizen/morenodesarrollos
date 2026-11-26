@@ -147,6 +147,49 @@ async function auditRoute(browser, route) {
       );
     }
 
+    if (route.slug === "mapa-ia") {
+      const disclosureIds = [
+        "map-refine-filters",
+        "atlas-index-disclosure",
+        "map-review-disclosure",
+        "map-verification-disclosure"
+      ];
+      await page.setViewportSize({ width: 1440, height: 900 });
+      for (const id of disclosureIds) {
+        const disclosure = page.locator("#" + id);
+        check(await disclosure.evaluate(element => element.open), `mapa-ia: ${id} debe iniciar abierto en escritorio`);
+        check(!(await page.locator("#" + id + " > summary").isVisible()), `mapa-ia: ${id} no debe mostrar el resumen en escritorio`);
+      }
+
+      await page.setViewportSize({ width: 390, height: 844 });
+      await delay(100);
+      for (const id of disclosureIds) {
+        const disclosure = page.locator("#" + id);
+        check(!(await disclosure.evaluate(element => element.open)), `mapa-ia: ${id} debe iniciar cerrado en móvil`);
+        check(await page.locator("#" + id + " > summary").isVisible(), `mapa-ia: ${id} debe ofrecer un resumen visible en móvil`);
+      }
+
+      await page.locator("#map-refine-filters > summary").click();
+      check(await page.locator("#map-refine-filters").evaluate(element => element.open), "mapa-ia: los filtros secundarios no se abren");
+      check(await page.locator("#category").isVisible() && await page.locator("#evidence-filter").isVisible(), "mapa-ia: los filtros secundarios no quedan disponibles al expandir");
+      await page.locator("#map-refine-filters > summary").click();
+      check(!(await page.locator("#map-refine-filters").evaluate(element => element.open)), "mapa-ia: los filtros secundarios no se pueden volver a contraer");
+
+      await page.locator("#atlas-index-disclosure > summary").click();
+      await page.locator("#kind-filter").selectOption("industrial");
+      await delay(80);
+      const filteredSummary = await page.locator("#atlas-index-summary").innerText();
+      check(filteredSummary.includes("2 referencias"), "mapa-ia: el resumen móvil no refleja el filtro industrial");
+      await page.locator("#reset-map").click();
+      const resetSummary = await page.locator("#atlas-index-summary").innerText();
+      check(resetSummary.includes("11 referencias"), "mapa-ia: el resumen móvil no se actualiza al restablecer el inventario");
+
+      await page.locator("#map-review-disclosure > summary").click();
+      check(await page.locator(".map-review-toolbar").isVisible(), "mapa-ia: la bitácora local no se abre");
+      await page.locator("#map-verification-disclosure > summary").click();
+      check(await page.locator("#map-verification-title").isVisible(), "mapa-ia: la mesa de fuentes oficiales no se abre");
+    }
+
     const screenshotDir = path.join(ROOT, "test-results", "visual");
     fs.mkdirSync(screenshotDir, { recursive: true });
     const screenshotPage = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });

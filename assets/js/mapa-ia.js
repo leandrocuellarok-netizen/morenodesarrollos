@@ -818,9 +818,37 @@ function buildTerritorialDossierHtml(dossier) {
 
 
 
+function initResponsiveDisclosures(doc) {
+  const view = doc && doc.defaultView;
+  if (!view || typeof view.matchMedia !== "function") return;
+  const media = view.matchMedia("(max-width: 760px)");
+  const disclosures = Array.from(doc.querySelectorAll("details[data-mobile-collapsible]"));
+  if (!disclosures.length) return;
+  const manuallyToggled = new WeakSet();
+
+  disclosures.forEach(disclosure => {
+    const summary = disclosure.querySelector("summary");
+    if (summary) summary.addEventListener("click", () => manuallyToggled.add(disclosure));
+  });
+
+  const applyViewportDefault = isMobile => {
+    disclosures.forEach(disclosure => {
+      if (!manuallyToggled.has(disclosure)) disclosure.open = !isMobile;
+    });
+  };
+
+  applyViewportDefault(media.matches);
+  if (typeof media.addEventListener === "function") {
+    media.addEventListener("change", event => applyViewportDefault(event.matches));
+  } else if (typeof media.addListener === "function") {
+    media.addListener(event => applyViewportDefault(event.matches));
+  }
+}
+
 function initMapPage(doc) {
   const mapElement = doc.getElementById("map");
   if (!mapElement) return;
+  initResponsiveDisclosures(doc);
 
   const statusElement = doc.getElementById("map-status");
   const boundaryElement = doc.getElementById("boundary-status");
@@ -847,7 +875,8 @@ function initMapPage(doc) {
     documented: doc.getElementById("atlas-documented-count"),
     hypotheses: doc.getElementById("atlas-hypotheses-count"),
     total: doc.getElementById("atlas-total-count"),
-    status: doc.getElementById("atlas-index-status")
+    status: doc.getElementById("atlas-index-status"),
+    summary: doc.getElementById("atlas-index-summary")
   };
   const markers = new Map();
   let map = null;
@@ -1249,6 +1278,11 @@ function initMapPage(doc) {
       atlasCounts.status.textContent = counts.total + " de " + all.length +
         " referencias visibles · " + counts.localities + " localidades, " +
         counts.documented + " contextos con fuente y " + counts.hypotheses + " hipótesis.";
+    }
+    if (atlasCounts.summary) {
+      atlasCounts.summary.textContent = counts.total + " referencias · " +
+        counts.localities + " localidades · " + counts.documented +
+        " contextos con fuente · " + counts.hypotheses + " hipótesis";
     }
   }
 
