@@ -340,7 +340,11 @@ La barra del Mapa IA permite compartir una vista del inventario con su búsqueda
 - Si el portapapeles está bloqueado, el enlace queda seleccionado en un campo para copiar manualmente.
 - La vista compartida no incluye la bitácora local de diligencia, datos de navegador ni expedientes internos. Los parámetros desconocidos de la URL se conservan.
 - Los enlaces de ficha individual mantienen los filtros activos para que una contraparte reciba el mismo contexto territorial.
-- `scripts/test_mapa_ia.js` verifica restauración, validación de parámetros, longitud máxima, conservación de UTM y fragmentos, limpieza de filtros y exclusión de la bitácora.
+- Cada tarjeta muestra sus acciones principales antes de la bitácora extensa: consulta comercial contextual, ficha editorial descargable para tesis y enlace compartible. La consulta abre `/oportunidades/?map_ref=<id>`; el formulario recupera el nombre de la referencia en un bloque visible y en el borrador revisable de WhatsApp.
+- Las etiquetas comerciales distinguen tesis territoriales de localidades. No implican que exista una parcela, disponibilidad ni un proyecto confirmado.
+- Las exportaciones CSV y GeoJSON se agrupan en un acceso secundario. En móvil el panel inicia cerrado; al abrirlo explica que CSV sirve para hojas de cálculo y GeoJSON para QGIS/GIS. Ambos archivos incluyen solo las referencias visibles y mantienen las advertencias sobre coordenadas aproximadas.
+- `scripts/test_mapa_ia.js` verifica restauración, validación de parámetros, longitud máxima, conservación de UTM y fragmentos, limpieza de filtros, etiquetas comerciales, agrupación de exportaciones y exclusión de la bitácora.
+- La auditoría Chromium abre el panel de exportaciones en móvil, comprueba que las acciones de la tesis precedan a la bitácora y sigue el enlace `map_ref` hasta el contexto visible del formulario público.
 
 
 ### Mesa Operativa local

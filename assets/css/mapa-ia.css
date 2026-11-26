@@ -138,6 +138,48 @@
   outline: 2px solid #a95d3c;
   outline-offset: 3px;
 }
+.map-item-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 0 0 14px;
+  padding: 0 0 11px;
+  border-bottom: 1px solid var(--line);
+}
+.map-item-actions .map-contact-link,
+.map-item-actions .map-brief-button {
+  margin: 0;
+}
+.map-item-actions .map-brief-button {
+  width: auto;
+  min-height: 40px;
+}
+.map-item-actions .map-share-link {
+  margin: 0;
+  padding: 9px 2px;
+}
+.map-item-actions .map-focus-button {
+  margin: 0;
+}
+@media (max-width: 760px) {
+  .map-item-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .map-item-actions .map-contact-link,
+  .map-item-actions .map-brief-button,
+  .map-item-actions .map-focus-button {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+  .map-item-actions .map-share-link {
+    justify-content: center;
+    text-align: center;
+  }
+}
 
 
 /* Mesa de verificación: fuentes oficiales y secuencia documental, en lenguaje editorial. */
@@ -954,4 +996,48 @@
   .map-filter-group { grid-template-columns: minmax(0, 1fr); }
   .map-filter-search,
   .map-filter-refine { grid-column: auto; }
+}
+
+/* Exportaciones de datos: disponibles sin competir con la acción comercial principal. */
+.map-data-export-disclosure {
+  margin: 0 0 17px;
+  border-bottom: 1px solid var(--line);
+}
+.map-data-export-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 0 15px;
+}
+.map-data-export-body > p {
+  max-width: 620px;
+  margin: 0;
+  color: #686960;
+  font: 10px/1.65 var(--sans);
+}
+.map-data-export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.map-data-export-actions .map-export {
+  min-height: 40px;
+  margin: 0;
+}
+@media (max-width: 760px) {
+  .map-data-export-disclosure { margin: 0 0 14px; }
+  .map-data-export-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px 0 13px;
+  }
+  .map-data-export-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .map-data-export-actions .map-export { width: 100%; }
 }
