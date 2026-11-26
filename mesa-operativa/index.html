@@ -19,7 +19,7 @@
     <div class="eyebrow">MORENO · Gestión interna en navegador</div>
     <h1>Seguimiento comercial y originación.</h1>
     <p class="opportunity-intro">Esta mesa reúne el pipeline, la agenda, las fuentes, la diligencia y los honorarios. Trabaja con archivos locales: no sincroniza ni transmite la información al sitio.</p>
-    <p class="operations-safety"><strong>Importante:</strong> esta página no tiene contraseña, autenticación ni control de acceso. La URL es pública aunque no se enlace desde la navegación ni se indexe. No ingreses nombres de personas, teléfonos, correos, DNI, escrituras, datos bancarios ni información confidencial. Para datos sensibles necesitás un CRM o repositorio con permisos y autenticación reales.</p>
+    <p class="operations-safety"><strong>Importante:</strong> esta página no tiene contraseña, autenticación ni control de acceso. La URL es pública aunque no se enlace desde la navegación ni se indexe. La directiva noindex y la separación de esta página no constituyen una medida de seguridad. No ingreses nombres de personas, teléfonos, correos, DNI, escrituras, datos bancarios ni información confidencial. Para datos sensibles necesitás un CRM o repositorio con permisos y autenticación reales.</p>
   </section>
   <section class="wrap operations-import" aria-labelledby="operations-import-title">
     <div class="operations-import-heading">
@@ -117,40 +117,7 @@
     </div>
   </details>
 </section>
-<section class="wrap feasibility-tool" aria-labelledby="feasibility-title">
-  <div class="feasibility-intro">
-    <div class="eyebrow">Una primera lectura técnica</div>
-    <h2 id="feasibility-title">¿Tenés los indicadores urbanísticos? Hagamos una cuenta preliminar.</h2>
-    <p>Si conocés la superficie y los factores FOS y/o FOT correspondientes a esa parcela, podés estimar superficies teóricas de referencia. Si solo conocés la superficie, también podés compartirla sin calcular; los indicadores pueden quedar vacíos.</p>
-    <p class="feasibility-caution">Ingresá únicamente indicadores consultados para esa parcela en una fuente municipal o documentación técnica vigente. Si no los conocés, dejá los campos vacíos y continuá con el contacto.</p>
-  </div>
-  <div class="feasibility-panel">
-    <div class="feasibility-fields">
-      <div class="form-field">
-        <label for="parcel-area">Superficie del lote (m²)</label>
-        <input id="parcel-area" name="superficie-lote-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 1200" aria-describedby="feasibility-help">
-      </div>
-      <div class="form-field">
-        <label for="parcel-fos">FOS de la parcela</label>
-        <input id="parcel-fos" name="fos-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 0,60">
-      </div>
-      <div class="form-field">
-        <label for="parcel-fot">FOT de la parcela</label>
-        <input id="parcel-fot" name="fot-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 1,20">
-      </div>
-      <div class="form-field">
-        <label for="parcel-reference">Fuente o referencia consultada</label>
-        <input id="parcel-reference" name="fuente-indicadores" maxlength="180" placeholder="Ej.: certificado urbanístico / ordenanza">
-      </div>
-    </div>
-    <p class="field-hint" id="feasibility-help">FOS = referencia teórica de ocupación en planta. FOT = referencia teórica de superficie total computable. Para calcular, ingresá superficie y al menos uno de esos indicadores. Usá números sin separador de miles; podés escribir coma o punto decimal.</p>
-    <button class="button dark feasibility-button" id="feasibility-calculate" type="button">Calcular referencia ↗</button>
-    <div class="feasibility-results" id="feasibility-results" role="status" aria-live="polite">
-      <p>El resultado aparecerá acá. No se aplican coeficientes supuestos ni valores automáticos.</p>
-    </div>
-    <p class="feasibility-disclaimer">El cálculo es matemático y orientativo: no determina superficie efectivamente edificable ni viabilidad. No contempla retiros, alturas, densidad, usos, servidumbres, afectaciones, restricciones hidráulicas o ambientales, geometría del lote ni otras exigencias. Todo debe verificarse para la parcela y la normativa vigente.</p>
-  </div>
-</section>
+
   <section class="wrap operations-originacion" aria-labelledby="operations-originacion-title">
     <div class="operations-originacion-heading">
       <div class="eyebrow">Expediente individual</div>
