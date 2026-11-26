@@ -264,7 +264,7 @@ def main() -> None:
                 errors.append("mapa-ia/index.html: falta la descarga GeoJSON de referencias visibles")
             if 'id="map-data-export-disclosure"' not in page_source:
                 errors.append("mapa-ia/index.html: falta el acceso secundario a exportaciones CSV y GeoJSON")
-            for review_id in ('id="export-review"', 'id="review-status"'):
+            for review_id in ('id="export-review"', 'id="review-status"', 'id="clear-review"'):
                 if review_id not in page_source:
                     errors.append(f"mapa-ia/index.html: falta el control de bitácora local {review_id}")
             for share_id in ('id="share-map-view"', 'id="map-share-status"', 'id="map-share-url"', 'maxlength="100"'):
@@ -274,8 +274,18 @@ def main() -> None:
                 errors.append("mapa-ia/index.html: debe aclarar que la vista compartida no incluye la bitácora local")
             if "no se envían al servidor" not in page_source or "no certifica" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar privacidad y alcance de la bitácora")
+            if "almacenamiento local del navegador sin cifrado" not in page_source or "borrar la bitácora" not in page_source:
+                errors.append("mapa-ia/index.html: falta advertir que la bitácora local no está cifrada y ofrecer su borrado")
             if "QGIS u otros sistemas GIS" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar el uso y alcance de la exportación GeoJSON")
+            map_module = ROOT / "assets/js/mapa-ia.js"
+            if not map_module.is_file():
+                errors.append("Falta assets/js/mapa-ia.js para operar el Mapa IA")
+            else:
+                map_source = map_module.read_text(encoding="utf-8")
+                for required_logic in ("function clearReviewState(storage)", 'getElementById("clear-review")', 'reviewClearButton.addEventListener("click"'):
+                    if required_logic not in map_source:
+                        errors.append(f"assets/js/mapa-ia.js: falta el control de privacidad de la bitácora: {required_logic}")
             for required_source_markup in (
                 'id="map-verification-title"',
                 'id="map-refine-filters"',

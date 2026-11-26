@@ -110,6 +110,18 @@ function writeReviewState(storage, state, items) {
   }
 }
 
+function clearReviewState(storage) {
+  if (!storage) return true;
+  if (typeof storage.removeItem !== "function") return false;
+  try {
+    storage.removeItem(REVIEW_STORAGE_KEY);
+    storage.removeItem(LEGACY_REVIEW_STORAGE_KEY);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 function updateReviewState(state, referenceId, taskId, completed, items, details) {
   const allowedItems = items || opportunities;
   if (!allowedItems.some(item => item.id === referenceId) ||
@@ -880,6 +892,7 @@ function initMapPage(doc) {
   const reviewExportButton = doc.getElementById("export-review");
   const reviewImportButton = doc.getElementById("import-review");
   const reviewImportInput = doc.getElementById("import-review-file");
+  const reviewClearButton = doc.getElementById("clear-review");
   const reviewStatusElement = doc.getElementById("review-status");
   const atlasCounts = {
     localities: doc.getElementById("atlas-localities-count"),
@@ -1781,6 +1794,25 @@ function initMapPage(doc) {
   reviewImportButton.hidden = false;
   reviewImportButton.addEventListener("click", () => reviewImportInput.click());
   reviewImportInput.addEventListener("change", event => importReviewFile(event.target.files && event.target.files[0]));
+  if (reviewClearButton) {
+    reviewClearButton.addEventListener("click", () => {
+      const view = doc.defaultView;
+      if (view && typeof view.confirm === "function" &&
+          !view.confirm("¿Borrar la bitácora guardada en este navegador? Las copias JSON descargadas no se eliminarán.")) return;
+      const cleared = clearReviewState(reviewStorage);
+      if (cleared) {
+        reviewState = {};
+        render();
+        reviewStatusElement.textContent = reviewStorage
+          ? "Bitácora local borrada de este navegador. Las copias JSON descargadas deben eliminarse por separado."
+          : "Bitácora de esta sesión borrada. El almacenamiento local no está disponible.";
+      } else {
+        reviewState = readReviewState(reviewStorage, opportunities);
+        render();
+        reviewStatusElement.textContent = "El navegador no permitió borrar toda la bitácora local. Los registros que sigan disponibles se conservaron.";
+      }
+    });
+  }
   searchInput.addEventListener("input", render);
   categoryInput.addEventListener("change", render);
   kindInput.addEventListener("change", render);
@@ -1810,7 +1842,7 @@ if (typeof module !== "undefined" && module.exports) {
     getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl,
     buildReferenceUrl, buildOpportunityContactUrl, referenceContactLabel,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
-    isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
+    isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState,
     getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates,
     buildTerritorialBrief, buildTerritorialBriefHtml,
     buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml

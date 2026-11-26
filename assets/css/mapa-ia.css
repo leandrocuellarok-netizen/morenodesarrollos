@@ -1204,3 +1204,24 @@
   min-height: 0;
   overflow: visible;
 }
+
+
+/* Privacidad y control explícito de la bitácora local. */
+.map-review-privacy {
+  margin: 0 0 13px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--rust);
+  background: #f3eee4;
+  color: #62645c;
+  font: 10px/1.7 var(--sans);
+}
+.map-review-privacy strong { color: var(--ink); }
+.map-review-clear {
+  border-color: #8b5b43;
+  color: #80533a;
+}
+.map-review-clear:hover {
+  border-color: #8b5b43;
+  background: #8b5b43;
+  color: #f5f2e9;
+}

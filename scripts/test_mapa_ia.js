@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -32,6 +32,10 @@ for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-do
 assert.ok(mapPage.includes("La forma distingue la clase"), "la leyenda explica la semántica de los símbolos sin depender del color");
 assert.ok(mapPage.includes('id="export-review"'), "el Mapa IA permite exportar la bitácora local");
 assert.ok(mapPage.includes('id="review-status"'), "el Mapa IA explica el estado y alcance del guardado local");
+assert.ok(mapPage.includes('id="clear-review"'), "el Mapa IA permite borrar la bitácora local desde la interfaz");
+assert.match(mapPage, /almacenamiento local del navegador sin cifrado/i, "la bitácora explica que el almacenamiento local no está cifrado");
+assert.ok(source.includes("function clearReviewState(storage)"), "el motor expone una operación controlada de borrado");
+assert.ok(source.includes('reviewClearButton.addEventListener("click"'), "el control de borrado está conectado a la interfaz");
 assert.match(mapPage, /no se envían al servidor[\s\S]*Exportar bitácora JSON/i, "la página explica que la bitácora no se transmite y puede exportarse");
 assert.ok(mapPage.includes('href="https://mapas.moreno.gob.ar/"'), "se enlaza el visor cartográfico oficial de Moreno");
 assert.ok(mapPage.includes('href="https://arba.gov.ar/geoarba/inicio.asp"'), "se enlaza GeoARBA como fuente provincial");
@@ -337,6 +341,11 @@ assert.equal(savedReviewPayload.key, "moreno-map-review-v2");
 assert.equal(removedLegacyKey, LEGACY_REVIEW_STORAGE_KEY);
 assert.deepEqual(JSON.parse(savedReviewPayload.value), firstReviewState);
 assert.equal(writeReviewState({ setItem: () => { throw new Error("storage bloqueado"); } }, firstReviewState, opportunities), false);
+const removedReviewKeys = [];
+assert.equal(clearReviewState({ removeItem: key => removedReviewKeys.push(key) }), true);
+assert.deepEqual(removedReviewKeys, [REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY]);
+assert.equal(clearReviewState(null), true, "sin almacenamiento persistente, se puede limpiar el estado de esta sesión");
+assert.equal(clearReviewState({ removeItem: () => { throw new Error("storage bloqueado"); } }), false);
 const reviewExport = buildReviewExport(firstReviewState, all, "2026-11-25T06:00:00.000Z");
 assert.equal(reviewExport.schema_version, 2);
 assert.equal(reviewExport.generated_at, "2026-11-25T06:00:00.000Z");
@@ -362,6 +371,8 @@ assert.ok(styles.includes(".map-review-toolbar"));
 assert.ok(styles.includes(".map-review-fields"));
 assert.ok(styles.includes(".map-review-task"));
 assert.ok(styles.includes(".map-review-legacy"));
+assert.ok(styles.includes(".map-review-privacy"));
+assert.ok(styles.includes(".map-review-clear"));
 
 
 
