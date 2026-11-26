@@ -138,7 +138,7 @@ class Element {
   assert.equal(download.disabled, false);
   assert.equal(agendaDownload.disabled, false);
 
-  const financialCsv = headers.join(";") + "\\n" + makeRow({
+  const financialCsv = headers.join(";") + "\n" + makeRow({
     id_oportunidad:"M-UI-FIN", localidad:"Moreno", tipo_activo:"Terreno",
     etapa_comercial:"negociación", proxima_accion:"Revisar conciliación",
     fecha_proximo_seguimiento:"2026-11-27", honorarios_acordados:"250",
