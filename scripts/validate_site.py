@@ -262,6 +262,8 @@ def main() -> None:
                 errors.append("mapa-ia/index.html: falta explicar la ficha editorial descargable para desarrolladores")
             if 'id="export-geojson"' not in page_source:
                 errors.append("mapa-ia/index.html: falta la descarga GeoJSON de referencias visibles")
+            if 'id="map-data-export-disclosure"' not in page_source:
+                errors.append("mapa-ia/index.html: falta el acceso secundario a exportaciones CSV y GeoJSON")
             for review_id in ('id="export-review"', 'id="review-status"'):
                 if review_id not in page_source:
                     errors.append(f"mapa-ia/index.html: falta el control de bitácora local {review_id}")
@@ -371,7 +373,11 @@ def main() -> None:
                     "dossierExportButton.addEventListener(\"click\", downloadTerritorialDossier)",
                     "function buildOpportunityContactUrl(baseUrl, item)",
                     'url.searchParams.delete("map_name")',
-                    'link.textContent = "Consultar sobre esta referencia ↗"',
+                    "function referenceContactLabel(item)",
+                    "link.textContent = referenceContactLabel(item)",
+                    'actions.className = "map-item-actions"',
+                    'actions.append(contactLinkNode(item, "map-contact-link map-contact-primary"))',
+                    "body.append(reviewPanelNode(item))",
                     'contactLinkNode(item, "map-contact-link")',
                     "updateShareUrl(item.id)",
                     'shareLink.textContent = "Abrir ficha compartible ↗"',
@@ -472,6 +478,10 @@ def main() -> None:
                     ".map-brief-button:focus-visible",
 
                     ".map-contact-link",
+                    ".map-item-actions",
+                    ".map-data-export-disclosure",
+                    ".map-data-export-body",
+                    ".map-data-export-actions",
                     ".map-review-toolbar",
                     ".map-review-toolbar-actions",
                     ".map-review-import-note",

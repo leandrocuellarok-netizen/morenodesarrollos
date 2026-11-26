@@ -315,6 +315,12 @@ function buildOpportunityContactUrl(baseUrl, item) {
   return url.toString();
 }
 
+function referenceContactLabel(item) {
+  return item && item.type === "opportunity"
+    ? "Conversar sobre esta tesis ↗"
+    : "Consultar sobre esta localidad ↗";
+}
+
 function shouldFitMunicipalBounds(selectedReferenceId, userHasNavigated) {
   return !selectedReferenceId && !userHasNavigated;
 }
@@ -966,7 +972,8 @@ function initMapPage(doc) {
     link.href = buildOpportunityContactUrl(doc.baseURI || doc.defaultView.location.href, item);
     link.target = "_blank";
     link.rel = "noopener noreferrer";
-    link.textContent = "Consultar sobre esta referencia ↗";
+    link.textContent = referenceContactLabel(item);
+    link.setAttribute("aria-label", referenceContactLabel(item) + " · " + item.name);
     return link;
   }
 
@@ -1214,6 +1221,40 @@ function initMapPage(doc) {
 
       const body = doc.createElement("div");
       body.className = "map-item-body";
+      const actions = doc.createElement("div");
+      actions.className = "map-item-actions";
+      actions.append(contactLinkNode(item, "map-contact-link map-contact-primary"));
+
+      if (item.type === "opportunity") {
+        const briefButton = doc.createElement("button");
+        briefButton.type = "button";
+        briefButton.className = "map-brief-button";
+        briefButton.textContent = "Descargar ficha editorial ↧";
+        briefButton.setAttribute("aria-label", "Descargar ficha editorial de " + item.name);
+        briefButton.addEventListener("click", () => downloadTerritorialBrief(item));
+        actions.append(briefButton);
+      }
+
+      const shareLink = doc.createElement("a");
+      shareLink.className = "map-share-link";
+      shareLink.href = buildReferenceUrl(doc.defaultView.location.href, item.id);
+      shareLink.target = "_blank";
+      shareLink.rel = "noopener noreferrer";
+      shareLink.setAttribute("aria-label", "Abrir enlace directo a " + item.name + " en una pestaña nueva");
+      shareLink.textContent = "Abrir ficha compartible ↗";
+      actions.append(shareLink);
+
+      if (map) {
+        const focusButton = doc.createElement("button");
+        focusButton.type = "button";
+        focusButton.className = "map-focus-button";
+        focusButton.textContent = "Ubicar en el mapa";
+        focusButton.setAttribute("aria-label", "Centrar el mapa en " + item.name);
+        focusButton.addEventListener("click", () => focusItem(item));
+        actions.append(focusButton);
+      }
+      body.append(actions);
+
       const addDetail = (label, value) => {
         if (!value) return;
         const paragraph = doc.createElement("p");
@@ -1239,35 +1280,9 @@ function initMapPage(doc) {
           link.textContent = "Abrir referencia externa ↗";
           body.append(link);
         }
+        body.append(reviewPanelNode(item));
       }
 
-      if (item.type === "opportunity") {
-        const briefButton = doc.createElement("button");
-        briefButton.type = "button";
-        briefButton.className = "map-brief-button";
-        briefButton.textContent = "Descargar ficha editorial ↧";
-        briefButton.setAttribute("aria-label", "Descargar ficha editorial de " + item.name);
-        briefButton.addEventListener("click", () => downloadTerritorialBrief(item));
-        body.append(briefButton, reviewPanelNode(item));
-      }
-
-      if (map) {
-        const focusButton = doc.createElement("button");
-        focusButton.type = "button";
-        focusButton.className = "map-focus-button";
-        focusButton.textContent = "Ubicar en el mapa";
-        focusButton.setAttribute("aria-label", "Centrar el mapa en " + item.name);
-        focusButton.addEventListener("click", () => focusItem(item));
-        body.append(focusButton);
-      }
-      const shareLink = doc.createElement("a");
-      shareLink.className = "map-share-link";
-      shareLink.href = buildReferenceUrl(doc.defaultView.location.href, item.id);
-      shareLink.target = "_blank";
-      shareLink.rel = "noopener noreferrer";
-      shareLink.setAttribute("aria-label", "Abrir enlace directo a " + item.name + " en una pestaña nueva");
-      shareLink.textContent = "Abrir ficha compartible ↗";
-      body.append(shareLink, contactLinkNode(item, "map-contact-link"));
       card.append(body);
       target.append(card);
     });
@@ -1618,7 +1633,7 @@ if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson,
     getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl,
-    buildReferenceUrl, buildOpportunityContactUrl,
+    buildReferenceUrl, buildOpportunityContactUrl, referenceContactLabel,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
     isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
     getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates,
