@@ -257,16 +257,55 @@ function mergeReviewStates(localState, importedState, items) {
   return { state: normalizeReviewState(merged, allowedItems), addedRecords, combinedRecords, conflicts };
 }
 
-function getSharedReferenceId(search, items) {
+const MAP_VIEW_QUERY_KEYS = ["q", "tipo", "sector", "evidencia", "ref"];
+const MAP_VIEW_CATEGORIES = ["all", "locality", "opportunity"];
+const MAP_VIEW_KINDS = ["all", "industrial", "commercial", "tourism", "land"];
+const MAP_VIEW_EVIDENCE = ["all", "documented", "hypothesis"];
+
+function normalizeMapViewState(state, items) {
+  const settings = state || {};
+  const query = String(settings.query || "").trim().slice(0, 100);
+  const category = MAP_VIEW_CATEGORIES.includes(settings.category) ? settings.category : "all";
+  const kind = MAP_VIEW_KINDS.includes(settings.kind) ? settings.kind : "all";
+  const evidence = MAP_VIEW_EVIDENCE.includes(settings.evidence) ? settings.evidence : "all";
+  const candidateReference = String(settings.ref || "");
+  const reference = (items || []).some(item => item.id === candidateReference)
+    ? candidateReference
+    : null;
+  return { query, category, kind, evidence, ref: reference };
+}
+
+function parseMapViewState(search, items) {
   const parameters = new URLSearchParams(String(search || ""));
-  const id = parameters.get("ref");
-  return (items || []).some(item => item.id === id) ? id : null;
+  return normalizeMapViewState({
+    query: parameters.get("q") || "",
+    category: parameters.get("tipo") || "all",
+    kind: parameters.get("sector") || "all",
+    evidence: parameters.get("evidencia") || "all",
+    ref: parameters.get("ref")
+  }, items);
+}
+
+function buildMapViewUrl(baseUrl, state, items) {
+  const url = new URL(String(baseUrl));
+  const normalized = normalizeMapViewState(state, items);
+  MAP_VIEW_QUERY_KEYS.forEach(key => url.searchParams.delete(key));
+  if (normalized.query) url.searchParams.set("q", normalized.query);
+  if (normalized.category !== "all") url.searchParams.set("tipo", normalized.category);
+  if (normalized.kind !== "all") url.searchParams.set("sector", normalized.kind);
+  if (normalized.evidence !== "all") url.searchParams.set("evidencia", normalized.evidence);
+  if (normalized.ref) url.searchParams.set("ref", normalized.ref);
+  return url.toString();
+}
+
+function getSharedReferenceId(search, items) {
+  return parseMapViewState(search, items).ref;
 }
 
 function buildReferenceUrl(baseUrl, referenceId) {
-  const url = new URL(String(baseUrl));
-  url.searchParams.set("ref", String(referenceId));
-  return url.toString();
+  const currentUrl = new URL(String(baseUrl));
+  const currentState = parseMapViewState(currentUrl.search, all);
+  return buildMapViewUrl(baseUrl, { ...currentState, ref: referenceId }, all);
 }
 
 function buildOpportunityContactUrl(baseUrl, item) {
@@ -555,6 +594,14 @@ function initMapPage(doc) {
 
   const statusElement = doc.getElementById("map-status");
   const boundaryElement = doc.getElementById("boundary-status");
+  const searchInput = doc.getElementById("search");
+  const categoryInput = doc.getElementById("category");
+  const kindInput = doc.getElementById("kind-filter");
+  const evidenceInput = doc.getElementById("evidence-filter");
+  const shareViewButton = doc.getElementById("share-map-view");
+  const shareViewStatus = doc.getElementById("map-share-status");
+  const shareFallbackWrap = doc.getElementById("map-share-fallback-wrap");
+  const shareFallbackInput = doc.getElementById("map-share-url");
   const localityList = doc.getElementById("locality-list");
   const opportunityList = doc.getElementById("opportunity-list");
   const exportButton = doc.getElementById("export-csv");
@@ -583,10 +630,15 @@ function initMapPage(doc) {
   reviewStatusElement.textContent = reviewStorage
     ? "Las marcas se guardan en este navegador; no se envían al servidor."
     : "El almacenamiento local no está disponible; exportá la bitácora para conservar las marcas mientras trabajás.";
-  let selectedReferenceId = getSharedReferenceId(
+  const initialViewState = parseMapViewState(
     doc.defaultView && doc.defaultView.location ? doc.defaultView.location.search : "",
     all
   );
+  searchInput.value = initialViewState.query;
+  categoryInput.value = initialViewState.category;
+  kindInput.value = initialViewState.kind;
+  evidenceInput.value = initialViewState.evidence;
+  let selectedReferenceId = initialViewState.ref;
   let userHasNavigated = false;
 
   function showFallback(message) {
@@ -652,13 +704,68 @@ function initMapPage(doc) {
     return link;
   }
 
+  function currentMapViewState(referenceId) {
+    return {
+      query: searchInput.value,
+      category: categoryInput.value,
+      kind: kindInput.value,
+      evidence: evidenceInput.value,
+      ref: typeof referenceId === "undefined" ? selectedReferenceId : referenceId
+    };
+  }
+
   function updateShareUrl(referenceId) {
     const view = doc.defaultView;
-    if (!view || !view.location || !view.history || typeof view.history.replaceState !== "function") return;
-    const url = new view.URL(view.location.href);
-    if (referenceId) url.searchParams.set("ref", referenceId);
-    else url.searchParams.delete("ref");
-    view.history.replaceState(null, "", url.toString());
+    if (!view || !view.location || !view.history || typeof view.history.replaceState !== "function") return "";
+    const url = buildMapViewUrl(view.location.href, currentMapViewState(referenceId), all);
+    view.history.replaceState(null, "", url);
+    return url;
+  }
+
+  function showManualShareUrl(url) {
+    shareFallbackWrap.hidden = false;
+    shareFallbackInput.value = url;
+    shareFallbackInput.focus();
+    shareFallbackInput.select();
+    shareViewStatus.textContent = "Copiá el enlace seleccionado para compartir esta vista.";
+  }
+
+  function copyShareUrl(url) {
+    const view = doc.defaultView;
+    const clipboard = view && view.navigator && view.navigator.clipboard;
+    if (clipboard && typeof clipboard.writeText === "function") {
+      clipboard.writeText(url).then(() => {
+        shareFallbackWrap.hidden = true;
+        shareViewStatus.textContent = "Enlace de la vista copiado.";
+      }).catch(() => showManualShareUrl(url));
+      return;
+    }
+    showManualShareUrl(url);
+  }
+
+  function shareCurrentView() {
+    const view = doc.defaultView;
+    const url = updateShareUrl();
+    if (!view || !url) return;
+    const shareData = {
+      title: "Mapa IA de Moreno · MORENO",
+      text: "Vista territorial filtrada. Las referencias no acreditan disponibilidad inmobiliaria.",
+      url
+    };
+    if (view.navigator && typeof view.navigator.share === "function") {
+      try {
+        view.navigator.share(shareData).then(() => {
+          shareViewStatus.textContent = "Vista compartida.";
+        }).catch(error => {
+          if (!error || error.name !== "AbortError") copyShareUrl(url);
+        });
+        return;
+      } catch (error) {
+        copyShareUrl(url);
+        return;
+      }
+    }
+    copyShareUrl(url);
   }
 
   function setActiveReference(item, options) {
@@ -942,6 +1049,7 @@ function initMapPage(doc) {
     statusElement.textContent = selectedItem
       ? "Enlace directo · " + selectedItem.name
       : shown.length + " referencias visibles · capa exploratoria";
+    updateShareUrl();
   }
 
   function exportVisibleCsv() {
@@ -1183,15 +1291,16 @@ function initMapPage(doc) {
   reviewImportButton.hidden = false;
   reviewImportButton.addEventListener("click", () => reviewImportInput.click());
   reviewImportInput.addEventListener("change", event => importReviewFile(event.target.files && event.target.files[0]));
-  doc.getElementById("search").addEventListener("input", render);
-  doc.getElementById("category").addEventListener("change", render);
-  doc.getElementById("kind-filter").addEventListener("change", render);
-  doc.getElementById("evidence-filter").addEventListener("change", render);
+  searchInput.addEventListener("input", render);
+  categoryInput.addEventListener("change", render);
+  kindInput.addEventListener("change", render);
+  evidenceInput.addEventListener("change", render);
+  shareViewButton.addEventListener("click", shareCurrentView);
   doc.getElementById("reset-map").addEventListener("click", () => {
-    doc.getElementById("search").value = "";
-    doc.getElementById("category").value = "all";
-    doc.getElementById("kind-filter").value = "all";
-    doc.getElementById("evidence-filter").value = "all";
+    searchInput.value = "";
+    categoryInput.value = "all";
+    kindInput.value = "all";
+    evidenceInput.value = "all";
     selectedReferenceId = null;
     updateShareUrl(null);
     render();
@@ -1207,7 +1316,8 @@ function initMapPage(doc) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson,
-    getSharedReferenceId, buildReferenceUrl, buildOpportunityContactUrl,
+    getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl,
+    buildReferenceUrl, buildOpportunityContactUrl,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
     isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, updateReviewState,
     getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates,
