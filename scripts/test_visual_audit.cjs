@@ -175,6 +175,7 @@ async function auditRoute(browser, route) {
       await page.locator("#map-refine-filters > summary").click();
       check(!(await page.locator("#map-refine-filters").evaluate(element => element.open)), "mapa-ia: los filtros secundarios no se pueden volver a contraer");
       await page.setViewportSize({ width: 1440, height: 900 });
+      await delay(100);
       check(await page.locator("#map-refine-filters").evaluate(element => element.open), "mapa-ia: los filtros secundarios deben volver a abrirse al pasar a escritorio");
       await page.setViewportSize({ width: 390, height: 844 });
       await delay(80);
