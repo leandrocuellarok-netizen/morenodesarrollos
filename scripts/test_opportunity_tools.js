@@ -168,6 +168,31 @@ const dossierWithoutIndicators = tools.buildOpportunityDossier({
 });
 assert.match(JSON.stringify(dossierWithoutIndicators), /No se ingresaron datos para realizar una cuenta/);
 assert.match(dossierWithoutIndicators.status, /NO VERIFICADOS/);
+const publicOnlyDossier = tools.buildOpportunityDossier({
+  fields: { nombre: "Contacto público" },
+  calculationInput: {},
+  internalData: tools.emptyInternalDossier(),
+  includePublic: true,
+  includeInternal: false
+});
+assert.match(JSON.stringify(publicOnlyDossier), /Origen y contacto/);
+assert.doesNotMatch(JSON.stringify(publicOnlyDossier), /Seguimiento y negociación|Registro de fuentes y evidencia|Control de diligencia|Honorarios · importes independientes/);
+assert.doesNotMatch(JSON.stringify(publicOnlyDossier), /no tiene autenticación/);
+
+const internalOnlyData = tools.emptyInternalDossier();
+internalOnlyData.reference = "MOR-TEST-001";
+internalOnlyData.organization = "Empresa de prueba";
+const internalOnlyDossier = tools.buildOpportunityDossier({
+  fields: { nombre: "Este dato no debe salir" },
+  calculationInput: { areaRaw: "1200" },
+  internalData: internalOnlyData,
+  includePublic: false,
+  includeInternal: true
+});
+assert.doesNotMatch(JSON.stringify(internalOnlyDossier), /Origen y contacto|Inmueble o proyecto|Este dato no debe salir|1200/);
+assert.match(JSON.stringify(internalOnlyDossier), /Seguimiento y negociación/);
+assert.match(JSON.stringify(internalOnlyDossier), /MOR-TEST-001/);
+
 assert.doesNotMatch(JSON.stringify(dossierWithoutIndicators), /superficie edificable aprobada/);
 assert.match(JSON.stringify(dossierWithoutIndicators), /Sin datos internos registrados/);
 

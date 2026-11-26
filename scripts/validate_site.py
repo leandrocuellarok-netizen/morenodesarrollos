@@ -21,6 +21,7 @@ SITE_PAGES = (
     Path("erica-acosta/index.html"),
     Path("oportunidades/index.html"),
 )
+INTERNAL_PAGE = Path("mesa-operativa/index.html")
 PAGE_URLS = {
     Path("index.html"): PUBLIC_BASE,
     Path("mapa-ia/index.html"): PUBLIC_BASE + "mapa-ia/",
@@ -464,55 +465,23 @@ def main() -> None:
             for required_id in ("map-reference-context", "map-reference-value"):
                 if required_id not in parser.ids:
                     errors.append(f"{relative.as_posix()}: falta el contexto comercial del Mapa IA: {required_id}")
-            if 'class="originacion-workbench"' not in page_source or "Esta mesa no tiene autenticación" not in page_source:
-                errors.append("Oportunidades: falta explicar el alcance local y la ausencia de autenticación de la mesa de originación")
-            if len(re.findall(r'data-check-id="(?:cadastral|legal|zoning|environment|services|market)"', page_source)) != 6:
-                errors.append("Oportunidades: el control de diligencia debe cubrir seis áreas")
-            if len(re.findall(r'data-evidence-label="(?:title|classification|url|consultedAt|note)"', page_source)) != 5:
-                errors.append("Oportunidades: las cinco etiquetas de fuentes dinámicas deben estar declaradas")
-            for check_key in ("cadastral", "legal", "zoning", "environment", "services", "market"):
-                for field in ("status", "source", "consultedAt", "note"):
-                    control_id = f"originacion-check-{check_key}-{field}"
-                    if f'id="{control_id}"' not in page_source or f'for="{control_id}"' not in page_source:
-                        errors.append(f"Oportunidades: el control {control_id} debe tener una etiqueta asociada")
-            workbench_match = re.search(r'<details\b[^>]*id="originacion-workbench"[^>]*>(.*?)</details>', page_source, re.DOTALL)
-            if not workbench_match or re.search(r'\bname\s*=', workbench_match.group(1)):
-                errors.append("Oportunidades: la mesa interna no debe añadir campos al mensaje público de contacto")
-            if "Los campos internos de originación, negociación y honorarios no forman parte de este mensaje." not in (ROOT / "assets/js/opportunity-tools.js").read_text(encoding="utf-8"):
-                errors.append("Oportunidades: los datos internos deben quedar fuera del borrador de WhatsApp")
             if "https://wa.me/5491141671674?text=" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta el destino de WhatsApp del formulario")
             if "El sitio no recibe ni almacena estos datos" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta la explicación de privacidad del formulario")
-            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral", "documentation-checklist", "verification-checklist", "contact-preview", "contact-message-preview", "copy-contact-message", "open-whatsapp", "download-opportunity-dossier", "originacion-workbench", "originacion-evidence-list", "originacion-evidence-template", "originacion-add-evidence", "originacion-status", "originacion-fee-currency", "originacion-commercial-stage", "originacion-follow-up-date", "originacion-print-dossier", "originacion-download-dossier"):
+            for required_id in ("parcel-area", "parcel-fos", "parcel-fot", "parcel-reference", "feasibility-calculate", "feasibility-results", "contact-address", "contact-cadastral", "documentation-checklist", "verification-checklist", "contact-preview", "contact-message-preview", "copy-contact-message", "open-whatsapp", "download-opportunity-dossier"):
                 if required_id not in parser.ids:
-                    errors.append(f"{relative.as_posix()}: falta control de cálculo {required_id}")
-            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.readMapReference", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", "MorenoOpportunityTools.buildOpportunityDossierExport", "MorenoOriginacionWorkbench.read()", "MorenoOriginacionWorkbench.apply", "validateOriginacionForExport", "buildInternalDossierInput()", 'data.fields.nombre=""', 'data.fields.detalle=""', "internalData:window.MorenoOriginacionWorkbench.read()", 'formData.getAll("documentacion")', 'formData.getAll("verificaciones")', "navigator.clipboard.writeText", "Consulta iniciada desde el Mapa IA"):
+                    errors.append(f"{relative.as_posix()}: falta control público o de cálculo {required_id}")
+            for required_logic in ("MorenoOpportunityTools.calculatePreliminary", "MorenoOpportunityTools.readMapReference", "MorenoOpportunityTools.buildContactMessage", "MorenoOpportunityTools.buildWhatsAppUrl", "MorenoOpportunityTools.buildOpportunityDossierExport", 'formData.getAll("documentacion")', 'formData.getAll("verificaciones")', "navigator.clipboard.writeText", "Consulta iniciada desde el Mapa IA", "includePublic:true", "includeInternal:false"):
                 if required_logic not in page_source:
-                    errors.append(f"{relative.as_posix()}: falta integración de la lógica de oportunidades: {required_logic}")
+                    errors.append(f"{relative.as_posix()}: falta integración de la lógica pública: {required_logic}")
+            for forbidden_logic in ("MorenoOriginacionWorkbench", "originacion-workbench", "pipeline-csv-file", "pipeline-template-title"):
+                if forbidden_logic in page_source:
+                    errors.append(f"{relative.as_posix()}: el formulario público no debe incluir {forbidden_logic}")
             if not re.search(r"contactPreview\.hidden\s*=\s*false", page_source):
                 errors.append(f"{relative.as_posix()}: la vista previa no se muestra al preparar el borrador")
             if not re.search(r'<button\b[^>]*id="feasibility-calculate"[^>]*type="button"[^>]*>', page_source, re.IGNORECASE):
                 errors.append(f"{relative.as_posix()}: el botón de cálculo no debe enviar el formulario de contacto")
-            originacion_module = ROOT / "assets/js/originacion-workbench.js"
-            if not originacion_module.is_file():
-                errors.append("Falta assets/js/originacion-workbench.js")
-            else:
-                originacion_source = originacion_module.read_text(encoding="utf-8")
-                for required_logic in ("MorenoOriginacionWorkbench", "function read()", "function apply(data)", "MAX_EVIDENCE = 8", "tools.validateInternalDossier", "data-check-id", "data-evidence-row"):
-                    if required_logic not in originacion_source:
-                        errors.append(f"assets/js/originacion-workbench.js: falta lógica requerida: {required_logic}")
-                for forbidden_logic in ("localStorage", "sessionStorage", "fetch(", "XMLHttpRequest", "innerHTML"):
-                    if forbidden_logic in originacion_source:
-                        errors.append(f"assets/js/originacion-workbench.js: no debe usar {forbidden_logic}")
-            originacion_css = ROOT / "assets/css/originacion.css"
-            if not originacion_css.is_file():
-                errors.append("Falta assets/css/originacion.css")
-            else:
-                originacion_style = originacion_css.read_text(encoding="utf-8")
-                for required_style in (".originacion-workbench", ".originacion-warning", ".originacion-check-grid", ".originacion-evidence-row", ".originacion-fees-grid", ".originacion-export-actions", ".originacion-status", "@media (max-width: 760px)"):
-                    if required_style not in originacion_style:
-                        errors.append(f"assets/css/originacion.css: falta estilo requerido: {required_style}")
             module_path = ROOT / "assets/js/opportunity-tools.js"
             if not module_path.is_file():
                 errors.append("Falta assets/js/opportunity-tools.js")
@@ -539,6 +508,7 @@ def main() -> None:
             if not opportunity_css.is_file() or ".map-reference-context" not in opportunity_css.read_text(encoding="utf-8"):
                 errors.append("assets/css/erica.css: falta estilo del contexto comercial transferido desde el Mapa IA")
 
+
         for script_kind, source in parser.scripts:
             if script_kind == "json":
                 try:
@@ -549,6 +519,70 @@ def main() -> None:
                 for match in re.finditer(r'getElementById\(\s*["\']([^"\']+)["\']\s*\)', source):
                     if match.group(1) not in parser.ids:
                         errors.append(f"{relative.as_posix()}: JavaScript busca un ID inexistente: {match.group(1)}")
+
+
+    internal_page_path = ROOT / INTERNAL_PAGE
+    if not internal_page_path.is_file():
+        errors.append("Falta la herramienta interna no indexada mesa-operativa/index.html")
+    else:
+        internal_parser = PageAudit(INTERNAL_PAGE)
+        try:
+            internal_source = internal_page_path.read_text(encoding="utf-8")
+            internal_parser.feed(internal_source)
+            internal_parser.close()
+            audits[INTERNAL_PAGE] = internal_parser
+            internal_title = "".join(internal_parser.title_parts).strip()
+            if not internal_parser.lang or not internal_title or not internal_parser.has_description:
+                errors.append("mesa-operativa/index.html: faltan idioma, título o descripción")
+            if internal_parser.h1_count != 1:
+                errors.append(f"mesa-operativa/index.html: se esperaba un H1 y se encontraron {internal_parser.h1_count}")
+            if internal_parser.meta.get("robots") != "noindex,nofollow,noarchive" or internal_parser.meta_counts.get("robots", 0) != 1:
+                errors.append("mesa-operativa/index.html: la directiva robots debe ser noindex,nofollow,noarchive")
+            if internal_parser.canonicals:
+                errors.append("mesa-operativa/index.html: la herramienta no indexada no debe declarar canonical público")
+            for required_markup in ('id="operations-import-title"', 'id="operations-originacion-title"', "no tiene contraseña", "no constituye una medida de seguridad"):
+                if required_markup not in internal_source:
+                    errors.append(f"mesa-operativa/index.html: falta aclaración o sección {required_markup}")
+            if 'class="originacion-workbench"' not in internal_source or "Esta mesa no tiene autenticación" not in internal_source:
+                errors.append("Mesa Operativa: falta declarar el alcance local y la ausencia de autenticación")
+            if len(re.findall(r'data-check-id="(?:cadastral|legal|zoning|environment|services|market)"', internal_source)) != 6:
+                errors.append("Mesa Operativa: el control de diligencia debe cubrir seis áreas")
+            if len(re.findall(r'data-evidence-label="(?:title|classification|url|consultedAt|note)"', internal_source)) != 5:
+                errors.append("Mesa Operativa: faltan las cinco etiquetas de fuentes dinámicas")
+            for check_key in ("cadastral", "legal", "zoning", "environment", "services", "market"):
+                for field in ("status", "source", "consultedAt", "note"):
+                    control_id = f"originacion-check-{check_key}-{field}"
+                    if f'id="{control_id}"' not in internal_source or f'for="{control_id}"' not in internal_source:
+                        errors.append(f"Mesa Operativa: el control {control_id} debe tener una etiqueta asociada")
+            workbench_match = re.search(r'<details\b[^>]*id="originacion-workbench"[^>]*>(.*?)</details>', internal_source, re.DOTALL)
+            if not workbench_match or re.search(r'\bname\s*=', workbench_match.group(1)):
+                errors.append("Mesa Operativa: la bitácora interna no debe añadir campos al formulario público")
+            for required_id in ("originacion-workbench", "originacion-evidence-list", "originacion-evidence-template", "originacion-add-evidence", "originacion-status", "originacion-fee-currency", "originacion-commercial-stage", "originacion-follow-up-date", "originacion-print-dossier", "originacion-download-dossier", "originacion-clear", "originacion-import-file", "originacion-import-button", "originacion-import-status"):
+                if required_id not in internal_parser.ids:
+                    errors.append(f"mesa-operativa/index.html: falta control de originación {required_id}")
+            originacion_module = ROOT / "assets/js/originacion-workbench.js"
+            if not originacion_module.is_file():
+                errors.append("Falta assets/js/originacion-workbench.js")
+            else:
+                originacion_source = originacion_module.read_text(encoding="utf-8")
+                for required_logic in ("MorenoOriginacionWorkbench", "function read()", "function apply(data)", "MAX_EVIDENCE = 8", "tools.validateInternalDossier", "data-check-id", "data-evidence-row"):
+                    if required_logic not in originacion_source:
+                        errors.append(f"assets/js/originacion-workbench.js: falta lógica requerida: {required_logic}")
+                for forbidden_logic in ("localStorage", "sessionStorage", "fetch(", "XMLHttpRequest", "innerHTML"):
+                    if forbidden_logic in originacion_source:
+                        errors.append(f"assets/js/originacion-workbench.js: no debe usar {forbidden_logic}")
+            originacion_css = ROOT / "assets/css/originacion.css"
+            if not originacion_css.is_file():
+                errors.append("Falta assets/css/originacion.css")
+            else:
+                originacion_style = originacion_css.read_text(encoding="utf-8")
+                for required_style in (".originacion-workbench", ".originacion-warning", ".originacion-check-grid", ".originacion-evidence-row", ".originacion-fees-grid", ".originacion-export-actions", ".originacion-status", "@media (max-width: 760px)"):
+                    if required_style not in originacion_style:
+                        errors.append(f"assets/css/originacion.css: falta estilo requerido: {required_style}")
+            if internal_parser.duplicates:
+                errors.append("mesa-operativa/index.html: IDs duplicados: " + ", ".join(sorted(internal_parser.duplicates)))
+        except Exception as exc:
+            errors.append(f"mesa-operativa/index.html: HTML no procesable: {exc}")
 
     for relative, parser in audits.items():
         for tag, raw_url in parser.refs:
@@ -623,7 +657,7 @@ def main() -> None:
 
     node = shutil.which("node")
     if node:
-        for test_name in ("test_opportunity_tools.js", "test_site_navigation.js", "test_mapa_ia.js", "test_pipeline_dashboard.js", "test_pipeline_dashboard_ui.js"):
+        for test_name in ("test_opportunity_tools.js", "test_originacion_export.js", "test_site_navigation.js", "test_mapa_ia.js", "test_pipeline_dashboard.js", "test_pipeline_dashboard_ui.js"):
             test_script = ROOT / "scripts" / test_name
             if not test_script.is_file():
                 errors.append(f"Falta scripts/{test_name}")
@@ -635,7 +669,7 @@ def main() -> None:
             elif unit_test.stdout.strip():
                 print(unit_test.stdout.strip())
 
-        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js", ROOT / "assets/js/originacion-workbench.js", ROOT / "assets/js/mapa-ia.js", ROOT / "assets/js/pipeline-dashboard.js", ROOT / "assets/js/pipeline-agenda.js", ROOT / "assets/js/pipeline-dashboard-ui.js"):
+        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js", ROOT / "assets/js/originacion-workbench.js", ROOT / "assets/js/mapa-ia.js", ROOT / "assets/js/pipeline-dashboard.js", ROOT / "assets/js/pipeline-agenda.js", ROOT / "assets/js/pipeline-dashboard-ui.js", ROOT / "assets/js/originacion-export.js"):
             if script_path.is_file():
                 syntax_check = subprocess.run([node, "--check", str(script_path)], capture_output=True, text=True, check=False)
                 if syntax_check.returncode:
@@ -658,33 +692,52 @@ def main() -> None:
 
     opportunity_page = ROOT / "oportunidades/index.html"
     if not opportunity_page.is_file():
-        errors.append("Falta oportunidades/index.html para la importación de expedientes")
+        errors.append("Falta oportunidades/index.html para el formulario público")
     else:
         opportunity_html = opportunity_page.read_text(encoding="utf-8")
-        if 'href="../docs/plantilla-seguimiento-comercial.csv"' not in opportunity_html:
-            errors.append("Oportunidades debe enlazar la plantilla CSV de seguimiento comercial")
-        if "pipeline-template-guide" not in opportunity_html:
-            errors.append("Oportunidades debe explicar las etapas y la separación de honorarios")
-        if 'id="pipeline-download-agenda"' not in opportunity_html:
-            errors.append("Oportunidades debe ofrecer la descarga de la agenda de seguimiento")
-        if 'src="../assets/js/pipeline-agenda.js"' not in opportunity_html:
-            errors.append("Oportunidades debe cargar el módulo de agenda comercial")
+        if '<script src="../assets/js/opportunity-tools.js"></script>' not in opportunity_html:
+            errors.append("Oportunidades debe cargar las herramientas de contacto y expediente público")
+        if "dossier-import-note" not in opportunity_html:
+            errors.append("Oportunidades debe aclarar que el formulario no recupera datos internos")
         for required_control in ("dossier-import-file", "validate-dossier-import", "apply-dossier-merge", "apply-dossier-replace"):
             if f'id="{required_control}"' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta control de importación: {required_control}")
-        for required_control in ("pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset", "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions", "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-text", "pipeline-download-summary"):
-            if f'id="{required_control}"' not in opportunity_html:
-                errors.append(f"oportunidades/index.html: falta control del tablero comercial: {required_control}")
-        if 'id="pipeline-download-summary" type="button" disabled' not in opportunity_html:
-            errors.append("Oportunidades debe mantener deshabilitada la exportación hasta validar un CSV.")
-        if '<link rel="stylesheet" href="../assets/css/originacion.css">' not in opportunity_html:
-            errors.append("Oportunidades debe cargar la hoja responsive de la mesa de originación")
-        if '<script src="../assets/js/originacion-workbench.js"></script>' not in opportunity_html:
-            errors.append("Oportunidades debe cargar el módulo de interfaz de la mesa de originación")
-        for script_src in ("../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-dashboard-ui.js"):
-            if f'<script src="{script_src}"></script>' not in opportunity_html:
-                errors.append(f"oportunidades/index.html: falta cargar {script_src}")
+        for forbidden_marker in ("pipeline-template-title", "pipeline-csv-file", "originacion-workbench", "originacion-print-dossier", "originacion-download-dossier"):
+            if forbidden_marker in opportunity_html:
+                errors.append(f"oportunidades/index.html: la página pública no debe exponer la herramienta interna {forbidden_marker}")
+        for script_src in ("../assets/js/originacion-workbench.js", "../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-agenda.js", "../assets/js/pipeline-dashboard-ui.js", "../assets/js/originacion-export.js"):
+            if script_src in opportunity_html:
+                errors.append(f"oportunidades/index.html: no debe cargar el módulo interno {script_src}")
 
+    operations_page = ROOT / INTERNAL_PAGE
+    if not operations_page.is_file():
+        errors.append("Falta mesa-operativa/index.html para las herramientas locales")
+    else:
+        operations_html = operations_page.read_text(encoding="utf-8")
+        if 'href="../docs/plantilla-seguimiento-comercial.csv"' not in operations_html:
+            errors.append("Mesa Operativa debe enlazar la plantilla CSV de seguimiento comercial")
+        for required_control in (
+            "pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset",
+            "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions",
+            "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-text",
+            "pipeline-download-summary", "pipeline-download-agenda",
+            "originacion-workbench", "originacion-import-file", "originacion-import-button",
+            "originacion-import-status", "originacion-print-dossier", "originacion-download-dossier",
+            "originacion-clear", "originacion-status"
+        ):
+            if f'id="{required_control}"' not in operations_html:
+                errors.append(f"mesa-operativa/index.html: falta control interno {required_control}")
+        if 'id="pipeline-download-summary" type="button" disabled' not in operations_html:
+            errors.append("Mesa Operativa debe mantener deshabilitada la exportación hasta validar un CSV.")
+        if '<link rel="stylesheet" href="../assets/css/originacion.css">' not in operations_html:
+            errors.append("Mesa Operativa debe cargar la hoja responsive de originación")
+        for script_src in (
+            "../assets/js/opportunity-tools.js", "../assets/js/originacion-workbench.js",
+            "../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-agenda.js",
+            "../assets/js/pipeline-dashboard-ui.js", "../assets/js/originacion-export.js"
+        ):
+            if f'<script src="{script_src}"></script>' not in operations_html:
+                errors.append(f"Mesa Operativa debe cargar {script_src}")
 
     about_page = ROOT / "erica-acosta/index.html"
     if not about_page.is_file():
@@ -746,6 +799,16 @@ def main() -> None:
         for forbidden_logic in ("localStorage", "sessionStorage", "fetch(", "XMLHttpRequest", "innerHTML"):
             if forbidden_logic in pipeline_ui_source:
                 errors.append(f"assets/js/pipeline-dashboard-ui.js: no debe usar {forbidden_logic} para procesar datos locales")
+
+
+    originacion_export_module = ROOT / "assets/js/originacion-export.js"
+    if not originacion_export_module.is_file():
+        errors.append("Falta assets/js/originacion-export.js para importar y exportar expedientes internos")
+    else:
+        originacion_export_source = originacion_export_module.read_text(encoding="utf-8")
+        for required_logic in ("buildInternalExport", "parseInternalImport", "includePublic: false", "includeInternal: true", "originacion-import-button", "originacion-clear"):
+            if required_logic not in originacion_export_source:
+                errors.append(f"assets/js/originacion-export.js: falta lógica requerida: {required_logic}")
 
     navigation_module = ROOT / "assets/js/site-navigation.js"
     if not navigation_module.is_file():
@@ -816,11 +879,11 @@ def main() -> None:
 
     refs_count = sum(len(page.refs) for page in audits.values())
     print(
-        f"OK: {len(audits)} páginas; {refs_count} referencias locales; canonical, OG/Twitter, "
-        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, navegación móvil, MapLibre/OpenStreetMap, referencias DOM y módulos JavaScript correctos."
+        f"OK: {len(SITE_PAGES)} páginas públicas + 1 herramienta no indexada; {refs_count} referencias locales; canonical, OG/Twitter, "
+        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, navegación móvil, MapLibre/OpenStreetMap, referencias DOM, separación público/interno y módulos JavaScript correctos."
     )
     if node:
-        print("OK: sintaxis JavaScript y pruebas unitarias de oportunidades, navegación móvil y tablero comercial local validadas con Node.js.")
+        print("OK: sintaxis JavaScript y pruebas unitarias de oportunidades, exportación interna, navegación móvil, Mapa IA y tablero comercial local validadas con Node.js.")
 
 
 if __name__ == "__main__":

@@ -180,3 +180,69 @@
   .originacion-export-actions .button { justify-content: space-between; }
   .originacion-export-actions { flex-direction: column; }
 }
+
+
+/* Separación de herramientas internas respecto del formulario público de oportunidades. */
+.operations-hero { padding-bottom: 28px; }
+.operations-safety {
+  max-width: 900px;
+  margin: 18px 0 0;
+  padding: 13px 16px;
+  border-left: 3px solid #8c6b3d;
+  background: #e8e4d9;
+  color: #5f5d54;
+  font: 11px/1.65 var(--sans);
+}
+.operations-import {
+  margin: 0 auto 28px;
+  padding: 20px;
+  border: 1px solid #c7c1b4;
+  border-top: 3px solid var(--rust);
+  background: #e8e4d9;
+}
+.operations-import-heading h2,
+.operations-originacion-heading h2 {
+  margin: 8px 0 10px;
+  color: var(--ink);
+  font: 400 clamp(25px, 3.4vw, 38px)/1.08 var(--serif);
+}
+.operations-import-heading p,
+.operations-originacion-heading p {
+  max-width: 850px;
+  color: #62645c;
+  font: 12px/1.7 var(--sans);
+}
+.operations-import-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 14px;
+  margin-top: 16px;
+}
+.operations-import-controls .form-field { min-width: 0; }
+.operations-import-controls input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid #c9c8bc;
+  background: #f8f6ee;
+  color: var(--ink);
+}
+.operations-import-controls button { min-height: 44px; }
+.operations-import-status {
+  min-height: 1.5em;
+  margin: 13px 0 0;
+  color: #686960;
+  font: 11px/1.6 var(--sans);
+}
+.operations-originacion {
+  padding-top: 34px;
+  padding-bottom: 48px;
+  border-top: 1px solid var(--line);
+}
+.operations-originacion-heading { margin-bottom: 18px; }
+@media (max-width: 760px) {
+  .operations-import { padding: 15px 13px; }
+  .operations-import-controls { grid-template-columns: 1fr; }
+  .operations-import-controls button { width: 100%; }
+}

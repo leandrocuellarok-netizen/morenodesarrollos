@@ -169,7 +169,8 @@
     const data = input || {};
     const fields = data.fields || {};
     const calculationInput = data.calculationInput || {};
-    const calculation = calculatePreliminary(calculationInput);
+    const includePublic = data.includePublic !== false;
+    const includeInternal = data.includeInternal !== false;
     const internal = validateInternalDossier(data.internalData).value;
 
     function makeSection(title, entries, emptyLabel) {
@@ -180,118 +181,137 @@
       return { title: title, rows: rows };
     }
 
-    const sections = [
-      makeSection("Origen y contacto", [
-        ["Nombre", fields.nombre],
-        ["Perfil declarado", fields.perfil],
-        ["Interés declarado", fields.interes],
-        ["Referencia territorial de origen (no parcelaria)", fields.referencia_mapa]
-      ]),
-      makeSection("Inmueble o proyecto", [
-        ["Localidad o zona declarada", fields.zona],
-        ["Tipo de oportunidad declarado", fields.tipo],
-        ["Ubicación o referencia aportada", fields.ubicacion],
-        ["Partida o nomenclatura aportada", fields.nomenclatura],
-        ["Superficie aproximada declarada", fields.superficie]
-      ]),
-      makeSection("Documentación y consultas declaradas", [
-        ["Documentación indicada como disponible", fields.documentacion],
-        ["Consultas o verificaciones declaradas", fields.verificaciones]
-      ])
-    ];
+    const sections = [];
+    if (includePublic) {
+      sections.push(
+        makeSection("Origen y contacto", [
+          ["Nombre", fields.nombre],
+          ["Perfil declarado", fields.perfil],
+          ["Interés declarado", fields.interes],
+          ["Referencia territorial de origen (no parcelaria)", fields.referencia_mapa]
+        ]),
+        makeSection("Inmueble o proyecto", [
+          ["Localidad o zona declarada", fields.zona],
+          ["Tipo de oportunidad declarado", fields.tipo],
+          ["Ubicación o referencia aportada", fields.ubicacion],
+          ["Partida o nomenclatura aportada", fields.nomenclatura],
+          ["Superficie aproximada declarada", fields.superficie]
+        ]),
+        makeSection("Documentación y consultas declaradas", [
+          ["Documentación indicada como disponible", fields.documentacion],
+          ["Consultas o verificaciones declaradas", fields.verificaciones]
+        ])
+      );
 
-    const calculationRows = [
-      ["Superficie ingresada para cálculo (m²)", calculationInput.areaRaw],
-      ["FOS aportado", calculationInput.fosRaw],
-      ["FOT aportado", calculationInput.fotRaw],
-      ["Fuente o referencia de indicadores aportada", calculationInput.referenceRaw]
-    ];
-    if (calculation.ok) {
-      calculationRows.push(["Resultado aritmético preliminar", calculation.summary.join(" ")]);
-    } else if (calculation.error) {
-      calculationRows.push(["Estado del cálculo", "No realizado: " + calculation.error]);
-    } else {
-      calculationRows.push(["Estado del cálculo", "No se ingresaron datos para realizar una cuenta."]);
-    }
-    sections.push(makeSection("Datos urbanísticos aportados", calculationRows));
-
-    if (formatFieldValue(fields.detalle)) {
-      sections.push(makeSection("Contexto adicional aportado", [["Descripción", fields.detalle]]));
-    }
-
-    const counterpartyLabels = {
-      owner: "Propietario/a",
-      representative: "Representante",
-      developer: "Desarrollador/a",
-      investor: "Inversor/a",
-      company: "Profesional o empresa",
-      other: "Otro"
-    };
-    const commercialStageLabels = {
-      not_started: "Sin iniciar",
-      first_contact: "Primer contacto",
-      response: "Respuesta recibida",
-      meeting: "Reunión",
-      documents: "Documentación solicitada",
-      analysis: "Análisis preliminar",
-      proposal: "Propuesta enviada",
-      negotiation: "Negociación",
-      won: "Ganada",
-      lost: "No concretada",
-      paused: "Pausada"
-    };
-    const evidenceClassLabels = {
-      counterparty: "Declaración de contraparte",
-      public: "Fuente pública",
-      technical: "Documento técnico recibido",
-      checked: "Contraste registrado por quien opera"
-    };
-    const diligenceStatusLabels = {
-      pending: "Pendiente",
-      in_progress: "En curso",
-      documented: "Fuente o documento cargado",
-      professional_review: "Requiere revisión profesional",
-      blocked: "Bloqueado"
-    };
-    sections.push(makeSection("Seguimiento y negociación · uso interno", [
-      ["Referencia interna", internal.reference],
-      ["Tipo de contraparte", counterpartyLabels[internal.counterpartyType] || ""],
-      ["Organización o empresa (sin datos personales)", internal.organization],
-      ["Etapa comercial", commercialStageLabels[internal.commercialStage] || ""],
-      ["Próxima acción", internal.nextAction],
-      ["Fecha de seguimiento", internal.followUpDate],
-      ["Notas de negociación", internal.negotiationNotes]
-    ], "Sin datos internos registrados."));
-    const evidenceRows = internal.evidence.map(function (entry, index) {
-      return [
-        "Fuente " + (index + 1),
-        [entry.title, evidenceClassLabels[entry.classification] || "", entry.url, entry.consultedAt, entry.note].filter(Boolean).join(" · ")
+      const calculation = calculatePreliminary(calculationInput);
+      const calculationRows = [
+        ["Superficie ingresada para cálculo (m²)", calculationInput.areaRaw],
+        ["FOS aportado", calculationInput.fosRaw],
+        ["FOT aportado", calculationInput.fotRaw],
+        ["Fuente o referencia de indicadores aportada", calculationInput.referenceRaw]
       ];
-    });
-    if (!evidenceRows.length) evidenceRows.push(["Registro de fuentes", "Sin fuentes registradas."]);
-    sections.push(makeSection("Registro de fuentes y evidencia", evidenceRows));
-    const diligenceRows = Object.keys(internalCheckLabels).map(function (key) {
-      const entry = internal.checks[key];
-      const details = [
-        diligenceStatusLabels[entry.status] || "Pendiente",
-        entry.source,
-        entry.consultedAt,
-        entry.note
-      ].filter(Boolean).join(" · ");
-      return [internalCheckLabels[key], details];
-    });
-    sections.push(makeSection("Control de diligencia", diligenceRows));
-    const feeRows = [
-      ["Moneda común del registro", internal.fees.currency],
-      ["Honorarios propuestos", internal.fees.proposed],
-      ["Honorarios acordados", internal.fees.agreed],
-      ["Honorarios facturados", internal.fees.invoiced],
-      ["Honorarios cobrados", internal.fees.collected]
-    ];
-    if (!internal.fees.currency && ![internal.fees.proposed, internal.fees.agreed, internal.fees.invoiced, internal.fees.collected].some(Boolean)) {
-      feeRows[0][1] = "Sin importes registrados.";
+      if (calculation.ok) {
+        calculationRows.push(["Resultado aritmético preliminar", calculation.summary.join(" ")]);
+      } else if (calculation.error) {
+        calculationRows.push(["Estado del cálculo", "No realizado: " + calculation.error]);
+      } else {
+        calculationRows.push(["Estado del cálculo", "No se ingresaron datos para realizar una cuenta."]);
+      }
+      sections.push(makeSection("Datos urbanísticos aportados", calculationRows));
+
+      if (formatFieldValue(fields.detalle)) {
+        sections.push(makeSection("Contexto adicional aportado", [["Descripción", fields.detalle]]));
+      }
     }
-    sections.push(makeSection("Honorarios · importes independientes, sin conversión ni suma", feeRows));
+
+    if (includeInternal) {
+      const counterpartyLabels = {
+        owner: "Propietario/a",
+        representative: "Representante",
+        developer: "Desarrollador/a",
+        investor: "Inversor/a",
+        company: "Profesional o empresa",
+        other: "Otro"
+      };
+      const commercialStageLabels = {
+        not_started: "Sin iniciar",
+        first_contact: "Primer contacto",
+        response: "Respuesta recibida",
+        meeting: "Reunión",
+        documents: "Documentación solicitada",
+        analysis: "Análisis preliminar",
+        proposal: "Propuesta enviada",
+        negotiation: "Negociación",
+        won: "Ganada",
+        lost: "No concretada",
+        paused: "Pausada"
+      };
+      const evidenceClassLabels = {
+        counterparty: "Declaración de contraparte",
+        public: "Fuente pública",
+        technical: "Documento técnico recibido",
+        checked: "Contraste registrado por quien opera"
+      };
+      const diligenceStatusLabels = {
+        pending: "Pendiente",
+        in_progress: "En curso",
+        documented: "Fuente o documento cargado",
+        professional_review: "Requiere revisión profesional",
+        blocked: "Bloqueado"
+      };
+      sections.push(makeSection("Seguimiento y negociación · uso interno", [
+        ["Referencia interna", internal.reference],
+        ["Tipo de contraparte", counterpartyLabels[internal.counterpartyType] || ""],
+        ["Organización o empresa (sin datos personales)", internal.organization],
+        ["Etapa comercial", commercialStageLabels[internal.commercialStage] || ""],
+        ["Próxima acción", internal.nextAction],
+        ["Fecha de seguimiento", internal.followUpDate],
+        ["Notas de negociación", internal.negotiationNotes]
+      ], "Sin datos internos registrados."));
+      const evidenceRows = internal.evidence.map(function (entry, index) {
+        return [
+          "Fuente " + (index + 1),
+          [entry.title, evidenceClassLabels[entry.classification] || "", entry.url, entry.consultedAt, entry.note].filter(Boolean).join(" · ")
+        ];
+      });
+      if (!evidenceRows.length) evidenceRows.push(["Registro de fuentes", "Sin fuentes registradas."]);
+      sections.push(makeSection("Registro de fuentes y evidencia", evidenceRows));
+      const diligenceRows = Object.keys(internalCheckLabels).map(function (key) {
+        const entry = internal.checks[key];
+        const details = [
+          diligenceStatusLabels[entry.status] || "Pendiente",
+          entry.source,
+          entry.consultedAt,
+          entry.note
+        ].filter(Boolean).join(" · ");
+        return [internalCheckLabels[key], details];
+      });
+      sections.push(makeSection("Control de diligencia", diligenceRows));
+      const feeRows = [
+        ["Moneda común del registro", internal.fees.currency],
+        ["Honorarios propuestos", internal.fees.proposed],
+        ["Honorarios acordados", internal.fees.agreed],
+        ["Honorarios facturados", internal.fees.invoiced],
+        ["Honorarios cobrados", internal.fees.collected]
+      ];
+      if (!internal.fees.currency && ![internal.fees.proposed, internal.fees.agreed, internal.fees.invoiced, internal.fees.collected].some(Boolean)) {
+        feeRows[0][1] = "Sin importes registrados.";
+      }
+      sections.push(makeSection("Honorarios · importes independientes, sin conversión ni suma", feeRows));
+    }
+
+    const disclaimers = [
+      "Este documento no constituye tasación, oferta, estudio de factibilidad, recomendación de inversión ni compromiso comercial."
+    ];
+    if (includePublic) {
+      disclaimers.unshift("Esta ficha reúne exclusivamente datos ingresados por el contacto y resultados aritméticos de referencia. No verifica la autenticidad, vigencia o exactitud de fuentes y documentos, ni acredita identidad, titularidad, disponibilidad o situación urbanística.");
+      disclaimers.push("Los cálculos FOS/FOT son referencias matemáticas teóricas; no equivalen a superficie efectivamente edificable ni a una aprobación municipal.");
+      disclaimers.push("Las opciones de documentación y consultas reflejan declaraciones del contacto y requieren contraste independiente.");
+    }
+    if (includeInternal) {
+      disclaimers.push("Los estados de diligencia, las clasificaciones de evidencia y las notas internas son registros ingresados por quien opera; el sistema no los verifica automáticamente.");
+      disclaimers.push("Esta herramienta no tiene autenticación ni control de acceso. No ingreses DNI, escrituras, teléfonos, correos, datos bancarios ni información personal; usala solo en un dispositivo confiable y conservá el JSON bajo tu control.");
+    }
 
     return {
       title: "Ficha preliminar de oportunidad",
@@ -305,20 +325,11 @@
         "Servicios, accesos y condiciones hidráulicas y ambientales.",
         "Factibilidad técnica, costos, estructura financiera y demanda."
       ],
-      disclaimers: [
-        "Esta ficha reúne exclusivamente datos ingresados por el contacto y resultados aritméticos de referencia. No verifica la autenticidad, vigencia o exactitud de fuentes y documentos, ni acredita identidad, titularidad, disponibilidad o situación urbanística.",
-        "Los cálculos FOS/FOT son referencias matemáticas teóricas; no equivalen a superficie efectivamente edificable ni a una aprobación municipal.",
-        "Este documento no constituye tasación, oferta, estudio de factibilidad, recomendación de inversión ni compromiso comercial.",
-        "Las opciones de documentación y consultas reflejan declaraciones del contacto y requieren contraste independiente.",
-        "Los estados de diligencia, las clasificaciones de evidencia y las notas internas son registros ingresados por quien opera; el sistema no los verifica automáticamente.",
-        "Esta herramienta no tiene autenticación ni control de acceso. No ingreses DNI, escrituras, teléfonos, correos, datos bancarios ni información personal; usala solo en un dispositivo confiable y conservá el JSON bajo tu control."
-      ]
+      disclaimers: disclaimers
     };
   }
 
-
-
-  const dossierFieldLimits = Object.freeze({
+const dossierFieldLimits = Object.freeze({
     nombre: 90, perfil: 60, interes: 90, zona: 120, tipo: 60,
     ubicacion: 180, nomenclatura: 120, superficie: 60,
     referencia_mapa: 180, detalle: 1200

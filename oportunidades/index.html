@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="Terrenos, proyectos, inversión y alianzas en Moreno.">
 <link rel="canonical" href="https://leandrocuellarok-netizen.github.io/morenodesarrollos/oportunidades/">
 <link rel="stylesheet" href="../assets/css/erica.css">
-<link rel="stylesheet" href="../assets/css/originacion.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ContactPage","name":"Presentar una oportunidad — MORENO","url":"https://leandrocuellarok-netizen.github.io/morenodesarrollos/oportunidades/","description":"Canal de primer contacto para propietarios, inversores y profesionales interesados en explorar proyectos inmobiliarios en Moreno.","about":{"@type":"Person","name":"Erica M. Acosta","address":{"@type":"PostalAddress","addressLocality":"Moreno","addressRegion":"Buenos Aires","addressCountry":"AR"}}}</script>
 <script defer src="../assets/js/site-navigation.js"></script></head>
 <body>
@@ -37,87 +37,6 @@
 <section class="wrap opportunity-paths" aria-label="Tipos de contacto">
 <article class="opportunity-path"><span>01 / Propietarios</span><h2>Tengo un terreno o inmueble</h2><p>Podemos iniciar con la ubicación, la superficie aproximada y la documentación que tengas disponible. No hace falta enviar escrituras ni documentación sensible en este primer mensaje.</p></article>
 <article class="opportunity-path"><span>02 / Inversores y aliados</span><h2>Quiero explorar un proyecto</h2><p>Contame qué tipo de desarrollo, inversión o colaboración te interesa. La viabilidad, los números y las condiciones se analizan caso por caso.</p></article>
-</section>
-<section class="wrap pipeline-template" aria-labelledby="pipeline-template-title">
-  <div class="pipeline-template-heading">
-    <div><div class="eyebrow">Herramienta de trabajo · Seguimiento comercial</div><h2 id="pipeline-template-title">Que ninguna oportunidad quede sin próximo paso.</h2></div>
-    <p>Una fila por inmueble u operación. La plantilla permite ordenar el origen, la etapa, la próxima acción y los honorarios sin confundir lo propuesto con lo efectivamente cobrado.</p>
-  </div>
-  <div class="pipeline-template-actions">
-    <a class="button dark" href="../docs/plantilla-seguimiento-comercial.csv" download="moreno-seguimiento-comercial.csv">Descargar plantilla CSV ↗</a>
-    <span>20 campos · sin contactos ni oportunidades precargadas</span>
-  </div>
-  <details class="pipeline-template-guide">
-    <summary>Cómo registrar etapas, documentación y honorarios</summary>
-    <div class="pipeline-template-guide-body">
-      <p><strong>Etapa comercial:</strong> nuevo, primer contacto, respuesta recibida, reunión pendiente, documentación solicitada, análisis preliminar, propuesta enviada, negociación, ganada, no concretada o pausada.</p>
-      <p><strong>Estado documental:</strong> sin iniciar, fuentes consultadas, documentación recibida pendiente de validación, verificación documental registrada o bloqueado por documentación. Una etapa comercial no acredita la situación jurídica ni urbanística del inmueble.</p>
-      <p><strong>Honorarios:</strong> completá por separado propuestos, acordados, facturados y cobrados. Una operación ganada no significa que los honorarios estén facturados o cobrados. Indicá la moneda y no mezcles ARS y USD en una misma fila.</p>
-      <p><strong>Privacidad:</strong> esta plantilla no incluye nombre, teléfono, correo ni datos de identificación personal. Guardá esos datos en un sistema con acceso controlado; no los agregues en observaciones. Las celdas vacías significan “sin dato”, no cero.</p>
-    </div>
-  </details>
-</section>
-<section class="wrap pipeline-workbench-shell" aria-label="Tablero local de seguimiento comercial">
-  <details class="pipeline-workbench">
-    <summary><span>Herramienta local · sin sincronización</span><strong>Revisar el pipeline desde un CSV ↗</strong></summary>
-    <div class="pipeline-workbench-body">
-      <div class="pipeline-workbench-intro">
-        <div class="eyebrow">Control de gestión · Solo en este navegador</div>
-        <h2>Qué está activo, qué requiere seguimiento y qué honorarios ingresaron.</h2>
-        <p>Importá la planilla que completaste. El tablero valida sus 20 columnas, detecta fechas e importes inconsistentes y resume la actividad. No convierte monedas ni interpreta campos vacíos como cero.</p>
-      </div>
-      <div class="pipeline-workbench-import">
-        <div class="pipeline-workbench-file">
-          <label for="pipeline-csv-file">Seleccionar planilla CSV</label>
-          <input id="pipeline-csv-file" type="file" accept=".csv,text/csv" aria-describedby="pipeline-file-help">
-          <small id="pipeline-file-help">Hasta 2 MB y 10.000 oportunidades. Solo se admite el esquema MORENO; se rechazan columnas adicionales para evitar importar datos personales por error.</small>
-        </div>
-        <button class="button" id="pipeline-reset" type="button" disabled>Limpiar sesión local</button>
-      </div>
-      <p class="pipeline-status" id="pipeline-status" role="status" aria-live="polite">Seleccioná un CSV generado a partir de la plantilla MORENO. La planilla no se transmite ni se guarda en el sitio.</p>
-      <div class="pipeline-warnings" id="pipeline-warnings" hidden></div>
-      <div class="pipeline-dashboard-output" id="pipeline-dashboard-output" hidden>
-        <div class="pipeline-kpi-grid" id="pipeline-metrics" aria-label="Indicadores de seguimiento"></div>
-        <div class="pipeline-dashboard-actions">
-          <button class="button dark" id="pipeline-download-summary" type="button" disabled>Descargar resumen agregado CSV ↗</button>
-          <button class="button" id="pipeline-download-agenda" type="button" disabled>Descargar agenda de seguimiento CSV ↗</button>
-          <span>Vencidas, próximos 7 días y registros sin fecha o acción · sin datos de contacto</span>
-        </div>
-        <div class="pipeline-report-grid">
-          <section class="pipeline-report-panel" aria-labelledby="pipeline-finance-title">
-            <div class="eyebrow">Honorarios · Sin conversión de moneda</div>
-            <h3 id="pipeline-finance-title">Importes registrados por moneda</h3>
-            <p class="pipeline-report-note">Cada columna suma solo las celdas con importes cargados. “Sin dato” no equivale a cero.</p>
-            <div class="pipeline-table-wrap" id="pipeline-finance-summary"></div>
-          </section>
-          <section class="pipeline-report-panel" aria-labelledby="pipeline-stage-title">
-            <div class="eyebrow">Cartera comercial</div>
-            <h3 id="pipeline-stage-title">Oportunidades por etapa</h3>
-            <div class="pipeline-table-wrap" id="pipeline-stage-summary"></div>
-          </section>
-        </div>
-        <section class="pipeline-report-panel pipeline-next-panel" aria-labelledby="pipeline-next-title">
-          <div class="eyebrow">Agenda de seguimiento</div>
-          <h3 id="pipeline-next-title">Vencidas y próximas acciones</h3>
-          <ol class="pipeline-upcoming-list" id="pipeline-next-actions"></ol>
-        </section>
-        <section class="pipeline-report-panel pipeline-records-panel" aria-labelledby="pipeline-records-title">
-          <div class="pipeline-records-heading"><div><div class="eyebrow">Detalle de la planilla</div><h3 id="pipeline-records-title">Oportunidades importadas</h3></div><p id="pipeline-records-count" aria-live="polite"></p></div>
-          <div class="pipeline-filter-row">
-            <div><label for="pipeline-filter-stage">Filtrar por etapa</label><select id="pipeline-filter-stage"><option value="">Todas las etapas</option></select></div>
-            <div><label for="pipeline-filter-text">Buscar por ID, localidad o acción</label><input id="pipeline-filter-text" type="search" autocomplete="off" placeholder="Escribí para filtrar"></div>
-          </div>
-          <div class="pipeline-table-wrap pipeline-records-table-wrap">
-            <table class="pipeline-table pipeline-records-table">
-              <thead><tr><th scope="col">ID</th><th scope="col">Localidad</th><th scope="col">Activo</th><th scope="col">Etapa</th><th scope="col">Estado documental</th><th scope="col">Próxima acción</th><th scope="col">Fecha</th><th scope="col">Cobrados</th></tr></thead>
-              <tbody id="pipeline-records-body"></tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-      <p class="pipeline-local-disclaimer">Privacidad: la lectura y los cálculos se realizan en memoria en esta pestaña. No se usa almacenamiento local, no hay sincronización y al recargar la página deberás importar nuevamente el CSV. No agregues nombres, teléfonos, correos, datos bancarios ni documentación dominial sensible a la plantilla.</p>
-    </div>
-  </details>
 </section>
 <section class="wrap feasibility-tool" aria-labelledby="feasibility-title">
   <div class="feasibility-intro">
@@ -181,79 +100,13 @@
     <button class="button" id="validate-dossier-import" type="button">Validar expediente</button>
   </div>
   <p class="dossier-import-status" id="dossier-import-status" role="status" aria-live="polite">La importación se realiza en este navegador. El archivo no se transmite ni se guarda en MORENO.</p>
+  <p class="form-intro dossier-import-note">Este formulario recupera únicamente datos de contacto y cálculos. La evidencia, la diligencia, el seguimiento y los honorarios se gestionan por separado en la Mesa Operativa.</p>
   <div class="dossier-import-actions" id="dossier-import-actions" hidden>
     <button class="button dark" id="apply-dossier-merge" type="button">Completar campos vacíos</button>
     <button class="button" id="apply-dossier-replace" type="button">Reemplazar formulario con el archivo</button>
   </div>
 </section>
-<details class="originacion-workbench" id="originacion-workbench">
-  <summary><span>Herramienta interna · solo navegador</span><strong>Expediente de originación: evidencia, diligencia y honorarios</strong></summary>
-  <div class="originacion-workbench-body">
-    <p class="originacion-warning"><strong>Alcance y privacidad.</strong> Esta mesa no tiene autenticación ni control de acceso: cualquier visitante puede abrirla y usar su propio navegador. Los datos no se transmiten ni se guardan en el sitio; solo salen si descargás el JSON. La exportación interna omite el nombre y el texto libre del formulario público, pero puede incluir ubicación y nomenclatura del inmueble. No ingreses DNI, escrituras, nombres de personas, teléfonos, correos, datos bancarios ni información confidencial. Usala únicamente en un dispositivo confiable y conservá cada exportación bajo tu control.</p>
-    <section class="originacion-section" aria-labelledby="originacion-identity-title">
-      <h4 id="originacion-identity-title">01 / Identificación operativa y contraparte</h4>
-      <div class="originacion-grid">
-        <div class="form-field"><label for="originacion-reference">Referencia interna</label><input id="originacion-reference" maxlength="50" autocomplete="off" placeholder="Ej.: MOR-OP-001"></div>
-        <div class="form-field"><label for="originacion-counterparty-type">Tipo de contraparte</label><select id="originacion-counterparty-type"><option value="">Sin definir</option><option value="owner">Propietario/a</option><option value="representative">Representante</option><option value="developer">Desarrollador/a</option><option value="investor">Inversor/a</option><option value="company">Profesional o empresa</option><option value="other">Otro</option></select></div>
-        <div class="form-field"><label for="originacion-organization">Organización o empresa</label><input id="originacion-organization" maxlength="120" autocomplete="off" placeholder="Solo razón social o nombre comercial"></div>
-        <div class="form-field"><label for="originacion-commercial-stage">Etapa comercial</label><select id="originacion-commercial-stage"><option value="">Sin definir</option><option value="not_started">Sin iniciar</option><option value="first_contact">Primer contacto</option><option value="response">Respuesta recibida</option><option value="meeting">Reunión</option><option value="documents">Documentación solicitada</option><option value="analysis">Análisis preliminar</option><option value="proposal">Propuesta enviada</option><option value="negotiation">Negociación</option><option value="won">Ganada</option><option value="lost">No concretada</option><option value="paused">Pausada</option></select></div>
-      </div>
-    </section>
-    <section class="originacion-section" aria-labelledby="originacion-evidence-title">
-      <h4 id="originacion-evidence-title">02 / Registro de fuentes y evidencia</h4>
-      <p>Clasificá el origen de cada dato. La etiqueta es un registro de quien opera; MORENO no comprueba automáticamente documentos, enlaces ni declaraciones.</p>
-      <div class="originacion-evidence-list" id="originacion-evidence-list" aria-live="polite"></div>
-      <template id="originacion-evidence-template">
-        <div class="originacion-evidence-row" data-evidence-row>
-          <div class="form-field"><label data-evidence-label="title">Fuente o documento</label><input type="text" data-evidence-field="title" maxlength="140" autocomplete="off" placeholder="Título del documento o capa"></div>
-          <div class="form-field"><label data-evidence-label="classification">Clasificación de origen</label><select data-evidence-field="classification"><option value="">Seleccionar</option><option value="counterparty">Declaración de contraparte</option><option value="public">Fuente pública</option><option value="technical">Documento técnico recibido</option><option value="checked">Contraste registrado por quien opera</option></select></div>
-          <div class="form-field full"><label data-evidence-label="url">URL de referencia (solo HTTPS)</label><input type="text" data-evidence-field="url" maxlength="500" inputmode="url" autocomplete="off" placeholder="https://..."></div>
-          <div class="form-field"><label data-evidence-label="consultedAt">Fecha de consulta</label><input type="date" data-evidence-field="consultedAt"></div>
-          <div class="form-field"><label data-evidence-label="note">Nota / alcance / limitación</label><input type="text" data-evidence-field="note" maxlength="300" autocomplete="off" placeholder="Qué respalda y qué no permite concluir"></div>
-          <button class="originacion-evidence-remove" type="button" data-remove-evidence>Quitar fuente</button>
-        </div>
-      </template>
-      <div class="originacion-evidence-actions"><button class="button" id="originacion-add-evidence" type="button">Añadir fuente ↗</button><span>Hasta ocho fuentes por expediente.</span></div>
-    </section>
-    <section class="originacion-section" aria-labelledby="originacion-checks-title">
-      <h4 id="originacion-checks-title">03 / Control de diligencia</h4>
-      <p>Los estados son anotaciones operativas, no certificaciones. “Fuente o documento cargado” no significa que un profesional haya validado su contenido.</p>
-      <div class="originacion-check-grid">
-        <article class="originacion-check-card" data-check-id="cadastral"><h5>Catastral y mensura</h5><div class="form-field"><label for="originacion-check-cadastral-status">Estado</label><select id="originacion-check-cadastral-status" data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label for="originacion-check-cadastral-source">Fuente / documento</label><input id="originacion-check-cadastral-source" type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label for="originacion-check-cadastral-consultedAt">Fecha</label><input id="originacion-check-cadastral-consultedAt" type="date" data-check-field="consultedAt"></div><div class="form-field"><label for="originacion-check-cadastral-note">Nota</label><input id="originacion-check-cadastral-note" type="text" data-check-field="note" maxlength="300"></div></article>
-        <article class="originacion-check-card" data-check-id="legal"><h5>Dominial y legal</h5><div class="form-field"><label for="originacion-check-legal-status">Estado</label><select id="originacion-check-legal-status" data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label for="originacion-check-legal-source">Fuente / documento</label><input id="originacion-check-legal-source" type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label for="originacion-check-legal-consultedAt">Fecha</label><input id="originacion-check-legal-consultedAt" type="date" data-check-field="consultedAt"></div><div class="form-field"><label for="originacion-check-legal-note">Nota</label><input id="originacion-check-legal-note" type="text" data-check-field="note" maxlength="300"></div></article>
-        <article class="originacion-check-card" data-check-id="zoning"><h5>Urbanística y normativa</h5><div class="form-field"><label for="originacion-check-zoning-status">Estado</label><select id="originacion-check-zoning-status" data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label for="originacion-check-zoning-source">Fuente / documento</label><input id="originacion-check-zoning-source" type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label for="originacion-check-zoning-consultedAt">Fecha</label><input id="originacion-check-zoning-consultedAt" type="date" data-check-field="consultedAt"></div><div class="form-field"><label for="originacion-check-zoning-note">Nota</label><input id="originacion-check-zoning-note" type="text" data-check-field="note" maxlength="300"></div></article>
-        <article class="originacion-check-card" data-check-id="environment"><h5>Ambiental e hidráulica</h5><div class="form-field"><label for="originacion-check-environment-status">Estado</label><select id="originacion-check-environment-status" data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label for="originacion-check-environment-source">Fuente / documento</label><input id="originacion-check-environment-source" type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label for="originacion-check-environment-consultedAt">Fecha</label><input id="originacion-check-environment-consultedAt" type="date" data-check-field="consultedAt"></div><div class="form-field"><label for="originacion-check-environment-note">Nota</label><input id="originacion-check-environment-note" type="text" data-check-field="note" maxlength="300"></div></article>
-        <article class="originacion-check-card" data-check-id="services"><h5>Servicios y accesos</h5><div class="form-field"><label for="originacion-check-services-status">Estado</label><select id="originacion-check-services-status" data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label for="originacion-check-services-source">Fuente / documento</label><input id="originacion-check-services-source" type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label for="originacion-check-services-consultedAt">Fecha</label><input id="originacion-check-services-consultedAt" type="date" data-check-field="consultedAt"></div><div class="form-field"><label for="originacion-check-services-note">Nota</label><input id="originacion-check-services-note" type="text" data-check-field="note" maxlength="300"></div></article>
-        <article class="originacion-check-card" data-check-id="market"><h5>Mercado y demanda</h5><div class="form-field"><label for="originacion-check-market-status">Estado</label><select id="originacion-check-market-status" data-check-field="status"><option value="pending">Pendiente</option><option value="in_progress">En curso</option><option value="documented">Fuente o documento cargado</option><option value="professional_review">Requiere revisión profesional</option><option value="blocked">Bloqueado</option></select></div><div class="form-field"><label for="originacion-check-market-source">Fuente / documento</label><input id="originacion-check-market-source" type="text" data-check-field="source" maxlength="180"></div><div class="form-field"><label for="originacion-check-market-consultedAt">Fecha</label><input id="originacion-check-market-consultedAt" type="date" data-check-field="consultedAt"></div><div class="form-field"><label for="originacion-check-market-note">Nota</label><input id="originacion-check-market-note" type="text" data-check-field="note" maxlength="300"></div></article>
-      </div>
-    </section>
-    <section class="originacion-section" aria-labelledby="originacion-followup-title">
-      <h4 id="originacion-followup-title">04 / Próximo paso comercial</h4>
-      <div class="originacion-grid">
-        <div class="form-field full"><label for="originacion-next-action">Próxima acción</label><input id="originacion-next-action" maxlength="180" autocomplete="off" placeholder="Ej.: solicitar certificado urbanístico vigente"></div>
-        <div class="form-field"><label for="originacion-follow-up-date">Fecha de seguimiento</label><input id="originacion-follow-up-date" type="date"></div>
-        <div class="form-field full"><label for="originacion-negotiation-notes">Notas de negociación (sin datos personales)</label><textarea id="originacion-negotiation-notes" maxlength="800" placeholder="Condiciones generales, documentación pendiente o puntos a resolver."></textarea></div>
-      </div>
-    </section>
-    <section class="originacion-section" aria-labelledby="originacion-fees-title">
-      <h4 id="originacion-fees-title">05 / Honorarios</h4>
-      <p>Los importes son campos independientes. No se suman entre sí ni se convierten. Todas las cifras de este expediente deben usar una misma moneda.</p>
-      <div class="originacion-fees-grid">
-        <div class="form-field"><label for="originacion-fee-currency">Moneda</label><select id="originacion-fee-currency"><option value="">Sin definir</option><option value="ARS">ARS</option><option value="USD">USD</option></select></div>
-        <div class="form-field"><label for="originacion-fee-proposed">Propuestos</label><input id="originacion-fee-proposed" inputmode="decimal" maxlength="18" autocomplete="off" placeholder="Sin dato"></div>
-        <div class="form-field"><label for="originacion-fee-agreed">Acordados</label><input id="originacion-fee-agreed" inputmode="decimal" maxlength="18" autocomplete="off" placeholder="Sin dato"></div>
-        <div class="form-field"><label for="originacion-fee-invoiced">Facturados</label><input id="originacion-fee-invoiced" inputmode="decimal" maxlength="18" autocomplete="off" placeholder="Sin dato"></div>
-        <div class="form-field"><label for="originacion-fee-collected">Cobrados</label><input id="originacion-fee-collected" inputmode="decimal" maxlength="18" autocomplete="off" placeholder="Sin dato"></div>
-      </div>
-    </section>
-    <div class="originacion-export-actions">
-      <button class="button dark" id="originacion-print-dossier" type="button">Imprimir ficha interna / guardar PDF</button>
-      <button class="button" id="originacion-download-dossier" type="button">Descargar expediente interno JSON v3</button>
-    </div>
-    <p class="originacion-status" id="originacion-status" role="status" aria-live="polite">La ficha interna omite el nombre y el texto libre del formulario público. Los datos de esta mesa no se incorporan al borrador de WhatsApp.</p>
-    <p class="originacion-local-note">Antes de compartir el archivo, revisá la ubicación, nomenclatura y notas comerciales. El sitio no ofrece autenticación, cifrado de archivos ni control de permisos; no reemplaza un CRM con acceso restringido.</p>
-  </div>
-</details>
+
 <div class="form-grid">
 <div class="form-field">
 <label for="contact-name">Tu nombre *</label>
@@ -352,10 +205,10 @@
 <footer class="site-footer"><span>© Erica M. Acosta · Moreno, Buenos Aires</span><span>Desarrollos inmobiliarios · IA aplicada · Alianzas</span><a href="../">Volver al inicio ↗</a></footer>
 <section class="opportunity-dossier-print" id="opportunity-dossier-print" hidden aria-label="Ficha preliminar de oportunidad para impresión"></section>
 <script src="../assets/js/opportunity-tools.js"></script>
-<script src="../assets/js/originacion-workbench.js"></script>
-<script src="../assets/js/pipeline-dashboard.js"></script>
-<script src="../assets/js/pipeline-agenda.js"></script>
-<script src="../assets/js/pipeline-dashboard-ui.js"></script>
+
+
+
+
 <script>
 "use strict";
 const feasibilityResults=document.getElementById("feasibility-results");
@@ -551,38 +404,20 @@ function buildDossierInput(){
   return {
     fields:readOpportunityFields(),
     calculationInput:readFeasibilityInput(),
-    internalData:window.MorenoOriginacionWorkbench.read(),
+    internalData:window.MorenoOpportunityTools.emptyInternalDossier(),
+    includePublic:true,
+    includeInternal:false,
     generatedAt:new Intl.DateTimeFormat("es-AR",{dateStyle:"long",timeStyle:"short"}).format(new Date()),
     exportedAt:new Date().toISOString()
   };
 }
-function buildInternalDossierInput(){
-  const data=buildDossierInput();
-  data.fields.nombre="";
-  data.fields.detalle="";
-  return data;
-}
-function validateOriginacionForExport(){
-  const result=window.MorenoOriginacionWorkbench.validate();
-  const status=document.getElementById("originacion-status");
-  if(!result.ok){
-    status.dataset.state="error";
-    status.textContent="No se puede exportar el expediente: "+result.errors.join(" ");
-    return false;
-  }
-  status.removeAttribute("data-state");
-  status.textContent=result.warnings.length
-    ?"Control local completado con advertencias: "+result.warnings.join(" ")
-    :"Control local completado. Las fuentes y verificaciones siguen siendo responsabilidad de quien registra.";
-  return true;
-}
 printDossierButton.addEventListener("click",()=>{
-  if(!opportunityForm.reportValidity()||!validateOriginacionForExport())return;
+  if(!opportunityForm.reportValidity())return;
   const dossier=window.MorenoOpportunityTools.buildOpportunityDossier(buildDossierInput());
   renderOpportunityDossier(dossier);
 });
 downloadDossierButton.addEventListener("click",()=>{
-  if(!opportunityForm.reportValidity()||!validateOriginacionForExport())return;
+  if(!opportunityForm.reportValidity())return;
   try{
     const payload=window.MorenoOpportunityTools.buildOpportunityDossierExport(buildDossierInput());
     const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"});
@@ -600,33 +435,6 @@ downloadDossierButton.addEventListener("click",()=>{
     formStatus.textContent="No se pudo generar el expediente JSON en este navegador. Podés utilizar la opción de impresión o guardar como PDF.";
   }
 });
-document.getElementById("originacion-print-dossier").addEventListener("click",()=>{
-  if(!validateOriginacionForExport())return;
-  const dossier=window.MorenoOpportunityTools.buildOpportunityDossier(buildInternalDossierInput());
-  renderOpportunityDossier(dossier);
-});
-document.getElementById("originacion-download-dossier").addEventListener("click",()=>{
-  if(!validateOriginacionForExport())return;
-  const status=document.getElementById("originacion-status");
-  try{
-    const payload=window.MorenoOpportunityTools.buildOpportunityDossierExport(buildInternalDossierInput());
-    const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"});
-    const objectUrl=window.URL.createObjectURL(blob);
-    const link=document.createElement("a");
-    link.href=objectUrl;
-    link.download="moreno-expediente-interno-"+new Date().toISOString().slice(0,10)+".json";
-    link.style.display="none";
-    document.body.append(link);
-    link.click();
-    link.remove();
-    window.setTimeout(()=>window.URL.revokeObjectURL(objectUrl),1000);
-    status.textContent="Expediente interno v3 descargado. Se omitieron el nombre y el texto libre del formulario público; revisá la ubicación y nomenclatura antes de compartirlo.";
-  }catch(error){
-    status.dataset.state="error";
-    status.textContent="No se pudo generar el expediente interno en este navegador. Revisá los datos e intentá nuevamente.";
-  }
-});
-
 function applyDossierFormData(data){
   const fields=data.fields||{};
   const calculationInput=data.calculationInput||{};
@@ -650,7 +458,6 @@ function applyDossierFormData(data){
   document.getElementById("parcel-fos").value=calculationInput.fosRaw||"";
   document.getElementById("parcel-fot").value=calculationInput.fotRaw||"";
   document.getElementById("parcel-reference").value=calculationInput.referenceRaw||"";
-  window.MorenoOriginacionWorkbench.apply(data.internalData||{});
   const contextPanel=document.getElementById("map-reference-context");
   contextPanel.replaceChildren();
   if(fields.referencia_mapa){
@@ -694,7 +501,7 @@ async function readSelectedDossierFile(){
     pendingDossierImport=result;
     dossierImportActions.hidden=false;
     const warningText=result.warnings.length?" Advertencias: "+result.warnings.join(" "):"";
-    dossierImportStatus.textContent="Expediente válido, versión "+result.version+", exportado el "+result.exportedAt+". Incluye los datos internos de originación si la versión los contiene. Elegí cómo aplicar los datos."+warningText;
+    dossierImportStatus.textContent="Expediente válido, versión "+result.version+", exportado el "+result.exportedAt+". Este formulario solo recupera contacto y cálculos; los datos internos se cargan desde la Mesa Operativa. Elegí cómo aplicar los datos."+warningText;
   }catch(error){
     pendingDossierImport=null;
     dossierImportActions.hidden=true;
@@ -707,13 +514,13 @@ function applyPendingDossierImport(mode){
   let data;
   let conflictCount=0;
   if(mode==="replace"){
-    data={fields:imported.fields,calculationInput:imported.calculationInput,internalData:imported.internalData};
+    data={fields:imported.fields,calculationInput:imported.calculationInput,internalData:window.MorenoOpportunityTools.emptyInternalDossier()};
   }else{
     data=window.MorenoOpportunityTools.mergeImportedOpportunityData({
       fields:readOpportunityFields(),
       calculationInput:readFeasibilityInput(),
-      internalData:window.MorenoOriginacionWorkbench.read()
-    },imported);
+      internalData:window.MorenoOpportunityTools.emptyInternalDossier()
+    },Object.assign({},imported,{internalData:window.MorenoOpportunityTools.emptyInternalDossier()}));
     conflictCount=data.conflicts.length;
   }
   applyDossierFormData(data);
@@ -721,12 +528,12 @@ function applyPendingDossierImport(mode){
   dossierImportActions.hidden=true;
   dossierImportFile.value="";
   if(mode==="replace"){
-    dossierImportStatus.textContent="Expediente aplicado. Se reemplazaron los campos del formulario con los datos estructurados del archivo; revisalos antes de continuar.";
+    dossierImportStatus.textContent="Expediente aplicado. Se recuperaron los campos de contacto y cálculo; los datos internos no se cargan en este formulario.";
   }else if(conflictCount){
     const labels=data.conflicts.map(item=>item.label).join(", ");
     dossierImportStatus.textContent="Se completaron los campos vacíos y se conservaron los valores actuales en "+conflictCount+" conflicto(s): "+labels+". Para reemplazarlos, validá e importá nuevamente el archivo y elegí la opción de reemplazo.";
   }else{
-    dossierImportStatus.textContent="Expediente aplicado. Se completaron los campos vacíos sin sobrescribir información existente.";
+    dossierImportStatus.textContent="Expediente aplicado. Se completaron los campos de contacto y cálculo vacíos; la información interna permanece fuera de este formulario.";
   }
   formStatus.textContent="Datos recuperados localmente. Revisá el formulario y prepará un nuevo borrador cuando esté listo.";
 }
