@@ -292,19 +292,24 @@ function filterReferences(items, options) {
   const settings = options || {};
   const query = String(settings.query || "").toLocaleLowerCase("es-AR").trim();
   const category = settings.category || "all";
+  const kind = settings.kind || "all";
   const evidence = settings.evidence || "all";
   return items.filter(item => {
     const categoryMatches =
       category === "all" ||
       (category === "locality" && item.type === "locality") ||
       (category === "opportunity" && item.type === "opportunity");
+    const kindMatches =
+      kind === "all" ||
+      (item.type === "opportunity" && item.kind === kind);
     const evidenceMatches =
       evidence === "all" ||
       (item.type === "opportunity" && evidence === item.stage);
     const searchable = [
-      item.name, item.info, item.business, item.status, item.evidence, item.next, item.kind
+      item.name, item.info, item.business, item.status, item.evidence, item.next,
+      item.kind, kindLabel[item.kind]
     ].filter(Boolean).join(" ").toLocaleLowerCase("es-AR");
-    return categoryMatches && evidenceMatches && searchable.includes(query);
+    return categoryMatches && kindMatches && evidenceMatches && searchable.includes(query);
   });
 }
 
@@ -912,6 +917,7 @@ function initMapPage(doc) {
     const shown = filterReferences(all, {
       query: doc.getElementById("search").value,
       category: doc.getElementById("category").value,
+      kind: doc.getElementById("kind-filter").value,
       evidence: doc.getElementById("evidence-filter").value
     });
     visibleItems = shown;
@@ -1179,10 +1185,12 @@ function initMapPage(doc) {
   reviewImportInput.addEventListener("change", event => importReviewFile(event.target.files && event.target.files[0]));
   doc.getElementById("search").addEventListener("input", render);
   doc.getElementById("category").addEventListener("change", render);
+  doc.getElementById("kind-filter").addEventListener("change", render);
   doc.getElementById("evidence-filter").addEventListener("change", render);
   doc.getElementById("reset-map").addEventListener("click", () => {
     doc.getElementById("search").value = "";
     doc.getElementById("category").value = "all";
+    doc.getElementById("kind-filter").value = "all";
     doc.getElementById("evidence-filter").value = "all";
     selectedReferenceId = null;
     updateShareUrl(null);

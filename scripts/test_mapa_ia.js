@@ -14,6 +14,17 @@ assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la
 assert.ok(source.includes("attributionControl: { compact: false }"), "la atribución OSM permanece visible también en móvil");
 assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece el enlace para reportar problemas cartográficos");
 const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
+assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
+assert.ok(mapPage.includes('id="kind-filter"'), "el atlas permite filtrar por sector o línea de desarrollo");
+for (const kind of ["industrial", "commercial", "tourism", "land"]) {
+  assert.ok(mapPage.includes('option value="' + kind + '"'), "el filtro ofrece el sector " + kind);
+}
+assert.ok(mapPage.includes('label class="map-filter-field'), "cada filtro tiene una etiqueta visible y asociada");
+assert.ok(mapPage.includes("Sector / línea de desarrollo"), "la función del filtro sectorial se explica en pantalla");
+assert.ok(source.includes('getElementById("kind-filter")'), "el motor conecta el control sectorial");
+assert.ok(source.includes('kind: doc.getElementById("kind-filter").value'), "la renderización utiliza el sector seleccionado");
+assert.ok(source.includes('doc.getElementById("kind-filter").addEventListener("change", render)'), "el cambio de sector vuelve a renderizar el inventario");
+assert.ok(source.includes('doc.getElementById("kind-filter").value = "all"'), "restablecer limpia también el filtro sectorial");
 assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye la mesa de verificación documental");
 for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-documented-count", "atlas-hypotheses-count", "atlas-total-count"]) {
   assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
@@ -63,6 +74,9 @@ assert.equal(prefersReducedMotion(null), false);
 assert.ok(source.includes("map.jumpTo(camera)"), "las referencias evitan animaciones cuando el sistema reduce movimiento");
 assert.ok(source.includes("map.jumpTo(home)"), "restablecer el mapa respeta el movimiento reducido");
 assert.ok(styles.includes(".map-share-link"), "los enlaces compartibles tienen un estilo identificable");
+assert.ok(styles.includes(".map-filter-group"), "los filtros tienen una composición responsive propia");
+assert.ok(styles.includes(".map-filter-field"), "los controles muestran etiquetas y foco visible");
+assert.ok(styles.includes(".map-toolbar-actions"), "las acciones del mapa se agrupan fuera de los filtros");
 assert.equal(getSharedReferenceId("?ref=rp25", all), "rp25", "se reconoce una referencia válida desde la URL");
 assert.equal(getSharedReferenceId("?ref=no-existe", all), null, "se descarta una referencia desconocida");
 assert.equal(getSharedReferenceId("", all), null, "sin parámetro no se fuerza una selección");
@@ -124,6 +138,13 @@ assert.equal(filterReferences(all, { category: "locality" }).length, 6);
 assert.equal(filterReferences(all, { category: "opportunity" }).length, 5);
 assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");
 assert.equal(filterReferences(all, { evidence: "hypothesis" }).length, 1, "el filtro de hipótesis no mezcla localidades sin clasificar");
+assert.deepEqual(filterReferences(all, { kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque"], "el filtro productivo/logístico muestra las dos referencias industriales existentes");
+assert.deepEqual(filterReferences(all, { kind: "commercial" }).map(item => item.id), ["ribera"], "el filtro comercial muestra la referencia existente");
+assert.deepEqual(filterReferences(all, { kind: "tourism" }).map(item => item.id), ["roggero"], "el filtro de turismo muestra la referencia existente");
+assert.deepEqual(filterReferences(all, { kind: "land" }).map(item => item.id), ["norte"], "el filtro de prospección de suelo muestra la hipótesis existente");
+assert.deepEqual(filterReferences(all, { kind: "industrial", evidence: "documented" }).map(item => item.id), ["rp25", "ecoparque"], "el filtro sectorial se combina con el nivel de evidencia");
+assert.deepEqual(filterReferences(all, { kind: "industrial", category: "locality" }), [], "un sector de oportunidad no incorpora localidades");
+assert.deepEqual(filterReferences(all, { query: "productivo", kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque"], "la búsqueda reconoce la etiqueta visible del sector, no solo su código interno");
 assert.deepEqual(
   filterReferences(all, { query: "paso del rey", category: "locality" }).map(item => item.id),
   ["paso"]

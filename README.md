@@ -38,7 +38,7 @@ La investigación inicial identifica cinco tesis territoriales preliminares: cor
 ## Mapa interactivo de originación
 
 - [Abrir mapa interactivo de Moreno](web/mapa-moreno/index.html)
-- Incluye localidades y cinco tesis territoriales del Pilar 1, con búsqueda por contenido, filtros por tipo y nivel de evidencia, fichas emergentes, leyenda y enlaces a fuentes públicas.
+- Incluye localidades y cinco tesis territoriales del Pilar 1, con búsqueda por contenido y filtros combinables por tipo, sector/línea de desarrollo y nivel de evidencia; las fichas, la leyenda y las fuentes públicas conservan su alcance documental.
 - Distingue el contexto respaldado por una fuente pública de las hipótesis de prospección; esa distinción no equivale a verificar parcelas ni disponibilidad.
 - Superpone el límite administrativo municipal mediante GeoJSON de Georef / IGN (WGS84), con ajuste automático del encuadre.
 - Los marcadores de oportunidades son referencias aproximadas de áreas/corredores, no parcelas ni límites oficiales.
@@ -95,7 +95,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 ### Resiliencia y accesibilidad del Mapa IA
 
 - Las fichas de localidades y tesis se renderizan aunque MapLibre GL JS o la cartografía base no estén disponibles.
-- Los filtros de texto, tipo y nivel de evidencia funcionan también en modo de consulta sin mapa.
+- Los filtros de texto, tipo, sector/línea de desarrollo y nivel de evidencia funcionan también en modo de consulta sin mapa.
 - Se incluye una alternativa HTML mediante `noscript` para lectores sin JavaScript, con enlaces directos a las fuentes.
 - Los controles de las fichas muestran foco visible para navegación por teclado.
 - El inventario de localidades y tesis usa fichas desplegables con línea a investigar, evidencia, estado, próximo paso y enlace directo a cada referencia externa; cuando la cartografía está disponible, cada ficha también permite centrar su marcador.
