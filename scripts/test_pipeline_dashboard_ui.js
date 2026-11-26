@@ -148,7 +148,7 @@ class Element {
   await fileInput.listeners.change();
   assert.equal(elements["pipeline-warnings"].hidden, false, "las alertas de honorarios deben mostrarse tras importar");
   assert.match(elements["pipeline-warnings"].children[0].textContent, /honorarios/i, "el título debe identificar el contenido de las alertas");
-  const renderedWarnings = elements["pipeline-warnings"].children[1].children.map(item => item.textContent).join("\\n");
+  const renderedWarnings = elements["pipeline-warnings"].children[1].children.map(item => item.textContent).join("\n");
   assert.match(renderedWarnings, /M-UI-FIN/);
   assert.match(renderedWarnings, /cobrados superan los facturados/);
   assert.match(renderedWarnings, /facturados superan los acordados/);
