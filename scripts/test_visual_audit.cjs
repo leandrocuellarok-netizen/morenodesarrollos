@@ -201,6 +201,65 @@ async function auditRoute(browser, route) {
 
       await page.locator("#map-review-disclosure > summary").click();
       check(await page.locator(".map-review-toolbar").isVisible(), "mapa-ia: la bitácora local no se abre");
+
+      await page.evaluate(() => {
+        const originalText = File.prototype.text;
+        File.prototype.text = function () {
+          if (this.name === "moreno-slow-review.json") {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => originalText.call(this).then(resolve, reject), 300);
+            });
+          }
+          return originalText.call(this);
+        };
+        window.confirm = () => true;
+        localStorage.removeItem("moreno-map-review-v2");
+        localStorage.removeItem("moreno-map-review-v1");
+      });
+      const reviewFile = (name, taskId, note) => ({
+        name,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify({
+          schema_version: 2,
+          generated_at: "2026-11-26T00:00:00.000Z",
+          scope: "Prueba automatizada sin datos reales.",
+          references: [{
+            id: "rp25",
+            name: "Referencia de prueba",
+            completed_tasks: 1,
+            total_tasks: 5,
+            tasks: [{
+              id: taskId,
+              label: taskId,
+              review_recorded: true,
+              source_document: "Documento de prueba",
+              consulted_at: "2026-11-26",
+              note
+            }]
+          }]
+        }))
+      });
+      await page.locator("#import-review-file").setInputFiles(reviewFile("moreno-slow-review.json", "cadastral", "registro lento"));
+      await page.waitForFunction(() => document.getElementById("review-status")?.getAttribute("aria-busy") === "true");
+      await page.locator("#import-review-file").setInputFiles(reviewFile("moreno-fast-review.json", "legal", "registro rápido"));
+      await page.waitForFunction(() => document.getElementById("review-status")?.textContent.includes("Importación revisada:"));
+      await delay(380);
+      const latestReviewState = await page.evaluate(() => JSON.parse(localStorage.getItem("moreno-map-review-v2") || "{}"));
+      check(Boolean(latestReviewState.rp25?.legal) && latestReviewState.rp25.legal.note === "registro rápido" && !latestReviewState.rp25.cadastral, "mapa-ia: la importación más reciente prevalece sobre una lectura anterior más lenta");
+
+      await page.locator("#import-review-file").setInputFiles(reviewFile("moreno-slow-review.json", "cadastral", "debe descartarse al borrar"));
+      await page.waitForFunction(() => document.getElementById("review-status")?.getAttribute("aria-busy") === "true");
+      await page.locator("#clear-review").click();
+      await delay(380);
+      const clearedReviewState = await page.evaluate(() => ({
+        current: localStorage.getItem("moreno-map-review-v2"),
+        legacy: localStorage.getItem("moreno-map-review-v1"),
+        status: document.getElementById("review-status")?.textContent,
+        busy: document.getElementById("review-status")?.getAttribute("aria-busy")
+      }));
+      check(clearedReviewState.current === null && clearedReviewState.legacy === null, "mapa-ia: una importación pendiente no restaura la bitácora después de borrarla");
+      check(clearedReviewState.status.includes("Bitácora local borrada") && !clearedReviewState.busy, "mapa-ia: el resultado del borrado permanece visible después de finalizar la lectura obsoleta");
+
       await page.locator("#map-verification-disclosure > summary").click();
       check(await page.locator("#map-verification-title").isVisible(), "mapa-ia: la mesa de fuentes oficiales no se abre");
 
