@@ -321,6 +321,52 @@ async function auditOpportunityFlow(browser) {
     const whatsappHref = await page.locator("#open-whatsapp").getAttribute("href");
     const whatsappText = new URL(whatsappHref).searchParams.get("text") || "";
     check(whatsappText === message, "oportunidades: WhatsApp recibe exactamente el borrador revisable");
+
+    const importedPayload = await page.evaluate(() => {
+      const tools = window.MorenoOpportunityTools;
+      return tools.buildOpportunityDossierExport({
+        fields: {
+          nombre: "Contacto importado",
+          perfil: "Inversor/a",
+          interes: "Explorar una inversión",
+          zona: "Moreno",
+          tipo: "Terreno",
+          ubicacion: "Referencia de prueba",
+          nomenclatura: "Circ. II, Secc. B, Quinta 14",
+          superficie: "1800 m²",
+          documentacion: ["Plano o mensura"],
+          verificaciones: ["Zonificación e indicadores urbanísticos consultados"],
+          detalle: "Notas recuperadas para revisión."
+        },
+        calculationInput: {
+          areaRaw: "1800",
+          fosRaw: "0,50",
+          fotRaw: "1,20",
+          referenceRaw: "Certificado aportado por el contacto"
+        },
+        internalData: tools.emptyInternalDossier(),
+        generatedAt: "26 de noviembre de 2026, 08:00",
+        exportedAt: "2026-11-26T11:00:00.000Z"
+      });
+    });
+    await page.locator("#dossier-import-disclosure > summary").click();
+    await page.locator("#dossier-import-file").setInputFiles({
+      name: "moreno-expediente-prueba.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(importedPayload))
+    });
+    await page.locator("#validate-dossier-import").click();
+    check(await page.locator("#dossier-import-actions").isVisible(), "oportunidades: el expediente JSON válido ofrece las acciones de aplicación");
+    await page.locator("#apply-dossier-replace").click();
+    check(await page.locator("#contact-profile").inputValue() === "Inversor/a", "oportunidades: la importación recupera el perfil del expediente");
+    check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: la importación revela detalles de inmueble aunque el perfil sea inversor");
+    check(await page.locator("#evidence-disclosure").evaluate(element => element.open), "oportunidades: la importación revela documentación y verificaciones recuperadas");
+    check(await page.locator("#context-disclosure").evaluate(element => element.open), "oportunidades: la importación revela el contexto recuperado");
+    check(await page.locator("#feasibility-disclosure").evaluate(element => element.open), "oportunidades: la importación revela los indicadores y cálculos recuperados");
+    check(!(await page.locator("#dossier-import-disclosure").evaluate(element => element.open)), "oportunidades: el panel de importación se cierra después de aplicar el expediente");
+    check(await page.locator("#contact-address").inputValue() === "Referencia de prueba", "oportunidades: los detalles importados permanecen visibles y completos");
+    check(await page.locator("#parcel-fos").inputValue() === "0,50", "oportunidades: los indicadores importados se conservan");
+    check(await page.locator('input[name="documentacion"][value="Plano o mensura"]').isChecked(), "oportunidades: se recuperan las selecciones documentales");
     check(pageErrors.length === 0, "oportunidades: errores JavaScript: " + pageErrors.join(" | "));
     console.log("PASS: oportunidades — preselección de intención, disclosures y borrador completo");
   } catch (error) {
