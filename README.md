@@ -41,6 +41,8 @@ La investigación inicial identifica cinco tesis territoriales preliminares: cor
 - Incluye localidades y cinco tesis territoriales del Pilar 1, con búsqueda por contenido y filtros combinables por tipo, sector/línea de desarrollo y nivel de evidencia; las fichas, la leyenda y las fuentes públicas conservan su alcance documental.
 - Distingue el contexto respaldado por una fuente pública de las hipótesis de prospección; esa distinción no equivale a verificar parcelas ni disponibilidad.
 - Superpone el límite administrativo municipal mediante GeoJSON de Georef / IGN (WGS84), con ajuste automático del encuadre.
+- Si MapLibre no carga o fallan de forma persistente las teselas de OpenStreetMap, el Mapa IA conserva una lámina esquemática local: mantiene la relación espacial aproximada, los filtros y la selección de fichas sin depender de la cartografía externa.
+- El esquema alternativo usa las coordenadas del inventario para ordenar referencias; no representa calles, límites administrativos ni parcelas, y no tiene escala.
 - Los marcadores de oportunidades son referencias aproximadas de áreas/corredores, no parcelas ni límites oficiales.
 
 
