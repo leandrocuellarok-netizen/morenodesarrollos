@@ -40,19 +40,19 @@ async function auditHomeCartography(page) {
   })));
   const source = fs.readFileSync(path.join(ROOT, "assets/js/mapa-ia.js"), "utf8");
 
-  function readRecords(name, kind) {
+  function readRecords(name, defaultKind) {
     const match = source.match(new RegExp("const " + name + "=\\[([\\s\\S]*?)\\];"));
     if (!match) return [];
     return (match[1].match(/\{[^{}]*\}/g) || []).map(entry => {
-      const read = (key, pattern) => {
-        const found = entry.match(new RegExp(pattern));
-        return found ? found[1] : null;
-      };
+      const id = entry.match(/id:"([^"]+)"/);
+      const lat = entry.match(/lat:([-0-9.]+)/);
+      const lng = entry.match(/lng:([-0-9.]+)/);
+      const stage = entry.match(/stage:"([^"]+)"/);
       return {
-        id: read("id", 'id:"([^"]+)"'),
-        lat: Number(read("lat", "lat:([-\\\\d.]+)")),
-        lng: Number(read("lng", "lng:([-\\\\d.]+)")),
-        kind: kind === "locality" ? "locality" : read("stage", 'stage:"([^"]+)"')
+        id: id ? id[1] : null,
+        lat: lat ? Number(lat[1]) : NaN,
+        lng: lng ? Number(lng[1]) : NaN,
+        kind: defaultKind === "locality" ? "locality" : (stage ? stage[1] : null)
       };
     });
   }
@@ -79,10 +79,12 @@ async function auditHomeCartography(page) {
     check(Math.abs(marker.x - expectedX) < 0.16 && Math.abs(marker.y - expectedY) < 0.16, "inicio: " + marker.id + " está colocado según su coordenada geográfica");
   }
 
+  check(await page.locator("body.home-page").count() === 1, "inicio: la portada usa su sistema editorial específico");
   check(await page.locator(".home-map-plate .territory-diagram[role='img']").count() === 1, "inicio: el plano editorial tiene descripción accesible");
   check(await page.locator(".home-map-plate figcaption").textContent().then(text => text.includes("no representa límites municipales")), "inicio: el plano aclara que no representa límites municipales");
   check(await page.locator(".architecture-drawing").count() === 1, "inicio: la portada incorpora una única lámina arquitectónica");
-  check(await page.locator(".arch-plate-header").count() === 0, "inicio: no conserva marcadores de una versión anterior de la lámina");
+  const drawingText = await page.locator(".architecture-drawing").textContent();
+  check(drawingText.includes("ESTUDIO VOLUMÉTRICO") && drawingText.includes("no corresponde a un inmueble identificado"), "inicio: la lámina identifica el dibujo como estudio conceptual");
 }
 
 async function startServer() {
