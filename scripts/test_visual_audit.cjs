@@ -566,9 +566,9 @@ async function auditLegacyMapRedirect(browser) {
   const response = await fetch(legacyUrl);
   check(response.ok, "mapa histórico: la ruta de compatibilidad responde correctamente");
   const source = await response.text();
-  check(/<meta\\s+name="robots"\\s+content="noindex,follow"/i.test(source), "mapa histórico: no solicita indexación");
+  check(source.includes('<meta name="robots" content="noindex,follow">'), "mapa histórico: no solicita indexación");
   check(source.includes("https://leandrocuellarok-netizen.github.io/morenodesarrollos/mapa-ia/"), "mapa histórico: declara como canonical el Mapa IA vigente");
-  check(/<meta\\s+http-equiv="refresh"\\s+content="0;\\s*url=..\\/..\\/mapa-ia\\/"/i.test(source), "mapa histórico: contiene redirección inmediata");
+  check(source.includes('<meta http-equiv="refresh" content="0;url=../../mapa-ia/">'), "mapa histórico: contiene redirección inmediata");
   check(source.includes('href="../../mapa-ia/"'), "mapa histórico: conserva un enlace manual alternativo");
 
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 });
