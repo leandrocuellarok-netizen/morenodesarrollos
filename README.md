@@ -114,6 +114,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 - La versión anterior guardaba casillas sin procedencia. Al actualizar, esas marcas se migran como pendientes de documentar; no se presentan como verificaciones completas ni se descartan silenciosamente.
 - El estado se conserva en `localStorage` del navegador actual. No se transmite al sitio, no sincroniza entre dispositivos y no debe utilizarse para guardar nombres de personas, datos personales, información dominial sensible ni documentación confidencial.
 - La descarga JSON v2 incluye, para cada tarea visible, su estado, fuente/documento, fecha y observación. Es un registro operativo: no verifica autenticidad, vigencia ni cumplimiento, y no constituye una certificación técnica, dominial o urbanística.
+- La importación de bitácoras descarta lecturas anteriores cuando se selecciona otro archivo y las invalida al borrar la bitácora; el estado de lectura se anuncia mediante ARIA para tecnologías de asistencia.
 - Si el navegador bloquea el almacenamiento local, la bitácora sigue disponible durante la sesión y la exportación permite conservar el estado antes de cerrar.
 
 ### Enlaces directos a referencias del Mapa IA
