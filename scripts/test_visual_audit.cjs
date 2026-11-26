@@ -432,6 +432,16 @@ async function auditMapFallback(browser) {
   const pageErrors = [];
   page.on("pageerror", error => pageErrors.push(error.message));
   try {
+    await page.addInitScript(() => {
+      localStorage.setItem("moreno-map-review-v2", JSON.stringify({
+        rp25: { cadastral: {
+          completed: true,
+          source_document: "Fuente sintética de auditoría",
+          consulted_at: "2026-11-26",
+          note: "Dato de prueba; no corresponde a un inmueble real."
+        } }
+      }));
+    });
     await page.route("https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js", route => route.abort());
     const response = await page.goto(BASE_URL + "/mapa-ia/", { waitUntil: "domcontentloaded" });
     check(Boolean(response && response.ok()), "mapa-ia fallback: la página responde aunque falle el motor cartográfico");
@@ -439,6 +449,13 @@ async function auditMapFallback(browser) {
     check(await page.locator(".map-static-diagram").count() === 1, "mapa-ia fallback: se genera el esquema SVG sin MapLibre");
     check(await page.locator("[data-fallback-reference]").count() === 11, "mapa-ia fallback: el índice alternativo incluye las once referencias");
     check((await page.locator(".map-static-note").innerText()).includes("no tiene escala"), "mapa-ia fallback: el alcance no parcelario queda explicado");
+    check((await page.locator(".map-review-privacy").innerText()).includes("sin cifrado"), "mapa-ia: la bitácora advierte que el almacenamiento local no está cifrado");
+    check(await page.locator("#clear-review").isVisible(), "mapa-ia: el control para borrar la bitácora está disponible");
+    check(await page.evaluate(() => Boolean(localStorage.getItem("moreno-map-review-v2"))), "mapa-ia: la auditoría cargó una bitácora sintética en el navegador");
+    await page.evaluate(() => { window.confirm = () => true; });
+    await page.locator("#clear-review").click();
+    check(await page.evaluate(() => localStorage.getItem("moreno-map-review-v2") === null && localStorage.getItem("moreno-map-review-v1") === null), "mapa-ia: borrar la bitácora elimina las claves actuales y heredadas");
+    check((await page.locator("#review-status").innerText()).includes("Bitácora local borrada"), "mapa-ia: la interfaz confirma el borrado realizado");
 
     await page.setViewportSize({ width: 390, height: 844 });
     const fallbackLayoutIsNatural = await page.locator(".map-canvas.is-static-fallback").evaluate(element => {
