@@ -913,13 +913,173 @@ function initMapPage(doc) {
   let selectedReferenceId = initialViewState.ref;
   let userHasNavigated = false;
 
+  let staticFallbackActive = false;
+
+  function renderStaticFallback(items) {
+    const visible = Array.isArray(items) ? items : all;
+    const container = doc.createElement("section");
+    container.className = "map-static-fallback";
+    container.setAttribute("aria-label", "Esquema territorial alternativo");
+
+    const heading = doc.createElement("header");
+    heading.className = "map-static-fallback-head";
+    const eyebrow = doc.createElement("span");
+    eyebrow.className = "map-static-kicker";
+    eyebrow.textContent = "ESQUEMA TERRITORIAL / REFERENCIAS APROXIMADAS";
+    const title = doc.createElement("h3");
+    title.textContent = "Moreno, en relación.";
+    const explanation = doc.createElement("p");
+    explanation.className = "map-static-message";
+    explanation.textContent = fallbackMessage;
+    heading.append(eyebrow, title, explanation);
+
+    const svgNamespace = "http://www.w3.org/2000/svg";
+    const svg = doc.createElementNS(svgNamespace, "svg");
+    svg.setAttribute("class", "map-static-diagram");
+    svg.setAttribute("viewBox", "0 0 960 420");
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-labelledby", "map-static-title map-static-desc");
+    const svgTitle = doc.createElementNS(svgNamespace, "title");
+    svgTitle.setAttribute("id", "map-static-title");
+    svgTitle.textContent = "Distribución relativa de las referencias territoriales visibles";
+    const svgDescription = doc.createElementNS(svgNamespace, "desc");
+    svgDescription.setAttribute("id", "map-static-desc");
+    svgDescription.textContent = "Esquema construido con coordenadas aproximadas del inventario. No es cartografía oficial, no tiene escala y no representa calles, límites ni parcelas.";
+    const background = doc.createElementNS(svgNamespace, "rect");
+    background.setAttribute("class", "map-static-frame");
+    background.setAttribute("x", "1");
+    background.setAttribute("y", "1");
+    background.setAttribute("width", "958");
+    background.setAttribute("height", "418");
+    const grid = doc.createElementNS(svgNamespace, "path");
+    grid.setAttribute("class", "map-static-grid");
+    grid.setAttribute("d", "M240 1V419M480 1V419M720 1V419M1 105H959M1 210H959M1 315H959");
+    const markerLayer = doc.createElementNS(svgNamespace, "g");
+    markerLayer.setAttribute("class", "map-static-markers");
+
+    const longitudes = all.map(item => Number(item.lng));
+    const latitudes = all.map(item => Number(item.lat));
+    const minLng = Math.min(...longitudes);
+    const maxLng = Math.max(...longitudes);
+    const minLat = Math.min(...latitudes);
+    const maxLat = Math.max(...latitudes);
+    const lngRange = Math.max(maxLng - minLng, 0.0001);
+    const latRange = Math.max(maxLat - minLat, 0.0001);
+
+    visible.forEach(item => {
+      const x = 64 + ((Number(item.lng) - minLng) / lngRange) * 832;
+      const y = 42 + ((maxLat - Number(item.lat)) / latRange) * 330;
+      const group = doc.createElementNS(svgNamespace, "g");
+      const markerClass = item.type === "locality"
+        ? "map-static-marker map-static-marker-locality"
+        : (item.stage === "hypothesis"
+          ? "map-static-marker map-static-marker-hypothesis"
+          : "map-static-marker map-static-marker-documented");
+      group.setAttribute("class", markerClass);
+      group.setAttribute("data-static-map-reference", item.id);
+      group.classList.toggle("is-selected", selectedReferenceId === item.id);
+
+      const markerTitle = doc.createElementNS(svgNamespace, "title");
+      const index = all.findIndex(entry => entry.id === item.id) + 1;
+      const number = String(index).padStart(2, "0");
+      markerTitle.textContent = number + " · " + item.name;
+      group.append(markerTitle);
+
+      if (item.type === "locality") {
+        const shape = doc.createElementNS(svgNamespace, "circle");
+        shape.setAttribute("cx", String(x));
+        shape.setAttribute("cy", String(y));
+        shape.setAttribute("r", "11");
+        group.append(shape);
+      } else if (item.stage === "hypothesis") {
+        const shape = doc.createElementNS(svgNamespace, "path");
+        shape.setAttribute("d", "M " + x + " " + (y - 14) + " L " + (x + 14) + " " + y + " L " + x + " " + (y + 14) + " L " + (x - 14) + " " + y + " Z");
+        group.append(shape);
+      } else {
+        const shape = doc.createElementNS(svgNamespace, "rect");
+        shape.setAttribute("x", String(x - 10));
+        shape.setAttribute("y", String(y - 10));
+        shape.setAttribute("width", "20");
+        shape.setAttribute("height", "20");
+        group.append(shape);
+      }
+
+      const label = doc.createElementNS(svgNamespace, "text");
+      label.setAttribute("x", String(x));
+      label.setAttribute("y", String(y + 4));
+      label.setAttribute("text-anchor", "middle");
+      label.textContent = number;
+      group.append(label);
+      markerLayer.append(group);
+    });
+
+    const north = doc.createElementNS(svgNamespace, "text");
+    north.setAttribute("class", "map-static-direction");
+    north.setAttribute("x", "930");
+    north.setAttribute("y", "26");
+    north.setAttribute("text-anchor", "end");
+    north.textContent = "NORTE ↑";
+    svg.append(svgTitle, svgDescription, background, grid, markerLayer, north);
+
+    const indexHeading = doc.createElement("h4");
+    indexHeading.className = "map-static-index-title";
+    indexHeading.textContent = "Referencias visibles · seleccioná una para abrir su ficha";
+    const index = doc.createElement("ol");
+    index.className = "map-static-index";
+    if (!visible.length) {
+      const empty = doc.createElement("li");
+      empty.className = "map-static-empty";
+      empty.textContent = "No hay referencias que coincidan con los filtros actuales.";
+      index.append(empty);
+    }
+
+    visible.forEach(item => {
+      const listItem = doc.createElement("li");
+      const button = doc.createElement("button");
+      button.type = "button";
+      button.className = "map-static-index-button";
+      button.dataset.fallbackReference = item.id;
+      button.setAttribute("aria-pressed", String(selectedReferenceId === item.id));
+      const number = doc.createElement("span");
+      number.className = "map-static-index-number";
+      number.textContent = String(all.findIndex(entry => entry.id === item.id) + 1).padStart(2, "0");
+      const name = doc.createElement("strong");
+      name.textContent = item.name;
+      const meta = doc.createElement("small");
+      meta.textContent = item.type === "locality"
+        ? "Localidad · referencia territorial"
+        : ((item.stage === "hypothesis" ? "Hipótesis de prospección" : "Contexto con fuente pública") +
+          " · " + (kindLabel[item.kind] || "Tesis territorial"));
+      button.append(number, name, meta);
+      button.setAttribute("aria-label", "Seleccionar referencia " + item.name);
+      button.addEventListener("click", () => setActiveReference(item, { reveal: true, scroll: true }));
+      listItem.append(button);
+      index.append(listItem);
+    });
+
+    const note = doc.createElement("p");
+    note.className = "map-static-note";
+    note.textContent = "Este esquema conserva la relación espacial aproximada de las fichas sin depender de teselas externas. No muestra calles ni límites administrativos, no tiene escala y no representa parcelas.";
+    container.append(heading, svg, indexHeading, index, note);
+    mapElement.replaceChildren(container);
+  }
+
+  let fallbackMessage = "La cartografía interactiva no está disponible. Se conserva el inventario en un esquema local.";
   function showFallback(message) {
-    const fallback = doc.createElement("p");
-    fallback.className = "map-fallback";
-    fallback.textContent = message;
-    mapElement.replaceChildren(fallback);
-    statusElement.textContent = "Mapa no disponible · fichas de investigación activas";
-    boundaryElement.textContent = "Límite municipal: cartografía no disponible";
+    staticFallbackActive = true;
+    fallbackMessage = String(message || fallbackMessage);
+    markers.forEach(marker => {
+      try { marker.remove(); } catch (error) {}
+    });
+    markers.clear();
+    const activeMap = map;
+    map = null;
+    if (activeMap) {
+      try { activeMap.remove(); } catch (error) {}
+    }
+    renderStaticFallback(visibleItems);
+    statusElement.textContent = "Esquema territorial alternativo · fichas de investigación activas";
+    boundaryElement.textContent = "Límite municipal: no representado en el esquema";
   }
 
   function popupNode(item) {
@@ -1048,6 +1208,14 @@ function initMapPage(doc) {
     markers.forEach((marker, id) => {
       marker.getElement().classList.toggle("is-selected", id === item.id);
     });
+    if (staticFallbackActive) {
+      mapElement.querySelectorAll("[data-static-map-reference]").forEach(marker => {
+        marker.classList.toggle("is-selected", marker.getAttribute("data-static-map-reference") === item.id);
+      });
+      mapElement.querySelectorAll("[data-fallback-reference]").forEach(button => {
+        button.setAttribute("aria-pressed", String(button.dataset.fallbackReference === item.id));
+      });
+    }
     [localityList, opportunityList].forEach(list => {
       list.querySelectorAll("[data-map-item]").forEach(card => {
         const selected = card.dataset.mapItem === item.id;
@@ -1332,6 +1500,7 @@ function initMapPage(doc) {
     });
     makeCards(shown.filter(item => item.type === "locality"), localityList);
     makeCards(shown.filter(item => item.type === "opportunity"), opportunityList);
+    if (staticFallbackActive) renderStaticFallback(shown);
     const selectedItem = all.find(item => item.id === selectedReferenceId);
     statusElement.textContent = selectedItem
       ? "Enlace directo · " + selectedItem.name
@@ -1504,9 +1673,14 @@ function initMapPage(doc) {
       map.on("dragstart", markUserNavigation);
       map.on("zoomstart", markUserNavigation);
       map.on("rotatestart", markUserNavigation);
+      let rasterTileErrors = 0;
       map.on("error", event => {
         if (event && event.sourceId === "osm-raster") {
+          rasterTileErrors += 1;
           statusElement.textContent = "Teselas OSM no disponibles · inventario y filtros conservados";
+          if (rasterTileErrors >= 4 && !staticFallbackActive) {
+            showFallback("La cartografía base no respondió. Se muestra un esquema territorial local con las referencias y sus fichas.");
+          }
         }
       });
       map.on("load", () => {

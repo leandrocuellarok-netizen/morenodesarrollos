@@ -240,6 +240,48 @@ async function auditRoute(browser, route) {
   }
 }
 
+async function auditMapFallback(browser) {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+  const pageErrors = [];
+  page.on("pageerror", error => pageErrors.push(error.message));
+  try {
+    await page.route("https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js", route => route.abort());
+    const response = await page.goto(BASE_URL + "/mapa-ia/", { waitUntil: "domcontentloaded" });
+    check(Boolean(response && response.ok()), "mapa-ia fallback: la página responde aunque falle el motor cartográfico");
+    await page.locator(".map-static-fallback").waitFor({ state: "visible", timeout: 5000 });
+    check(await page.locator(".map-static-diagram").count() === 1, "mapa-ia fallback: se genera el esquema SVG sin MapLibre");
+    check(await page.locator("[data-fallback-reference]").count() === 11, "mapa-ia fallback: el índice alternativo incluye las once referencias");
+    check((await page.locator(".map-static-note").innerText()).includes("no tiene escala"), "mapa-ia fallback: el alcance no parcelario queda explicado");
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.locator("#kind-filter").selectOption("industrial");
+    check(await page.locator("[data-fallback-reference]").count() === 2, "mapa-ia fallback: el esquema respeta el filtro industrial");
+    const fallbackNames = await page.locator(".map-static-index-button").allInnerTexts();
+    check(fallbackNames.some(value => value.includes("RP25")) && fallbackNames.some(value => value.includes("Ecoparque")), "mapa-ia fallback: las dos referencias industriales permanecen identificables");
+
+    await page.locator('[data-fallback-reference="rp25"]').click();
+    check(new URL(page.url()).searchParams.get("ref") === "rp25", "mapa-ia fallback: seleccionar una referencia actualiza el enlace compartible");
+    check(await page.locator('[data-map-item="rp25"]').evaluate(element => element.open), "mapa-ia fallback: seleccionar una referencia abre su ficha");
+    check(await page.locator('[data-map-item="rp25"]').evaluate(element => element.classList.contains("is-active")), "mapa-ia fallback: la selección se sincroniza con el inventario");
+
+    await page.locator("#search").fill("sin coincidencias");
+    check(await page.locator("[data-fallback-reference]").count() === 0, "mapa-ia fallback: una búsqueda vacía no conserva marcadores ajenos al filtro");
+    check(await page.locator(".map-static-empty").isVisible(), "mapa-ia fallback: informa cuando no hay coincidencias");
+    await page.locator("#reset-map").click();
+    check(await page.locator("[data-fallback-reference]").count() === 11, "mapa-ia fallback: restablecer recupera las once referencias");
+
+    const screenshotDir = path.join(ROOT, "test-results", "visual");
+    fs.mkdirSync(screenshotDir, { recursive: true });
+    await page.screenshot({ path: path.join(screenshotDir, "mapa-ia-fallback-mobile.png"), fullPage: true, animations: "disabled" });
+    check(pageErrors.length === 0, "mapa-ia fallback: errores JavaScript: " + pageErrors.join(" | "));
+    console.log("PASS: mapa-ia — esquema alternativo sin MapLibre, filtros, selección y enlace directo");
+  } catch (error) {
+    check(false, "mapa-ia fallback: auditoría interrumpida: " + error.message);
+  } finally {
+    await page.close();
+  }
+}
+
 (async function main() {
   let server;
   let browser;
@@ -249,6 +291,7 @@ async function auditRoute(browser, route) {
     for (const route of ROUTES) {
       await auditRoute(browser, route);
     }
+    await auditMapFallback(browser);
   } catch (error) {
     check(false, error.message);
   } finally {
