@@ -35,9 +35,10 @@ La investigación inicial identifica cinco tesis territoriales preliminares: cor
 **Estado:** son tesis para investigación. No se presentan todavía veinte parcelas verificadas ni un ROI demostrado. Cada operación requiere comprobación dominial, catastral, urbanística, ambiental, hidráulica, de servicios y financiera.
 
 
-## Mapa interactivo de originación
+## Mapa IA de originación
 
-- [Abrir mapa interactivo de Moreno](web/mapa-moreno/index.html)
+- [Abrir Mapa IA de Moreno (versión vigente)](mapa-ia/index.html)
+- La ruta histórica `web/mapa-moreno/index.html` se conserva como acceso de compatibilidad y redirige a `/mapa-ia/`; no es una segunda herramienta cartográfica.
 - Incluye localidades y cinco tesis territoriales del Pilar 1, con búsqueda por contenido y filtros combinables por tipo, sector/línea de desarrollo y nivel de evidencia; las fichas, la leyenda y las fuentes públicas conservan su alcance documental.
 - Distingue el contexto respaldado por una fuente pública de las hipótesis de prospección; esa distinción no equivale a verificar parcelas ni disponibilidad.
 - Superpone el límite administrativo municipal mediante GeoJSON de Georef / IGN (WGS84), con ajuste automático del encuadre.
