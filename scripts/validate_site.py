@@ -695,6 +695,33 @@ def main() -> None:
         except (ET.ParseError, OSError) as exc:
             errors.append(f"sitemap.xml inválido: {exc}")
 
+    legacy_map_path = ROOT / "web/mapa-moreno/index.html"
+    if not legacy_map_path.is_file():
+        errors.append("Falta la ruta histórica web/mapa-moreno/index.html")
+    else:
+        legacy_map_html = legacy_map_path.read_text(encoding="utf-8")
+        if not re.search(r'<meta\\s+name="robots"\\s+content="noindex,follow"', legacy_map_html, re.IGNORECASE):
+            errors.append("La ruta histórica del mapa debe declarar noindex,follow")
+        if 'rel="canonical" href="' + PAGE_URLS[Path("mapa-ia/index.html")] + '"' not in legacy_map_html:
+            errors.append("La ruta histórica del mapa debe canonicalizar hacia /mapa-ia/")
+        if not re.search(r'<meta\\s+http-equiv="refresh"\\s+content="0;\\s*url=../../mapa-ia/"', legacy_map_html, re.IGNORECASE):
+            errors.append("La ruta histórica del mapa debe redirigir inmediatamente a /mapa-ia/")
+        if 'href="../../mapa-ia/"' not in legacy_map_html or "Ir al Mapa IA actualizado" not in legacy_map_html:
+            errors.append("La ruta histórica del mapa debe conservar un enlace de acceso alternativo")
+        if "leaflet" in legacy_map_html.lower() or "L.map(" in legacy_map_html:
+            errors.append("La ruta histórica no debe mantener una segunda aplicación cartográfica obsoleta")
+
+    readme_path = ROOT / "README.md"
+    if not readme_path.is_file():
+        errors.append("Falta README.md")
+    else:
+        readme_source = readme_path.read_text(encoding="utf-8")
+        if "[Abrir Mapa IA de Moreno (versión vigente)](mapa-ia/index.html)" not in readme_source:
+            errors.append("README.md debe dirigir al Mapa IA canónico")
+        if "[Abrir mapa interactivo de Moreno](web/mapa-moreno/index.html)" in readme_source:
+            errors.append("README.md todavía enlaza directamente a la herramienta cartográfica histórica")
+
+
 
     pipeline_template = ROOT / "docs/plantilla-seguimiento-comercial.csv"
     if not pipeline_template.is_file():
@@ -952,7 +979,7 @@ def main() -> None:
 
     refs_count = sum(len(page.refs) for page in audits.values())
     print(
-        f"OK: {len(SITE_PAGES)} páginas públicas + 1 herramienta no indexada; {refs_count} referencias locales; canonical, OG/Twitter, "
+        f"OK: {len(SITE_PAGES)} páginas públicas + 1 herramienta no indexada + 1 ruta histórica redirigida; {refs_count} referencias locales; canonical, OG/Twitter, "
         "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, navegación móvil, MapLibre/OpenStreetMap, referencias DOM, separación público/interno y módulos JavaScript correctos."
     )
     if node:
