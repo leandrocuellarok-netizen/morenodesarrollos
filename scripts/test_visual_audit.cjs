@@ -561,6 +561,34 @@ async function auditMapFallback(browser) {
   }
 }
 
+async function auditLegacyMapRedirect(browser) {
+  const legacyUrl = BASE_URL + "/web/mapa-moreno/";
+  const response = await fetch(legacyUrl);
+  check(response.ok, "mapa histórico: la ruta de compatibilidad responde correctamente");
+  const source = await response.text();
+  check(/<meta\\s+name="robots"\\s+content="noindex,follow"/i.test(source), "mapa histórico: no solicita indexación");
+  check(source.includes("https://leandrocuellarok-netizen.github.io/morenodesarrollos/mapa-ia/"), "mapa histórico: declara como canonical el Mapa IA vigente");
+  check(/<meta\\s+http-equiv="refresh"\\s+content="0;\\s*url=..\\/..\\/mapa-ia\\/"/i.test(source), "mapa histórico: contiene redirección inmediata");
+  check(source.includes('href="../../mapa-ia/"'), "mapa histórico: conserva un enlace manual alternativo");
+
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 });
+  const pageErrors = [];
+  page.on("pageerror", error => pageErrors.push(error.message));
+  try {
+    await page.goto(legacyUrl, { waitUntil: "domcontentloaded" });
+    await page.waitForURL(url => new URL(url).pathname.endsWith("/mapa-ia/"), { timeout: 5000 }).catch(() => {});
+    check(new URL(page.url()).pathname.endsWith("/mapa-ia/"), "mapa histórico: Chromium llega a la ruta canónica /mapa-ia/");
+    check(await page.locator("main h1").count() === 1, "mapa histórico: el destino conserva un único encabezado principal");
+    check((await page.title()).includes("Mapa IA de Moreno"), "mapa histórico: el destino carga el título de la herramienta vigente");
+    check(pageErrors.length === 0, "mapa histórico: no produce errores JavaScript durante la redirección");
+    console.log("PASS: ruta cartográfica histórica — canonical, noindex y redirección a Mapa IA");
+  } catch (error) {
+    check(false, "mapa histórico: auditoría interrumpida: " + error.message);
+  } finally {
+    await page.close();
+  }
+}
+
 (async function main() {
   let server;
   let browser;
@@ -572,6 +600,7 @@ async function auditMapFallback(browser) {
     }
     await auditOpportunityFlow(browser);
     await auditMapFallback(browser);
+    await auditLegacyMapRedirect(browser);
   } catch (error) {
     check(false, error.message);
   } finally {
@@ -583,6 +612,6 @@ async function auditMapFallback(browser) {
     console.error(`${failures.length} comprobación(es) fallaron.`);
     process.exitCode = 1;
   } else {
-    console.log(`Auditoría responsive aprobada: ${ROUTES.length} rutas, ${WIDTHS.length} anchos y capturas de escritorio/móvil.`);
+    console.log(`Auditoría responsive aprobada: ${ROUTES.length} rutas, 1 redirección histórica y ${WIDTHS.length} anchos; capturas de escritorio/móvil.`);
   }
 })();
