@@ -56,6 +56,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 - La cartografía usa símbolos monocromáticos por forma (círculo, cuadrado y rombo) para distinguir clases sin depender del color; las coordenadas siguen siendo referencias territoriales aproximadas.
 - /erica-acosta/ — Sobre Erica: perfil personal y enfoque de trabajo, con énfasis en residencia local, iniciativa emprendedora y alianzas.
 - /oportunidades/ — Captación inicial: formulario opcional para propietarios, inversores y aliados, con ubicación y nomenclatura catastral cuando estén disponibles.
+- El formulario prioriza nombre, perfil, interés y zona; agrupa calculadora FOS/FOT, datos del inmueble, documentación, verificaciones y contexto en secciones opcionales. Los enlaces de portada preseleccionan perfil e intención mediante valores permitidos.
 
 ### Identidad visual y contenido
 
