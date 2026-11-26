@@ -912,6 +912,7 @@ function initMapPage(doc) {
     reviewStorage = null;
   }
   let reviewState = readReviewState(reviewStorage, opportunities);
+  let reviewImportSequence = 0;
   reviewStatusElement.textContent = reviewStorage
     ? "Las marcas se guardan en este navegador; no se envían al servidor."
     : "El almacenamiento local no está disponible; exportá la bitácora para conservar las marcas mientras trabajás.";
@@ -1582,15 +1583,23 @@ function initMapPage(doc) {
 
   function importReviewFile(file) {
     if (!file) return;
+    const requestId = ++reviewImportSequence;
     if (file.size > 1000000) {
+      reviewImportInput.value = "";
+      reviewStatusElement.removeAttribute("aria-busy");
       reviewStatusElement.textContent = "El archivo supera el límite de 1 MB. Exportá una bitácora más pequeña e intentá nuevamente.";
       return;
     }
     if (typeof file.text !== "function") {
+      reviewImportInput.value = "";
+      reviewStatusElement.removeAttribute("aria-busy");
       reviewStatusElement.textContent = "Este navegador no permite leer el archivo seleccionado. Podés continuar usando la exportación JSON.";
       return;
     }
+    reviewStatusElement.setAttribute("aria-busy", "true");
+    reviewStatusElement.textContent = "Leyendo y validando la bitácora JSON…";
     Promise.resolve().then(() => file.text()).then(content => {
+      if (requestId !== reviewImportSequence) return;
       const parsed = parseReviewImport(content, opportunities);
       if (!parsed.ok) {
         reviewStatusElement.textContent = parsed.error;
@@ -1616,8 +1625,13 @@ function initMapPage(doc) {
         : " El almacenamiento local no está disponible; los cambios siguen en esta sesión. Exportá la bitácora antes de cerrar.";
       reviewStatusElement.textContent = "Importación revisada: " + result.addedRecords + " registros nuevos y " + result.combinedRecords + " registros combinados." + conflictText + ignoredText + persistenceText;
     }).catch(() => {
+      if (requestId !== reviewImportSequence) return;
       reviewStatusElement.textContent = "No se pudo leer el archivo. Verificá que sea un JSON válido y volvé a intentarlo.";
-    }).finally(() => { reviewImportInput.value = ""; });
+    }).finally(() => {
+      if (requestId !== reviewImportSequence) return;
+      reviewStatusElement.removeAttribute("aria-busy");
+      reviewImportInput.value = "";
+    });
   }
 
   function exportVisibleReview() {
@@ -1799,6 +1813,9 @@ function initMapPage(doc) {
       const view = doc.defaultView;
       if (view && typeof view.confirm === "function" &&
           !view.confirm("¿Borrar la bitácora guardada en este navegador? Las copias JSON descargadas no se eliminarán.")) return;
+      reviewImportSequence += 1;
+      reviewStatusElement.removeAttribute("aria-busy");
+      reviewImportInput.value = "";
       const cleared = clearReviewState(reviewStorage);
       if (cleared) {
         reviewState = {};
