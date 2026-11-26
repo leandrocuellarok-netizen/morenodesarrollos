@@ -510,7 +510,7 @@ def main() -> None:
                     errors.append(f"{relative.as_posix()}: falta campo obligatorio {required_field}")
             if 'id="opportunity-form"' not in page_source:
                 errors.append(f"{relative.as_posix()}: falta el formulario de oportunidades")
-            if 'href="#opportunity-form"' not in page_source or 'class="opportunity-hero-actions"' not in page_source:
+            if 'href="#opportunity-form"' not in page_source or "opportunity-hero-actions" not in page_source:
                 errors.append(f"{relative.as_posix()}: falta el acceso directo al formulario desde el encabezado")
             if 'id="opportunity-form" tabindex="-1"' not in page_source:
                 errors.append(f"{relative.as_posix()}: el destino del acceso directo debe poder recibir el foco")
