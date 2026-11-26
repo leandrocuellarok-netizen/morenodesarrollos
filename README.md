@@ -365,6 +365,8 @@ La Mesa Operativa no tiene autenticación, contraseña, cifrado ni control de ac
 - Los expedientes internos se generan sin datos del formulario público. La exportación y la importación se realizan localmente.
 - `assets/js/originacion-export.js` separa el ciclo de importación, impresión y exportación del expediente interno.
 - `scripts/test_originacion_export.js` comprueba que el expediente interno no incorpore campos de contacto y que el JSON v3 pueda recuperarse.
+- El tablero del pipeline revisa la consistencia de los honorarios registrados: alerta cuando hay cobros sin importe facturado, cobros superiores a lo facturado, facturación sin importe acordado o facturación superior al acuerdo cargado. Son alertas para revisión; no rechazan automáticamente la fila ni sustituyen una conciliación contable o los comprobantes.
+- Las sumas siguen separadas por moneda y las celdas vacías se mantienen como “sin dato”; no se convierten importes ni se infieren honorarios.
 
 
 ### Dossier editorial de la vista filtrada
