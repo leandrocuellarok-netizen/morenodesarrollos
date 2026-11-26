@@ -824,16 +824,21 @@ function initResponsiveDisclosures(doc) {
   const media = view.matchMedia("(max-width: 760px)");
   const disclosures = Array.from(doc.querySelectorAll("details[data-mobile-collapsible]"));
   if (!disclosures.length) return;
-  const manuallyToggled = new WeakSet();
+  const mobileChoices = new WeakSet();
 
   disclosures.forEach(disclosure => {
     const summary = disclosure.querySelector("summary");
-    if (summary) summary.addEventListener("click", () => manuallyToggled.add(disclosure));
+    if (summary) {
+      summary.addEventListener("click", () => {
+        if (media.matches) mobileChoices.add(disclosure);
+      });
+    }
   });
 
   const applyViewportDefault = isMobile => {
     disclosures.forEach(disclosure => {
-      if (!manuallyToggled.has(disclosure)) disclosure.open = !isMobile;
+      if (!isMobile) disclosure.open = true;
+      else if (!mobileChoices.has(disclosure)) disclosure.open = false;
     });
   };
 

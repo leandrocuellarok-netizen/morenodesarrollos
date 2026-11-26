@@ -174,6 +174,11 @@ async function auditRoute(browser, route) {
       check(await page.locator("#category").isVisible() && await page.locator("#evidence-filter").isVisible(), "mapa-ia: los filtros secundarios no quedan disponibles al expandir");
       await page.locator("#map-refine-filters > summary").click();
       check(!(await page.locator("#map-refine-filters").evaluate(element => element.open)), "mapa-ia: los filtros secundarios no se pueden volver a contraer");
+      await page.setViewportSize({ width: 1440, height: 900 });
+      check(await page.locator("#map-refine-filters").evaluate(element => element.open), "mapa-ia: los filtros secundarios deben volver a abrirse al pasar a escritorio");
+      await page.setViewportSize({ width: 390, height: 844 });
+      await delay(80);
+      check(!(await page.locator("#map-refine-filters").evaluate(element => element.open)), "mapa-ia: la preferencia manual móvil debe conservarse al volver a teléfono");
 
       await page.locator("#atlas-index-disclosure > summary").click();
       await page.locator("#kind-filter").selectOption("industrial");
