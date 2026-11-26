@@ -102,11 +102,11 @@ class Element {
   assert.equal(agendaDownload.disabled, false);
 
   let resolveSlowImport;
-  const slowCsv = headers.join(";") + "\\n" + makeRow({
+  const slowCsv = headers.join(";") + "\n" + makeRow({
     id_oportunidad:"M-UI-OLD", localidad:"Archivo anterior", tipo_activo:"Terreno",
     etapa_comercial:"primer contacto"
   });
-  const latestCsv = headers.join(";") + "\\n" + makeRow({
+  const latestCsv = headers.join(";") + "\n" + makeRow({
     id_oportunidad:"M-UI-LATEST", localidad:"Archivo más reciente", tipo_activo:"Terreno",
     etapa_comercial:"primer contacto"
   });
@@ -129,7 +129,6 @@ class Element {
   assert.equal(download.disabled, true, "limpiar la sesión invalida también el resumen");
   assert.equal(agendaDownload.disabled, true, "limpiar la sesión invalida también la agenda");
   assert.match(elements["pipeline-status"].textContent, /Sesión local limpiada/, "una lectura pendiente no debe revertir el mensaje de limpieza");
-  assert.equal(agendaDownload.disabled, true, "limpiar la sesión invalida también la agenda");
   assert.equal(elements["pipeline-dashboard-output"].hidden, true);
   assert.equal(textFilter.value, "");
   assert.equal(stageFilter.children.length, 1);
