@@ -781,7 +781,7 @@ def main() -> None:
         for required_control in (
             "pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset",
             "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions",
-            "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-text",
+            "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-followup", "pipeline-filter-text",
             "pipeline-download-summary", "pipeline-download-agenda",
             "originacion-workbench", "originacion-import-file", "originacion-import-button",
             "originacion-import-status", "originacion-print-dossier", "originacion-download-dossier",

@@ -59,6 +59,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 - El formulario prioriza nombre, perfil, interés y zona; agrupa calculadora FOS/FOT, datos del inmueble, documentación, verificaciones y contexto en secciones opcionales. Los enlaces de portada preseleccionan perfil e intención mediante valores permitidos.
 - Al importar un expediente, se abren automáticamente las secciones opcionales que contienen datos recuperados (inmueble, documentación, contexto o cálculo) y se cierra el panel de importación. Así se evita que la información cargada quede oculta para quien continúa el formulario.
 - El encabezado de `/oportunidades/` ofrece un acceso directo al formulario, con desplazamiento compensado por la navegación fija y foco trasladado al formulario; la calculadora FOS/FOT queda como recorrido secundario.
+- La Mesa Operativa permite filtrar el pipeline por seguimientos vencidos, próximos siete días, oportunidades activas sin fecha y oportunidades activas sin próxima acción; los conteos se calculan sobre el CSV importado en la sesión y excluyen etapas cerradas de los filtros de seguimiento.
 
 ### Identidad visual y contenido
 

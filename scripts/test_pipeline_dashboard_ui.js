@@ -27,7 +27,7 @@ class Element {
 (async function () {
   const ids = [
     "pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset",
-    "pipeline-download-summary", "pipeline-download-agenda", "pipeline-filter-stage", "pipeline-filter-text", "pipeline-metrics",
+    "pipeline-download-summary", "pipeline-download-agenda", "pipeline-filter-stage", "pipeline-filter-followup", "pipeline-filter-text", "pipeline-metrics",
     "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions",
     "pipeline-records-body", "pipeline-records-count", "pipeline-warnings"
   ];
@@ -53,6 +53,7 @@ class Element {
   const agendaDownload = elements["pipeline-download-agenda"];
   const reset = elements["pipeline-reset"];
   const stageFilter = elements["pipeline-filter-stage"];
+  const followUpFilter = elements["pipeline-filter-followup"];
   const textFilter = elements["pipeline-filter-text"];
   assert.equal(download.disabled, true, "la descarga del resumen debe comenzar deshabilitada");
   assert.equal(agendaDownload.disabled, true, "la descarga de agenda debe comenzar deshabilitada");
@@ -86,12 +87,48 @@ class Element {
   elements["pipeline-filter-text"].listeners.input();
   assert.match(elements["pipeline-records-count"].textContent, /Mostrando 1 de 1/);
 
+  function offsetDate(days) {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() + days);
+    return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0"), String(date.getDate()).padStart(2, "0")].join("-");
+  }
+  const followUpCsv = headers.join(";") + "\n" + [
+    makeRow({id_oportunidad:"M-OVERDUE", localidad:"Moreno", tipo_activo:"Terreno", etapa_comercial:"primer contacto", proxima_accion:"Llamar", fecha_proximo_seguimiento:offsetDate(-1)}),
+    makeRow({id_oportunidad:"M-DUE-SOON", localidad:"Paso del Rey", tipo_activo:"Terreno", etapa_comercial:"reunión pendiente", proxima_accion:"Enviar antecedentes", fecha_proximo_seguimiento:offsetDate(3)}),
+    makeRow({id_oportunidad:"M-NO-DATE", localidad:"La Reja", tipo_activo:"Inmueble", etapa_comercial:"documentación solicitada", proxima_accion:"Solicitar fecha", fecha_proximo_seguimiento:""}),
+    makeRow({id_oportunidad:"M-NO-ACTION", localidad:"Trujui", tipo_activo:"Terreno", etapa_comercial:"análisis preliminar", proxima_accion:"", fecha_proximo_seguimiento:offsetDate(10)}),
+    makeRow({id_oportunidad:"M-CLOSED", localidad:"Cuartel V", tipo_activo:"Terreno", etapa_comercial:"ganada", proxima_accion:"", fecha_proximo_seguimiento:""})
+  ].join("\n");
+  fileInput.files = [{size:followUpCsv.length, text:async () => followUpCsv}];
+  await fileInput.listeners.change();
+  assert.equal(followUpFilter.children.length, 5, "el filtro ofrece todas las categorías de seguimiento");
+  assert.match(followUpFilter.children[1].textContent, /Vencidas \(1\)/, "el filtro informa el total de seguimientos vencidos");
+  assert.match(followUpFilter.children[2].textContent, /Próximos 7 días \(1\)/, "el filtro informa los próximos siete días");
+  assert.match(followUpFilter.children[3].textContent, /Sin fecha \(1\)/, "el filtro cuenta oportunidades activas sin fecha");
+  assert.match(followUpFilter.children[4].textContent, /Sin próxima acción \(1\)/, "el filtro cuenta oportunidades activas sin acción");
+  const visibleIds = () => elements["pipeline-records-body"].children.map(row => row.children[0].textContent);
+  [
+    ["overdue", ["M-OVERDUE"]],
+    ["due-soon", ["M-DUE-SOON"]],
+    ["missing-date", ["M-NO-DATE"]],
+    ["missing-action", ["M-NO-ACTION"]]
+  ].forEach(([value, expected]) => {
+    followUpFilter.value = value;
+    followUpFilter.listeners.change();
+    assert.deepEqual(visibleIds(), expected, "el filtro " + value + " muestra solo las oportunidades correspondientes");
+  });
+  followUpFilter.value = "";
+  followUpFilter.listeners.change();
+  assert.equal(visibleIds().length, 5, "restablecer la prioridad vuelve a mostrar todas las oportunidades, incluidas las cerradas");
+
   const invalidCsv = "encabezado;incorrecto\nvalor";
   fileInput.files = [{size:invalidCsv.length, text:async () => invalidCsv}];
   await fileInput.listeners.change();
   assert.equal(download.disabled, true, "un CSV inválido no debe permitir exportar el resumen anterior");
   assert.equal(agendaDownload.disabled, true, "un CSV inválido no debe permitir exportar la agenda anterior");
   assert.equal(elements["pipeline-dashboard-output"].hidden, true);
+  assert.equal(followUpFilter.value, "", "una importación inválida restablece el filtro de prioridad");
   download.listeners.click();
   agendaDownload.listeners.click();
   assert.equal(objectUrlCalls, 1, "no debe generarse ningún archivo con datos de una importación anterior");
@@ -132,7 +169,8 @@ class Element {
   assert.equal(elements["pipeline-dashboard-output"].hidden, true);
   assert.equal(textFilter.value, "");
   assert.equal(stageFilter.children.length, 1);
-  console.log("OK: estado de exportación, limpieza entre importaciones, filtros catastrales y reinicio del tablero.");
+  assert.equal(followUpFilter.value, "", "limpiar la sesión restablece la prioridad de seguimiento");
+  console.log("OK: importaciones, exportaciones, filtros de etapa y prioridad de seguimiento, y reinicio del tablero.");
 })().catch(error => {
   console.error(error);
   process.exitCode = 1;
