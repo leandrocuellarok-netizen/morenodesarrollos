@@ -136,18 +136,18 @@
     <label for="contact-zone">Localidad o zona *</label>
     <input id="contact-zone" name="zona" required maxlength="120" placeholder="Ej.: Moreno Centro, La Reja o no lo sé todavía">
   </div>
-  <div class="form-field">
-    <label for="contact-type">¿Qué tipo de oportunidad es?</label>
-    <select id="contact-type" name="tipo">
-      <option value="No definido">Todavía no lo definí</option><option value="Terreno">Terreno</option><option value="Inmueble existente">Inmueble existente</option><option value="Proyecto en desarrollo">Proyecto en desarrollo</option><option value="Inversión o alianza">Inversión o alianza</option><option value="Servicios profesionales">Servicios profesionales</option>
-    </select>
-  </div>
 </div>
 
 <details class="form-disclosure" id="property-data-disclosure">
-  <summary><span>Datos del inmueble</span><small>Ubicación precisa, nomenclatura y superficie · opcional</small></summary>
+  <summary><span>Detalles del inmueble o proyecto</span><small>Tipo de oportunidad, ubicación, nomenclatura y superficie · opcional</small></summary>
   <div class="form-disclosure-body">
     <div class="form-grid">
+      <div class="form-field">
+        <label for="contact-type">¿Qué tipo de oportunidad es?</label>
+        <select id="contact-type" name="tipo">
+          <option value="No definido">Todavía no lo definí</option><option value="Terreno">Terreno</option><option value="Inmueble existente">Inmueble existente</option><option value="Proyecto en desarrollo">Proyecto en desarrollo</option><option value="Inversión o alianza">Inversión o alianza</option><option value="Servicios profesionales">Servicios profesionales</option>
+        </select>
+      </div>
       <div class="form-field full">
         <label for="contact-address">Ubicación más precisa (opcional)</label>
         <input id="contact-address" name="ubicacion" autocomplete="street-address" maxlength="180" placeholder="Calles, altura aproximada o referencia cercana">
