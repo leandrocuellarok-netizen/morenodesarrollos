@@ -489,6 +489,9 @@ downloadDossierButton.addEventListener("click",()=>{
     formStatus.textContent="No se pudo generar el expediente JSON en este navegador. Podés utilizar la opción de impresión o guardar como PDF.";
   }
 });
+function hasImportedText(value){
+  return typeof value==="string"&&value.trim().length>0;
+}
 function applyDossierFormData(data){
   const fields=data.fields||{};
   const calculationInput=data.calculationInput||{};
@@ -503,6 +506,22 @@ function applyDossierFormData(data){
     if(control)control.value=fields[key]||"";
   });
   revealPropertyDetails();
+  const hasImportedPropertyDetails=
+    ["ubicacion","nomenclatura","superficie"].some(key=>hasImportedText(fields[key]))||
+    (hasImportedText(fields.tipo)&&fields.tipo!=="No definido");
+  propertyDataDisclosure.open=propertyDataDisclosure.open||hasImportedPropertyDetails;
+  const evidenceDisclosure=document.getElementById("evidence-disclosure");
+  const hasImportedEvidence=["documentacion","verificaciones"].some(name=>
+    Array.isArray(fields[name])&&fields[name].length>0
+  );
+  evidenceDisclosure.open=evidenceDisclosure.open||hasImportedEvidence;
+  const contextDisclosure=document.getElementById("context-disclosure");
+  contextDisclosure.open=contextDisclosure.open||hasImportedText(fields.detalle);
+  const feasibilityDisclosure=document.getElementById("feasibility-disclosure");
+  const hasImportedCalculation=["areaRaw","fosRaw","fotRaw","referenceRaw"].some(key=>
+    hasImportedText(calculationInput[key])
+  );
+  feasibilityDisclosure.open=feasibilityDisclosure.open||hasImportedCalculation;
   ["documentacion","verificaciones"].forEach(name=>{
     const selected=Array.isArray(fields[name])?fields[name]:[];
     opportunityForm.querySelectorAll('input[name="'+name+'"]').forEach(input=>{
@@ -579,6 +598,8 @@ function applyPendingDossierImport(mode){
     conflictCount=data.conflicts.length;
   }
   applyDossierFormData(data);
+  const importDisclosure=document.getElementById("dossier-import-disclosure");
+  if(importDisclosure)importDisclosure.open=false;
   pendingDossierImport=null;
   dossierImportActions.hidden=true;
   dossierImportFile.value="";
