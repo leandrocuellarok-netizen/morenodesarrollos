@@ -860,7 +860,7 @@ def main() -> None:
         pipeline_source = pipeline_module.read_text(encoding="utf-8")
         pipeline_agenda_source = pipeline_agenda_module.read_text(encoding="utf-8")
         pipeline_ui_source = pipeline_ui_module.read_text(encoding="utf-8")
-        for required_logic in ("parsePipelineCsv", "summarizePipeline", "buildSummaryCsv", "spreadsheetSafeCell", "MAX_ROWS", "MAX_FILE_CHARS"):
+        for required_logic in ("parsePipelineCsv", "summarizePipeline", "buildSummaryCsv", "spreadsheetSafeCell", "MAX_ROWS", "MAX_FILE_CHARS", "cobrados sin importe facturado registrado", "cobrados superan los facturados registrados", "facturados sin importe acordado registrado", "facturados superan los acordados registrados"):
             if required_logic not in pipeline_source:
                 errors.append(f"assets/js/pipeline-dashboard.js: falta lógica requerida: {required_logic}")
         for required_logic in ("agendaItems", "buildAgendaCsv", "spreadsheetSafeCell"):
