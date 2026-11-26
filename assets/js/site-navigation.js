@@ -8,6 +8,7 @@
   document.documentElement.classList.add("has-js");
 
   const label = button.querySelector(".mobile-menu-label");
+  const icon = button.querySelector(".mobile-menu-icon");
   const desktopQuery = window.matchMedia("(min-width: 761px)");
 
   function setMenuOpen(open, restoreFocus) {
@@ -15,11 +16,16 @@
     button.setAttribute("aria-expanded", String(open));
     button.setAttribute("aria-label", open ? "Cerrar menú de navegación" : "Abrir menú de navegación");
     if (label) label.textContent = open ? "Cerrar" : "Menú";
+    if (icon) icon.textContent = open ? "×" : "☰";
     if (restoreFocus) button.focus();
   }
 
+  function isOpen() {
+    return button.getAttribute("aria-expanded") === "true";
+  }
+
   button.addEventListener("click", function () {
-    setMenuOpen(button.getAttribute("aria-expanded") !== "true", false);
+    setMenuOpen(!isOpen(), false);
   });
 
   navigation.addEventListener("click", function (event) {
@@ -27,8 +33,24 @@
     if (clickedLink) setMenuOpen(false, false);
   });
 
+  document.addEventListener("pointerdown", function (event) {
+    if (!isOpen()) return;
+    const target = event.target;
+    if (target && !button.contains(target) && !navigation.contains(target)) {
+      setMenuOpen(false, false);
+    }
+  });
+
+  document.addEventListener("focusin", function (event) {
+    if (!isOpen()) return;
+    const target = event.target;
+    if (target && !button.contains(target) && !navigation.contains(target)) {
+      setMenuOpen(false, false);
+    }
+  });
+
   document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape" && button.getAttribute("aria-expanded") === "true") {
+    if (event.key === "Escape" && isOpen()) {
       setMenuOpen(false, true);
     }
   });

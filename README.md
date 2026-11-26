@@ -366,3 +366,11 @@ El Mapa IA permite descargar un dossier HTML autónomo a partir de las referenci
 - Las localidades se presentan como referencias territoriales; no se convierten en oportunidades inmobiliarias.
 - El documento no incorpora la bitácora local, datos del navegador ni expedientes internos. Se genera íntegramente en el navegador y no transmite información al servidor.
 - La exportación se deshabilita cuando no hay referencias visibles. Las pruebas del Mapa IA comprueban filtros sectoriales, recuentos, fuentes, coordenadas, salida imprimible y escape de contenido.
+
+
+## Accesibilidad y auditoría visual automatizada
+
+- Las páginas públicas y la Mesa Operativa incluyen un enlace de salto al contenido principal, un destino de foco identificable y estados de foco visibles para navegación por teclado.
+- El menú móvil se cierra con Escape, al seleccionar un enlace, al hacer clic fuera o al mover el foco fuera del control; al cerrarlo con Escape, el foco vuelve al botón.
+- El workflow instala Chromium y ejecuta una auditoría de navegador en las rutas públicas y la Mesa Operativa. Comprueba carga HTTP, un H1 por página, errores JavaScript, imágenes, desbordamiento horizontal en anchos de 320, 360, 390, 768, 1024 y 1440 px, y el comportamiento del menú.
+- Cada ejecución conserva capturas de escritorio y móvil como artefactos de GitHub Actions durante siete días. Las capturas permiten revisar el resultado real del navegador; no sustituyen una aprobación visual humana.
