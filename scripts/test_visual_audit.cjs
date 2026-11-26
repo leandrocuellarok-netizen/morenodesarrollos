@@ -356,6 +356,7 @@ async function auditOpportunityFlow(browser) {
       buffer: Buffer.from(JSON.stringify(importedPayload))
     });
     await page.locator("#validate-dossier-import").click();
+    await page.locator("#dossier-import-actions").waitFor({ state: "visible", timeout: 3000 });
     check(await page.locator("#dossier-import-actions").isVisible(), "oportunidades: el expediente JSON válido ofrece las acciones de aplicación");
     await page.locator("#apply-dossier-replace").click();
     check(await page.locator("#contact-profile").inputValue() === "Inversor/a", "oportunidades: la importación recupera el perfil del expediente");
