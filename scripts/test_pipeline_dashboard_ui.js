@@ -138,6 +138,21 @@ class Element {
   assert.equal(download.disabled, false);
   assert.equal(agendaDownload.disabled, false);
 
+  const financialCsv = headers.join(";") + "\\n" + makeRow({
+    id_oportunidad:"M-UI-FIN", localidad:"Moreno", tipo_activo:"Terreno",
+    etapa_comercial:"negociación", proxima_accion:"Revisar conciliación",
+    fecha_proximo_seguimiento:"2026-11-27", honorarios_acordados:"250",
+    honorarios_facturados:"300", honorarios_cobrados:"450", moneda:"ARS"
+  });
+  fileInput.files = [{size:financialCsv.length, text:async () => financialCsv}];
+  await fileInput.listeners.change();
+  assert.equal(elements["pipeline-warnings"].hidden, false, "las alertas de honorarios deben mostrarse tras importar");
+  assert.match(elements["pipeline-warnings"].children[0].textContent, /honorarios/i, "el título debe identificar el contenido de las alertas");
+  const renderedWarnings = elements["pipeline-warnings"].children[1].children.map(item => item.textContent).join("\\n");
+  assert.match(renderedWarnings, /M-UI-FIN/);
+  assert.match(renderedWarnings, /cobrados superan los facturados/);
+  assert.match(renderedWarnings, /facturados superan los acordados/);
+
   let resolveSlowImport;
   const slowCsv = headers.join(";") + "\n" + makeRow({
     id_oportunidad:"M-UI-OLD", localidad:"Archivo anterior", tipo_activo:"Terreno",
