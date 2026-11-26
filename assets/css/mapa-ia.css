@@ -769,3 +769,63 @@
     grid-column: auto;
   }
 }
+
+
+/* Compartir una vista conserva filtros y referencia sin exponer la bitácora local. */
+.map-toolbar-actions .map-share-view {
+  border-color: #80533a;
+  background: #80533a;
+  color: #f8f6ee;
+}
+.map-toolbar-actions .map-share-view:hover {
+  border-color: #a95d3c;
+  background: #a95d3c;
+}
+.map-share-status,
+.map-share-note,
+.map-share-fallback {
+  flex-basis: 100%;
+  color: #686960;
+  font: 10px/1.55 var(--sans);
+}
+.map-share-status {
+  min-height: 1.3em;
+  color: #80533a;
+}
+.map-share-note {
+  font-size: 9px;
+}
+.map-share-fallback {
+  display: grid;
+  gap: 6px;
+  max-width: 760px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.map-share-fallback[hidden] {
+  display: none;
+}
+.map-share-fallback input {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 1px solid #c9c8bc;
+  background: #f8f6ee;
+  color: #242622;
+  font: 11px/1.45 var(--sans);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.map-share-fallback input:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+@media (max-width: 760px) {
+  .map-toolbar-actions .map-share-view,
+  .map-share-status,
+  .map-share-note,
+  .map-share-fallback {
+    grid-column: 1 / -1;
+  }
+}
