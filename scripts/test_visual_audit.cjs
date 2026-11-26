@@ -328,6 +328,7 @@ async function auditOpportunityFlow(browser) {
 
     await page.locator("#opportunity-form button[type='submit']").click();
     await page.locator("#contact-preview").waitFor({ state: "visible", timeout: 3000 });
+    check(await page.locator("#contact-message-preview").isEnabled(), "oportunidades: el borrador vigente permite revisar el texto");
     const message = await page.locator("#contact-message-preview").inputValue();
     for (const expected of [
       "Terreno",
@@ -349,6 +350,7 @@ async function auditOpportunityFlow(browser) {
     check(await page.locator("#open-whatsapp").getAttribute("href") === null, "oportunidades: se retira el enlace de WhatsApp cuando el borrador queda desactualizado");
     check(await page.locator("#open-whatsapp").getAttribute("aria-disabled") === "true", "oportunidades: el enlace desactualizado queda marcado como no disponible");
     check(await page.locator("#copy-contact-message").isDisabled(), "oportunidades: no se puede copiar un mensaje desactualizado");
+    check(await page.locator("#contact-message-preview").isDisabled(), "oportunidades: el texto desactualizado tampoco queda disponible para copiar manualmente");
     await page.locator("#opportunity-form button[type='submit']").click();
     await page.locator("#contact-preview-stale").waitFor({ state: "hidden", timeout: 3000 });
     const refreshedMessage = await page.locator("#contact-message-preview").inputValue();
@@ -356,6 +358,7 @@ async function auditOpportunityFlow(browser) {
     check(refreshedMessage.includes("Otra zona de prueba"), "oportunidades: regenerar el borrador incorpora el dato corregido");
     check(new URL(refreshedWhatsAppHref).searchParams.get("text") === refreshedMessage, "oportunidades: WhatsApp vuelve a recibir exactamente la versión actualizada");
     check(await page.locator("#copy-contact-message").isEnabled(), "oportunidades: copiar vuelve a habilitarse tras regenerar el borrador");
+    check(await page.locator("#contact-message-preview").isEnabled(), "oportunidades: el texto vuelve a estar disponible para revisar al regenerar");
 
     await page.locator("#parcel-area").fill("1200");
     check(await page.locator("#contact-preview-stale").isVisible(), "oportunidades: modificar los indicadores también invalida el borrador");
@@ -403,6 +406,7 @@ async function auditOpportunityFlow(browser) {
     check(await page.locator("#contact-preview-stale").isVisible(), "oportunidades: importar un expediente invalida cualquier borrador anterior");
     check(await page.locator("#open-whatsapp").getAttribute("href") === null, "oportunidades: la importación no deja disponible un enlace de WhatsApp con datos anteriores");
     check(await page.locator("#copy-contact-message").isDisabled(), "oportunidades: la importación deshabilita la copia del borrador anterior");
+    check(await page.locator("#contact-message-preview").isDisabled(), "oportunidades: la importación también bloquea la copia manual del mensaje anterior");
     check(await page.locator("#contact-profile").inputValue() === "Inversor/a", "oportunidades: la importación recupera el perfil del expediente");
     check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: la importación revela detalles de inmueble aunque el perfil sea inversor");
     check(await page.locator("#evidence-disclosure").evaluate(element => element.open), "oportunidades: la importación revela documentación y verificaciones recuperadas");
