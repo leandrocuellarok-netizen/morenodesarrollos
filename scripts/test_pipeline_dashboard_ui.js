@@ -100,8 +100,35 @@ class Element {
   await fileInput.listeners.change();
   assert.equal(download.disabled, false);
   assert.equal(agendaDownload.disabled, false);
+
+  let resolveSlowImport;
+  const slowCsv = headers.join(";") + "\\n" + makeRow({
+    id_oportunidad:"M-UI-OLD", localidad:"Archivo anterior", tipo_activo:"Terreno",
+    etapa_comercial:"primer contacto"
+  });
+  const latestCsv = headers.join(";") + "\\n" + makeRow({
+    id_oportunidad:"M-UI-LATEST", localidad:"Archivo más reciente", tipo_activo:"Terreno",
+    etapa_comercial:"primer contacto"
+  });
+  fileInput.files = [{size:slowCsv.length, text:() => new Promise(resolve => { resolveSlowImport = resolve; })}];
+  const slowImportPromise = fileInput.listeners.change();
+  fileInput.files = [{size:latestCsv.length, text:async () => latestCsv}];
+  await fileInput.listeners.change();
+  resolveSlowImport(slowCsv);
+  await slowImportPromise;
+  const recordRows = elements["pipeline-records-body"].children;
+  assert.equal(recordRows.length, 1, "solo debe quedar una fila después de dos importaciones superpuestas");
+  assert.equal(recordRows[0].children[0].textContent, "M-UI-LATEST", "una lectura anterior que termina tarde no debe reemplazar el CSV más reciente");
+
+  let resolveAfterReset;
+  fileInput.files = [{size:slowCsv.length, text:() => new Promise(resolve => { resolveAfterReset = resolve; })}];
+  const pendingResetPromise = fileInput.listeners.change();
   reset.listeners.click();
+  resolveAfterReset(slowCsv);
+  await pendingResetPromise;
   assert.equal(download.disabled, true, "limpiar la sesión invalida también el resumen");
+  assert.equal(agendaDownload.disabled, true, "limpiar la sesión invalida también la agenda");
+  assert.match(elements["pipeline-status"].textContent, /Sesión local limpiada/, "una lectura pendiente no debe revertir el mensaje de limpieza");
   assert.equal(agendaDownload.disabled, true, "limpiar la sesión invalida también la agenda");
   assert.equal(elements["pipeline-dashboard-output"].hidden, true);
   assert.equal(textFilter.value, "");
