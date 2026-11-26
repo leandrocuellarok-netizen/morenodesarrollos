@@ -70,7 +70,7 @@ const financialReviewCsv = [
   makeRow({id_oportunidad:"M-FIN-02",etapa_comercial:"negociación",proxima_accion:"Revisar anticipo",fecha_proximo_seguimiento:"2026-11-27",honorarios_cobrados:"100",moneda:"ARS"}),
   makeRow({id_oportunidad:"M-FIN-03",etapa_comercial:"propuesta enviada",proxima_accion:"Confirmar acuerdo",fecha_proximo_seguimiento:"2026-11-27",honorarios_facturados:"150",moneda:"ARS"}),
   makeRow({id_oportunidad:"M-FIN-04",etapa_comercial:"negociación",proxima_accion:"Seguimiento",fecha_proximo_seguimiento:"2026-11-27",honorarios_propuestos:"1000",honorarios_acordados:"800",honorarios_facturados:"500",honorarios_cobrados:"250",moneda:"ARS"})
-].join("\\n");
+].join("\n");
 const financialReview = dashboard.parsePipelineCsv(financialReviewCsv);
 assert.equal(financialReview.ok, true);
 const financialWarnings = financialReview.warnings.filter(warning => warning.startsWith("[Honorarios]"));
