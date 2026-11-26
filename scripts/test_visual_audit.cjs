@@ -404,7 +404,8 @@ async function auditOpportunityFlow(browser) {
     await page.locator("#dossier-import-actions").waitFor({ state: "visible", timeout: 3000 });
     check(await page.locator("#dossier-import-actions").isVisible(), "oportunidades: el expediente JSON válido ofrece las acciones de aplicación");
     await page.locator("#apply-dossier-replace").click();
-    check(await page.locator("#contact-preview-stale").isVisible(), "oportunidades: importar un expediente invalida cualquier borrador anterior");
+    check(await page.locator("#contact-preview").isHidden(), "oportunidades: importar un expediente oculta el borrador anterior");
+    check(await page.locator("#contact-message-preview").inputValue() === "", "oportunidades: la importación limpia el texto del borrador anterior");
     check(await page.locator("#open-whatsapp").getAttribute("href") === null, "oportunidades: la importación no deja disponible un enlace de WhatsApp con datos anteriores");
     check(await page.locator("#copy-contact-message").isDisabled(), "oportunidades: la importación deshabilita la copia del borrador anterior");
     check(await page.locator("#contact-message-preview").isDisabled(), "oportunidades: la importación también bloquea la copia manual del mensaje anterior");
