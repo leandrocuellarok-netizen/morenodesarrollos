@@ -21,6 +21,7 @@ SITE_PAGES = (
     Path("erica-acosta/index.html"),
     Path("oportunidades/index.html"),
 )
+INTERNAL_PAGE = Path("mesa-operativa/index.html")
 PAGE_URLS = {
     Path("index.html"): PUBLIC_BASE,
     Path("mapa-ia/index.html"): PUBLIC_BASE + "mapa-ia/",
@@ -550,6 +551,34 @@ def main() -> None:
                     if match.group(1) not in parser.ids:
                         errors.append(f"{relative.as_posix()}: JavaScript busca un ID inexistente: {match.group(1)}")
 
+
+    internal_page_path = ROOT / INTERNAL_PAGE
+    if not internal_page_path.is_file():
+        errors.append("Falta la herramienta interna no indexada mesa-operativa/index.html")
+    else:
+        internal_parser = PageAudit(INTERNAL_PAGE)
+        try:
+            internal_source = internal_page_path.read_text(encoding="utf-8")
+            internal_parser.feed(internal_source)
+            internal_parser.close()
+            audits[INTERNAL_PAGE] = internal_parser
+            internal_title = "".join(internal_parser.title_parts).strip()
+            if not internal_parser.lang or not internal_title or not internal_parser.has_description:
+                errors.append("mesa-operativa/index.html: faltan idioma, título o descripción")
+            if internal_parser.h1_count != 1:
+                errors.append(f"mesa-operativa/index.html: se esperaba un H1 y se encontraron {internal_parser.h1_count}")
+            if internal_parser.meta.get("robots") != "noindex,nofollow,noarchive" or internal_parser.meta_counts.get("robots", 0) != 1:
+                errors.append("mesa-operativa/index.html: la directiva robots debe ser noindex,nofollow,noarchive")
+            if internal_parser.canonicals:
+                errors.append("mesa-operativa/index.html: la herramienta no indexada no debe declarar canonical público")
+            for required_markup in ('id="operations-import-title"', 'id="operations-originacion-title"', "no tiene contraseña", "no constituye una medida de seguridad"):
+                if required_markup not in internal_source:
+                    errors.append(f"mesa-operativa/index.html: falta aclaración o sección {required_markup}")
+            if internal_parser.duplicates:
+                errors.append("mesa-operativa/index.html: IDs duplicados: " + ", ".join(sorted(internal_parser.duplicates)))
+        except Exception as exc:
+            errors.append(f"mesa-operativa/index.html: HTML no procesable: {exc}")
+
     for relative, parser in audits.items():
         for tag, raw_url in parser.refs:
             try:
@@ -623,7 +652,7 @@ def main() -> None:
 
     node = shutil.which("node")
     if node:
-        for test_name in ("test_opportunity_tools.js", "test_site_navigation.js", "test_mapa_ia.js", "test_pipeline_dashboard.js", "test_pipeline_dashboard_ui.js"):
+        for test_name in ("test_opportunity_tools.js", "test_originacion_export.js", "test_site_navigation.js", "test_mapa_ia.js", "test_pipeline_dashboard.js", "test_pipeline_dashboard_ui.js"):
             test_script = ROOT / "scripts" / test_name
             if not test_script.is_file():
                 errors.append(f"Falta scripts/{test_name}")
@@ -635,7 +664,7 @@ def main() -> None:
             elif unit_test.stdout.strip():
                 print(unit_test.stdout.strip())
 
-        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js", ROOT / "assets/js/originacion-workbench.js", ROOT / "assets/js/mapa-ia.js", ROOT / "assets/js/pipeline-dashboard.js", ROOT / "assets/js/pipeline-agenda.js", ROOT / "assets/js/pipeline-dashboard-ui.js"):
+        for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js", ROOT / "assets/js/originacion-workbench.js", ROOT / "assets/js/mapa-ia.js", ROOT / "assets/js/pipeline-dashboard.js", ROOT / "assets/js/pipeline-agenda.js", ROOT / "assets/js/pipeline-dashboard-ui.js", ROOT / "assets/js/originacion-export.js"):
             if script_path.is_file():
                 syntax_check = subprocess.run([node, "--check", str(script_path)], capture_output=True, text=True, check=False)
                 if syntax_check.returncode:
@@ -658,33 +687,52 @@ def main() -> None:
 
     opportunity_page = ROOT / "oportunidades/index.html"
     if not opportunity_page.is_file():
-        errors.append("Falta oportunidades/index.html para la importación de expedientes")
+        errors.append("Falta oportunidades/index.html para el formulario público")
     else:
         opportunity_html = opportunity_page.read_text(encoding="utf-8")
-        if 'href="../docs/plantilla-seguimiento-comercial.csv"' not in opportunity_html:
-            errors.append("Oportunidades debe enlazar la plantilla CSV de seguimiento comercial")
-        if "pipeline-template-guide" not in opportunity_html:
-            errors.append("Oportunidades debe explicar las etapas y la separación de honorarios")
-        if 'id="pipeline-download-agenda"' not in opportunity_html:
-            errors.append("Oportunidades debe ofrecer la descarga de la agenda de seguimiento")
-        if 'src="../assets/js/pipeline-agenda.js"' not in opportunity_html:
-            errors.append("Oportunidades debe cargar el módulo de agenda comercial")
+        if '<script src="../assets/js/opportunity-tools.js"></script>' not in opportunity_html:
+            errors.append("Oportunidades debe cargar las herramientas de contacto y expediente público")
+        if "dossier-import-note" not in opportunity_html:
+            errors.append("Oportunidades debe aclarar que el formulario no recupera datos internos")
         for required_control in ("dossier-import-file", "validate-dossier-import", "apply-dossier-merge", "apply-dossier-replace"):
             if f'id="{required_control}"' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta control de importación: {required_control}")
-        for required_control in ("pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset", "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions", "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-text", "pipeline-download-summary"):
-            if f'id="{required_control}"' not in opportunity_html:
-                errors.append(f"oportunidades/index.html: falta control del tablero comercial: {required_control}")
-        if 'id="pipeline-download-summary" type="button" disabled' not in opportunity_html:
-            errors.append("Oportunidades debe mantener deshabilitada la exportación hasta validar un CSV.")
-        if '<link rel="stylesheet" href="../assets/css/originacion.css">' not in opportunity_html:
-            errors.append("Oportunidades debe cargar la hoja responsive de la mesa de originación")
-        if '<script src="../assets/js/originacion-workbench.js"></script>' not in opportunity_html:
-            errors.append("Oportunidades debe cargar el módulo de interfaz de la mesa de originación")
-        for script_src in ("../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-dashboard-ui.js"):
-            if f'<script src="{script_src}"></script>' not in opportunity_html:
-                errors.append(f"oportunidades/index.html: falta cargar {script_src}")
+        for forbidden_marker in ("pipeline-template-title", "pipeline-csv-file", "originacion-workbench", "originacion-print-dossier", "originacion-download-dossier"):
+            if forbidden_marker in opportunity_html:
+                errors.append(f"oportunidades/index.html: la página pública no debe exponer la herramienta interna {forbidden_marker}")
+        for script_src in ("../assets/js/originacion-workbench.js", "../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-agenda.js", "../assets/js/pipeline-dashboard-ui.js", "../assets/js/originacion-export.js"):
+            if script_src in opportunity_html:
+                errors.append(f"oportunidades/index.html: no debe cargar el módulo interno {script_src}")
 
+    operations_page = ROOT / INTERNAL_PAGE
+    if not operations_page.is_file():
+        errors.append("Falta mesa-operativa/index.html para las herramientas locales")
+    else:
+        operations_html = operations_page.read_text(encoding="utf-8")
+        if 'href="../docs/plantilla-seguimiento-comercial.csv"' not in operations_html:
+            errors.append("Mesa Operativa debe enlazar la plantilla CSV de seguimiento comercial")
+        for required_control in (
+            "pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset",
+            "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions",
+            "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-text",
+            "pipeline-download-summary", "pipeline-download-agenda",
+            "originacion-workbench", "originacion-import-file", "originacion-import-button",
+            "originacion-import-status", "originacion-print-dossier", "originacion-download-dossier",
+            "originacion-clear", "originacion-status"
+        ):
+            if f'id="{required_control}"' not in operations_html:
+                errors.append(f"mesa-operativa/index.html: falta control interno {required_control}")
+        if 'id="pipeline-download-summary" type="button" disabled' not in operations_html:
+            errors.append("Mesa Operativa debe mantener deshabilitada la exportación hasta validar un CSV.")
+        if '<link rel="stylesheet" href="../assets/css/originacion.css">' not in operations_html:
+            errors.append("Mesa Operativa debe cargar la hoja responsive de originación")
+        for script_src in (
+            "../assets/js/opportunity-tools.js", "../assets/js/originacion-workbench.js",
+            "../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-agenda.js",
+            "../assets/js/pipeline-dashboard-ui.js", "../assets/js/originacion-export.js"
+        ):
+            if f'<script src="{script_src}"></script>' not in operations_html:
+                errors.append(f"Mesa Operativa debe cargar {script_src}")
 
     about_page = ROOT / "erica-acosta/index.html"
     if not about_page.is_file():
@@ -746,6 +794,16 @@ def main() -> None:
         for forbidden_logic in ("localStorage", "sessionStorage", "fetch(", "XMLHttpRequest", "innerHTML"):
             if forbidden_logic in pipeline_ui_source:
                 errors.append(f"assets/js/pipeline-dashboard-ui.js: no debe usar {forbidden_logic} para procesar datos locales")
+
+
+    originacion_export_module = ROOT / "assets/js/originacion-export.js"
+    if not originacion_export_module.is_file():
+        errors.append("Falta assets/js/originacion-export.js para importar y exportar expedientes internos")
+    else:
+        originacion_export_source = originacion_export_module.read_text(encoding="utf-8")
+        for required_logic in ("buildInternalExport", "parseInternalImport", "includePublic: false", "includeInternal: true", "originacion-import-button", "originacion-clear"):
+            if required_logic not in originacion_export_source:
+                errors.append(f"assets/js/originacion-export.js: falta lógica requerida: {required_logic}")
 
     navigation_module = ROOT / "assets/js/site-navigation.js"
     if not navigation_module.is_file():
@@ -816,11 +874,11 @@ def main() -> None:
 
     refs_count = sum(len(page.refs) for page in audits.values())
     print(
-        f"OK: {len(audits)} páginas; {refs_count} referencias locales; canonical, OG/Twitter, "
-        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, navegación móvil, MapLibre/OpenStreetMap, referencias DOM y módulos JavaScript correctos."
+        f"OK: {len(SITE_PAGES)} páginas públicas + 1 herramienta no indexada; {refs_count} referencias locales; canonical, OG/Twitter, "
+        "robots.txt, sitemap.xml, H1, IDs, imágenes, JSON-LD, navegación móvil, MapLibre/OpenStreetMap, referencias DOM, separación público/interno y módulos JavaScript correctos."
     )
     if node:
-        print("OK: sintaxis JavaScript y pruebas unitarias de oportunidades, navegación móvil y tablero comercial local validadas con Node.js.")
+        print("OK: sintaxis JavaScript y pruebas unitarias de oportunidades, exportación interna, navegación móvil, Mapa IA y tablero comercial local validadas con Node.js.")
 
 
 if __name__ == "__main__":

@@ -341,3 +341,16 @@ La barra del Mapa IA permite compartir una vista del inventario con su búsqueda
 - La vista compartida no incluye la bitácora local de diligencia, datos de navegador ni expedientes internos. Los parámetros desconocidos de la URL se conservan.
 - Los enlaces de ficha individual mantienen los filtros activos para que una contraparte reciba el mismo contexto territorial.
 - `scripts/test_mapa_ia.js` verifica restauración, validación de parámetros, longitud máxima, conservación de UTM y fragmentos, limpieza de filtros y exclusión de la bitácora.
+
+
+### Mesa Operativa local
+
+Las herramientas de seguimiento comercial, la plantilla CSV, el tablero y el expediente interno se encuentran en `/mesa-operativa/`, separados del formulario público de Oportunidades. La página tiene la meta `noindex,nofollow,noarchive` y no aparece en el sitemap; esto reduce su exposición en buscadores, pero **no constituye una medida de seguridad**.
+
+La Mesa Operativa no tiene autenticación, contraseña, cifrado ni control de acceso. Su URL sigue siendo pública. No ingresar nombres de personas, teléfonos, correos, DNI, escrituras, datos bancarios ni información confidencial. Los archivos se procesan en el navegador y deben conservarse bajo control de quien opera. Para información sensible se necesita un CRM o repositorio con permisos y autenticación reales.
+
+- El formulario público solo genera fichas de contacto y cálculos; no carga ni exporta la bitácora interna.
+- La Mesa Operativa importa y exporta expedientes MORENO v1, v2 y v3, recuperando los datos internos v3 cuando existen.
+- Los expedientes internos se generan sin datos del formulario público. La exportación y la importación se realizan localmente.
+- `assets/js/originacion-export.js` separa el ciclo de importación, impresión y exportación del expediente interno.
+- `scripts/test_originacion_export.js` comprueba que el expediente interno no incorpore campos de contacto y que el JSON v3 pueda recuperarse.
