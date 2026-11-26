@@ -329,3 +329,15 @@ Cada tesis del inventario del Mapa IA incorpora la descarga local de una ficha H
 - El HTML se genera en el navegador, sin servidor, recursos externos ni transmisión de datos. Puede imprimirse o guardarse como PDF desde el navegador.
 - Los campos de diligencia quedan en blanco para que el equipo registre documento/fuente y fecha de consulta fuera del sitio. No completar la ficha pública con datos personales o información confidencial.
 - scripts/test_mapa_ia.js prueba el esquema, la clasificación, la advertencia parcelaria, el enlace HTTPS, la salida imprimible y el escape de contenido potencialmente malicioso.
+
+
+### Vistas compartibles del Mapa IA
+
+La barra del Mapa IA permite compartir una vista del inventario con su búsqueda, tipo de referencia, sector, nivel de evidencia y referencia seleccionada. El enlace restaura esos filtros al abrirse y conserva parámetros de campaña ajenos al mapa.
+
+- Los parámetros públicos son `q`, `tipo`, `sector`, `evidencia` y `ref`; sus valores se validan contra listas permitidas y la búsqueda se limita a 100 caracteres.
+- La URL se actualiza al modificar filtros o seleccionar una referencia. La acción **Compartir vista** utiliza el diálogo nativo del dispositivo cuando está disponible y, en su defecto, copia el enlace al portapapeles.
+- Si el portapapeles está bloqueado, el enlace queda seleccionado en un campo para copiar manualmente.
+- La vista compartida no incluye la bitácora local de diligencia, datos de navegador ni expedientes internos. Los parámetros desconocidos de la URL se conservan.
+- Los enlaces de ficha individual mantienen los filtros activos para que una contraparte reciba el mismo contexto territorial.
+- `scripts/test_mapa_ia.js` verifica restauración, validación de parámetros, longitud máxima, conservación de UTM y fragmentos, limpieza de filtros y exclusión de la bitácora.
