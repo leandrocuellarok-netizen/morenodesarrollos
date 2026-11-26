@@ -344,6 +344,7 @@ La barra del Mapa IA permite compartir una vista del inventario con su búsqueda
 - Las etiquetas comerciales distinguen tesis territoriales de localidades. No implican que exista una parcela, disponibilidad ni un proyecto confirmado.
 - Las exportaciones CSV y GeoJSON se agrupan en un acceso secundario. En móvil el panel inicia cerrado; al abrirlo explica que CSV sirve para hojas de cálculo y GeoJSON para QGIS/GIS. Ambos archivos incluyen solo las referencias visibles y mantienen las advertencias sobre coordenadas aproximadas.
 - `scripts/test_mapa_ia.js` verifica restauración, validación de parámetros, longitud máxima, conservación de UTM y fragmentos, limpieza de filtros, etiquetas comerciales, agrupación de exportaciones y exclusión de la bitácora.
+- La auditoría Chromium abre el panel de exportaciones en móvil, comprueba que las acciones de la tesis precedan a la bitácora y sigue el enlace `map_ref` hasta el contexto visible del formulario público.
 
 
 ### Mesa Operativa local
