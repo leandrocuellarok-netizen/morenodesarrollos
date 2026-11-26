@@ -213,10 +213,10 @@ def main() -> None:
                         errors.append("Inicio: falta el esquema SVG de referencias territoriales")
                     else:
                         svg_source = svg_match.group(1)
-                        locality_marks = len(re.findall(r'<g\b[^>]*class="locality-mark"', svg_source))
-                        thesis_marks = len(re.findall(r'class="thesis-mark\b', svg_source))
-                        documented_marks = len(re.findall(r'class="thesis-mark documented-mark"', svg_source))
-                        hypothesis_marks = len(re.findall(r'class="thesis-mark hypothesis-mark"', svg_source))
+                        locality_marks = len(re.findall(r'<g\b[^>]*class="territory-marker locality-mark"', svg_source))
+                        thesis_marks = len(re.findall(r'<g\b[^>]*class="territory-marker (?:documented-mark|hypothesis-mark)"', svg_source))
+                        documented_marks = len(re.findall(r'<g\b[^>]*class="territory-marker documented-mark"', svg_source))
+                        hypothesis_marks = len(re.findall(r'<g\b[^>]*class="territory-marker hypothesis-mark"', svg_source))
                         expected_documented = sum(stage == "documented" for _, stage, _ in opportunities)
                         expected_hypothesis = sum(stage == "hypothesis" for _, stage, _ in opportunities)
                         if locality_marks != len(localities):
@@ -238,7 +238,7 @@ def main() -> None:
                 errors.append("Falta assets/css/erica.css para el esquema territorial")
             else:
                 css_source = css_path.read_text(encoding="utf-8")
-                for required_style in (".territory-diagram", ".map-art-legend", ".hypothesis-mark", ".map-art{min-height:0}"):
+                for required_style in (".territory-diagram", ".map-art-legend", ".territory-marker.documented-mark", ".territory-marker.hypothesis-mark", ".map-plate-head", ".map-art{min-height:0}"):
                     if required_style not in css_source:
                         errors.append(f"assets/css/erica.css: falta estilo del esquema territorial: {required_style}")
 
