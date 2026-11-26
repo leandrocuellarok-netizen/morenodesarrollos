@@ -267,6 +267,28 @@ async function auditOpportunityFlow(browser) {
     check(!(await page.locator("#property-data-disclosure").evaluate(element => element.open)), "oportunidades: el recorrido de inversor no abre campos de inmueble que no necesita");
 
     await page.goto(BASE_URL + "/oportunidades/", { waitUntil: "domcontentloaded" });
+    const quickStart = page.locator(".opportunity-hero-actions a[href='#opportunity-form']");
+    check(await quickStart.isVisible(), "oportunidades: el acceso directo al formulario está visible en el encabezado");
+    check((await page.locator(".opportunity-hero-note").innerText()).includes("cuatro datos"), "oportunidades: se explica que la consulta puede comenzar con cuatro datos");
+    check(await page.locator(".opportunity-hero-secondary").getAttribute("href") === "#feasibility-disclosure", "oportunidades: la calculadora FOS/FOT queda como recorrido secundario");
+    await quickStart.click();
+    await page.waitForFunction(() => {
+      const target = document.querySelector("#opportunity-form");
+      const header = document.querySelector(".site-header");
+      if (!target || !header) return false;
+      const targetTop = target.getBoundingClientRect().top;
+      const headerBottom = header.getBoundingClientRect().bottom;
+      return targetTop >= headerBottom + 4 && targetTop < window.innerHeight;
+    }, null, { timeout: 3000 });
+    const jumpGeometry = await page.evaluate(() => ({
+      targetTop: document.querySelector("#opportunity-form").getBoundingClientRect().top,
+      headerBottom: document.querySelector(".site-header").getBoundingClientRect().bottom,
+      viewportHeight: window.innerHeight,
+      focusedId: document.activeElement && document.activeElement.id
+    }));
+    check(jumpGeometry.targetTop >= jumpGeometry.headerBottom + 4 && jumpGeometry.targetTop < jumpGeometry.viewportHeight, "oportunidades: el acceso directo sitúa el formulario debajo del encabezado fijo");
+    check(jumpGeometry.focusedId === "opportunity-form", "oportunidades: el acceso directo transfiere el foco al formulario");
+    await page.goto(BASE_URL + "/oportunidades/", { waitUntil: "domcontentloaded" });
     const optionalDisclosures = [
       "feasibility-disclosure",
       "dossier-import-disclosure",

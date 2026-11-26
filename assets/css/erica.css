@@ -157,6 +157,12 @@ body{background:var(--paper);color:var(--ink)}
 .opportunity-hero{padding-bottom:48px}
 .opportunity-hero h1{max-width:1000px}
 .opportunity-intro{max-width:780px}
+.opportunity-hero-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:26px}
+.opportunity-hero-actions .button{min-height:48px}
+.opportunity-hero-secondary{font:9px/1.6 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#6b6258;text-underline-offset:4px}
+.opportunity-hero-note{font:11px/1.7 var(--sans);color:#77796f;margin:12px 0 0}
+#opportunity-form{scroll-margin-top:112px}
+#opportunity-form:target{outline:1px solid var(--rust);outline-offset:4px}
 .opportunity-paths{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:8px 0 48px}
 .opportunity-path{padding:24px 24px 22px;border:1px solid var(--line);background:#eeeae0}
 .opportunity-path span{font:italic 12px var(--serif);color:var(--rust)}
@@ -185,7 +191,7 @@ body{background:var(--paper);color:var(--ink)}
 .opportunity-direct{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);font:12px/1.8 var(--sans);color:#66675e}
 .opportunity-direct a{color:#80533a;text-underline-offset:3px}
 @media(max-width:900px){.opportunity-form-shell{grid-template-columns:1fr;gap:25px}.opportunity-form-aside{max-width:760px}}
-@media(max-width:760px){.opportunity-paths{grid-template-columns:1fr}.opportunity-form{padding:20px 16px}.form-grid{grid-template-columns:1fr}.form-field.full{grid-column:auto}.lead-bridge-actions{flex-direction:column;align-items:stretch}.lead-bridge-actions .button{justify-content:space-between}.opportunity-form-shell{padding:35px 0 70px}}
+@media(max-width:760px){.opportunity-hero-actions{align-items:stretch;flex-direction:column}.opportunity-hero-actions .button{justify-content:center;width:100%}.opportunity-hero-secondary{text-align:center}.opportunity-paths{grid-template-columns:1fr}.opportunity-form{padding:20px 16px}.form-grid{grid-template-columns:1fr}.form-field.full{grid-column:auto}.lead-bridge-actions{flex-direction:column;align-items:stretch}.lead-bridge-actions .button{justify-content:space-between}.opportunity-form-shell{padding:35px 0 70px}}
 
 
 /* Herramienta preliminar FOS/FOT para calificación de oportunidades */
