@@ -1067,6 +1067,7 @@ function initMapPage(doc) {
   let fallbackMessage = "La cartografía interactiva no está disponible. Se conserva el inventario en un esquema local.";
   function showFallback(message) {
     staticFallbackActive = true;
+    mapElement.classList.add("is-static-fallback");
     fallbackMessage = String(message || fallbackMessage);
     markers.forEach(marker => {
       try { marker.remove(); } catch (error) {}
