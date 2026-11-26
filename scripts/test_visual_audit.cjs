@@ -1,6 +1,5 @@
 "use strict";
 
-const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const { spawn } = require("node:child_process");
@@ -74,13 +73,20 @@ async function auditRoute(browser, route) {
     check(await page.locator(".skip-link[href='#main-content']").count() === 1, `${route.slug}: falta el enlace único para saltar al contenido`);
     check(await page.locator("main#main-content[tabindex='-1']").count() === 1, `${route.slug}: falta el destino de foco del enlace de salto`);
 
+    const skipRestingState = await page.locator(".skip-link").evaluate(element => ({ clipPath: getComputedStyle(element).clipPath, width: element.getBoundingClientRect().width, height: element.getBoundingClientRect().height }));
+    check(skipRestingState.clipPath === "inset(50%)" && skipRestingState.width <= 1 && skipRestingState.height <= 1, `${route.slug}: el enlace de salto no está visualmente oculto cuando no recibe foco`);
+
     await page.keyboard.press("Tab");
     const skipFocused = await page.evaluate(() => document.activeElement?.matches(".skip-link") === true);
     check(skipFocused, `${route.slug}: el primer foco de teclado no llega al enlace de salto`);
     if (skipFocused) {
+      const skipVisibleOnFocus = await page.locator(".skip-link").evaluate(element => { const rect = element.getBoundingClientRect(); return getComputedStyle(element).clipPath === "none" && rect.width > 1 && rect.height > 1; });
+      check(skipVisibleOnFocus, `${route.slug}: el enlace de salto no se revela al recibir foco`);
       await page.keyboard.press("Enter");
       const mainFocused = await page.evaluate(() => document.activeElement?.id === "main-content");
       check(mainFocused, `${route.slug}: el enlace de salto no mueve el foco a main`);
+      const skipHiddenAgain = await page.locator(".skip-link").evaluate(element => getComputedStyle(element).clipPath === "inset(50%)");
+      check(skipHiddenAgain, `${route.slug}: el enlace de salto permanece visible después de usarlo`);
     }
 
     const imageResults = await page.locator("img").evaluateAll(async images => {
@@ -141,23 +147,17 @@ async function auditRoute(browser, route) {
       );
     }
 
-    await page.setViewportSize({ width: 1440, height: 1000 });
-    await delay(120);
     const screenshotDir = path.join(ROOT, "test-results", "visual");
     fs.mkdirSync(screenshotDir, { recursive: true });
-    await page.screenshot({
-      path: path.join(screenshotDir, `${route.slug}-desktop.png`),
-      fullPage: true,
-      animations: "disabled"
-    });
-
-    await page.setViewportSize({ width: 390, height: 844 });
-    await delay(120);
-    await page.screenshot({
-      path: path.join(screenshotDir, `${route.slug}-mobile.png`),
-      fullPage: true,
-      animations: "disabled"
-    });
+    const screenshotPage = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
+    await screenshotPage.goto(BASE_URL + route.path, { waitUntil: "domcontentloaded" });
+    await screenshotPage.locator("main#main-content").waitFor({ state: "attached", timeout: 5000 });
+    await screenshotPage.evaluate(() => { if (document.activeElement && typeof document.activeElement.blur === "function") document.activeElement.blur(); window.scrollTo(0, 0); });
+    await screenshotPage.screenshot({ path: path.join(screenshotDir, `${route.slug}-desktop.png`), fullPage: true, animations: "disabled" });
+    await screenshotPage.setViewportSize({ width: 390, height: 844 });
+    await screenshotPage.evaluate(() => window.scrollTo(0, 0));
+    await screenshotPage.screenshot({ path: path.join(screenshotDir, `${route.slug}-mobile.png`), fullPage: true, animations: "disabled" });
+    await screenshotPage.close();
 
     check(pageErrors.length === 0, `${route.slug}: errores JavaScript: ${pageErrors.join(" | ")}`);
     check(localRequestFailures.length === 0, `${route.slug}: recursos locales fallidos: ${localRequestFailures.join(", ")}`);
