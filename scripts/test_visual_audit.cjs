@@ -70,6 +70,14 @@ async function auditRoute(browser, route) {
     const h1Count = await page.locator("main h1").count();
     check(Boolean(title.trim()), `${route.slug}: falta título de documento`);
     check(h1Count === 1, `${route.slug}: se esperaba un H1 dentro de main y se encontraron ${h1Count}`);
+    if (route.slug === "inicio") {
+      const ownerLinks = await page.locator("a[href*='perfil=propietario']").evaluateAll(links => links.map(link => link.href));
+      const investorLinks = await page.locator("a[href*='perfil=inversor']").evaluateAll(links => links.map(link => link.href));
+      check(ownerLinks.length >= 2, "inicio: se esperan accesos de propietario en portada y cierre comercial");
+      check(investorLinks.length >= 2, "inicio: se esperan accesos de inversor en portada y cierre comercial");
+      check(ownerLinks.every(href => new URL(href).searchParams.get("interes") === "terreno"), "inicio: los accesos de propietario transmiten la intención correcta");
+      check(investorLinks.every(href => new URL(href).searchParams.get("interes") === "inversion"), "inicio: los accesos de inversor transmiten la intención correcta");
+    }
     check(await page.locator(".skip-link[href='#main-content']").count() === 1, `${route.slug}: falta el enlace único para saltar al contenido`);
     check(await page.locator("main#main-content[tabindex='-1']").count() === 1, `${route.slug}: falta el destino de foco del enlace de salto`);
 
@@ -240,6 +248,88 @@ async function auditRoute(browser, route) {
   }
 }
 
+async function auditOpportunityFlow(browser) {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 });
+  const pageErrors = [];
+  page.on("pageerror", error => pageErrors.push(error.message));
+  try {
+    const ownerResponse = await page.goto(BASE_URL + "/oportunidades/?perfil=propietario&interes=terreno", { waitUntil: "domcontentloaded" });
+    check(Boolean(ownerResponse && ownerResponse.ok()), "oportunidades: el enlace de propietario responde");
+    check(await page.locator("#contact-profile").inputValue() === "Propietario/a", "oportunidades: el enlace de propietario preselecciona el perfil");
+    check(await page.locator("#contact-interest").inputValue() === "Presentar un terreno o inmueble", "oportunidades: el enlace de propietario preselecciona la intención");
+    check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: el recorrido de propietario abre los datos del inmueble");
+    check(await page.locator("#contact-type").isVisible(), "oportunidades: el tipo de oportunidad aparece dentro de los detalles al abrirlos");
+
+    const investorResponse = await page.goto(BASE_URL + "/oportunidades/?perfil=inversor&interes=inversion", { waitUntil: "domcontentloaded" });
+    check(Boolean(investorResponse && investorResponse.ok()), "oportunidades: el enlace de inversor responde");
+    check(await page.locator("#contact-profile").inputValue() === "Inversor/a", "oportunidades: el enlace de inversor preselecciona el perfil");
+    check(await page.locator("#contact-interest").inputValue() === "Explorar una inversión", "oportunidades: el enlace de inversor preselecciona la intención");
+    check(!(await page.locator("#property-data-disclosure").evaluate(element => element.open)), "oportunidades: el recorrido de inversor no abre campos de inmueble que no necesita");
+
+    await page.goto(BASE_URL + "/oportunidades/", { waitUntil: "domcontentloaded" });
+    const optionalDisclosures = [
+      "feasibility-disclosure",
+      "dossier-import-disclosure",
+      "property-data-disclosure",
+      "evidence-disclosure",
+      "context-disclosure"
+    ];
+    for (const id of optionalDisclosures) {
+      check(!(await page.locator("#" + id).evaluate(element => element.open)), "oportunidades: " + id + " inicia contraído");
+    }
+    for (const id of ["contact-name","contact-profile","contact-interest","contact-zone"]) {
+      check(await page.locator("#" + id).isVisible(), "oportunidades: el campo esencial " + id + " permanece visible");
+    }
+    check(!(await page.locator("#contact-type").isVisible()), "oportunidades: el tipo de oportunidad queda dentro de los detalles opcionales");
+
+    await page.locator("#contact-name").fill("Contacto de prueba");
+    await page.locator("#contact-profile").selectOption("Propietario/a");
+    await page.locator("#contact-interest").selectOption("Presentar un terreno o inmueble");
+    await page.locator("#contact-zone").fill("La Reja");
+    check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: elegir una consulta de inmueble revela sus campos opcionales");
+
+    await page.locator("#contact-type").selectOption("Terreno");
+    await page.locator("#contact-address").fill("Calle de prueba 123");
+    await page.locator("#contact-cadastral").fill("Circ. II, Secc. B, Quinta 14");
+    await page.locator("#contact-area").fill("1200");
+    await page.locator("#property-data-disclosure > summary").click();
+    check(!(await page.locator("#property-data-disclosure").evaluate(element => element.open)), "oportunidades: los datos del inmueble pueden volver a contraerse");
+    check(!(await page.locator("#contact-type").isVisible()), "oportunidades: el tipo de oportunidad se oculta al contraer detalles sin perder su valor");
+
+    await page.locator("#evidence-disclosure > summary").click();
+    await page.locator('input[name="documentacion"][value="Plano o mensura"]').check();
+    await page.locator('input[name="verificaciones"][value="Zonificación e indicadores urbanísticos consultados"]').check();
+    await page.locator("#evidence-disclosure > summary").click();
+    await page.locator("#context-disclosure > summary").click();
+    await page.locator("#contact-message").fill("Consulta de prueba para validar el borrador.");
+    await page.locator("#context-disclosure > summary").click();
+
+    await page.locator("#opportunity-form button[type='submit']").click();
+    await page.locator("#contact-preview").waitFor({ state: "visible", timeout: 3000 });
+    const message = await page.locator("#contact-message-preview").inputValue();
+    for (const expected of [
+      "Terreno",
+      "Calle de prueba 123",
+      "Circ. II, Secc. B, Quinta 14",
+      "1200",
+      "Plano o mensura",
+      "Zonificación e indicadores urbanísticos consultados",
+      "Consulta de prueba para validar el borrador."
+    ]) {
+      check(message.includes(expected), "oportunidades: el borrador conserva datos opcionales contraídos: " + expected);
+    }
+    const whatsappHref = await page.locator("#open-whatsapp").getAttribute("href");
+    const whatsappText = new URL(whatsappHref).searchParams.get("text") || "";
+    check(whatsappText === message, "oportunidades: WhatsApp recibe exactamente el borrador revisable");
+    check(pageErrors.length === 0, "oportunidades: errores JavaScript: " + pageErrors.join(" | "));
+    console.log("PASS: oportunidades — preselección de intención, disclosures y borrador completo");
+  } catch (error) {
+    check(false, "oportunidades: auditoría interrumpida: " + error.message);
+  } finally {
+    await page.close();
+  }
+}
+
 async function auditMapFallback(browser) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
   const pageErrors = [];
@@ -307,6 +397,7 @@ async function auditMapFallback(browser) {
     for (const route of ROUTES) {
       await auditRoute(browser, route);
     }
+    await auditOpportunityFlow(browser);
     await auditMapFallback(browser);
   } catch (error) {
     check(false, error.message);

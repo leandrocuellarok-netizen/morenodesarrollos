@@ -800,8 +800,8 @@ def main() -> None:
             'id="development-plate-title"',
             'id="development-plate-desc"',
             'class="about-contact-path"',
-            'href="../oportunidades/?perfil=propietario"',
-            'href="../oportunidades/?perfil=inversor"',
+            'href="../oportunidades/?perfil=propietario&interes=terreno"',
+            'href="../oportunidades/?perfil=inversor&interes=inversion"',
         )
         for required in required_markup:
             if required not in about_html:
@@ -816,6 +816,13 @@ def main() -> None:
             errors.append("Oportunidades: falta el prellenado del perfil propietario desde la página de Erica")
         if 'if(profileFromLink==="inversor")' not in opportunity_html:
             errors.append("Oportunidades: falta el prellenado del perfil inversor desde la página de Erica")
+        if "const interestByLink={" not in opportunity_html or "Object.prototype.hasOwnProperty.call(interestByLink,interestFromLink)" not in opportunity_html:
+            errors.append("Oportunidades: falta la preselección de intención mediante una lista permitida")
+        if "function revealPropertyDetails()" not in opportunity_html:
+            errors.append("Oportunidades: falta la apertura contextual de los datos del inmueble")
+        for disclosure_id in ("feasibility-disclosure", "dossier-import-disclosure", "property-data-disclosure", "evidence-disclosure", "context-disclosure"):
+            if f'id="{disclosure_id}"' not in opportunity_html:
+                errors.append(f"Oportunidades: falta la sección progresiva {disclosure_id}")
 
     opportunity_module = ROOT / "assets/js/opportunity-tools.js"
     if not opportunity_module.is_file():
@@ -908,8 +915,8 @@ def main() -> None:
             'viewBox="0 0 760 820"',
             'aria-label="Ilustración arquitectónica editorial',
             'class="hero-actions hero-commercial-actions"',
-            'href="./oportunidades/?perfil=propietario"',
-            'href="./oportunidades/?perfil=inversor"',
+            'href="./oportunidades/?perfil=propietario&interes=terreno"',
+            'href="./oportunidades/?perfil=inversor&interes=inversion"',
             'class="hero-commercial-note"',
             'Conecto propietarios, inversores y desarrolladores en Moreno.',
         ):

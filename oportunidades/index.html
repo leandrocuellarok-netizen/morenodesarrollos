@@ -39,40 +39,45 @@
 <article class="opportunity-path"><span>01 / Propietarios</span><h2>Tengo un terreno o inmueble</h2><p>Podemos iniciar con la ubicación, la superficie aproximada y la documentación que tengas disponible. No hace falta enviar escrituras ni documentación sensible en este primer mensaje.</p></article>
 <article class="opportunity-path"><span>02 / Inversores y aliados</span><h2>Quiero explorar un proyecto</h2><p>Contame qué tipo de desarrollo, inversión o colaboración te interesa. La viabilidad, los números y las condiciones se analizan caso por caso.</p></article>
 </section>
-<section class="wrap feasibility-tool" aria-labelledby="feasibility-title">
-  <div class="feasibility-intro">
-    <div class="eyebrow">Una primera lectura técnica</div>
-    <h2 id="feasibility-title">¿Tenés los indicadores urbanísticos? Hagamos una cuenta preliminar.</h2>
-    <p>Si conocés la superficie y los factores FOS y/o FOT correspondientes a esa parcela, podés estimar superficies teóricas de referencia. Si solo conocés la superficie, también podés compartirla sin calcular; los indicadores pueden quedar vacíos.</p>
-    <p class="feasibility-caution">Ingresá únicamente indicadores consultados para esa parcela en una fuente municipal o documentación técnica vigente. Si no los conocés, dejá los campos vacíos y continuá con el contacto.</p>
-  </div>
-  <div class="feasibility-panel">
-    <div class="feasibility-fields">
-      <div class="form-field">
-        <label for="parcel-area">Superficie del lote (m²)</label>
-        <input id="parcel-area" name="superficie-lote-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 1200" aria-describedby="feasibility-help">
-      </div>
-      <div class="form-field">
-        <label for="parcel-fos">FOS de la parcela</label>
-        <input id="parcel-fos" name="fos-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 0,60">
-      </div>
-      <div class="form-field">
-        <label for="parcel-fot">FOT de la parcela</label>
-        <input id="parcel-fot" name="fot-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 1,20">
-      </div>
-      <div class="form-field">
-        <label for="parcel-reference">Fuente o referencia consultada</label>
-        <input id="parcel-reference" name="fuente-indicadores" maxlength="180" placeholder="Ej.: certificado urbanístico / ordenanza">
-      </div>
+<details class="wrap feasibility-disclosure" id="feasibility-disclosure">
+  <summary>
+    <span class="eyebrow">Herramienta opcional · FOS / FOT</span>
+    <span class="feasibility-summary-title" id="feasibility-title">¿Tenés indicadores urbanísticos? Hagamos una cuenta preliminar.</span>
+    <small>Superficie, FOS y/o FOT consultados para una parcela · cálculo orientativo</small>
+  </summary>
+  <section class="feasibility-tool" aria-labelledby="feasibility-title">
+    <div class="feasibility-intro">
+      <p>Si conocés la superficie y los factores FOS y/o FOT correspondientes a esa parcela, podés estimar superficies teóricas de referencia. Si solo conocés la superficie, también podés compartirla sin calcular; los indicadores pueden quedar vacíos.</p>
+      <p class="feasibility-caution">Ingresá únicamente indicadores consultados para esa parcela en una fuente municipal o documentación técnica vigente. Si no los conocés, dejá los campos vacíos y continuá con el contacto.</p>
     </div>
-    <p class="field-hint" id="feasibility-help">FOS = referencia teórica de ocupación en planta. FOT = referencia teórica de superficie total computable. Para calcular, ingresá superficie y al menos uno de esos indicadores. Usá números sin separador de miles; podés escribir coma o punto decimal.</p>
-    <button class="button dark feasibility-button" id="feasibility-calculate" type="button">Calcular referencia ↗</button>
-    <div class="feasibility-results" id="feasibility-results" role="status" aria-live="polite">
-      <p>El resultado aparecerá acá. No se aplican coeficientes supuestos ni valores automáticos.</p>
+    <div class="feasibility-panel">
+      <div class="feasibility-fields">
+        <div class="form-field">
+          <label for="parcel-area">Superficie del lote (m²)</label>
+          <input id="parcel-area" name="superficie-lote-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 1200" aria-describedby="feasibility-help">
+        </div>
+        <div class="form-field">
+          <label for="parcel-fos">FOS de la parcela</label>
+          <input id="parcel-fos" name="fos-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 0,60">
+        </div>
+        <div class="form-field">
+          <label for="parcel-fot">FOT de la parcela</label>
+          <input id="parcel-fot" name="fot-calculo" inputmode="decimal" autocomplete="off" maxlength="18" placeholder="Ej.: 1,20">
+        </div>
+        <div class="form-field">
+          <label for="parcel-reference">Fuente o referencia consultada</label>
+          <input id="parcel-reference" name="fuente-indicadores" maxlength="180" placeholder="Ej.: certificado urbanístico / ordenanza">
+        </div>
+      </div>
+      <p class="field-hint" id="feasibility-help">FOS = referencia teórica de ocupación en planta. FOT = referencia teórica de superficie total computable. Para calcular, ingresá superficie y al menos uno de esos indicadores. Usá números sin separador de miles; podés escribir coma o punto decimal.</p>
+      <button class="button dark feasibility-button" id="feasibility-calculate" type="button">Calcular referencia ↗</button>
+      <div class="feasibility-results" id="feasibility-results" role="status" aria-live="polite">
+        <p>El resultado aparecerá acá. No se aplican coeficientes supuestos ni valores automáticos.</p>
+      </div>
+      <p class="feasibility-disclaimer">El cálculo es matemático y orientativo: no determina superficie efectivamente edificable ni viabilidad. No contempla retiros, alturas, densidad, usos, servidumbres, afectaciones, restricciones hidráulicas o ambientales, geometría del lote ni otras exigencias. Todo debe verificarse para la parcela y la normativa vigente.</p>
     </div>
-    <p class="feasibility-disclaimer">El cálculo es matemático y orientativo: no determina superficie efectivamente edificable ni viabilidad. No contempla retiros, alturas, densidad, usos, servidumbres, afectaciones, restricciones hidráulicas o ambientales, geometría del lote ni otras exigencias. Todo debe verificarse para la parcela y la normativa vigente.</p>
-  </div>
-</section>
+  </section>
+</details>
 <section class="wrap opportunity-form-shell">
 <aside class="opportunity-form-aside">
 <div class="eyebrow">Un primer paso, sin compromiso</div>
@@ -89,96 +94,122 @@
 <h2>Presentá tu oportunidad</h2>
 <div class="map-reference-context" id="map-reference-context" hidden aria-live="polite"></div>
 <input type="hidden" id="map-reference-value" name="referencia_mapa" value="">
-<p class="form-intro">Los campos marcados son necesarios para orientar la conversación. Si todavía no tenés algún dato, podés indicarlo.</p>
-<section class="dossier-import" aria-labelledby="dossier-import-title">
-  <div class="dossier-import-copy">
-    <h3 id="dossier-import-title">Continuar un expediente guardado</h3>
-    <p>Seleccioná un JSON de MORENO para recuperar los datos en este formulario. Primero se valida el archivo; después podés completar campos vacíos o reemplazar explícitamente el contenido actual.</p>
+<p class="form-intro">Completá los datos básicos para iniciar. La información del inmueble, la documentación y el contexto son opcionales: abrí solamente las secciones que quieras compartir.</p>
+<details class="dossier-import form-disclosure" id="dossier-import-disclosure">
+  <summary><span>Continuar un expediente guardado</span><small>Importar un JSON de MORENO · función opcional</small></summary>
+  <div class="dossier-import-body">
+    <div class="dossier-import-copy">
+      <p>Seleccioná un JSON de MORENO para recuperar los datos en este formulario. Primero se valida el archivo; después podés completar campos vacíos o reemplazar explícitamente el contenido actual.</p>
+    </div>
+    <div class="dossier-import-controls">
+      <label for="dossier-import-file">Expediente JSON</label>
+      <input id="dossier-import-file" type="file" accept=".json,application/json">
+      <button class="button" id="validate-dossier-import" type="button">Validar expediente</button>
+    </div>
+    <p class="dossier-import-status" id="dossier-import-status" role="status" aria-live="polite">La importación se realiza en este navegador. El archivo no se transmite ni se guarda en MORENO.</p>
+    <p class="form-intro dossier-import-note">Este formulario recupera únicamente datos de contacto y cálculos. La evidencia, la diligencia, el seguimiento y los honorarios se gestionan por separado en la Mesa Operativa.</p>
+    <div class="dossier-import-actions" id="dossier-import-actions" hidden>
+      <button class="button dark" id="apply-dossier-merge" type="button">Completar campos vacíos</button>
+      <button class="button" id="apply-dossier-replace" type="button">Reemplazar formulario con el archivo</button>
+    </div>
   </div>
-  <div class="dossier-import-controls">
-    <label for="dossier-import-file">Expediente JSON</label>
-    <input id="dossier-import-file" type="file" accept=".json,application/json">
-    <button class="button" id="validate-dossier-import" type="button">Validar expediente</button>
-  </div>
-  <p class="dossier-import-status" id="dossier-import-status" role="status" aria-live="polite">La importación se realiza en este navegador. El archivo no se transmite ni se guarda en MORENO.</p>
-  <p class="form-intro dossier-import-note">Este formulario recupera únicamente datos de contacto y cálculos. La evidencia, la diligencia, el seguimiento y los honorarios se gestionan por separado en la Mesa Operativa.</p>
-  <div class="dossier-import-actions" id="dossier-import-actions" hidden>
-    <button class="button dark" id="apply-dossier-merge" type="button">Completar campos vacíos</button>
-    <button class="button" id="apply-dossier-replace" type="button">Reemplazar formulario con el archivo</button>
-  </div>
-</section>
+</details>
 
-<div class="form-grid">
-<div class="form-field">
-<label for="contact-name">Tu nombre *</label>
-<input id="contact-name" name="nombre" autocomplete="name" required maxlength="90" placeholder="Cómo te llamás">
+<div class="form-grid form-grid-core">
+  <div class="form-field">
+    <label for="contact-name">Tu nombre *</label>
+    <input id="contact-name" name="nombre" autocomplete="name" required maxlength="90" placeholder="Cómo te llamás">
+  </div>
+  <div class="form-field">
+    <label for="contact-profile">¿Desde qué lugar nos contactás? *</label>
+    <select id="contact-profile" name="perfil" required>
+      <option value="">Seleccionar</option><option value="Propietario/a">Soy propietario/a</option><option value="Inversor/a">Soy inversor/a</option><option value="Profesional o empresa">Soy profesional o empresa</option><option value="Otro">Otro</option>
+    </select>
+  </div>
+  <div class="form-field full">
+    <label for="contact-interest">¿Qué te gustaría conversar? *</label>
+    <select id="contact-interest" name="interes" required>
+      <option value="">Seleccionar</option><option value="Presentar un terreno o inmueble">Presentar un terreno o inmueble</option><option value="Analizar un proyecto en marcha">Analizar un proyecto en marcha</option><option value="Explorar una inversión">Explorar una inversión</option><option value="Buscar un socio o alianza">Buscar un socio o alianza</option><option value="Ofrecer servicios profesionales">Ofrecer servicios profesionales</option><option value="Todavía estoy explorando">Todavía estoy explorando</option>
+    </select>
+  </div>
+  <div class="form-field">
+    <label for="contact-zone">Localidad o zona *</label>
+    <input id="contact-zone" name="zona" required maxlength="120" placeholder="Ej.: Moreno Centro, La Reja o no lo sé todavía">
+  </div>
 </div>
-<div class="form-field">
-<label for="contact-profile">¿Desde qué lugar nos contactás? *</label>
-<select id="contact-profile" name="perfil" required>
-<option value="">Seleccionar</option><option value="Propietario/a">Soy propietario/a</option><option value="Inversor/a">Soy inversor/a</option><option value="Profesional o empresa">Soy profesional o empresa</option><option value="Otro">Otro</option>
-</select>
-</div>
-<div class="form-field full">
-<label for="contact-interest">¿Qué te gustaría conversar? *</label>
-<select id="contact-interest" name="interes" required>
-<option value="">Seleccionar</option><option value="Presentar un terreno o inmueble">Presentar un terreno o inmueble</option><option value="Analizar un proyecto en marcha">Analizar un proyecto en marcha</option><option value="Explorar una inversión">Explorar una inversión</option><option value="Buscar un socio o alianza">Buscar un socio o alianza</option><option value="Ofrecer servicios profesionales">Ofrecer servicios profesionales</option><option value="Todavía estoy explorando">Todavía estoy explorando</option>
-</select>
-</div>
-<div class="form-field">
-<label for="contact-zone">Localidad o zona *</label>
-<input id="contact-zone" name="zona" required maxlength="120" placeholder="Ej.: Moreno Centro, La Reja o no lo sé todavía">
-</div>
-<div class="form-field">
-<label for="contact-type">¿Qué tipo de oportunidad es?</label>
-<select id="contact-type" name="tipo">
-<option value="No definido">Todavía no lo definí</option><option value="Terreno">Terreno</option><option value="Inmueble existente">Inmueble existente</option><option value="Proyecto en desarrollo">Proyecto en desarrollo</option><option value="Inversión o alianza">Inversión o alianza</option><option value="Servicios profesionales">Servicios profesionales</option>
-</select>
-</div>
-<div class="form-field full">
-<label for="contact-address">Ubicación más precisa (opcional)</label>
-<input id="contact-address" name="ubicacion" autocomplete="street-address" maxlength="180" placeholder="Calles, altura aproximada o referencia cercana">
-<span class="field-hint">Si estás presentando un inmueble, una referencia ayuda a identificar la zona. No hace falta compartir datos personales.</span>
-</div>
-<div class="form-field">
-<label for="contact-cadastral">Partida o nomenclatura catastral (opcional)</label>
-<input id="contact-cadastral" name="nomenclatura" maxlength="120" placeholder="Solo si ya la tenés disponible">
-<span class="field-hint">No adjuntes escrituras ni documentación dominial en este primer contacto.</span>
-</div>
-<div class="form-field">
-<label for="contact-area">Superficie aproximada (si no la ingresaste arriba)</label>
-<input id="contact-area" name="superficie" inputmode="decimal" maxlength="60" placeholder="Ej.: 1.200 m² / no lo sé">
-<span class="field-hint">Opcional. Si ya ingresaste la superficie en la calculadora, no hace falta repetirla acá.</span>
-</div>
-<fieldset class="form-field full checklist-fieldset" id="documentation-checklist">
-<legend>¿Qué documentación tenés disponible?</legend>
-<p class="field-hint">Marcá solo lo que ya tenés a mano. No adjuntes archivos ni compartas información sensible en este primer contacto.</p>
-<div class="checklist-grid">
-<label class="check-option"><input type="checkbox" name="documentacion" value="Ubicación o dirección"><span>Ubicación o dirección</span></label>
-<label class="check-option"><input type="checkbox" name="documentacion" value="Partida o nomenclatura catastral"><span>Partida o nomenclatura catastral</span></label>
-<label class="check-option"><input type="checkbox" name="documentacion" value="Plano o mensura"><span>Plano o mensura</span></label>
-<label class="check-option"><input type="checkbox" name="documentacion" value="Certificado urbanístico o zonificación"><span>Certificado urbanístico o zonificación</span></label>
-<label class="check-option"><input type="checkbox" name="documentacion" value="Antecedentes dominiales (sin adjuntar)"><span>Antecedentes dominiales (sin adjuntar)</span></label>
-<label class="check-option"><input type="checkbox" name="documentacion" value="Información sobre servicios"><span>Información sobre servicios</span></label>
-</div>
-</fieldset>
-<fieldset class="form-field full checklist-fieldset" id="verification-checklist">
-<legend>¿Qué consultas o verificaciones ya hiciste?</legend>
-<p class="field-hint">Son referencias declaradas por vos. MORENO deberá contrastarlas con fuentes y documentación antes de evaluar una operación.</p>
-<div class="checklist-grid">
-<label class="check-option"><input type="checkbox" name="verificaciones" value="Identificación catastral consultada"><span>Identificación catastral consultada</span></label>
-<label class="check-option"><input type="checkbox" name="verificaciones" value="Zonificación e indicadores urbanísticos consultados"><span>Zonificación e indicadores urbanísticos consultados</span></label>
-<label class="check-option"><input type="checkbox" name="verificaciones" value="Titularidad o antecedentes dominiales consultados"><span>Titularidad o antecedentes dominiales consultados</span></label>
-<label class="check-option"><input type="checkbox" name="verificaciones" value="Servicios y accesos consultados"><span>Servicios y accesos consultados</span></label>
-<label class="check-option"><input type="checkbox" name="verificaciones" value="Restricciones hidráulicas o ambientales consultadas"><span>Restricciones hidráulicas o ambientales consultadas</span></label>
-<label class="check-option"><input type="checkbox" name="verificaciones" value="Consultas municipales o prefactibilidades"><span>Consultas municipales o prefactibilidades</span></label>
-</div>
-</fieldset>
-<div class="form-field full">
-<label for="contact-message">Un poco más de contexto</label>
-<textarea id="contact-message" name="detalle" maxlength="1200" placeholder="Contame qué te gustaría hacer, qué necesitás o qué información ya tenés."></textarea>
-</div>
-</div>
+
+<details class="form-disclosure" id="property-data-disclosure">
+  <summary><span>Detalles del inmueble o proyecto</span><small>Tipo de oportunidad, ubicación, nomenclatura y superficie · opcional</small></summary>
+  <div class="form-disclosure-body">
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="contact-type">¿Qué tipo de oportunidad es?</label>
+        <select id="contact-type" name="tipo">
+          <option value="No definido">Todavía no lo definí</option><option value="Terreno">Terreno</option><option value="Inmueble existente">Inmueble existente</option><option value="Proyecto en desarrollo">Proyecto en desarrollo</option><option value="Inversión o alianza">Inversión o alianza</option><option value="Servicios profesionales">Servicios profesionales</option>
+        </select>
+      </div>
+      <div class="form-field full">
+        <label for="contact-address">Ubicación más precisa (opcional)</label>
+        <input id="contact-address" name="ubicacion" autocomplete="street-address" maxlength="180" placeholder="Calles, altura aproximada o referencia cercana">
+        <span class="field-hint">Si estás presentando un inmueble, una referencia ayuda a identificar la zona. No hace falta compartir datos personales.</span>
+      </div>
+      <div class="form-field">
+        <label for="contact-cadastral">Partida o nomenclatura catastral (opcional)</label>
+        <input id="contact-cadastral" name="nomenclatura" maxlength="120" placeholder="Solo si ya la tenés disponible">
+        <span class="field-hint">No adjuntes escrituras ni documentación dominial en este primer contacto.</span>
+      </div>
+      <div class="form-field">
+        <label for="contact-area">Superficie aproximada (si no la ingresaste en la calculadora)</label>
+        <input id="contact-area" name="superficie" inputmode="decimal" maxlength="60" placeholder="Ej.: 1.200 m² / no lo sé">
+        <span class="field-hint">Opcional. Si ya ingresaste la superficie en la calculadora, no hace falta repetirla acá.</span>
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class="form-disclosure" id="evidence-disclosure">
+  <summary><span>Documentación y verificaciones</span><small>Marcá únicamente lo que ya tenés o consultaste · opcional</small></summary>
+  <div class="form-disclosure-body">
+    <div class="form-grid">
+      <fieldset class="form-field full checklist-fieldset" id="documentation-checklist">
+        <legend>¿Qué documentación tenés disponible?</legend>
+        <p class="field-hint">Marcá solo lo que ya tenés a mano. No adjuntes archivos ni compartas información sensible en este primer contacto.</p>
+        <div class="checklist-grid">
+          <label class="check-option"><input type="checkbox" name="documentacion" value="Ubicación o dirección"><span>Ubicación o dirección</span></label>
+          <label class="check-option"><input type="checkbox" name="documentacion" value="Partida o nomenclatura catastral"><span>Partida o nomenclatura catastral</span></label>
+          <label class="check-option"><input type="checkbox" name="documentacion" value="Plano o mensura"><span>Plano o mensura</span></label>
+          <label class="check-option"><input type="checkbox" name="documentacion" value="Certificado urbanístico o zonificación"><span>Certificado urbanístico o zonificación</span></label>
+          <label class="check-option"><input type="checkbox" name="documentacion" value="Antecedentes dominiales (sin adjuntar)"><span>Antecedentes dominiales (sin adjuntar)</span></label>
+          <label class="check-option"><input type="checkbox" name="documentacion" value="Información sobre servicios"><span>Información sobre servicios</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="form-field full checklist-fieldset" id="verification-checklist">
+        <legend>¿Qué consultas o verificaciones ya hiciste?</legend>
+        <p class="field-hint">Son referencias declaradas por vos. MORENO deberá contrastarlas con fuentes y documentación antes de evaluar una operación.</p>
+        <div class="checklist-grid">
+          <label class="check-option"><input type="checkbox" name="verificaciones" value="Identificación catastral consultada"><span>Identificación catastral consultada</span></label>
+          <label class="check-option"><input type="checkbox" name="verificaciones" value="Zonificación e indicadores urbanísticos consultados"><span>Zonificación e indicadores urbanísticos consultados</span></label>
+          <label class="check-option"><input type="checkbox" name="verificaciones" value="Titularidad o antecedentes dominiales consultados"><span>Titularidad o antecedentes dominiales consultados</span></label>
+          <label class="check-option"><input type="checkbox" name="verificaciones" value="Servicios y accesos consultados"><span>Servicios y accesos consultados</span></label>
+          <label class="check-option"><input type="checkbox" name="verificaciones" value="Restricciones hidráulicas o ambientales consultadas"><span>Restricciones hidráulicas o ambientales consultadas</span></label>
+          <label class="check-option"><input type="checkbox" name="verificaciones" value="Consultas municipales o prefactibilidades"><span>Consultas municipales o prefactibilidades</span></label>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</details>
+
+<details class="form-disclosure" id="context-disclosure">
+  <summary><span>Agregar contexto</span><small>Una nota breve para orientar la conversación · opcional</small></summary>
+  <div class="form-disclosure-body">
+    <div class="form-grid">
+      <div class="form-field full">
+        <label for="contact-message">Un poco más de contexto</label>
+        <textarea id="contact-message" name="detalle" maxlength="1200" placeholder="Contame qué te gustaría hacer, qué necesitás o qué información ya tenés."></textarea>
+      </div>
+    </div>
+  </div>
+</details>
 <button class="button dark lead-submit" type="submit">Preparar borrador para revisar ↗</button>
 <section class="contact-preview" id="contact-preview" aria-labelledby="contact-preview-title" hidden>
   <div class="contact-preview-head">
@@ -348,9 +379,31 @@ document.getElementById("feasibility-calculate").addEventListener("click",showPr
     feasibilityResults.removeAttribute("data-state");
   });
 });
-const profileFromLink=new URLSearchParams(window.location.search).get("perfil");
+const contactParams=new URLSearchParams(window.location.search);
+const profileFromLink=contactParams.get("perfil");
 if(profileFromLink==="propietario")opportunityForm.elements.perfil.value="Propietario/a";
 if(profileFromLink==="inversor")opportunityForm.elements.perfil.value="Inversor/a";
+const interestFromLink=contactParams.get("interes");
+const interestByLink={
+  terreno:"Presentar un terreno o inmueble",
+  proyecto:"Analizar un proyecto en marcha",
+  inversion:"Explorar una inversión",
+  alianza:"Buscar un socio o alianza",
+  servicios:"Ofrecer servicios profesionales",
+  explorar:"Todavía estoy explorando"
+};
+if(Object.prototype.hasOwnProperty.call(interestByLink,interestFromLink)){
+  opportunityForm.elements.interes.value=interestByLink[interestFromLink];
+}
+const propertyDataDisclosure=document.getElementById("property-data-disclosure");
+function revealPropertyDetails(){
+  const isPropertyLead=opportunityForm.elements.perfil.value==="Propietario/a"||
+    opportunityForm.elements.interes.value==="Presentar un terreno o inmueble";
+  if(isPropertyLead)propertyDataDisclosure.open=true;
+}
+opportunityForm.elements.perfil.addEventListener("change",revealPropertyDetails);
+opportunityForm.elements.interes.addEventListener("change",revealPropertyDetails);
+revealPropertyDetails();
 const mapReference=window.MorenoOpportunityTools.readMapReference(window.location.search);
 if(mapReference){
   const referenceValue=mapReference.name+" ("+mapReference.id+")";
@@ -449,6 +502,7 @@ function applyDossierFormData(data){
     const control=document.getElementById(id);
     if(control)control.value=fields[key]||"";
   });
+  revealPropertyDetails();
   ["documentacion","verificaciones"].forEach(name=>{
     const selected=Array.isArray(fields[name])?fields[name]:[];
     opportunityForm.querySelectorAll('input[name="'+name+'"]').forEach(input=>{
