@@ -673,3 +673,99 @@
     text-align: center;
   }
 }
+
+
+/* Filtros del atlas: etiquetas visibles, sector explícito y controles ordenados en móvil. */
+.map-toolbar {
+  display: grid;
+  gap: 13px;
+  align-items: stretch;
+  margin: 18px 0 20px;
+}
+.map-filter-group {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.45fr) repeat(3, minmax(145px, 1fr));
+  gap: 10px;
+}
+.map-filter-field {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+}
+.map-filter-field > span {
+  color: #77796f;
+  font: 600 9px/1.35 var(--sans);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.map-filter-field input,
+.map-filter-field select {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  min-height: 46px;
+  padding: 11px 13px;
+  border: 1px solid #c9c8bc;
+  border-radius: 0;
+  background: #f8f6ee;
+  color: #242622;
+  font: 12px/1.4 var(--sans);
+}
+.map-filter-field input:focus-visible,
+.map-filter-field select:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+.map-toolbar-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.map-toolbar-actions .map-reset,
+.map-toolbar-actions .map-export {
+  min-height: 43px;
+}
+.map-toolbar-actions #map-status {
+  margin-left: auto;
+  font-size: 9px;
+}
+@media (max-width: 980px) {
+  .map-filter-group {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .map-filter-search {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 760px) {
+  .map-filter-group {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 8px;
+  }
+  .map-toolbar-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .map-toolbar-actions .map-reset,
+  .map-toolbar-actions .map-export {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+  .map-toolbar-actions #map-status {
+    grid-column: 1 / -1;
+    margin: 4px 0 0;
+  }
+}
+@media (max-width: 420px) {
+  .map-filter-group,
+  .map-toolbar-actions {
+    grid-template-columns: 1fr;
+  }
+  .map-filter-search {
+    grid-column: auto;
+  }
+}

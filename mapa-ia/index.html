@@ -1,6 +1,45 @@
 <!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mapa IA de Moreno | Inteligencia territorial y oportunidades inmobiliarias</title><meta name="description" content="Explorá el Mapa IA de Moreno: localidades, corredores estratégicos y tesis preliminares para investigar oportunidades inmobiliarias en el Partido de Moreno, Buenos Aires."><meta name="keywords" content="Mapa IA Moreno, mapa inmobiliario Moreno, oportunidades de inversión Moreno, terrenos Moreno, corredores productivos Moreno, inteligencia territorial"><meta property="og:image" content="https://leandrocuellarok-netizen.github.io/morenodesarrollos/ERICA%20ACOSTA-%20VILANOVA%20GROUP.jpg"><meta property="og:image:alt" content="Erica M. Acosta, impulsora del Mapa IA de Moreno"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Mapa IA de Moreno — Erica M. Acosta"><meta name="twitter:description" content="Localidades, corredores, fuentes públicas y tesis preliminares de desarrollo inmobiliario."><link rel="canonical" href="https://leandrocuellarok-netizen.github.io/morenodesarrollos/mapa-ia/"><meta property="og:type" content="website"><meta property="og:locale" content="es_AR"><meta property="og:title" content="Mapa IA de Moreno | Erica M. Acosta"><meta property="og:description" content="Exploración territorial de Moreno: localidades, corredores, fuentes públicas y tesis preliminares de desarrollo inmobiliario."><link rel="stylesheet" href="../assets/css/erica.css"><link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css"><link rel="stylesheet" href="../assets/css/mapa-ia.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Map","name":"Mapa IA de Moreno","url":"https://leandrocuellarok-netizen.github.io/morenodesarrollos/mapa-ia/","description":"Mapa exploratorio de localidades y tesis preliminares de oportunidad inmobiliaria en el Partido de Moreno, Buenos Aires.","about":{"@type":"AdministrativeArea","name":"Partido de Moreno, Buenos Aires, Argentina"},"creator":{"@type":"Person","name":"Erica M. Acosta"}}</script><script defer src="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js"></script><script defer src="../assets/js/mapa-ia.js"></script><script defer src="../assets/js/site-navigation.js"></script></head><body><header class="site-header"><a class="brand" href="../">ERICA M. ACOSTA<small>DESARROLLOS · INTELIGENCIA · MORENO</small></a><button class="mobile-menu" type="button" aria-controls="primary-navigation" aria-expanded="false" aria-label="Abrir menú de navegación"><span class="mobile-menu-icon" aria-hidden="true">☰</span><span class="mobile-menu-label">Menú</span></button><nav class="nav" id="primary-navigation" aria-label="Navegación principal"><a href="../">Inicio</a><a class="active" aria-current="page" href="./">Mapa IA</a><a href="../erica-acosta/">Sobre Erica</a><a href="../oportunidades/">Oportunidades</a><a class="nav-cta" href="https://wa.me/5491141671674?text=Hola%20Erica%2C%20me%20gustar%C3%ADa%20conversar%20sobre%20MORENO." target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></nav></header>
 <main><section class="wrap page-hero"><div class="eyebrow">Inteligencia territorial · Partido de Moreno</div><h1>Un mapa para encontrar <em class="serif">mejores preguntas.</em></h1><p>Una primera lectura del territorio para explorar localidades, corredores y posibles líneas de desarrollo. La IA ayuda a ordenar y relacionar información; la oportunidad real se confirma con investigación, documentación y trabajo de campo.</p></section>
-<section class="wrap map-shell"><div class="map-toolbar"><input id="search" type="search" placeholder="Buscar localidad, actividad, evidencia o próximo paso…" aria-label="Buscar en el mapa"><select id="category" aria-label="Filtrar tipo de referencia"><option value="all">Todas las capas</option><option value="locality">Localidades</option><option value="opportunity">Tesis de oportunidad</option></select><select id="evidence-filter" aria-label="Filtrar nivel de evidencia"><option value="all">Todo el estado de evidencia</option><option value="documented">Contexto con fuente pública</option><option value="hypothesis">Hipótesis de prospección</option></select><button class="map-reset" id="reset-map" type="button">Restablecer</button><button class="map-export" id="export-csv" type="button" hidden>Descargar CSV visible ↓</button><button class="map-export" id="export-geojson" type="button" hidden>Descargar GeoJSON visible ↓</button><span class="eyebrow" id="map-status" aria-live="polite">Mapa de trabajo · datos en revisión</span></div><section class="map-atlas-index" aria-label="Índice del inventario territorial">
+<section class="wrap map-shell"><div class="map-toolbar">
+  <div class="map-filter-group" role="group" aria-label="Filtros del inventario territorial">
+    <label class="map-filter-field map-filter-search" for="search">
+      <span>Buscar referencias</span>
+      <input id="search" type="search" placeholder="Localidad, actividad, evidencia o próximo paso…" aria-label="Buscar en el mapa">
+    </label>
+    <label class="map-filter-field" for="category">
+      <span>Tipo de referencia</span>
+      <select id="category" aria-label="Filtrar tipo de referencia">
+        <option value="all">Todas las capas</option>
+        <option value="locality">Localidades</option>
+        <option value="opportunity">Tesis de oportunidad</option>
+      </select>
+    </label>
+    <label class="map-filter-field" for="kind-filter">
+      <span>Sector / línea de desarrollo</span>
+      <select id="kind-filter" aria-label="Filtrar sector o línea de desarrollo">
+        <option value="all">Todos los sectores</option>
+        <option value="industrial">Productivo y logístico</option>
+        <option value="commercial">Comercial y servicios</option>
+        <option value="tourism">Turismo y recreación</option>
+        <option value="land">Prospección de suelo</option>
+      </select>
+    </label>
+    <label class="map-filter-field" for="evidence-filter">
+      <span>Nivel de evidencia</span>
+      <select id="evidence-filter" aria-label="Filtrar nivel de evidencia">
+        <option value="all">Todo el estado de evidencia</option>
+        <option value="documented">Contexto con fuente pública</option>
+        <option value="hypothesis">Hipótesis de prospección</option>
+      </select>
+    </label>
+  </div>
+  <div class="map-toolbar-actions">
+    <button class="map-reset" id="reset-map" type="button">Restablecer filtros</button>
+    <button class="map-export" id="export-csv" type="button" hidden>Descargar CSV visible ↓</button>
+    <button class="map-export" id="export-geojson" type="button" hidden>Descargar GeoJSON visible ↓</button>
+    <span class="eyebrow" id="map-status" aria-live="polite">Mapa de trabajo · datos en revisión</span>
+  </div>
+</div><section class="map-atlas-index" aria-label="Índice del inventario territorial">
   <div class="map-atlas-index-heading">
     <span class="map-atlas-kicker">ÍNDICE / ESTADO DEL INVENTARIO</span>
     <p id="atlas-index-status" role="status" aria-live="polite">11 de 11 referencias visibles · 6 localidades, 4 contextos con fuente pública y 1 hipótesis.</p>
