@@ -23,8 +23,8 @@ assert.ok(mapPage.includes('label class="map-filter-field'), "cada filtro tiene 
 assert.ok(mapPage.includes("Sector / línea de desarrollo"), "la función del filtro sectorial se explica en pantalla");
 assert.ok(source.includes('getElementById("kind-filter")'), "el motor conecta el control sectorial");
 assert.ok(source.includes('kind: doc.getElementById("kind-filter").value'), "la renderización utiliza el sector seleccionado");
-assert.ok(source.includes('doc.getElementById("kind-filter").addEventListener("change", render)'), "el cambio de sector vuelve a renderizar el inventario");
-assert.ok(source.includes('doc.getElementById("kind-filter").value = "all"'), "restablecer limpia también el filtro sectorial");
+assert.ok(source.includes('kindInput.addEventListener("change", render)'), "el cambio de sector vuelve a renderizar el inventario");
+assert.ok(source.includes('kindInput.value = "all"'), "restablecer limpia también el filtro sectorial");
 assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye la mesa de verificación documental");
 for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-documented-count", "atlas-hypotheses-count", "atlas-total-count"]) {
   assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
