@@ -132,6 +132,19 @@
         if (hasAmount && !currency) throw new Error("Fila " + rowNumber + ": indicá la moneda cuando cargues honorarios.");
         if (currency && !/^[A-Z]{3}$/.test(currency)) throw new Error("Fila " + rowNumber + ": la moneda debe ser un código de tres letras, por ejemplo ARS o USD.");
         fields.moneda = currency;
+        const agreed = amounts.honorarios_acordados;
+        const invoiced = amounts.honorarios_facturados;
+        const collected = amounts.honorarios_cobrados;
+        if (collected !== null && collected > 0 && invoiced === null) {
+          warnings.push("[Honorarios] Fila " + rowNumber + " (" + id + "): hay importes cobrados sin importe facturado registrado; revisar si corresponde a un anticipo o falta cargar la factura.");
+        } else if (collected !== null && invoiced !== null && collected > invoiced) {
+          warnings.push("[Honorarios] Fila " + rowNumber + " (" + id + "): los importes cobrados superan los facturados registrados; revisar la conciliación.");
+        }
+        if (invoiced !== null && invoiced > 0 && agreed === null) {
+          warnings.push("[Honorarios] Fila " + rowNumber + " (" + id + "): hay importes facturados sin importe acordado registrado; revisar el respaldo del acuerdo.");
+        } else if (invoiced !== null && agreed !== null && invoiced > agreed) {
+          warnings.push("[Honorarios] Fila " + rowNumber + " (" + id + "): los importes facturados superan los acordados registrados; revisar si hubo una modificación del acuerdo o falta actualizar el registro.");
+        }
         if (!fields.etapa_comercial) warnings.push("Fila " + rowNumber + " (" + id + "): falta la etapa comercial.");
         if (!fields.fecha_proximo_seguimiento) warnings.push("Fila " + rowNumber + " (" + id + "): no tiene fecha de próximo seguimiento.");
         if (!fields.proxima_accion) warnings.push("Fila " + rowNumber + " (" + id + "): no tiene próxima acción registrada.");

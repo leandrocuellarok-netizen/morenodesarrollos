@@ -208,7 +208,7 @@
     warnings.replaceChildren();
     if (!items.length) { warnings.hidden = true; return; }
     warnings.hidden = false;
-    warnings.append(node("strong", "pipeline-warning-title", "Observaciones de calidad de datos (" + items.length + ")"));
+    warnings.append(node("strong", "pipeline-warning-title", "Observaciones de calidad de datos y honorarios (" + items.length + ")"));
     const list = node("ul", "pipeline-warning-list");
     items.slice(0, 20).forEach(item => list.append(node("li", "", item)));
     warnings.append(list);

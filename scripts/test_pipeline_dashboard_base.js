@@ -64,4 +64,20 @@ assert.match(dashboard.parsePipelineCsv(headers.join(";") + "\n" + makeRow({id_o
 assert.equal(dashboard.validDate("2024-02-29"), true);
 assert.equal(dashboard.validDate("2025-02-29"), false);
 assert.equal(dashboard.normalizeStage("GANÁDA"), "ganada");
+const financialReviewCsv = [
+  headers.join(";"),
+  makeRow({id_oportunidad:"M-FIN-01",etapa_comercial:"negociación",proxima_accion:"Revisar importes",fecha_proximo_seguimiento:"2026-11-27",honorarios_acordados:"250",honorarios_facturados:"300",honorarios_cobrados:"450",moneda:"ARS"}),
+  makeRow({id_oportunidad:"M-FIN-02",etapa_comercial:"negociación",proxima_accion:"Revisar anticipo",fecha_proximo_seguimiento:"2026-11-27",honorarios_cobrados:"100",moneda:"ARS"}),
+  makeRow({id_oportunidad:"M-FIN-03",etapa_comercial:"propuesta enviada",proxima_accion:"Confirmar acuerdo",fecha_proximo_seguimiento:"2026-11-27",honorarios_facturados:"150",moneda:"ARS"}),
+  makeRow({id_oportunidad:"M-FIN-04",etapa_comercial:"negociación",proxima_accion:"Seguimiento",fecha_proximo_seguimiento:"2026-11-27",honorarios_propuestos:"1000",honorarios_acordados:"800",honorarios_facturados:"500",honorarios_cobrados:"250",moneda:"ARS"})
+].join("\n");
+const financialReview = dashboard.parsePipelineCsv(financialReviewCsv);
+assert.equal(financialReview.ok, true);
+const financialWarnings = financialReview.warnings.filter(warning => warning.startsWith("[Honorarios]"));
+assert.equal(financialWarnings.length, 4, "se deben detectar cuatro alertas de conciliación sin rechazar el CSV");
+assert.ok(financialWarnings.some(warning => warning.includes("M-FIN-01") && warning.includes("cobrados superan los facturados")));
+assert.ok(financialWarnings.some(warning => warning.includes("M-FIN-01") && warning.includes("facturados superan los acordados")));
+assert.ok(financialWarnings.some(warning => warning.includes("M-FIN-02") && warning.includes("sin importe facturado")));
+assert.ok(financialWarnings.some(warning => warning.includes("M-FIN-03") && warning.includes("sin importe acordado")));
+assert.ok(!financialWarnings.some(warning => warning.includes("M-FIN-04")), "una secuencia de importes decreciente y completa no debe generar alertas");
 console.log("OK: importación CSV estricta, privacidad de columnas, fechas, importes, duplicados, resumen por moneda y seguimiento.");
