@@ -10,6 +10,7 @@
   if (!api || !fileInput || !status || !output || !resetButton || !downloadSummaryButton || !downloadAgendaButton) return;
   let records = [];
   let currentSummary = null;
+  let importSequence = 0;
   const stageFilter = document.getElementById("pipeline-filter-stage");
   const textFilter = document.getElementById("pipeline-filter-text");
   const metrics = document.getElementById("pipeline-metrics");
@@ -191,6 +192,7 @@
     output.hidden = false;
   }
   async function importFile() {
+    const requestId = ++importSequence;
     const file = fileInput.files && fileInput.files[0];
     records = [];
     currentSummary = null;
@@ -212,8 +214,11 @@
       resetButton.disabled = false;
       return;
     }
+    status.textContent = "Leyendo y validando el CSV seleccionado…";
     try {
-      const result = api.parsePipelineCsv(await file.text());
+      const rawText = await file.text();
+      if (requestId !== importSequence) return;
+      const result = api.parsePipelineCsv(rawText);
       if (!result.ok) {
         status.textContent = result.error;
         resetButton.disabled = false;
@@ -225,6 +230,7 @@
       status.textContent = "CSV validado: " + records.length + " oportunidades. Los datos permanecen en memoria en esta pestaña; no se transmiten ni se guardan.";
       resetButton.disabled = false;
     } catch (error) {
+      if (requestId !== importSequence) return;
       records = [];
       status.textContent = "No se pudo procesar el archivo. " + (error.message || "Revisá el CSV e intentá nuevamente.");
       resetButton.disabled = false;
@@ -268,6 +274,7 @@
   });
   fileInput.addEventListener("change", importFile);
   resetButton.addEventListener("click", () => {
+    importSequence += 1;
     records = [];
     currentSummary = null;
     downloadSummaryButton.disabled = true;
