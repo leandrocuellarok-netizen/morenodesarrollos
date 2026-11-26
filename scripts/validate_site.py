@@ -260,6 +260,11 @@ def main() -> None:
             for review_id in ('id="export-review"', 'id="review-status"'):
                 if review_id not in page_source:
                     errors.append(f"mapa-ia/index.html: falta el control de bitácora local {review_id}")
+            for share_id in ('id="share-map-view"', 'id="map-share-status"', 'id="map-share-url"', 'maxlength="100"'):
+                if share_id not in page_source:
+                    errors.append(f"mapa-ia/index.html: falta el control de vista compartible {share_id}")
+            if "no comparte la bitácora local" not in page_source:
+                errors.append("mapa-ia/index.html: debe aclarar que la vista compartida no incluye la bitácora local")
             if "no se envían al servidor" not in page_source or "no certifica" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar privacidad y alcance de la bitácora")
             if "QGIS u otros sistemas GIS" not in page_source:
@@ -323,6 +328,13 @@ def main() -> None:
                     'focusButton.setAttribute("aria-label", "Centrar el mapa en " + item.name)',
                     "function setActiveReference(item, options)",
                     "function getSharedReferenceId(search, items)",
+                    "function normalizeMapViewState(state, items)",
+                    "function parseMapViewState(search, items)",
+                    "function buildMapViewUrl(baseUrl, state, items)",
+                    "function currentMapViewState(referenceId)",
+                    "function shareCurrentView()",
+                    "shareViewButton.addEventListener(\"click\", shareCurrentView)",
+                    "navigator.clipboard",
                     "function buildReferenceUrl(baseUrl, referenceId)",
                     "function buildOpportunityContactUrl(baseUrl, item)",
                     'url.searchParams.delete("map_name")',
@@ -413,6 +425,9 @@ def main() -> None:
                     ".map-pin.is-selected",
                     ".map-item.is-active",
                     ".map-share-link",
+                    ".map-share-status",
+                    ".map-share-note",
+                    ".map-share-fallback",
                     ".map-brief-intro",
                     ".map-brief-button",
                     ".map-brief-button:focus-visible",
