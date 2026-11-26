@@ -1049,9 +1049,9 @@
   align-content: start;
   gap: 13px;
   width: 100%;
-  height: 100%;
+  height: auto;
   min-height: 0;
-  overflow: auto;
+  overflow: visible;
   padding: clamp(15px, 2.5vw, 27px);
   background: #f4f1e8;
   color: #343a33;
@@ -1080,6 +1080,7 @@
 .map-static-diagram {
   display: block;
   width: 100%;
+  height: 260px;
   max-height: 260px;
   margin: 2px 0;
 }
@@ -1183,9 +1184,23 @@
     padding: 14px;
   }
   .map-static-diagram {
+    height: 190px;
     max-height: 190px;
   }
   .map-static-index {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+
+/* El fallback es contenido documental: no debe quedar encerrado en el viewport del mapa. */
+.map-layout .map-canvas.is-static-fallback {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+.map-layout .map-canvas.is-static-fallback .map-static-fallback {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
 }

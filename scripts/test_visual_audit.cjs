@@ -254,6 +254,22 @@ async function auditMapFallback(browser) {
     check((await page.locator(".map-static-note").innerText()).includes("no tiene escala"), "mapa-ia fallback: el alcance no parcelario queda explicado");
 
     await page.setViewportSize({ width: 390, height: 844 });
+    const fallbackLayoutIsNatural = await page.locator(".map-canvas.is-static-fallback").evaluate(element => {
+      const panel = element.querySelector(".map-static-fallback");
+      const diagram = panel && panel.querySelector(".map-static-diagram");
+      const indexHeading = panel && panel.querySelector(".map-static-index-title");
+      if (!panel || !diagram || !indexHeading) return false;
+      const diagramBox = diagram.getBoundingClientRect();
+      const headingBox = indexHeading.getBoundingClientRect();
+      return getComputedStyle(element).overflowY === "visible" &&
+        getComputedStyle(panel).overflowY === "visible" &&
+        element.scrollHeight <= element.clientHeight + 1 &&
+        panel.scrollHeight <= panel.clientHeight + 1 &&
+        headingBox.top >= diagramBox.bottom - 1;
+    });
+    check(fallbackLayoutIsNatural, "mapa-ia fallback: el diagrama y el índice fluyen sin solapamiento ni scroll anidado en móvil");
+    check(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), "mapa-ia fallback: no hay desbordamiento horizontal en móvil");
+    check(await page.locator("[data-fallback-reference]").count() === 11, "mapa-ia fallback: las once referencias siguen dentro del flujo visible");
     await page.locator("#kind-filter").selectOption("industrial");
     check(await page.locator("[data-fallback-reference]").count() === 2, "mapa-ia fallback: el esquema respeta el filtro industrial");
     const fallbackNames = await page.locator(".map-static-index-button").allInnerTexts();
