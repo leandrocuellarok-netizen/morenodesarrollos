@@ -250,10 +250,14 @@ def main() -> None:
                 'id="atlas-hypotheses-count"',
                 'id="atlas-total-count"',
                 "La forma distingue la clase",
-                "El índice cuenta fichas del inventario"
+                "El índice cuenta fichas del inventario",
+                'id="export-dossier"',
+                'id="dossier-status"'
             ):
                 if required_atlas_markup not in page_source:
                     errors.append(f"mapa-ia/index.html: falta el índice cartográfico: {required_atlas_markup}")
+            if "documento imprimible" not in page_source:
+                errors.append("mapa-ia/index.html: falta explicar el dossier imprimible de la vista filtrada")
             if "ficha editorial descargable" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar la ficha editorial descargable para desarrolladores")
             if 'id="export-geojson"' not in page_source:
@@ -291,6 +295,14 @@ def main() -> None:
             ):
                 if required_source_markup not in page_source:
                     errors.append(f"mapa-ia/index.html: falta fuente o control de verificación: {required_source_markup}")
+            map_css_path = ROOT / "assets/css/mapa-ia.css"
+            if not map_css_path.is_file():
+                errors.append("Falta assets/css/mapa-ia.css")
+            else:
+                map_css_source = map_css_path.read_text(encoding="utf-8")
+                for required_style in (".map-dossier-export", ".map-dossier-status"):
+                    if required_style not in map_css_source:
+                        errors.append(f"assets/css/mapa-ia.css: falta el estilo del dossier: {required_style}")
             if len(re.findall(r'<article class="verification-source"', page_source)) != 4:
                 errors.append("mapa-ia/index.html: la mesa de verificación debe presentar cuatro rutas institucionales")
 
@@ -337,6 +349,11 @@ def main() -> None:
                     "shareViewButton.addEventListener(\"click\", shareCurrentView)",
                     "navigator.clipboard",
                     "function buildReferenceUrl(baseUrl, referenceId)",
+                    "function buildTerritorialDossier(items, filters, generatedAt)",
+                    "function buildTerritorialDossierHtml(dossier)",
+                    "function downloadTerritorialDossier()",
+                    "buildTerritorialDossier(visibleItems",
+                    "dossierExportButton.addEventListener(\"click\", downloadTerritorialDossier)",
                     "function buildOpportunityContactUrl(baseUrl, item)",
                     'url.searchParams.delete("map_name")',
                     'link.textContent = "Consultar sobre esta referencia ↗"',

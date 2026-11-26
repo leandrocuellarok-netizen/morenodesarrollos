@@ -41,6 +41,9 @@
       <input id="map-share-url" type="url" readonly aria-label="Enlace de la vista filtrada">
     </label>
     <span class="map-share-note">El enlace conserva búsqueda, filtros y referencia seleccionada; no comparte la bitácora local.</span>
+    <button class="map-export map-dossier-export" id="export-dossier" type="button" disabled>Descargar dossier de vista ↓</button>
+    <output id="dossier-status" class="map-dossier-status" aria-live="polite"></output>
+    <span class="map-dossier-note">Genera un documento imprimible con las referencias visibles, sus fuentes y sus pendientes. No incorpora la bitácora local ni expedientes internos.</span>
     <button class="map-export" id="export-csv" type="button" hidden>Descargar CSV visible ↓</button>
     <button class="map-export" id="export-geojson" type="button" hidden>Descargar GeoJSON visible ↓</button>
     <span class="eyebrow" id="map-status" aria-live="polite">Mapa de trabajo · datos en revisión</span>

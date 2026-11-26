@@ -829,3 +829,40 @@
     grid-column: 1 / -1;
   }
 }
+
+
+/* Dossier editorial de la vista filtrada: salida autónoma, sin datos internos. */
+.map-toolbar-actions .map-dossier-export {
+  border-color: #343a33;
+  background: #343a33;
+  color: #f8f6ee;
+}
+.map-toolbar-actions .map-dossier-export:hover {
+  border-color: #80533a;
+  background: #80533a;
+}
+.map-toolbar-actions .map-dossier-export:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+}
+.map-dossier-status,
+.map-dossier-note {
+  flex-basis: 100%;
+  color: #686960;
+  font: 10px/1.55 var(--sans);
+}
+.map-dossier-status {
+  min-height: 1.3em;
+  color: #80533a;
+}
+.map-dossier-note {
+  font-size: 9px;
+}
+@media (max-width: 760px) {
+  .map-toolbar-actions .map-dossier-export,
+  .map-dossier-status,
+  .map-dossier-note {
+    grid-column: 1 / -1;
+  }
+}

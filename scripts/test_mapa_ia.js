@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson, buildTerritorialBrief, buildTerritorialBriefHtml, getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -455,5 +455,58 @@ assert.ok(mapPage.includes("MORENO no recibe DNI, escrituras ni planos"), "la p�
 assert.ok(styles.includes(".verification-source-grid {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));"), "las cuatro rutas institucionales deben organizarse en dos columnas");
 assert.ok(styles.includes(".map-brief-intro"));
 assert.ok(styles.includes(".map-brief-button:focus-visible"));
+
+
+const industrialDossier = buildTerritorialDossier(
+  filterReferences(all, { kind: "industrial" }),
+  { kind: "industrial" },
+  "2026-11-26T03:00:00.000Z"
+);
+assert.equal(industrialDossier.schema, "moreno.territorial-dossier");
+assert.equal(industrialDossier.schemaVersion, 1);
+assert.equal(industrialDossier.title, "Dossier sectorial · Productivo / logístico");
+assert.equal(industrialDossier.references.length, 2, "el dossier sectorial solo incluye las referencias visibles");
+assert.equal(industrialDossier.counts.documented, 2);
+assert.equal(industrialDossier.counts.localities, 0);
+assert.ok(industrialDossier.filterLabels.includes("Sector: Productivo / logístico"));
+assert.equal(industrialDossier.references[0].sourceUrl, opportunities.find(item => item.id === "rp25").source);
+assert.match(industrialDossier.references[0].coordinates.scope, /no identifica una parcela/);
+assert.equal(buildTerritorialDossier([], {}, "2026-11-26T03:00:00.000Z"), null, "una vista vacía no produce un dossier");
+const completeDossier = buildTerritorialDossier(all, {}, "2026-11-26T03:00:00.000Z");
+assert.equal(completeDossier.references.length, 11);
+assert.deepEqual(completeDossier.counts, { localities: 6, documented: 4, hypotheses: 1, total: 11 });
+assert.equal(completeDossier.references.filter(reference => reference.sourceUrl).length, 5, "solo las tesis conservan sus fuentes registradas");
+const dossierDiagram = buildTerritorialDossierDiagram(industrialDossier.references);
+assert.match(dossierDiagram, /<svg/);
+assert.match(dossierDiagram, /Distribución relativa de referencias/);
+assert.match(dossierDiagram, /no es cartografía oficial/);
+assert.match(dossierDiagram, /schematic-documented/);
+const dossierHtml = buildTerritorialDossierHtml(industrialDossier);
+assert.match(dossierHtml, /Dossier sectorial/);
+assert.match(dossierHtml, /RP25 · Darwin Passaponti/);
+assert.match(dossierHtml, /Evidencia registrada/);
+assert.match(dossierHtml, /Próximo paso/);
+assert.match(dossierHtml, /Consultar fuente original/);
+assert.match(dossierHtml, /Imprimir \\/ guardar como PDF/);
+assert.match(dossierHtml, /no identifica una parcela/);
+assert.match(dossierHtml, /no se incorporan/);
+assert.match(dossierHtml, /@page\\{size:A4/);
+assert.ok(!/<script\\b/i.test(dossierHtml), "el dossier es autónomo y no carga scripts");
+assert.ok(!dossierHtml.includes("moreno-map-review-v2"), "el dossier no incluye la bitácora local");
+assert.ok(!dossierHtml.includes("originacion-workbench"), "el dossier no incluye herramientas internas");
+const hostileDossier = JSON.parse(JSON.stringify(industrialDossier));
+hostileDossier.references[0].name = '<img src=x onerror="alert(1)">';
+hostileDossier.references[0].sourceUrl = "javascript:alert(1)";
+const hostileDossierHtml = buildTerritorialDossierHtml(hostileDossier);
+assert.ok(hostileDossierHtml.includes("&lt;img src=x onerror=&quot;alert(1)&quot;&gt;"));
+assert.ok(!hostileDossierHtml.includes("<img src=x"), "el nombre se escapa antes de generar HTML");
+assert.ok(!hostileDossierHtml.includes("javascript:"), "se rechazan protocolos de fuente inseguros");
+const mapPageForDossier = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
+assert.ok(mapPageForDossier.includes('id="export-dossier"'));
+assert.ok(mapPageForDossier.includes('id="dossier-status"'));
+assert.ok(source.includes("function downloadTerritorialDossier()"));
+assert.ok(source.includes("dossierExportButton.addEventListener(\"click\", downloadTerritorialDossier)"));
+assert.ok(styles.includes(".map-dossier-export"));
+assert.ok(styles.includes(".map-dossier-status"));
 
 console.log("OK: pruebas del Mapa IA, exportaciones cartográficas y fichas editoriales imprimibles.");
