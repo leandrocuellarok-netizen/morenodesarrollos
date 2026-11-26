@@ -479,7 +479,7 @@ assert.equal(completeDossier.references.filter(reference => reference.sourceUrl)
 const dossierDiagram = buildTerritorialDossierDiagram(industrialDossier.references);
 assert.match(dossierDiagram, /<svg/);
 assert.match(dossierDiagram, /Distribución relativa de referencias/);
-assert.match(dossierDiagram, /no es cartografía oficial/);
+assert.match(dossierDiagram, /no es cartografía oficial/i);
 assert.match(dossierDiagram, /schematic-documented/);
 const dossierHtml = buildTerritorialDossierHtml(industrialDossier);
 assert.match(dossierHtml, /Dossier sectorial/);
