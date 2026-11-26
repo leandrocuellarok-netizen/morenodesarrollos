@@ -228,6 +228,7 @@ body{background:var(--paper);color:var(--ink)}
 .contact-preview-actions .button{justify-content:center;cursor:pointer}
 .contact-preview-stale{margin:13px 0 0;padding:12px 14px;border-left:3px solid var(--rust);background:#ece5d8;color:#624634;font:11px/1.65 var(--sans)}
 .contact-preview-stale[hidden]{display:none!important}
+.contact-preview textarea:disabled{opacity:.72;cursor:not-allowed;background:#eeeae0}
 .contact-preview-actions .button:disabled,
 .contact-preview-actions .button[aria-disabled="true"]{opacity:.48;cursor:not-allowed;pointer-events:none;transform:none}
 @media(max-width:600px){.contact-preview{padding:18px 14px}.contact-preview-actions{flex-direction:column}.contact-preview-actions .button{width:100%;justify-content:space-between}.contact-preview textarea{min-height:260px}}
