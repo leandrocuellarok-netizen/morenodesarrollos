@@ -224,7 +224,7 @@
     <p class="contact-preview-stale" id="contact-preview-stale" role="status" hidden>El formulario cambió después de preparar este mensaje. Volvé a pulsar «Preparar borrador» para actualizarlo antes de copiarlo o abrir WhatsApp.</p>
   </div>
   <label class="contact-preview-label" for="contact-message-preview">Borrador de WhatsApp</label>
-  <textarea id="contact-message-preview" rows="12" readonly spellcheck="false"></textarea>
+  <textarea id="contact-message-preview" rows="12" readonly disabled spellcheck="false"></textarea>
   <div class="contact-preview-actions">
     <button class="button" id="copy-contact-message" type="button" disabled>Copiar mensaje</button>
     <a class="button dark" id="open-whatsapp" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">Abrir WhatsApp ↗</a>
@@ -272,6 +272,7 @@ function invalidateContactPreview(){
   contactPreview.dataset.stale="true";
   stalePreviewNotice.hidden=false;
   copyMessageButton.disabled=true;
+  messagePreview.disabled=true;
   openWhatsAppLink.removeAttribute("href");
   openWhatsAppLink.setAttribute("aria-disabled","true");
   openWhatsAppLink.setAttribute("tabindex","-1");
@@ -283,6 +284,7 @@ function activateContactPreview(message){
   openWhatsAppLink.removeAttribute("aria-disabled");
   openWhatsAppLink.removeAttribute("tabindex");
   copyMessageButton.disabled=false;
+  messagePreview.disabled=false;
   stalePreviewNotice.hidden=true;
   delete contactPreview.dataset.stale;
   contactPreview.hidden=false;
