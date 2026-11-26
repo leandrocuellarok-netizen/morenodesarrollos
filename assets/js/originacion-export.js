@@ -36,6 +36,7 @@
     const importButton = doc.getElementById("originacion-import-button");
     const importStatus = doc.getElementById("originacion-import-status");
     const dossierPrint = doc.getElementById("opportunity-dossier-print");
+    let importSequence = 0;
 
     function setStatus(message, isError) {
       if (!status) return;
@@ -177,17 +178,28 @@
 
     if (importButton) {
       importButton.addEventListener("click", async () => {
+        const requestId = ++importSequence;
         const file = importFile && importFile.files && importFile.files[0];
         if (!file) {
+          importButton.disabled = false;
           if (importStatus) importStatus.textContent = "Seleccioná primero un archivo JSON.";
           return;
         }
         if (file.size > 1000000) {
+          importButton.disabled = false;
           if (importStatus) importStatus.textContent = "El archivo supera el límite de 1 MB. No se abrió ni se procesó.";
           return;
         }
+        importButton.disabled = true;
+        if (importStatus) {
+          importStatus.setAttribute("aria-busy", "true");
+          importStatus.textContent = "Leyendo y validando el expediente…";
+        }
         try {
-          const result = parseInternalImport(tools, await file.text());
+          const raw = await file.text();
+          if (requestId !== importSequence) return;
+          const result = parseInternalImport(tools, raw);
+          if (requestId !== importSequence) return;
           if (!result.ok) {
             if (importStatus) importStatus.textContent = result.error;
             return;
@@ -200,24 +212,41 @@
           if (importStatus) importStatus.textContent = "Expediente validado y cargado localmente." + versionNote + warningText;
           setStatus("Revisá las fuentes, las fechas y los estados antes de volver a exportar.", false);
         } catch (error) {
+          if (requestId !== importSequence) return;
           if (importStatus) importStatus.textContent = "No se pudo leer el archivo en este navegador. Intentá seleccionarlo nuevamente.";
+        } finally {
+          if (requestId === importSequence) {
+            importButton.disabled = false;
+            if (importStatus) importStatus.removeAttribute("aria-busy");
+          }
         }
       });
     }
-
     if (clearButton) {
       clearButton.addEventListener("click", () => {
         if (typeof root.confirm === "function" && !root.confirm("¿Vaciar todos los campos de este borrador local?")) return;
+        importSequence += 1;
         workbench.clear();
+        if (importFile) importFile.value = "";
+        if (importButton) importButton.disabled = false;
+        if (importStatus) {
+          importStatus.removeAttribute("aria-busy");
+          importStatus.textContent = "Importación cancelada. Seleccioná un expediente guardado.";
+        }
         setStatus("Borrador local vaciado. No se modificaron archivos descargados.", false);
       });
     }
 
-    if (importFile && importStatus) {
+    if (importFile) {
       importFile.addEventListener("change", () => {
-        importStatus.textContent = importFile.files && importFile.files[0]
-          ? "Archivo seleccionado. Presioná «Validar y cargar expediente» para revisar su estructura."
-          : "Seleccioná un expediente guardado.";
+        importSequence += 1;
+        if (importButton) importButton.disabled = false;
+        if (importStatus) {
+          importStatus.removeAttribute("aria-busy");
+          importStatus.textContent = importFile.files && importFile.files[0]
+            ? "Archivo seleccionado. Presioná «Validar y cargar expediente» para revisar su estructura."
+            : "Seleccioná un expediente guardado.";
+        }
       });
     }
   }

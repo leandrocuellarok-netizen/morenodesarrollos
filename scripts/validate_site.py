@@ -869,7 +869,7 @@ def main() -> None:
         errors.append("Falta assets/js/originacion-export.js para importar y exportar expedientes internos")
     else:
         originacion_export_source = originacion_export_module.read_text(encoding="utf-8")
-        for required_logic in ("buildInternalExport", "parseInternalImport", "includePublic: false", "includeInternal: true", "originacion-import-button", "originacion-clear"):
+        for required_logic in ("buildInternalExport", "parseInternalImport", "includePublic: false", "includeInternal: true", "originacion-import-button", "originacion-clear", "let importSequence = 0", "requestId !== importSequence", "aria-busy", "Importación cancelada", "importFile.value = \"\""):
             if required_logic not in originacion_export_source:
                 errors.append(f"assets/js/originacion-export.js: falta lógica requerida: {required_logic}")
 
