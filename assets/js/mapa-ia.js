@@ -433,7 +433,6 @@ publishedProperties.push({
 publishedProperties.slice(-1).forEach(item => {
   item.lat = null;
   item.lng = null;
-  item.lastCheckedAt = "2026-11-27";
   item.verificationStatus = "Aviso Zonaprop accesible el 27/11/2026; disponibilidad comercial no confirmada.";
   item.availabilityStatus = "No confirmada";
   item.geolocationStatus = "Pendiente: se consultará Georef para la dirección publicada.";
@@ -726,6 +725,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y responsables visibles. No se confirma disponibilidad.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
   },
   {
@@ -748,6 +748,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; ubicación, superficie y precio publicados. Identificación de lote y stock pendientes.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: la intersección es una referencia de acceso al parque, no una parcela individual."
   },
   {
@@ -801,6 +802,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio, superficie y anunciante publicados. Disponibilidad no confirmada.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
   },
   {
@@ -824,6 +826,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficies, ubicación y anunciante visibles. No confirma stock ni estado documental.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
   },
   {
@@ -847,6 +850,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No vigente",
     "verificationStatus": "No vigente: la URL primaria de Argenprop devolvió 410 Gone el 27/11/2026; la segunda publicación encontrada para la misma dirección también devolvió 410 Gone.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: registro histórico; no asignar coordenadas parcelarias."
   },
   {
@@ -868,6 +872,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha del desarrollo y tres avisos individuales accesibles el 27/11/2026; infraestructura, plano y posesión son declaraciones de los anunciantes, no verificación municipal o registral.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: la altura publicada identifica el acceso/sector del desarrollo, no un lote individual."
   },
   {
@@ -942,6 +947,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie, lote y comercializadora visibles. Disponibilidad no confirmada.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: no se publica dirección interna suficiente para ubicar el lote."
   },
   {
@@ -964,6 +970,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio y superficie de encabezado visibles, pero el texto contradice la superficie en diez veces.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: la localidad y la altura deben confirmarse por la discrepancia entre título y descripción."
   },
   {
@@ -983,6 +990,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Sitio oficial accesible el 27/11/2026; descripción informa 78 parcelas y contacto oficial. El contador dinámico de parcelas aparece en cero y no permite confirmar stock.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: corredor vial aproximado; no se publicó dirección de parcela."
   },
   {
@@ -1027,6 +1035,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie, expensas e indicadores publicados. Stock no confirmado.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: no se publica número de parcela; la referencia corresponde al parque."
   },
   {
@@ -1049,6 +1058,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y parámetros publicados. No confirma disponibilidad.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: referencia de parque, no de parcela individual."
   },
   {
@@ -1071,6 +1081,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; parcela, precio y superficie publicados. No confirma disponibilidad.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: verificar que la altura RP24 al 7700 corresponda al acceso del PIM II y no a una parcela."
   },
   {
@@ -1094,6 +1105,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y comercializadora visibles. Hay diferencia menor de superficie entre encabezado y descripción.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la esquina publicada."
   },
   {
@@ -1115,6 +1127,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio y superficies publicados. Dirección con discrepancia interna.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: altura contradictoria entre título y descripción."
   }
 ];
@@ -1125,7 +1138,7 @@ publishedProperties.forEach(item => {
   if (item.lat == null) item.lat = null;
   if (item.lng == null) item.lng = null;
   if (!item.verificationStatus) {
-    item.verificationStatus = "Fuente original accesible en la revisión del 27/11/2026; disponibilidad comercial no confirmada.";
+    item.verificationStatus = "No hay constancia individual de consulta de la fuente; verificar el enlace, el precio y la disponibilidad.";
   }
   if (!item.availabilityStatus) item.availabilityStatus = "No confirmada";
   if (!item.geolocationStatus) {
