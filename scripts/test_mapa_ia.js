@@ -14,7 +14,12 @@ assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la
 assert.ok(source.includes("attributionControl: { compact: false }"), "la atribución OSM permanece visible también en móvil");
 assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece el enlace para reportar problemas cartográficos");
 const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
+const homePage = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
+assert.ok(mapPage.includes("<h4>Referencias territoriales</h4>"), "el fallback sin JavaScript conserva el índice territorial");
+for (const [label, url] of [["Ordenanza 7497/26", "https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"], ["Ordenanza 7542/26", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"], ["Los Olivos", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"]]) assert.ok(mapPage.includes(label) && mapPage.includes(url), "el fallback conserva la referencia y su fuente oficial: " + label);
+assert.ok(homePage.includes("6 LOCALIDADES · 12 REFERENCIAS DOCUMENTADAS · 1 HIPÓTESIS"), "el esquema de Inicio muestra el total documental vigente");
+assert.ok(homePage.includes("12 referencias sin coordenada trazable: índice"), "el esquema de Inicio informa cuántas referencias siguen sin punto");
 assert.ok(mapPage.includes('id="kind-filter" type="hidden"'), "el atlas conserva compatibilidad con enlaces sectoriales heredados");
 assert.ok(mapPage.includes('id="locality-filter"'), "el atlas permite filtrar por localidad");
 assert.ok(mapPage.includes('id="activity-filter"'), "el atlas permite filtrar por actividad");
