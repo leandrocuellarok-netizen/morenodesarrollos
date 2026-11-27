@@ -138,6 +138,31 @@
   outline: 2px solid #a95d3c;
   outline-offset: 3px;
 }
+.map-public-contact-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  max-width: 100%;
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid #c9c5b9;
+  background: #f4f1e8;
+  color: #343a33;
+  font: 600 10px/1.45 var(--sans);
+  overflow-wrap: anywhere;
+  text-decoration: none;
+  transition: border-color .18s ease, background-color .18s ease, color .18s ease;
+}
+.map-public-contact-link:hover {
+  border-color: #a95d3c;
+  background: #e9e2d6;
+  color: #704a30;
+}
+.map-public-contact-link:focus-visible {
+  outline: 2px solid #a95d3c;
+  outline-offset: 3px;
+}
+
 .map-item-actions {
   display: flex;
   align-items: center;
@@ -170,7 +195,8 @@
   }
   .map-item-actions .map-contact-link,
   .map-item-actions .map-brief-button,
-  .map-item-actions .map-focus-button {
+  .map-item-actions .map-focus-button,
+  .map-item-actions .map-public-contact-link {
     width: 100%;
     justify-content: center;
     min-height: 44px;
