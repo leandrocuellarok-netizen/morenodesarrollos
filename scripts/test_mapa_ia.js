@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -85,6 +85,10 @@ const publicationIntro = mapPage.match(/<p class="map-published-intro">([\s\S]*?
 assert.ok(publicationIntro && !/\d{2}\/\d{2}\/\d{4}/.test(publicationIntro), "la introducción no debe congelar una fecha global de revisión");
 assert.ok(source.includes("function geocodePublishedAddresses()"), "la capa intenta georreferenciar las direcciones publicadas");
 assert.ok(source.includes("https://apis.datos.gob.ar/georef/api/v2.0/direcciones"), "la georreferencia utiliza el servicio oficial Georef");
+assert.ok(source.includes("function readGeorefCache(storage, now)"), "la georreferencia puede recuperar coordenadas desde caché local");
+assert.ok(source.includes("function resolvePublishedGeoreferencesCached(items, fetcher, context, storage, now, concurrency)"), "la georreferencia combina caché y consultas nuevas");
+assert.equal(GEOREF_CACHE_KEY, "moreno-georef-cache-v1", "la caché usa una clave versionada e independiente de la bitácora");
+assert.equal(GEOREF_CACHE_TTL_MS, 30 * 24 * 60 * 60 * 1000, "las coordenadas cacheadas vencen a los 30 días");
 assert.ok(source.includes("function availabilityFilterKey(value)"), "el motor normaliza estados comerciales permitidos");
 assert.ok(source.includes('url.searchParams.set("vigencia", normalized.availability)'), "el enlace compartido conserva el estado de publicación");
 assert.ok(styles.includes(".map-pin-published") && styles.includes(".published-dot"), "la capa publicada tiene símbolo cartográfico propio");
@@ -465,7 +469,7 @@ assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nome
 
 assert.equal(GEOREF_MAX_CONCURRENCY, 3, "las consultas a Georef tienen un límite conservador de concurrencia");
 assert.ok(source.includes("async function resolvePublishedGeoreferences(items, fetcher, context, concurrency)"), "la resolución de Georef está aislada y puede probarse sin red");
-assert.ok(source.includes("resolvePublishedGeoreferences(publishedProperties, fetcher, view, GEOREF_MAX_CONCURRENCY)"), "la página utiliza la cola limitada para consultar direcciones");
+assert.ok(source.includes("resolvePublishedGeoreferencesCached(") && source.includes("reviewStorage,\n      Date.now(),\n      GEOREF_MAX_CONCURRENCY"), "la página utiliza caché local y la cola limitada para consultar direcciones");
 for (const item of opportunities) {
   assert.ok(["documented", "hypothesis"].includes(item.stage), "nivel de evidencia explícito: " + item.name);
   assert.match(item.source, /^https:\/\//, "fuente pública HTTPS: " + item.name);
@@ -842,6 +846,7 @@ async function testGeorefRequestQueue() {
     { id: "camilli", geocodeQuery: "Camilli 140", geocodeMatch: "CAMILLI 140" },
     { id: "ambiguous", geocodeQuery: "Ambigua 500", geocodeMatch: "AMBIGUA 500" },
     { id: "failed", geocodeQuery: "Falla 10", geocodeMatch: "FALLA 10" },
+    { id: "out-of-range", geocodeQuery: "Fuera de rango 1", geocodeMatch: "FUERA DE RANGO 1" },
     { id: "approximate", geocodeQuery: "Galileo Galilei al 7300", geocodeDisabled: true }
   ];
   let active = 0;
@@ -856,6 +861,17 @@ async function testGeorefRequestQueue() {
       await new Promise(resolve => setTimeout(resolve, 8));
       if (query === "Camilli 140") return { ok: false, json: async () => ({ direcciones: [] }) };
       if (query === "Falla 10") throw new Error("fallo simulado");
+      if (query === "Fuera de rango 1") {
+        return {
+          ok: true,
+          json: async () => ({
+            direcciones: [{
+              nomenclatura: "FUERA DE RANGO 1, MORENO, BUENOS AIRES",
+              ubicacion: { lat: "95", lon: "-58.80" }
+            }]
+          })
+        };
+      }
       if (query === "Ambigua 500") {
         return {
           ok: true,
@@ -881,8 +897,8 @@ async function testGeorefRequestQueue() {
   };
 
   const result = await resolvePublishedGeoreferences(items, fakeFetch, null, 2);
-  assert.equal(calls.length, 4, "una dirección repetida genera una sola consulta");
-  assert.equal(new Set(calls).size, 4, "cada consulta única se procesa una vez");
+  assert.equal(calls.length, 5, "una dirección repetida genera una sola consulta");
+  assert.equal(new Set(calls).size, 5, "cada consulta única se procesa una vez");
   assert.ok(maximumActive <= 2, "la cola respeta el límite de dos solicitudes simultáneas de la prueba");
   assert.ok(maximumActive > 1, "la cola conserva concurrencia controlada sin serializar todas las consultas");
   assert.deepEqual(result.get("San Juan Bautista 100"), {
@@ -893,12 +909,104 @@ async function testGeorefRequestQueue() {
   assert.equal(result.get("Camilli 140"), null, "una respuesta HTTP fallida queda pendiente");
   assert.equal(result.get("Ambigua 500"), null, "las coincidencias ambiguas no generan coordenadas");
   assert.equal(result.get("Falla 10"), null, "un error de red queda pendiente sin interrumpir la cola");
+  assert.equal(result.get("Fuera de rango 1"), null, "coordenadas fuera del rango geográfico válido se rechazan");
   assert.equal(result.has("Galileo Galilei al 7300"), false, "una ubicación aproximada marcada como no geocodificable no consulta Georef");
   assert.equal((await resolvePublishedGeoreferences([], fakeFetch)).size, 0, "un inventario vacío no genera consultas");
 }
 
+async function testGeorefCache() {
+  const item = {
+    id: "cache-a",
+    geocodeQuery: "Av. Derqui 5890",
+    geocodeMatch: "DERQUI 5890",
+    address: "Av. Derqui 5890"
+  };
+  const storage = {
+    value: null,
+    getItem(key) {
+      assert.equal(key, GEOREF_CACHE_KEY);
+      return this.value;
+    },
+    setItem(key, value) {
+      assert.equal(key, GEOREF_CACHE_KEY);
+      this.value = value;
+    }
+  };
+  let calls = 0;
+  const fakeFetch = async url => {
+    calls += 1;
+    assert.equal(new URL(url).searchParams.get("direccion"), "Av. Derqui 5890");
+    return {
+      ok: true,
+      json: async () => ({
+        direcciones: [{
+          nomenclatura: "DERQUI 5890, MORENO, BUENOS AIRES",
+          ubicacion: { lat: "-34.6508", lon: "-58.7914" }
+        }]
+      })
+    };
+  };
+
+  const first = await resolvePublishedGeoreferencesCached([item], fakeFetch, null, storage, 1000, 2);
+  assert.equal(first.requested, 1, "la primera visita consulta la dirección en Georef");
+  assert.equal(first.cacheHits, 0, "la primera visita no informa aciertos de caché");
+  assert.equal(calls, 1);
+  assert.equal(first.results.get(item.geocodeQuery).lat, -34.6508);
+  assert.ok(storage.value && storage.value.includes("DERQUI 5890, MORENO, BUENOS AIRES"), "la coordenada inequívoca se conserva en caché local");
+
+  const second = await resolvePublishedGeoreferencesCached([item], fakeFetch, null, storage, 2000, 2);
+  assert.equal(second.cacheHits, 1, "la visita siguiente recupera la dirección de caché");
+  assert.equal(second.requested, 0, "una dirección cacheada no vuelve a consultar Georef");
+  assert.equal(calls, 1, "la caché evita la solicitud repetida");
+  assert.equal(second.results.get(item.geocodeQuery).lng, -58.7914);
+
+  const expired = await resolvePublishedGeoreferencesCached(
+    [item], fakeFetch, null, storage, 1000 + GEOREF_CACHE_TTL_MS + 1, 2
+  );
+  assert.equal(expired.cacheHits, 0, "una coordenada vencida no se reutiliza");
+  assert.equal(expired.requested, 1, "una coordenada vencida vuelve a verificarse");
+  assert.equal(calls, 2);
+
+  storage.value = JSON.stringify({
+    version: 1,
+    records: {
+      "AV DERQUI 5890": {
+        checkedAt: 5000,
+        lat: 95,
+        lng: -58.7914,
+        nomenclatura: "DERQUI 5890, MORENO, BUENOS AIRES"
+      }
+    }
+  });
+  const corrupted = await resolvePublishedGeoreferencesCached([item], fakeFetch, null, storage, 6000, 2);
+  assert.equal(corrupted.cacheHits, 0, "la caché descarta latitudes fuera de rango");
+  assert.equal(corrupted.requested, 1);
+  assert.equal(calls, 3);
+
+  const unavailableStorage = await resolvePublishedGeoreferencesCached([item], fakeFetch, null, null, 7000, 2);
+  assert.equal(unavailableStorage.cacheHits, 0, "sin almacenamiento local el mapa conserva la consulta normal");
+  assert.equal(unavailableStorage.requested, 1);
+  assert.equal(calls, 4);
+
+  let failedCalls = 0;
+  const failedStorage = {
+    value: null,
+    getItem() { return this.value; },
+    setItem(key, value) { this.value = value; }
+  };
+  const failedFetch = async () => {
+    failedCalls += 1;
+    return { ok: false, json: async () => ({ direcciones: [] }) };
+  };
+  await resolvePublishedGeoreferencesCached([item], failedFetch, null, failedStorage, 8000, 2);
+  await resolvePublishedGeoreferencesCached([item], failedFetch, null, failedStorage, 9000, 2);
+  assert.equal(failedCalls, 2, "los errores HTTP no se cachean como si fueran coordenadas válidas");
+  assert.equal(failedStorage.value, null, "los resultados fallidos no se persisten");
+}
+
 testGeorefRequestQueue()
-  .then(() => console.log("OK: cola de Georef con concurrencia limitada, deduplicación y rechazo de coincidencias ambiguas."))
+  .then(() => testGeorefCache())
+  .then(() => console.log("OK: Georef con concurrencia limitada, deduplicación, caché local temporal y rechazo de coordenadas inválidas."))
   .catch(error => {
     console.error(error);
     process.exitCode = 1;

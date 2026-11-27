@@ -5010,7 +5010,8 @@ async function resolvePublishedGeoreferences(items, fetcher, context, concurrenc
         const point = matches[0].ubicacion;
         const lat = Number(point.lat);
         const lng = Number(point.lon);
-        resolved.set(query, Number.isFinite(lat) && Number.isFinite(lng)
+        resolved.set(query, Number.isFinite(lat) && lat >= -90 && lat <= 90 &&
+          Number.isFinite(lng) && lng >= -180 && lng <= 180
           ? { lat, lng, nomenclatura: matches[0].nomenclatura || "" }
           : null);
       } catch (error) {
@@ -5022,6 +5023,144 @@ async function resolvePublishedGeoreferences(items, fetcher, context, concurrenc
   const workers = Math.min(limit, entries.length);
   await Promise.all(Array.from({ length: workers }, () => worker()));
   return resolved;
+}
+
+
+const GEOREF_CACHE_KEY = "moreno-georef-cache-v1";
+const GEOREF_CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+const GEOREF_CACHE_MAX_ENTRIES = 300;
+
+function readGeorefCache(storage, now) {
+  const cache = new Map();
+  if (!storage || typeof storage.getItem !== "function") return cache;
+  const timestamp = typeof now === "number" && Number.isFinite(now) ? now : Date.now();
+  let parsed;
+  try {
+    const raw = storage.getItem(GEOREF_CACHE_KEY);
+    if (!raw) return cache;
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    return cache;
+  }
+  if (!parsed || parsed.version !== 1 || !parsed.records ||
+      typeof parsed.records !== "object" || Array.isArray(parsed.records)) return cache;
+
+  Object.keys(parsed.records).forEach(key => {
+    const record = parsed.records[key];
+    const checkedAt = Number(record && record.checkedAt);
+    const lat = Number(record && record.lat);
+    const lng = Number(record && record.lng);
+    const nomenclatura = String(record && record.nomenclatura || "");
+    const age = timestamp - checkedAt;
+    if (!key || key !== normalizeAddressText(key) ||
+        !Number.isFinite(checkedAt) || age < 0 || age > GEOREF_CACHE_TTL_MS ||
+        !Number.isFinite(lat) || lat < -90 || lat > 90 ||
+        !Number.isFinite(lng) || lng < -180 || lng > 180 ||
+        !nomenclatura) return;
+    cache.set(key, { lat, lng, nomenclatura, checkedAt });
+  });
+  return cache;
+}
+
+function writeGeorefCache(storage, cache, now) {
+  if (!storage || typeof storage.setItem !== "function" || !(cache instanceof Map)) return false;
+  const timestamp = typeof now === "number" && Number.isFinite(now) ? now : Date.now();
+  const records = {};
+  const entries = Array.from(cache.entries())
+    .filter(([key, record]) => {
+      const age = timestamp - Number(record && record.checkedAt);
+      return Boolean(key) && key === normalizeAddressText(key) &&
+        record && Number.isFinite(Number(record.lat)) &&
+        Number(record.lat) >= -90 && Number(record.lat) <= 90 &&
+        Number.isFinite(Number(record.lng)) &&
+        Number(record.lng) >= -180 && Number(record.lng) <= 180 &&
+        typeof record.nomenclatura === "string" && record.nomenclatura &&
+        Number.isFinite(Number(record.checkedAt)) && age >= 0 && age <= GEOREF_CACHE_TTL_MS;
+    })
+    .sort((a, b) => Number(b[1].checkedAt) - Number(a[1].checkedAt))
+    .slice(0, GEOREF_CACHE_MAX_ENTRIES);
+
+  entries.forEach(([key, record]) => {
+    records[key] = {
+      lat: Number(record.lat),
+      lng: Number(record.lng),
+      nomenclatura: record.nomenclatura,
+      checkedAt: Number(record.checkedAt)
+    };
+  });
+  try {
+    storage.setItem(GEOREF_CACHE_KEY, JSON.stringify({ version: 1, records }));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+async function resolvePublishedGeoreferencesCached(items, fetcher, context, storage, now, concurrency) {
+  const list = Array.isArray(items) ? items : [];
+  const timestamp = typeof now === "number" && Number.isFinite(now) ? now : Date.now();
+  const cache = readGeorefCache(storage, timestamp);
+  const resolved = new Map();
+  const uniqueQueries = new Map();
+  list.forEach(item => {
+    if (item && item.geocodeDisabled === true) return;
+    const query = String(item && (item.geocodeQuery || item.address) || "").trim();
+    if (query && !uniqueQueries.has(query)) uniqueQueries.set(query, item);
+  });
+
+  const pending = [];
+  let cacheHits = 0;
+  uniqueQueries.forEach((sample, query) => {
+    const key = normalizeAddressText(query);
+    const cached = cache.get(key);
+    if (cached && georefAddressMatches(sample, { nomenclatura: cached.nomenclatura })) {
+      resolved.set(query, {
+        lat: cached.lat,
+        lng: cached.lng,
+        nomenclatura: cached.nomenclatura
+      });
+      cacheHits += 1;
+    } else {
+      if (cached) cache.delete(key);
+      pending.push({ query, sample, key });
+    }
+  });
+
+  let requested = 0;
+  let cacheChanged = false;
+  if (typeof fetcher === "function" && pending.length) {
+    requested = pending.length;
+    const fetched = await resolvePublishedGeoreferences(
+      pending.map(entry => entry.sample),
+      fetcher,
+      context,
+      concurrency
+    );
+    pending.forEach(entry => {
+      const point = fetched.get(entry.query) || null;
+      resolved.set(entry.query, point);
+      if (point && Number.isFinite(Number(point.lat)) &&
+          Number(point.lat) >= -90 && Number(point.lat) <= 90 &&
+          Number.isFinite(Number(point.lng)) &&
+          Number(point.lng) >= -180 && Number(point.lng) <= 180 && point.nomenclatura) {
+        cache.set(entry.key, {
+          lat: Number(point.lat),
+          lng: Number(point.lng),
+          nomenclatura: String(point.nomenclatura),
+          checkedAt: timestamp
+        });
+        cacheChanged = true;
+      }
+    });
+  }
+
+  if (cacheChanged) writeGeorefCache(storage, cache, timestamp);
+  return {
+    results: resolved,
+    cacheHits,
+    requested,
+    fetchAvailable: typeof fetcher === "function"
+  };
 }
 
 function buildCsv(items) {
@@ -5853,46 +5992,55 @@ function initMapPage(doc) {
   function geocodePublishedAddresses() {
     const view = doc.defaultView;
     const fetcher = view && view.fetch;
-    if (typeof fetcher !== "function") {
+    resolvePublishedGeoreferencesCached(
+      publishedProperties,
+      fetcher,
+      view,
+      reviewStorage,
+      Date.now(),
+      GEOREF_MAX_CONCURRENCY
+    ).then(resolution => {
+      const resolved = resolution.results;
       publishedProperties.forEach(item => {
-        item.geolocationStatus = "Pendiente: el navegador no habilitó la consulta de Georef.";
+        const point = item.geocodeDisabled ? null : resolved.get(item.geocodeQuery || item.address);
+        if (item.geocodeDisabled === true) {
+          item.lat = null;
+          item.lng = null;
+          item.geolocationStatus = item.geolocationStatus || "Pendiente: la publicación no aporta una dirección exacta verificable.";
+        } else if (point) {
+          item.lat = point.lat;
+          item.lng = point.lng;
+          item.geocodeReference = point.nomenclatura;
+          item.geolocationStatus = "Georreferencia aproximada de dirección obtenida mediante Georef; no parcelaria.";
+        } else {
+          item.lat = null;
+          item.lng = null;
+          item.geolocationStatus = resolution.fetchAvailable
+            ? "Pendiente: Georef no devolvió una coincidencia inequívoca para la dirección publicada."
+            : "Pendiente: el navegador no habilitó la consulta de Georef en esta sesión.";
+        }
+        addMapMarker(item);
       });
       render();
-      return;
-    }
-    resolvePublishedGeoreferences(publishedProperties, fetcher, view, GEOREF_MAX_CONCURRENCY)
-      .then(resolved => {
-        publishedProperties.forEach(item => {
-          const point = item.geocodeDisabled ? null : resolved.get(item.geocodeQuery || item.address);
-          if (item.geocodeDisabled === true) {
-            item.lat = null;
-            item.lng = null;
-            item.geolocationStatus = item.geolocationStatus || "Pendiente: la publicación no aporta una dirección exacta verificable.";
-          } else if (point) {
-            item.lat = point.lat;
-            item.lng = point.lng;
-            item.geocodeReference = point.nomenclatura;
-            item.geolocationStatus = "Georreferencia aproximada de dirección obtenida mediante Georef; no parcelaria.";
-          } else {
-            item.lat = null;
-            item.lng = null;
-            item.geolocationStatus = "Pendiente: Georef no devolvió una coincidencia inequívoca para la dirección publicada.";
-          }
-          addMapMarker(item);
-        });
-        render();
-        const selected = all.find(item => item.id === selectedReferenceId);
-        if (selected && markers.has(selected.id) && !userHasNavigated) focusItem(selected);
-        const located = publishedProperties.filter(hasCoordinates).length;
-        statusElement.textContent = located + " de " + publishedProperties.length +
-          " publicaciones georreferenciadas por dirección; el resto conserva ubicación textual pendiente.";
-      })
-      .catch(() => {
-        publishedProperties.forEach(item => {
-          item.geolocationStatus = "Pendiente: no fue posible consultar Georef en esta sesión.";
-        });
-        render();
+      const selected = all.find(item => item.id === selectedReferenceId);
+      if (selected && markers.has(selected.id) && !userHasNavigated) focusItem(selected);
+      const located = publishedProperties.filter(hasCoordinates).length;
+      const cacheNote = resolution.cacheHits
+        ? resolution.cacheHits + " direcciones recuperadas de caché local (vigencia máxima de 30 días); "
+        : "";
+      const requestNote = resolution.fetchAvailable
+        ? (resolution.requested
+          ? resolution.requested + " consultas nuevas a Georef."
+          : "Sin consultas nuevas a Georef.")
+        : "Georef no está disponible en esta sesión.";
+      statusElement.textContent = located + " de " + publishedProperties.length +
+        " publicaciones georreferenciadas por dirección; " + cacheNote + requestNote;
+    }).catch(() => {
+      publishedProperties.forEach(item => {
+        item.geolocationStatus = "Pendiente: no fue posible consultar Georef en esta sesión.";
       });
+      render();
+    });
   }
 
   function currentMapViewState(referenceId) {
@@ -6713,7 +6861,9 @@ if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches,
     availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary,
-    resolvePublishedGeoreferences, GEOREF_MAX_CONCURRENCY,
+    resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached,
+    readGeorefCache, writeGeorefCache, GEOREF_MAX_CONCURRENCY,
+    GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS,
     getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl,
     buildReferenceUrl, buildOpportunityContactUrl, referenceContactLabel,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
