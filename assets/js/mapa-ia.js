@@ -5637,12 +5637,12 @@ const nov27_0923NewEntries = [
     "landSurfaceM2": 300,
     "coveredSurfaceM2": 80,
     "surfaceNote": "300 m² de terreno (10 × 30 m); 80 m² cubiertos.",
-    "observations": "Dos dormitorios, un baño, patio y entrada de vehículo. La ficha directa sigue accesible, pero el índice del portal la muestra publicada hace aproximadamente 2,1 años. La cabecera indica USD 45.000, mientras que la descripción diferencia anticipo, cuotas y precio contado de USD 75.000. No tratar como oportunidad vigente hasta confirmar precio y disponibilidad por escrito.",
+    "observations": "Dos dormitorios, un baño, patio y entrada de vehículo. La ficha directa está accesible en esta revisión. La cabecera indica USD 45.000, mientras que la descripción diferencia anticipo de USD 45.000 más 50 cuotas de USD 700 y precio contado de USD 75.000. Pedir liquidación escrita y confirmar el precio aplicable antes de considerar la operación.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "Pendiente de revalidación",
-    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026, pero la publicación aparece antigua y contiene contradicción de precio/financiación. No se pudo confirmar vigencia comercial.",
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio de cabecera, superficie y dirección publicados. El plan de pago y el precio contado contradicen el valor de cabecera; disponibilidad no confirmada.",
     "geolocationStatus": "Pendiente: Georef debe confirmar la coincidencia exacta de Facundo Quiroga 1100."
   },
   {
@@ -5654,20 +5654,30 @@ const nov27_0923NewEntries = [
     "geocodeQuery": "Pueyrredon 2544, Moreno, Buenos Aires",
     "geocodeMatch": "PUEYRREDON 2544",
     "source": "https://www.argenprop.com/casa-en-venta-en-moreno--17583184",
-    "agency": "Sforza Propiedades",
-    "contact": "Sforza Propiedades; contacto mediante Argenprop. Teléfono no visible en el resultado consultado.",
+    "agency": "SFORZA PROPIEDADES",
+    "contact": "SFORZA PROPIEDADES; contacto mediante Argenprop. Teléfono parcialmente visible (+54 0 11 4…), número completo no publicado en la ficha.",
     "price": "USD 180.000 (último precio indexado)",
     "currency": "USD",
     "landSurfaceM2": 560,
     "coveredSurfaceM2": 250,
     "surfaceNote": "560 m² de terreno; 250 m² cubiertos, según resultado indexado de Argenprop.",
-    "observations": "Chalet de dos plantas, tres dormitorios, cuatro baños, dos cocheras, parque, pileta, quincho y galpón, según el resultado indexado. La ficha directa devolvió 405 Method Not Allowed en esta revisión; no interpretar ese error como venta ni retiro. Confirmar acceso, precio y disponibilidad con Sforza Propiedades.",
+    "observations": "Chalet de dos plantas, tres dormitorios, cuatro baños, dos cocheras, parque, pileta, quincho y galpón. La ficha directa de Argenprop está accesible el 27/11/2026. Una ficha anterior de Inmuebles Clarín mencionaba Juan Martín de Pueyrredon 2534 y 500 m², mientras que Argenprop publica al 2544 y 560 m²; Proppies coincide con 560 m². Confirmar nomenclatura y mensura para resolver la diferencia de altura y superficie.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "Pendiente de revalidación",
-    "verificationStatus": "Resultado de Argenprop indexado en noviembre de 2026 con precio y superficies publicados; apertura directa devuelve 405 Method Not Allowed. Disponibilidad no verificada.",
-    "geolocationStatus": "Pendiente: dirección exacta publicada, pero no se confirmó la ficha directa ni una coincidencia Georef."
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; USD 180.000, 560 m² de terreno, 250 m² cubiertos y SFORZA PROPIEDADES identificados. Fuentes anteriores presentan diferencias de altura y superficie; disponibilidad no confirmada.",
+    "geolocationStatus": "Pendiente: dirección exacta publicada, pero no se confirmó la ficha directa ni una coincidencia Georef.",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/caba/casa-en-venta-en-moreno-45629051",
+        "label": "Proppies · ficha sindicada con USD 180.000, 560 m² totales y 250 m² cubiertos"
+      },
+      {
+        "url": "https://www.inmuebles.clarin.com/casa-en-venta-en-moreno-5-ambientes--15366093",
+        "label": "Inmuebles Clarín · ficha anterior con dirección 2534 y 500 m²; enlace 410 Gone"
+      }
+    ]
   },
   {
     "id": "terreno-valparaiso-100-lote10-300",
@@ -5735,7 +5745,7 @@ const nov27_0923NewEntries = [
     "verificationStatus": "Ficha directa de Inmoclick accesible el 27/11/2026; publicada hace 15 días, precio USD 10.000, 300 m² y lote 11 identificados. Disponibilidad comercial no confirmada.",
     "geolocationStatus": "Pendiente: la dirección pública se repite para lotes distintos; no asignar coordenadas de parcela sin plano o nomenclatura."
   }
-];;
+];;;
 publishedProperties.push(...nov27_0923NewEntries);
 
 const all = [
