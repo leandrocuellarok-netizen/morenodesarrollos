@@ -222,6 +222,62 @@ async function auditRoute(browser, route) {
       );
     }
 
+    if (route.slug === "mesa-operativa") {
+      const calendarButton = page.locator("#pipeline-download-calendar");
+      check(await calendarButton.count() === 1, "mesa-operativa: existe el control de exportación iCalendar");
+      check(await calendarButton.isDisabled(), "mesa-operativa: el calendario permanece deshabilitado antes de validar un CSV");
+      const makeCalendarCsv = async withDate => page.evaluate(includeDate => {
+        const headers = window.MorenoPipelineDashboard.headers;
+        const values = Object.fromEntries(headers.map(header => [header, ""]));
+        const followUp = new Date();
+        followUp.setDate(followUp.getDate() + 1);
+        const dateValue = includeDate
+          ? [followUp.getFullYear(), String(followUp.getMonth() + 1).padStart(2, "0"), String(followUp.getDate()).padStart(2, "0")].join("-")
+          : "";
+        Object.assign(values, {
+          id_oportunidad: "AUDIT-ICS-001",
+          localidad: "Moreno",
+          tipo_activo: "Terreno",
+          etapa_comercial: "primer contacto",
+          proxima_accion: "Revisar documentación pública",
+          fecha_proximo_seguimiento: dateValue
+        });
+        const row = headers.map(header => {
+          const value = String(values[header] == null ? "" : values[header]);
+          return /[;"\r\n]/.test(value) ? '"' + value.replace(/"/g, '""') + '"' : value;
+        }).join(";");
+        return headers.join(";") + "\n" + row;
+      }, withDate);
+      const datedCsv = await makeCalendarCsv(true);
+      await page.locator("#pipeline-csv-file").setInputFiles({
+        name: "moreno-audit-calendar.csv",
+        mimeType: "text/csv",
+        buffer: Buffer.from(datedCsv, "utf8")
+      });
+      await page.waitForFunction(() => document.querySelector("#pipeline-status")?.textContent.includes("CSV validado"), null, { timeout: 5000 });
+      check(!(await calendarButton.isDisabled()), "mesa-operativa: una fecha validada habilita la exportación de calendario");
+      const [calendarDownload] = await Promise.all([
+        page.waitForEvent("download"),
+        calendarButton.click()
+      ]);
+      check(calendarDownload.suggestedFilename().endsWith(".ics"), "mesa-operativa: el calendario se descarga con extensión ICS");
+      const downloadedPath = await calendarDownload.path();
+      const calendarText = downloadedPath ? fs.readFileSync(downloadedPath, "utf8") : "";
+      check(calendarText.includes("BEGIN:VCALENDAR") && calendarText.includes("DTSTART;VALUE=DATE:"), "mesa-operativa: el archivo descargado contiene eventos de día completo");
+      check(calendarText.includes("AUDIT-ICS-001") && calendarText.includes("Revisar documentación pública"), "mesa-operativa: el evento conserva el ID y la próxima acción");
+      check(!/email|telefono|dni/i.test(calendarText), "mesa-operativa: el calendario no incluye datos personales de contacto");
+
+      const undatedCsv = await makeCalendarCsv(false);
+      await page.locator("#pipeline-csv-file").setInputFiles({
+        name: "moreno-audit-undated.csv",
+        mimeType: "text/csv",
+        buffer: Buffer.from(undatedCsv, "utf8")
+      });
+      await page.waitForFunction(() => document.querySelector("#pipeline-status")?.textContent.includes("CSV validado"), null, { timeout: 5000 });
+      check(await calendarButton.isDisabled(), "mesa-operativa: los registros sin fecha no generan eventos de calendario");
+      await page.locator("#pipeline-reset").click();
+      check(await calendarButton.isDisabled(), "mesa-operativa: limpiar la sesión deshabilita nuevamente el calendario");
+    }
     if (route.slug === "mapa-ia") {
       const disclosureIds = [
         "map-refine-filters",
