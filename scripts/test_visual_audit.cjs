@@ -327,14 +327,27 @@ async function auditRoute(browser, route) {
       await page.locator("#reset-map").click();
       await page.locator("#diligence-filter").selectOption("pending");
       const pendingDiligenceCount = await page.locator("#published-list .map-item-published").count();
-      check(pendingDiligenceCount === expectedDiligenceCounts.pending, "mapa-ia: el filtro pendiente coincide con el inventario calculado");
+      const pendingInitialCount = Math.min(expectedDiligenceCounts.pending, 24);
+      check(pendingDiligenceCount === pendingInitialCount, "mapa-ia: el filtro pendiente muestra el primer tramo de hasta 24 fichas");
+      const pendingPaginationStatus = await page.locator("#published-list .map-published-pagination-status").innerText();
+      check(pendingPaginationStatus.includes("Mostrando " + pendingInitialCount + " de " + expectedDiligenceCounts.pending), "mapa-ia: el estado informa el total filtrado y el tramo visible");
+      if (expectedDiligenceCounts.pending > 24) {
+        const morePending = page.locator("#show-more-published");
+        check(await morePending.isVisible(), "mapa-ia: existe una acción accesible para cargar el siguiente tramo");
+        await morePending.click();
+        check(await page.locator("#published-list .map-item-published").count() === Math.min(48, expectedDiligenceCounts.pending), "mapa-ia: cargar más incorpora el segundo tramo sin duplicar fichas");
+        while (await page.locator("#show-more-published").count()) {
+          await page.locator("#show-more-published").click();
+        }
+        check(await page.locator("#published-list .map-item-published").count() === expectedDiligenceCounts.pending, "mapa-ia: todos los resultados filtrados pueden cargarse progresivamente");
+      }
       const pendingDiligenceStates = await page.locator("#published-list .map-published-diligence").evaluateAll(elements => elements.map(element => element.dataset.diligence));
       check(pendingDiligenceStates.every(value => value === "pending"), "mapa-ia: las fichas pendientes identifican los campos faltantes");
       check(await page.locator("#locality-list .map-item, #opportunity-list .map-item").count() === 0, "mapa-ia: la diligencia no mezcla localidades ni tesis territoriales");
       check(await page.evaluate(() => new URL(window.location.href).searchParams.get("diligencia")) === "pending", "mapa-ia: el enlace compartible conserva la integridad pendiente");
       await page.locator("#diligence-filter").selectOption("complete");
       const completeDiligenceCount = await page.locator("#published-list .map-item-published").count();
-      check(completeDiligenceCount === expectedDiligenceCounts.complete, "mapa-ia: el filtro completo coincide con el inventario calculado");
+      check(completeDiligenceCount === Math.min(expectedDiligenceCounts.complete, 24), "mapa-ia: el filtro completo muestra su primer tramo sin perder el total calculado");
       const completeDiligenceStates = await page.locator("#published-list .map-published-diligence").evaluateAll(elements => elements.map(element => element.dataset.diligence));
       check(completeDiligenceStates.every(value => value === "complete"), "mapa-ia: las fichas completas indican presencia de los siete campos");
       await page.locator("#reset-map").click();
@@ -441,6 +454,15 @@ async function auditRoute(browser, route) {
       const handoff = await contactTab.locator("#map-reference-context").innerText();
       check(handoff.includes("RP25") && (await contactTab.locator("#map-reference-value").inputValue()).includes("rp25"), "mapa-ia: el formulario comercial recupera la referencia seleccionada");
       await contactTab.close();
+
+      const deepReferenceId = mapInventory.filter(item => item.type === "published").at(-1).id;
+      const deepReferencePage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+      await deepReferencePage.goto(BASE_URL + "/mapa-ia/?ref=" + encodeURIComponent(deepReferenceId), { waitUntil: "domcontentloaded" });
+      const deepReferenceCard = deepReferencePage.locator('#published-list [data-map-item="' + deepReferenceId + '"]');
+      await deepReferenceCard.waitFor({ state: "attached", timeout: 5000 });
+      check(await deepReferenceCard.evaluate(element => element.open && element.classList.contains("is-active")), "mapa-ia: un enlace directo abre la ficha seleccionada aunque esté fuera del primer tramo");
+      check(await deepReferencePage.locator("#published-list .map-published-pagination-status").innerText().then(text => text.includes("referencia seleccionada fuera de este tramo")), "mapa-ia: la paginación explica la ficha profunda seleccionada");
+      await deepReferencePage.close();
     }
 
     const screenshotDir = path.join(ROOT, "test-results", "visual");

@@ -267,6 +267,8 @@ def main() -> None:
                 errors.append("mapa-ia/index.html: falta explicar el dossier imprimible de la vista filtrada")
             if "ficha editorial descargable" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar la ficha editorial descargable para desarrolladores")
+            if "las fichas se muestran en tramos de 24" not in page_source or "las exportaciones conservan el conjunto completo" not in page_source:
+                errors.append("mapa-ia/index.html: debe explicar la carga progresiva y la cobertura completa de filtros/exportaciones")
             if 'id="export-geojson"' not in page_source:
                 errors.append("mapa-ia/index.html: falta la descarga GeoJSON de referencias visibles")
             if 'id="map-data-export-disclosure"' not in page_source:
@@ -379,6 +381,12 @@ def main() -> None:
                     "function getSharedReferenceId(search, items)",
                     "function normalizeMapViewState(state, items)",
                     "function publishedDiligenceSummary(item)",
+                    "const PUBLISHED_CARD_PAGE_SIZE = 24",
+                    "function paginatePublishedCards(items, limit, selectedId)",
+                    "function makePublishedCards(items, target)",
+                    'more.id = "show-more-published"',
+                    "renderedPublishedCardIds.has(item.id)",
+                    "resetPublishedPaginationAndRender()",
                     "const GEOREF_CACHE_KEY = \"moreno-georef-cache-v1\"",
                     "const GEOREF_CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000",
                     "function readGeorefCache(storage, now)",
@@ -509,6 +517,9 @@ def main() -> None:
                     ".map-published-status",
                     ".map-published-review-date",
                     ".map-published-diligence",
+                    ".map-published-pagination",
+                    ".map-published-more",
+                    ".map-published-pagination-note",
                     ".map-filter-hint",
                     ".map-pin.is-selected",
                     ".map-item.is-active",

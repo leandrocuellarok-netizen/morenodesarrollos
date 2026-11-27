@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -481,6 +481,35 @@ assert.equal(new Set(publishedProperties.map(item => item.id)).size, publishedPr
 
 const expectedInventoryCounts = { localities: 6, documented: 4, hypotheses: 1, published: publishedProperties.length, total: all.length };
 assert.deepEqual(countInventory(all), expectedInventoryCounts);
+
+const allPublishedForPaging = filterReferences(all, { category: "published" });
+assert.equal(PUBLISHED_CARD_PAGE_SIZE, 24, "la interfaz carga 24 fichas inmobiliarias por tramo");
+const firstPublishedPage = paginatePublishedCards(allPublishedForPaging, PUBLISHED_CARD_PAGE_SIZE, null);
+assert.equal(firstPublishedPage.items.length, 24);
+assert.equal(firstPublishedPage.shown, 24);
+assert.equal(firstPublishedPage.total, publishedProperties.length);
+assert.equal(firstPublishedPage.hasMore, true);
+assert.equal(firstPublishedPage.nextLimit, 48);
+const laterPublished = allPublishedForPaging[149];
+const directPublishedPage = paginatePublishedCards(allPublishedForPaging, PUBLISHED_CARD_PAGE_SIZE, laterPublished.id);
+assert.equal(directPublishedPage.items.length, 25, "una referencia profunda se añade sin cargar las 149 fichas anteriores");
+assert.equal(directPublishedPage.items.at(-1).id, laterPublished.id);
+assert.equal(directPublishedPage.selectedOutsidePage, true);
+assert.equal(directPublishedPage.shown, 24, "la referencia profunda no altera el tamaño nominal del tramo");
+const secondPublishedPage = paginatePublishedCards(allPublishedForPaging, 48, null);
+assert.equal(secondPublishedPage.items.length, 48);
+assert.equal(secondPublishedPage.nextLimit, 72);
+const completePublishedPage = paginatePublishedCards(allPublishedForPaging, 999, null);
+assert.equal(completePublishedPage.items.length, publishedProperties.length);
+assert.equal(completePublishedPage.hasMore, false);
+assert.equal(paginatePublishedCards([], 24, null).items.length, 0);
+assert.equal(paginatePublishedCards(allPublishedForPaging, 0, null).items.length, 24, "un límite inválido vuelve al tamaño seguro por defecto");
+assert.ok(source.includes("function makePublishedCards(items, target)"));
+assert.ok(source.includes('more.id = "show-more-published"'));
+assert.ok(source.includes("renderedPublishedCardIds.has(item.id)"));
+assert.ok(mapPage.includes("las fichas se muestran en tramos de 24"));
+assert.ok(styles.includes(".map-published-pagination"));
+assert.ok(styles.includes(".map-published-more:focus-visible"));
 assert.deepEqual(
   countInventory(filterReferences(all, { evidence: "documented" })),
   { localities: 0, documented: 4, hypotheses: 0, published: 0, total: 4 },
