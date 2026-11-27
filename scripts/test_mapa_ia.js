@@ -239,6 +239,7 @@ for (const id of nov27ExpectedIds) {
 }
 
 const followupExpectedIds = [
+  "desarrollo-polo-veinticinco-15ha-37-lotes",
   "terreno-r25-2000-200000",
   "terreno-r25-lote33-2888",
   "terreno-r25-5000-500000",
