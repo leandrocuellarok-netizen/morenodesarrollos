@@ -15,7 +15,7 @@ const PORT = 4173;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 const ROUTES = [
   { slug: "inicio", path: "/", navigation: true },
-  { slug: "mapa-ia", path: "/mapa-ia/", navigation: true },
+  { slug: "mapa-ia", path: "/mapa-ia/", navigation: false },
   { slug: "sobre-erica", path: "/erica-acosta/", navigation: true },
   { slug: "oportunidades", path: "/oportunidades/", navigation: true },
   { slug: "mesa-operativa", path: "/mesa-operativa/", navigation: false }
@@ -144,21 +144,17 @@ async function auditRoute(browser, route) {
     check(Boolean(title.trim()), `${route.slug}: falta título de documento`);
     check(h1Count === 1, `${route.slug}: se esperaba un H1 dentro de main y se encontraron ${h1Count}`);
     if (route.slug === "inicio") {
-      const ownerLinks = await page.locator("a[href*='perfil=propietario']").evaluateAll(links => links.map(link => link.href));
-      const investorLinks = await page.locator("a[href*='perfil=inversor']").evaluateAll(links => links.map(link => link.href));
-      const developerLinks = await page.locator("a[href*='perfil=desarrollador']").evaluateAll(links => links.map(link => link.href));
-      check(ownerLinks.length >= 2, "inicio: se esperan accesos de propietario en portada y cierre comercial");
-      check(investorLinks.length >= 2, "inicio: se esperan accesos de inversor en portada y cierre comercial");
-      check(developerLinks.length >= 2, "inicio: se esperan accesos explícitos de desarrollador en portada y cierre comercial");
-      check(ownerLinks.every(href => new URL(href).searchParams.get("interes") === "terreno"), "inicio: los accesos de propietario transmiten la intención correcta");
-      check(investorLinks.every(href => new URL(href).searchParams.get("interes") === "inversion"), "inicio: los accesos de inversor transmiten la intención correcta");
-      check(developerLinks.every(href => new URL(href).searchParams.get("interes") === "desarrollo"), "inicio: los accesos de desarrollador transmiten la intención correcta");
+      check(await page.locator('a[href="./mapa-ia/"]').count() >= 1, "inicio: el acceso al Mapa IA está presente");
+      check(await page.locator('a[href="./erica-acosta/"]').count() >= 1, "inicio: el acceso a SOY MORENO está presente");
+      check(await page.locator('a[href="./oportunidades/"]').count() >= 1, "inicio: el acceso a INFO PYME MORENO está presente");
+      check(await page.locator(".hero-commercial-actions").isVisible(), "inicio: las acciones comerciales actuales están visibles");
       await auditHomeCartography(page);
     }
     if (route.slug === "sobre-erica") {
-      const developerLinks = await page.locator(".about-contact-path[href*='perfil=desarrollador'], .about-hero a[href*='perfil=desarrollador']").count();
-      check(developerLinks >= 2, "perfil: el recorrido de desarrollador aparece en la presentación y en el cierre comercial");
-      check(await page.locator(".about-contact-path").count() === 3, "perfil: se presentan tres recorridos comerciales diferenciados");
+      check(await page.locator(".soy-moreno-hero").isVisible(), "SOY MORENO: la presentación principal está visible");
+      check((await page.locator("h1").innerText()).toLowerCase().includes("soy moreno"), "SOY MORENO: el título identifica la sección vigente");
+      check(await page.locator('a[href="../mapa-ia/"]').count() >= 1, "SOY MORENO: conserva el acceso al Mapa IA");
+      check(await page.locator('a[href="../oportunidades/"]').count() >= 1, "SOY MORENO: conserva el acceso a INFO PYME MORENO");
     }
     check(await page.locator(".skip-link[href='#main-content']").count() === 1, `${route.slug}: falta el enlace único para saltar al contenido`);
     check(await page.locator("main#main-content[tabindex='-1']").count() === 1, `${route.slug}: falta el destino de foco del enlace de salto`);
@@ -300,175 +296,164 @@ async function auditRoute(browser, route) {
       await page.locator(".pipeline-workbench").evaluate(element => { element.open = false; });
     }
     if (route.slug === "mapa-ia") {
-      const disclosureIds = [
-        "map-refine-filters",
-        "map-data-export-disclosure",
-        "atlas-index-disclosure",
-        "map-review-disclosure",
-        "map-verification-disclosure"
-      ];
       await page.setViewportSize({ width: 1440, height: 900 });
-      for (const id of disclosureIds) {
-        const disclosure = page.locator("#" + id);
-        check(await disclosure.evaluate(element => element.open), `mapa-ia: ${id} debe iniciar abierto en escritorio`);
-        check(!(await page.locator("#" + id + " > summary").isVisible()), `mapa-ia: ${id} no debe mostrar el resumen en escritorio`);
+      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.includes("referencias cargadas"), null, { timeout: 8000 });
+      check(await page.locator(".map-sidebar").isVisible(), "mapa-ia: el panel lateral de investigación está visible");
+      check(await page.locator("#map").isVisible(), "mapa-ia: el mapa ocupa el espacio principal");
+      check(await page.locator(".map-panel-heading").isVisible(), "mapa-ia: la cabecera del panel está visible");
+      check(await page.locator(".map-panel-home").isVisible(), "mapa-ia: existe una salida clara hacia el sitio principal");
+      check(await page.locator(".map-navigation-help").isVisible(), "mapa-ia: las instrucciones de arrastre, zoom, selección y reencuadre están visibles");
+      check(await page.locator(".map-legend").isVisible(), "mapa-ia: la leyenda de símbolos y evidencia está visible");
+      check(await page.locator("#search").isVisible(), "mapa-ia: el buscador principal está visible");
+      for (const id of ["locality-filter", "activity-filter", "next-step-filter", "category", "evidence-filter", "availability-filter", "diligence-filter"]) {
+        check(await page.locator("#" + id).isVisible(), "mapa-ia: el filtro " + id + " está disponible sin desplegables");
       }
+      const initialCount = await page.locator("#atlas-total-count").innerText();
+      check(initialCount.startsWith(mapInventory.length + " /"), "mapa-ia: el índice informa el inventario completo al abrir");
+      check((await page.locator("#search-results-status").innerText()).includes("fichas sin coordenadas"), "mapa-ia: el buscador anuncia que conserva referencias sin coordenadas");
 
-      await page.setViewportSize({ width: 390, height: 844 });
-      await delay(100);
-      for (const id of disclosureIds) {
-        const disclosure = page.locator("#" + id);
-        check(!(await disclosure.evaluate(element => element.open)), `mapa-ia: ${id} debe iniciar cerrado en móvil`);
-        check(await page.locator("#" + id + " > summary").isVisible(), `mapa-ia: ${id} debe ofrecer un resumen visible en móvil`);
-      }
+      const searchFor = async (query, category) => {
+        if (category) await page.locator("#category").selectOption(category);
+        await page.locator("#search").fill(query);
+        await page.waitForFunction(() => {
+          const status = document.getElementById("search-results-status");
+          return Boolean(status && (status.textContent.includes("coincidencias") || status.textContent.includes("referencias cargadas")));
+        }, null, { timeout: 5000 });
+      };
 
-      await page.locator("#map-refine-filters > summary").click();
-      check(await page.locator("#map-refine-filters").evaluate(element => element.open), "mapa-ia: los filtros secundarios no se abren");
-      check(await page.locator("#category").isVisible() && await page.locator("#evidence-filter").isVisible(), "mapa-ia: los filtros secundarios no quedan disponibles al expandir");
-      check(await page.locator("#availability-filter").isVisible(), "mapa-ia: el filtro de estado de publicación debe estar visible en móvil");
-      check(await page.locator("#diligence-filter").isVisible(), "mapa-ia: el filtro de integridad de ficha debe estar visible en móvil");
-      await page.locator("#availability-filter").selectOption("no-vigente");
-      const historicStatuses = (await page.locator("#published-list .map-published-status").allTextContents()).map(value => value.trim());
-      check(historicStatuses.length > 0 && historicStatuses.every(value => value === "No vigente"), "mapa-ia: el filtro no debe mezclar publicaciones con otros estados");
-      const sharedStatus = await page.evaluate(() => new URL(window.location.href).searchParams.get("vigencia"));
-      check(sharedStatus === "no-vigente", "mapa-ia: la vista compartible debe conservar el estado registrado");
-      const reviewDate = await page.locator("#published-list .map-published-review-date").first().innerText();
-      check(/^Revisión de fuente: \d{2}\/\d{2}\/\d{4}$/.test(reviewDate), "mapa-ia: la ficha debe mostrar la fecha de revisión de la fuente");
-      await page.locator("#availability-filter").selectOption("no-es-oferta");
-      const nonOfferStatuses = (await page.locator("#published-list .map-published-status").allTextContents()).map(value => value.trim());
-      check(nonOfferStatuses.length === 1 && nonOfferStatuses[0] === "No es una oferta de parcela", "mapa-ia: el proyecto público no se presenta como una oferta de parcela");
-      const sharedNonOfferStatus = await page.evaluate(() => new URL(window.location.href).searchParams.get("vigencia"));
-      check(sharedNonOfferStatus === "no-es-oferta", "mapa-ia: el enlace compartido conserva el tipo de ficha no comercial");
-      await page.locator("#reset-map").click();
-      await page.locator("#diligence-filter").selectOption("pending");
-      const pendingDiligenceCount = await page.locator("#published-list .map-item-published").count();
-      const pendingInitialCount = Math.min(expectedDiligenceCounts.pending, 24);
-      check(pendingDiligenceCount === pendingInitialCount, "mapa-ia: el filtro pendiente muestra el primer tramo de hasta 24 fichas");
-      const pendingPaginationStatus = await page.locator("#published-list .map-published-pagination-status").innerText();
-      check(pendingPaginationStatus.includes("Mostrando " + pendingInitialCount + " de " + expectedDiligenceCounts.pending), "mapa-ia: el estado informa el total filtrado y el tramo visible");
-      if (expectedDiligenceCounts.pending > 24) {
-        const morePending = page.locator("#show-more-published");
-        check(await morePending.isVisible(), "mapa-ia: existe una acción accesible para cargar el siguiente tramo");
-        await morePending.click();
-        check(await page.locator("#published-list .map-item-published").count() === Math.min(48, expectedDiligenceCounts.pending), "mapa-ia: cargar más incorpora el segundo tramo sin duplicar fichas");
-        while (await page.locator("#show-more-published").count()) {
-          await page.locator("#show-more-published").click();
+      await searchFor("FRANCISCO ÁLVAREZ", "locality");
+      await page.locator('#locality-list [data-map-item="alvarez"]').waitFor({ state: "attached", timeout: 5000 });
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: la búsqueda simple de localidad informa una coincidencia exacta");
+
+      await searchFor("Derqui 5890", "published");
+      await page.locator('#published-list [data-map-item="sumio-lote-338"]').waitFor({ state: "attached", timeout: 5000 });
+      const streetCard = page.locator('#published-list [data-map-item="sumio-lote-338"]');
+      if (!(await streetCard.evaluate(element => element.open))) await streetCard.locator("summary").click();
+      check((await streetCard.innerText()).includes("Av. Derqui 5890"), "mapa-ia: la búsqueda encuentra una calle y dirección publicadas");
+
+      await searchFor("338 m²", "published");
+      await page.locator('#published-list [data-map-item="sumio-lote-338"]').waitFor({ state: "attached", timeout: 5000 });
+      const surfaceResultCount = Number.parseInt(await page.locator("#search-results-status").innerText(), 10);
+      check(Number.isInteger(surfaceResultCount) && surfaceResultCount > 0, "mapa-ia: la búsqueda reconoce superficies expresadas en m² y cuenta el resultado");
+
+      await searchFor("IDUAR 400.000 m²", "opportunity");
+      await page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]').waitFor({ state: "attached", timeout: 5000 });
+      const sourceSurfaceCard = page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]');
+      if (!(await sourceSurfaceCard.evaluate(element => element.open))) await sourceSurfaceCard.locator("summary").click();
+      check((await sourceSurfaceCard.innerText()).includes("400.000 m²"), "mapa-ia: la búsqueda compuesta cruza fuente pública y superficie documentada");
+
+      await searchFor("solicitar planos", "opportunity");
+      await page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]').waitFor({ state: "attached", timeout: 5000 });
+      const nextStepCount = Number.parseInt(await page.locator("#search-results-status").innerText(), 10);
+      check(Number.isInteger(nextStepCount) && nextStepCount > 0, "mapa-ia: la búsqueda indexa el próximo paso registrado y devuelve coincidencias");
+
+      await searchFor("SIBOM 7443/25", "opportunity");
+      await page.locator('#opportunity-list [data-map-item="rp25"]').waitFor({ state: "attached", timeout: 5000 });
+      const ordinanceCard = page.locator('#opportunity-list [data-map-item="rp25"]');
+      if (!(await ordinanceCard.evaluate(element => element.open))) await ordinanceCard.locator("summary").click();
+      check((await ordinanceCard.innerText()).includes("Ordenanza 7443/25"), "mapa-ia: la búsqueda encuentra evidencia normativa y su referencia SIBOM");
+
+      await searchFor("Cuartel V PROMEBA veredas", "opportunity");
+      await page.locator('#opportunity-list [data-map-item="promeba-cuartel-v"]').waitFor({ state: "attached", timeout: 5000 });
+      check((await page.locator("#search-results-status").innerText()).includes("fichas sin coordenadas verificables siguen en el índice"), "mapa-ia: las búsquedas compuestas cuentan fichas sin geolocalización");
+
+      await searchFor("CUÁRTEL-V PROMEBA", "opportunity");
+      const punctuatedIds = await page.locator("#opportunity-list [data-map-item]").evaluateAll(elements => elements.map(element => element.dataset.mapItem).sort());
+      await searchFor("cuartel v promeba", "opportunity");
+      const normalizedIds = await page.locator("#opportunity-list [data-map-item]").evaluateAll(elements => elements.map(element => element.dataset.mapItem).sort());
+      check(JSON.stringify(punctuatedIds) === JSON.stringify(normalizedIds) && normalizedIds.includes("promeba-cuartel-v"), "mapa-ia: tildes, mayúsculas y puntuación no alteran los resultados");
+
+      await page.locator("#search").fill("cuartel v");
+      await page.locator("#locality-filter").selectOption("cuartel");
+      await page.locator("#activity-filter").selectOption("industrial");
+      await page.locator("#next-step-filter").selectOption("contact");
+      await page.locator("#evidence-filter").selectOption("documented");
+      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("1 coincidencias:"), null, { timeout: 5000 });
+      const combinedIds = await page.locator("#opportunity-list [data-map-item]").evaluateAll(elements => elements.map(element => element.dataset.mapItem));
+      check(combinedIds.length === 1 && combinedIds[0] === "base-aerea-moreno-norte", "mapa-ia: localidad, actividad, próximo paso, evidencia y texto se combinan correctamente");
+      check((await page.locator("#atlas-total-count").innerText()).startsWith("1 /"), "mapa-ia: el índice actualiza la cantidad de coincidencias filtradas");
+      const unlocatedCard = page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]');
+      if (!(await unlocatedCard.evaluate(element => element.open))) await unlocatedCard.locator("summary").click();
+      check(await unlocatedCard.locator(".map-published-pending").isVisible(), "mapa-ia: una ficha sin coordenadas sigue accesible en el índice y declara que no tiene marcador");
+
+      await page.locator("#search").fill("zzzxqv 918273");
+      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("0 coincidencias"), null, { timeout: 5000 });
+      check(await page.locator("#map-empty-state").isVisible(), "mapa-ia: una consulta sin coincidencias presenta un estado vacío útil");
+      await page.locator("#reset-empty-state").click();
+      check((await page.locator("#atlas-total-count").innerText()).startsWith(mapInventory.length + " /"), "mapa-ia: restablecer recupera el inventario completo");
+
+      const localityMarker = page.locator('.map-pin[aria-label="Ver Moreno Centro en el mapa"]');
+      if (await localityMarker.count()) {
+        await localityMarker.click();
+        await page.waitForFunction(() => document.querySelector('[data-map-item="moreno"]')?.classList.contains("is-active"), null, { timeout: 5000 });
+        check(await page.locator('#locality-list [data-map-item="moreno"]').evaluate(element => element.open), "mapa-ia: seleccionar un marcador abre la ficha lateral correspondiente");
+        const canvas = page.locator(".maplibregl-canvas");
+        const canvasBox = await canvas.boundingBox();
+        const markerTransformBeforeDrag = await localityMarker.evaluate(element => element.style.transform);
+        if (canvasBox) {
+          const dragX = canvasBox.x + canvasBox.width * 0.75;
+          const dragY = canvasBox.y + canvasBox.height * 0.6;
+          await page.mouse.move(dragX, dragY);
+          await page.mouse.down();
+          await page.mouse.move(dragX + 90, dragY + 55, { steps: 5 });
+          await page.mouse.up();
+          await page.waitForFunction(previous => {
+            const marker = document.querySelector('.map-pin[aria-label="Ver Moreno Centro en el mapa"]');
+            return marker && marker.style.transform !== previous;
+          }, markerTransformBeforeDrag, { timeout: 4000 });
+          const markerTransformAfterDrag = await localityMarker.evaluate(element => element.style.transform);
+          check(markerTransformAfterDrag !== markerTransformBeforeDrag, "mapa-ia: arrastrar el lienzo desplaza la cartografía y sus marcadores");
+          await page.locator("#map-zoom-in").click();
+          await page.waitForTimeout(220);
+          const markerTransformAfterZoom = await localityMarker.evaluate(element => element.style.transform);
+          await page.locator("#map-fit-all").click();
+          await page.waitForFunction(previous => {
+            const marker = document.querySelector('.map-pin[aria-label="Ver Moreno Centro en el mapa"]');
+            return marker && marker.style.transform !== previous;
+          }, markerTransformAfterZoom, { timeout: 4000 });
+          const markerTransformAfterFit = await localityMarker.evaluate(element => element.style.transform);
+          check(markerTransformAfterFit !== markerTransformAfterZoom, "mapa-ia: Ver todo reencuadra la vista después del zoom");
         }
-        check(await page.locator("#published-list .map-item-published").count() === expectedDiligenceCounts.pending, "mapa-ia: todos los resultados filtrados pueden cargarse progresivamente");
       }
-      const pendingDiligenceStates = await page.locator("#published-list .map-published-diligence").evaluateAll(elements => elements.map(element => element.dataset.diligence));
-      check(pendingDiligenceStates.every(value => value === "pending"), "mapa-ia: las fichas pendientes identifican los campos faltantes");
-      check(await page.locator("#locality-list .map-item, #opportunity-list .map-item").count() === 0, "mapa-ia: la diligencia no mezcla localidades ni tesis territoriales");
-      check(await page.evaluate(() => new URL(window.location.href).searchParams.get("diligencia")) === "pending", "mapa-ia: el enlace compartible conserva la integridad pendiente");
-      await page.locator("#diligence-filter").selectOption("complete");
-      const completeDiligenceCount = await page.locator("#published-list .map-item-published").count();
-      check(completeDiligenceCount === Math.min(expectedDiligenceCounts.complete, 24), "mapa-ia: el filtro completo muestra su primer tramo sin perder el total calculado");
-      const completeDiligenceStates = await page.locator("#published-list .map-published-diligence").evaluateAll(elements => elements.map(element => element.dataset.diligence));
-      check(completeDiligenceStates.every(value => value === "complete"), "mapa-ia: las fichas completas indican presencia de los siete campos");
-      await page.locator("#reset-map").click();
-      await page.locator("#map-refine-filters > summary").click();
-      check(!(await page.locator("#map-refine-filters").evaluate(element => element.open)), "mapa-ia: los filtros secundarios no se pueden volver a contraer");
-      await page.setViewportSize({ width: 1440, height: 900 });
-      await delay(100);
-      check(await page.locator("#map-refine-filters").evaluate(element => element.open), "mapa-ia: los filtros secundarios deben volver a abrirse al pasar a escritorio");
+
+      const selectedThesisCard = page.locator('#opportunity-list [data-map-item="rp25"]');
+      await selectedThesisCard.locator("summary").click();
+      check(await selectedThesisCard.evaluate(element => element.open && element.classList.contains("is-active")), "mapa-ia: seleccionar una ficha lateral sincroniza la referencia activa");
+
       await page.setViewportSize({ width: 390, height: 844 });
-      await delay(80);
-      check(!(await page.locator("#map-refine-filters").evaluate(element => element.open)), "mapa-ia: la preferencia manual móvil debe conservarse al volver a teléfono");
-
-      await page.locator("#atlas-index-disclosure > summary").click();
-      await page.locator("#kind-filter").selectOption("industrial");
-      await delay(80);
-      const filteredSummary = await page.locator("#atlas-index-summary").innerText();
-      check(filteredSummary.includes("2 referencias"), "mapa-ia: el resumen móvil no refleja el filtro industrial");
-      await page.locator("#reset-map").click();
-      const resetSummary = await page.locator("#atlas-index-summary").innerText();
-      const resetCount = (await page.locator("#atlas-total-count").innerText()).split("/")[0].trim();
-      check(resetSummary.includes(resetCount + " referencias"), "mapa-ia: el resumen móvil no se actualiza al restablecer el inventario");
-
-      await page.locator("#map-review-disclosure > summary").click();
-      check(await page.locator(".map-review-toolbar").isVisible(), "mapa-ia: la bitácora local no se abre");
-
-      await page.evaluate(() => {
-        const originalText = File.prototype.text;
-        File.prototype.text = function () {
-          if (this.name === "moreno-slow-review.json") {
-            return new Promise((resolve, reject) => {
-              setTimeout(() => originalText.call(this).then(resolve, reject), 300);
-            });
-          }
-          return originalText.call(this);
-        };
-        window.confirm = () => true;
-        localStorage.removeItem("moreno-map-review-v2");
-        localStorage.removeItem("moreno-map-review-v1");
-      });
-      const reviewFile = (name, taskId, note) => ({
-        name,
-        mimeType: "application/json",
-        buffer: Buffer.from(JSON.stringify({
-          schema_version: 2,
-          generated_at: "2026-11-26T00:00:00.000Z",
-          scope: "Prueba automatizada sin datos reales.",
-          references: [{
-            id: "rp25",
-            name: "Referencia de prueba",
-            completed_tasks: 1,
-            total_tasks: 5,
-            tasks: [{
-              id: taskId,
-              label: taskId,
-              review_recorded: true,
-              source_document: "Documento de prueba",
-              consulted_at: "2026-11-26",
-              note
-            }]
-          }]
-        }))
-      });
-      await page.locator("#import-review-file").setInputFiles(reviewFile("moreno-slow-review.json", "cadastral", "registro lento"));
-      await page.waitForFunction(() => document.getElementById("review-status")?.getAttribute("aria-busy") === "true");
-      await page.locator("#import-review-file").setInputFiles(reviewFile("moreno-fast-review.json", "legal", "registro rápido"));
-      await page.waitForFunction(() => document.getElementById("review-status")?.textContent.includes("Importación revisada:"));
-      await delay(380);
-      const latestReviewState = await page.evaluate(() => JSON.parse(localStorage.getItem("moreno-map-review-v2") || "{}"));
-      check(Boolean(latestReviewState.rp25?.legal) && latestReviewState.rp25.legal.note === "registro rápido" && !latestReviewState.rp25.cadastral, "mapa-ia: la importación más reciente prevalece sobre una lectura anterior más lenta");
-
-      await page.locator("#import-review-file").setInputFiles(reviewFile("moreno-slow-review.json", "cadastral", "debe descartarse al borrar"));
-      await page.waitForFunction(() => document.getElementById("review-status")?.getAttribute("aria-busy") === "true");
-      await page.locator("#clear-review").click();
-      await delay(380);
-      const clearedReviewState = await page.evaluate(() => ({
-        current: localStorage.getItem("moreno-map-review-v2"),
-        legacy: localStorage.getItem("moreno-map-review-v1"),
-        status: document.getElementById("review-status")?.textContent,
-        busy: document.getElementById("review-status")?.getAttribute("aria-busy")
-      }));
-      check(clearedReviewState.current === null && clearedReviewState.legacy === null, "mapa-ia: una importación pendiente no restaura la bitácora después de borrarla");
-      check(clearedReviewState.status.includes("Bitácora local borrada") && !clearedReviewState.busy, "mapa-ia: el resultado del borrado permanece visible después de finalizar la lectura obsoleta");
-
-      await page.locator("#map-verification-disclosure > summary").click();
-      check(await page.locator("#map-verification-title").isVisible(), "mapa-ia: la mesa de fuentes oficiales no se abre");
-
-      await page.locator("#map-data-export-disclosure > summary").click();
-      check(await page.locator("#map-data-export-disclosure").evaluate(element => element.open), "mapa-ia: el grupo de exportaciones no se abre");
-      check(await page.locator("#export-csv").isVisible() && await page.locator("#export-geojson").isVisible(), "mapa-ia: las descargas CSV y GeoJSON quedan disponibles al abrir exportaciones");
+      check(await page.locator(".map-sidebar").isVisible(), "mapa-ia: el panel lateral permanece disponible en móvil");
+      check(await page.locator(".map-navigation-help").isVisible(), "mapa-ia: las instrucciones de uso siguen visibles en móvil");
+      check(await page.locator(".map-legend").isVisible(), "mapa-ia: la leyenda sigue visible en móvil");
+      const interactiveCanvasReady = await page.locator(".maplibregl-canvas").count() > 0;
+      if (interactiveCanvasReady) {
+        check(await page.locator("#map-touch-controls").isVisible(), "mapa-ia: los controles táctiles aparecen en móvil");
+        const touchTargets = await page.locator("#map-zoom-in, #map-zoom-out, #map-fit-all").evaluateAll(elements => elements.map(element => {
+          const box = element.getBoundingClientRect();
+          return { width: box.width, height: box.height };
+        }));
+        check(touchTargets.length === 3 && touchTargets.every(box => box.width >= 44 && box.height >= 44), "mapa-ia: zoom y reencuadre tienen objetivos táctiles de al menos 44 px");
+        await page.locator("#map-zoom-in").click();
+        await page.locator("#map-zoom-out").click();
+        await page.locator("#map-fit-all").click();
+        check(await page.locator("#map-fit-all").isEnabled(), "mapa-ia: los controles de zoom y reencuadre siguen operativos en móvil");
+      } else {
+        check(await page.locator(".map-static-fallback").isVisible(), "mapa-ia: el esquema alternativo queda disponible sin cartografía interactiva");
+      }
 
       const thesisCard = page.locator('[data-map-item="rp25"]');
-      await thesisCard.locator("summary").click();
+      if (!(await thesisCard.evaluate(element => element.open))) await thesisCard.locator("summary").click();
       const thesisContact = thesisCard.locator(".map-item-actions .map-contact-link");
       check(await thesisContact.isVisible(), "mapa-ia: la consulta comercial de la tesis no queda al inicio de la ficha");
-      check((await thesisContact.innerText()).includes("Conversar sobre esta tesis"), "mapa-ia: la acción comercial identifica que se trata de una tesis");
+      check((await thesisContact.innerText()).includes("Consultar esta tesis con MORENO"), "mapa-ia: la acción comercial identifica el destino de consulta vigente");
       check(await thesisCard.locator(".map-item-actions .map-brief-button").isVisible(), "mapa-ia: la descarga de ficha no queda accesible junto a la acción comercial");
       const actionOrder = await thesisCard.locator(".map-item-actions, .map-review-panel").evaluateAll(elements => elements.map(element => element.className));
       check(actionOrder.indexOf("map-item-actions") >= 0 && actionOrder.indexOf("map-review-panel") > actionOrder.indexOf("map-item-actions"), "mapa-ia: las acciones comerciales y la ficha aparecen antes de la bitácora extensa");
 
       const contactHref = await thesisContact.getAttribute("href");
-      const contactTab = await browser.newPage({ viewport: { width: 390, height: 844 } });
-      await contactTab.goto(contactHref, { waitUntil: "domcontentloaded" });
-      await contactTab.locator("#map-reference-context").waitFor({ state: "visible", timeout: 5000 });
-      const handoff = await contactTab.locator("#map-reference-context").innerText();
-      check(handoff.includes("RP25") && (await contactTab.locator("#map-reference-value").inputValue()).includes("rp25"), "mapa-ia: el formulario comercial recupera la referencia seleccionada");
-      await contactTab.close();
+      const contactUrl = new URL(contactHref);
+      const contactMessage = contactUrl.searchParams.get("text") || "";
+      check(contactUrl.hostname === "wa.me" && contactUrl.pathname === "/5491141671674", "mapa-ia: la consulta sale al WhatsApp público de MORENO, no al portal INFO PYME");
+      check(contactMessage.includes("RP25") && contactMessage.includes("rp25"), "mapa-ia: el enlace de WhatsApp conserva la referencia seleccionada");
 
 
       const contactChannelsPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -526,220 +511,30 @@ async function auditOpportunityFlow(browser) {
   const pageErrors = [];
   page.on("pageerror", error => pageErrors.push(error.message));
   try {
-    const ownerResponse = await page.goto(BASE_URL + "/oportunidades/?perfil=propietario&interes=terreno", { waitUntil: "domcontentloaded" });
-    check(Boolean(ownerResponse && ownerResponse.ok()), "oportunidades: el enlace de propietario responde");
-    check(await page.locator("#contact-profile").inputValue() === "Propietario/a", "oportunidades: el enlace de propietario preselecciona el perfil");
-    check(await page.locator("#contact-interest").inputValue() === "Presentar un terreno o inmueble", "oportunidades: el enlace de propietario preselecciona la intención");
-    check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: el recorrido de propietario abre los datos del inmueble");
-    check(await page.locator("#contact-type").isVisible(), "oportunidades: el tipo de oportunidad aparece dentro de los detalles al abrirlos");
-
-    check(await page.locator(".opportunity-path").count() === 3, "oportunidades: existen tres recorridos comerciales diferenciados");
-    const mobilePathColumns = await page.locator(".opportunity-path").evaluateAll(cards => new Set(cards.map(card => Math.round(card.getBoundingClientRect().x))).size);
-    check(mobilePathColumns === 1, "oportunidades: las tarjetas se apilan en una columna en móvil");
-    await page.setViewportSize({ width: 1440, height: 900 });
-    const desktopPathColumns = await page.locator(".opportunity-path").evaluateAll(cards => new Set(cards.map(card => Math.round(card.getBoundingClientRect().x))).size);
-    check(desktopPathColumns === 3, "oportunidades: las tres tarjetas se presentan en columnas independientes en escritorio");
-    await page.setViewportSize({ width: 390, height: 844 });
-    const investorResponse = await page.goto(BASE_URL + "/oportunidades/?perfil=inversor&interes=inversion", { waitUntil: "domcontentloaded" });
-    check(Boolean(investorResponse && investorResponse.ok()), "oportunidades: el enlace de inversor responde");
-    check(await page.locator("#contact-profile").inputValue() === "Inversor/a", "oportunidades: el enlace de inversor preselecciona el perfil");
-    check(await page.locator("#contact-interest").inputValue() === "Explorar una inversión", "oportunidades: el enlace de inversor preselecciona la intención");
-    check(!(await page.locator("#property-data-disclosure").evaluate(element => element.open)), "oportunidades: el recorrido de inversor no abre campos de inmueble que no necesita");
-
-    const developerResponse = await page.goto(BASE_URL + "/oportunidades/?perfil=desarrollador&interes=desarrollo", { waitUntil: "domcontentloaded" });
-    check(Boolean(developerResponse && developerResponse.ok()), "oportunidades: el enlace de desarrollador responde");
-    check(await page.locator("#contact-profile").inputValue() === "Desarrollador/a", "oportunidades: el enlace de desarrollador preselecciona el perfil");
-    check(await page.locator("#contact-interest").inputValue() === "Evaluar una oportunidad de desarrollo", "oportunidades: el enlace de desarrollador preselecciona la intención");
-    check(!(await page.locator("#property-data-disclosure").evaluate(element => element.open)), "oportunidades: el recorrido de desarrollador no abre datos de inmueble que todavía no necesita");
-
-    await page.goto(BASE_URL + "/oportunidades/", { waitUntil: "domcontentloaded" });
-    const editorialPlate = page.locator(".opportunity-flow-plate");
-    check(await editorialPlate.isVisible(), "oportunidades: la lámina editorial de originación está visible");
-    check(await editorialPlate.locator("svg[role='img'] title#opportunity-flow-title").count() === 1, "oportunidades: la lámina tiene título accesible");
-    check(await editorialPlate.locator("svg desc#opportunity-flow-desc").count() === 1, "oportunidades: la lámina tiene descripción accesible");
-    check((await editorialPlate.innerText()).includes("no representa un inmueble"), "oportunidades: la lámina aclara su carácter conceptual");
-    const plateGeometry = await editorialPlate.evaluate(element => {
-      const rect = element.getBoundingClientRect();
-      const svgRect = element.querySelector("svg").getBoundingClientRect();
-      return { width: rect.width, svgWidth: svgRect.width, scrollWidth: element.scrollWidth };
-    });
-    check(plateGeometry.width > 0 && plateGeometry.svgWidth <= plateGeometry.width + 1 && plateGeometry.scrollWidth <= plateGeometry.width + 1, "oportunidades: la lámina no desborda su contenedor");
-    await page.setViewportSize({ width: 320, height: 844 });
-    const mobilePlate = await editorialPlate.evaluate(element => ({
-      viewport: document.documentElement.clientWidth,
-      right: element.getBoundingClientRect().right,
-      columns: getComputedStyle(element.querySelector("figcaption")).gridTemplateColumns.split(" ").length,
-      pathColumns: getComputedStyle(document.querySelector(".opportunity-paths")).gridTemplateColumns.split(" ").length
-    }));
-    check(mobilePlate.right <= mobilePlate.viewport + 1, "oportunidades: la lámina cabe en 320 px");
-    check(mobilePlate.columns === 1 && mobilePlate.pathColumns === 1, "oportunidades: pie y recorridos se apilan en móvil");
-    await page.setViewportSize({ width: 390, height: 844 });
-    const quickStart = page.locator(".opportunity-hero-actions a[href='#opportunity-form']");
-    check(await quickStart.isVisible(), "oportunidades: el acceso directo al formulario está visible en el encabezado");
-    check((await page.locator(".opportunity-hero-note").innerText()).includes("cuatro datos"), "oportunidades: se explica que la consulta puede comenzar con cuatro datos");
-    check(await page.locator(".opportunity-hero-secondary").getAttribute("href") === "#feasibility-disclosure", "oportunidades: la calculadora FOS/FOT queda como recorrido secundario");
-    await quickStart.click();
-    await page.waitForFunction(() => {
-      const target = document.querySelector("#opportunity-form");
-      const header = document.querySelector(".site-header");
-      if (!target || !header) return false;
-      const targetTop = target.getBoundingClientRect().top;
-      const headerBottom = header.getBoundingClientRect().bottom;
-      return targetTop >= headerBottom + 4 && targetTop < window.innerHeight;
-    }, null, { timeout: 3000 });
-    const jumpGeometry = await page.evaluate(() => ({
-      targetTop: document.querySelector("#opportunity-form").getBoundingClientRect().top,
-      headerBottom: document.querySelector(".site-header").getBoundingClientRect().bottom,
-      viewportHeight: window.innerHeight,
-      focusedId: document.activeElement && document.activeElement.id
-    }));
-    check(jumpGeometry.targetTop >= jumpGeometry.headerBottom + 4 && jumpGeometry.targetTop < jumpGeometry.viewportHeight, "oportunidades: el acceso directo sitúa el formulario debajo del encabezado fijo");
-    check(jumpGeometry.focusedId === "opportunity-form", "oportunidades: el acceso directo transfiere el foco al formulario");
-    await page.goto(BASE_URL + "/oportunidades/", { waitUntil: "domcontentloaded" });
-    const optionalDisclosures = [
-      "feasibility-disclosure",
-      "dossier-import-disclosure",
-      "property-data-disclosure",
-      "evidence-disclosure",
-      "context-disclosure"
-    ];
-    for (const id of optionalDisclosures) {
-      check(!(await page.locator("#" + id).evaluate(element => element.open)), "oportunidades: " + id + " inicia contraído");
+    const response = await page.goto(BASE_URL + "/oportunidades/", { waitUntil: "domcontentloaded" });
+    check(Boolean(response && response.ok()), "INFO PYME: el portal responde correctamente");
+    await page.locator("main#main-content").waitFor({ state: "visible", timeout: 5000 });
+    check(await page.locator("h1").count() === 1, "INFO PYME: conserva un único H1");
+    check((await page.locator("h1").innerText()).toLowerCase().includes("info pyme"), "INFO PYME: el título identifica el portal vigente");
+    check((await page.locator("#pyme-total-count").innerText()).toLocaleLowerCase("es-AR").includes("30 noticias"), "INFO PYME: informa el total editorial");
+    check(await page.locator("#pyme-featured .pyme-card").count() === 4, "INFO PYME: presenta cuatro noticias destacadas");
+    check(await page.locator("#pyme-news-grid .pyme-card").count() === 26, "INFO PYME: conserva las otras 26 noticias en el índice");
+    check(await page.locator(".pyme-card").count() === 30, "INFO PYME: el inventario visible contiene las 30 noticias");
+    check(await page.locator(".pyme-featured-tag").count() === 4, "INFO PYME: identifica visualmente las cuatro destacadas");
+    check(await page.locator(".pyme-editorial-note").isVisible(), "INFO PYME: explica el alcance editorial y la fecha de consulta");
+    for (const width of [320, 360, 390, 768, 1024, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await delay(50);
+      const dimensions = await page.evaluate(() => ({
+        viewport: window.innerWidth,
+        document: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth)
+      }));
+      check(dimensions.document <= dimensions.viewport + 1, "INFO PYME: no hay desbordamiento horizontal a " + width + "px");
     }
-    for (const id of ["contact-name","contact-profile","contact-interest","contact-zone"]) {
-      check(await page.locator("#" + id).isVisible(), "oportunidades: el campo esencial " + id + " permanece visible");
-    }
-    check(!(await page.locator("#contact-type").isVisible()), "oportunidades: el tipo de oportunidad queda dentro de los detalles opcionales");
-
-    await page.locator("#contact-name").fill("Contacto de prueba");
-    await page.locator("#contact-profile").selectOption("Propietario/a");
-    await page.locator("#contact-interest").selectOption("Presentar un terreno o inmueble");
-    await page.locator("#contact-zone").fill("La Reja");
-    check(await page.locator("#contact-email").getAttribute("type") === "email", "oportunidades: el email alternativo usa validación nativa");
-    check(await page.locator("#contact-email").isVisible() && !(await page.locator("#contact-email").evaluate(element => element.required)), "oportunidades: el email alternativo es visible y opcional");
-    check(await page.locator("#contact-phone").isVisible() && !(await page.locator("#contact-phone").evaluate(element => element.required)), "oportunidades: el teléfono alternativo es visible y opcional");
-    await page.locator("#contact-email").fill("contacto@example.com");
-    await page.locator("#contact-phone").fill("+54 9 11 5555-0101");
-    check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: elegir una consulta de inmueble revela sus campos opcionales");
-
-    await page.locator("#contact-type").selectOption("Terreno");
-    await page.locator("#contact-address").fill("Calle de prueba 123");
-    await page.locator("#contact-cadastral").fill("Circ. II, Secc. B, Quinta 14");
-    await page.locator("#contact-area").fill("1200");
-    await page.locator("#property-data-disclosure > summary").click();
-    check(!(await page.locator("#property-data-disclosure").evaluate(element => element.open)), "oportunidades: los datos del inmueble pueden volver a contraerse");
-    check(!(await page.locator("#contact-type").isVisible()), "oportunidades: el tipo de oportunidad se oculta al contraer detalles sin perder su valor");
-
-    await page.locator("#evidence-disclosure > summary").click();
-    await page.locator('input[name="documentacion"][value="Plano o mensura"]').check();
-    await page.locator('input[name="verificaciones"][value="Zonificación e indicadores urbanísticos consultados"]').check();
-    await page.locator("#evidence-disclosure > summary").click();
-    await page.locator("#context-disclosure > summary").click();
-    await page.locator("#contact-message").fill("Consulta de prueba para validar el borrador.");
-    await page.locator("#context-disclosure > summary").click();
-
-    await page.locator("#opportunity-form button[type='submit']").click();
-    await page.locator("#contact-preview").waitFor({ state: "visible", timeout: 3000 });
-    check(await page.locator("#contact-message-preview").isEnabled(), "oportunidades: el borrador vigente permite revisar el texto");
-    const message = await page.locator("#contact-message-preview").inputValue();
-    for (const expected of [
-      "Terreno",
-      "Email de contacto: contacto@example.com",
-      "Teléfono de contacto: +54 9 11 5555-0101",
-      "Calle de prueba 123",
-      "Circ. II, Secc. B, Quinta 14",
-      "1200",
-      "Plano o mensura",
-      "Zonificación e indicadores urbanísticos consultados",
-      "Consulta de prueba para validar el borrador."
-    ]) {
-      check(message.includes(expected), "oportunidades: el borrador conserva datos opcionales contraídos: " + expected);
-    }
-    const whatsappHref = await page.locator("#open-whatsapp").getAttribute("href");
-    const whatsappText = new URL(whatsappHref).searchParams.get("text") || "";
-    check(whatsappText === message, "oportunidades: WhatsApp recibe exactamente el borrador revisable");
-
-    await page.locator("#contact-zone").fill("Otra zona de prueba");
-    check(await page.locator("#contact-preview-stale").isVisible(), "oportunidades: cambiar un campo marca el borrador anterior como desactualizado");
-    check(await page.locator("#open-whatsapp").getAttribute("href") === null, "oportunidades: se retira el enlace de WhatsApp cuando el borrador queda desactualizado");
-    check(await page.locator("#open-whatsapp").getAttribute("aria-disabled") === "true", "oportunidades: el enlace desactualizado queda marcado como no disponible");
-    check(await page.locator("#copy-contact-message").isDisabled(), "oportunidades: no se puede copiar un mensaje desactualizado");
-    check(await page.locator("#contact-message-preview").isDisabled(), "oportunidades: el texto desactualizado tampoco queda disponible para copiar manualmente");
-    await page.locator("#opportunity-form button[type='submit']").click();
-    await page.locator("#contact-preview-stale").waitFor({ state: "hidden", timeout: 3000 });
-    const refreshedMessage = await page.locator("#contact-message-preview").inputValue();
-    const refreshedWhatsAppHref = await page.locator("#open-whatsapp").getAttribute("href");
-    check(refreshedMessage.includes("Otra zona de prueba"), "oportunidades: regenerar el borrador incorpora el dato corregido");
-    check(new URL(refreshedWhatsAppHref).searchParams.get("text") === refreshedMessage, "oportunidades: WhatsApp vuelve a recibir exactamente la versión actualizada");
-    check(await page.locator("#copy-contact-message").isEnabled(), "oportunidades: copiar vuelve a habilitarse tras regenerar el borrador");
-    check(await page.locator("#contact-message-preview").isEnabled(), "oportunidades: el texto vuelve a estar disponible para revisar al regenerar");
-
-    await page.locator("#feasibility-disclosure > summary").click();
-    await page.locator("#parcel-area").fill("1200");
-    check(await page.locator("#contact-preview-stale").isVisible(), "oportunidades: modificar los indicadores también invalida el borrador");
-    check(await page.locator("#open-whatsapp").getAttribute("href") === null, "oportunidades: no se puede abrir WhatsApp con indicadores modificados y borrador antiguo");
-    await page.locator("#opportunity-form button[type='submit']").click();
-    await page.locator("#contact-preview-stale").waitFor({ state: "hidden", timeout: 3000 });
-
-    const importedPayload = await page.evaluate(() => {
-      const tools = window.MorenoOpportunityTools;
-      return tools.buildOpportunityDossierExport({
-        fields: {
-          nombre: "Contacto importado",
-          perfil: "Inversor/a",
-          interes: "Explorar una inversión",
-          zona: "Moreno",
-          email_contacto: "importado@example.com",
-          telefono_contacto: "+54 11 4000-1234",
-          tipo: "Terreno",
-          ubicacion: "Referencia de prueba",
-          nomenclatura: "Circ. II, Secc. B, Quinta 14",
-          superficie: "1800 m²",
-          documentacion: ["Plano o mensura"],
-          verificaciones: ["Zonificación e indicadores urbanísticos consultados"],
-          detalle: "Notas recuperadas para revisión."
-        },
-        calculationInput: {
-          areaRaw: "1800",
-          fosRaw: "0,50",
-          fotRaw: "1,20",
-          referenceRaw: "Certificado aportado por el contacto"
-        },
-        internalData: tools.emptyInternalDossier(),
-        generatedAt: "26 de noviembre de 2026, 08:00",
-        exportedAt: "2026-11-26T11:00:00.000Z"
-      });
-    });
-    await page.locator("#dossier-import-disclosure > summary").click();
-    await page.locator("#dossier-import-file").setInputFiles({
-      name: "moreno-expediente-prueba.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(importedPayload))
-    });
-    await page.locator("#validate-dossier-import").click();
-    await page.locator("#dossier-import-actions").waitFor({ state: "visible", timeout: 3000 });
-    check(await page.locator("#dossier-import-actions").isVisible(), "oportunidades: el expediente JSON válido ofrece las acciones de aplicación");
-    await page.locator("#apply-dossier-replace").click();
-    check(await page.locator("#contact-email").inputValue() === "importado@example.com", "oportunidades: el email alternativo se recupera del expediente JSON");
-    check(await page.locator("#contact-phone").inputValue() === "+54 11 4000-1234", "oportunidades: el teléfono alternativo se recupera del expediente JSON");
-    check(await page.locator("#contact-preview").isHidden(), "oportunidades: importar un expediente oculta el borrador anterior");
-    check(await page.locator("#contact-message-preview").inputValue() === "", "oportunidades: la importación limpia el texto del borrador anterior");
-    check(await page.locator("#open-whatsapp").getAttribute("href") === null, "oportunidades: la importación no deja disponible un enlace de WhatsApp con datos anteriores");
-    check(await page.locator("#copy-contact-message").isDisabled(), "oportunidades: la importación deshabilita la copia del borrador anterior");
-    check(await page.locator("#contact-message-preview").isDisabled(), "oportunidades: la importación también bloquea la copia manual del mensaje anterior");
-    check(await page.locator("#contact-profile").inputValue() === "Inversor/a", "oportunidades: la importación recupera el perfil del expediente");
-    check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: la importación revela detalles de inmueble aunque el perfil sea inversor");
-    check(await page.locator("#evidence-disclosure").evaluate(element => element.open), "oportunidades: la importación revela documentación y verificaciones recuperadas");
-    check(await page.locator("#context-disclosure").evaluate(element => element.open), "oportunidades: la importación revela el contexto recuperado");
-    check(await page.locator("#feasibility-disclosure").evaluate(element => element.open), "oportunidades: la importación revela los indicadores y cálculos recuperados");
-    check(!(await page.locator("#dossier-import-disclosure").evaluate(element => element.open)), "oportunidades: el panel de importación se cierra después de aplicar el expediente");
-    check(await page.locator("#contact-address").inputValue() === "Referencia de prueba", "oportunidades: los detalles importados permanecen visibles y completos");
-    check(await page.locator("#parcel-fos").inputValue() === "0,50", "oportunidades: los indicadores importados se conservan");
-    check(await page.locator('input[name="documentacion"][value="Plano o mensura"]').isChecked(), "oportunidades: se recuperan las selecciones documentales");
-    check(pageErrors.length === 0, "oportunidades: errores JavaScript: " + pageErrors.join(" | "));
-    console.log("PASS: oportunidades — preselección de intención, disclosures y borrador completo");
+    check(pageErrors.length === 0, "INFO PYME: errores JavaScript: " + pageErrors.join(" | "));
+    console.log("PASS: INFO PYME — 30 fichas, cuatro destacadas y seis anchos responsive");
   } catch (error) {
-    check(false, "oportunidades: auditoría interrumpida: " + error.message);
+    check(false, "INFO PYME: auditoría responsive interrumpida: " + error.message);
   } finally {
     await page.close();
   }
@@ -751,48 +546,27 @@ async function auditOpportunityFaq(browser) {
   page.on("pageerror", error => pageErrors.push(error.message));
   try {
     const response = await page.goto(BASE_URL + "/oportunidades/", { waitUntil: "domcontentloaded" });
-    check(Boolean(response && response.ok()), "FAQ oportunidades: la página responde correctamente");
-    const items = page.locator(".opportunity-faq-item");
-    check(await items.count() === 5, "FAQ oportunidades: se muestran cinco preguntas");
-    const summaries = await page.locator(".opportunity-faq-item > summary").allInnerTexts();
-    const schemaText = await page.locator("#opportunity-faq-schema").textContent();
-    const schema = JSON.parse(schemaText);
-    check(schema["@type"] === "FAQPage" && schema.mainEntity.length === 5, "FAQ oportunidades: el esquema estructurado contiene cinco respuestas");
-    check(JSON.stringify(summaries.map(value => value.trim())) === JSON.stringify(schema.mainEntity.map(item => item.name)), "FAQ oportunidades: el texto visible coincide con las preguntas del esquema");
-    const answers = await page.locator(".opportunity-faq-answer p").allTextContents();
-    check(JSON.stringify(answers.map(value => value.trim())) === JSON.stringify(schema.mainEntity.map(item => item.acceptedAnswer.text)), "FAQ oportunidades: las respuestas visibles coinciden exactamente con el contenido estructurado");
-    for (let index = 0; index < await items.count(); index += 1) {
-      const item = items.nth(index);
-      check(!(await item.evaluate(element => element.open)), "FAQ oportunidades: la respuesta " + (index + 1) + " inicia contraída");
-      check(await item.locator("summary").isVisible(), "FAQ oportunidades: la pregunta " + (index + 1) + " es visible");
-      check((await item.locator(".opportunity-faq-answer").textContent()).trim().length > 40, "FAQ oportunidades: la respuesta " + (index + 1) + " tiene contenido útil");
-    }
-    const firstSummary = items.first().locator("summary");
-    await firstSummary.focus();
-    await page.keyboard.press("Enter");
-    check(await items.first().evaluate(element => element.open), "FAQ oportunidades: Enter expande la primera respuesta");
-    await page.keyboard.press("Enter");
-    check(!(await items.first().evaluate(element => element.open)), "FAQ oportunidades: Enter vuelve a contraer la respuesta");
-    check(await page.locator(".opportunity-faq-cta").getAttribute("href") === "#opportunity-form", "FAQ oportunidades: el CTA conduce al formulario");
-    const faqTop = await page.locator(".opportunity-faq").evaluate(element => element.getBoundingClientRect().top + window.scrollY);
-    const formTop = await page.locator("#opportunity-form").evaluate(element => element.getBoundingClientRect().top + window.scrollY);
-    check(faqTop < formTop, "FAQ oportunidades: las respuestas aparecen antes del formulario");
-    for (const width of [320, 360, 390, 768, 1024, 1440]) {
-      await page.setViewportSize({ width, height: 900 });
-      await delay(50);
-      const dimensions = await page.evaluate(() => ({
-        viewport: window.innerWidth,
-        document: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth)
-      }));
-      check(dimensions.document <= dimensions.viewport + 1, "FAQ oportunidades: no hay desbordamiento horizontal a " + width + "px");
-      if (width <= 760) {
-        check(await page.locator(".opportunity-faq").evaluate(element => getComputedStyle(element).display === "block"), "FAQ oportunidades: la columna editorial se apila en móvil");
-      }
-    }
-    check(pageErrors.length === 0, "FAQ oportunidades: errores JavaScript: " + pageErrors.join(" | "));
-    console.log("PASS: oportunidades — cinco FAQ, JSON-LD coincidente, teclado y seis anchos");
+    check(Boolean(response && response.ok()), "INFO PYME fuentes: el portal responde correctamente");
+    const links = await page.locator(".pyme-read-link").evaluateAll(elements => elements.map(element => ({
+      href: element.href,
+      target: element.getAttribute("target"),
+      rel: element.getAttribute("rel") || ""
+    })));
+    check(links.length === 30, "INFO PYME fuentes: cada noticia conserva un enlace");
+    check(links.every(link => link.href.startsWith("https://") && link.target === "_blank" && link.rel.includes("noopener") && link.rel.includes("noreferrer")), "INFO PYME fuentes: los 30 enlaces HTTPS abren de forma segura");
+    check(new Set(links.map(link => link.href)).size === 30, "INFO PYME fuentes: no hay URLs duplicadas");
+    const dates = await page.locator(".pyme-card-meta time").allTextContents();
+    check(dates.length === 30 && dates.every(value => value.trim().length > 0), "INFO PYME fuentes: las 30 fichas muestran fecha");
+    const sources = await page.locator(".pyme-card-source").allTextContents();
+    check(sources.length === 30 && sources.every(value => value.trim().startsWith("Publicación:")), "INFO PYME fuentes: las 30 fichas identifican su fuente");
+    const contributionLink = page.locator(".pyme-contribute-band a[href^='https://wa.me/']");
+    check(await contributionLink.isVisible(), "INFO PYME fuentes: el canal para aportar noticias está visible");
+    const contributionUrl = new URL(await contributionLink.getAttribute("href"));
+    check(contributionUrl.hostname === "wa.me" && contributionUrl.pathname === "/5491141671674", "INFO PYME fuentes: el canal editorial apunta al WhatsApp público");
+    check(pageErrors.length === 0, "INFO PYME fuentes: errores JavaScript: " + pageErrors.join(" | "));
+    console.log("PASS: INFO PYME — fuentes HTTPS, fechas, unicidad y canal editorial");
   } catch (error) {
-    check(false, "FAQ oportunidades: auditoría interrumpida: " + error.message);
+    check(false, "INFO PYME fuentes: auditoría interrumpida: " + error.message);
   } finally {
     await page.close();
   }
@@ -803,16 +577,6 @@ async function auditMapFallback(browser) {
   const pageErrors = [];
   page.on("pageerror", error => pageErrors.push(error.message));
   try {
-    await page.addInitScript(() => {
-      localStorage.setItem("moreno-map-review-v2", JSON.stringify({
-        rp25: { cadastral: {
-          completed: true,
-          source_document: "Fuente sintética de auditoría",
-          consulted_at: "2026-11-26",
-          note: "Dato de prueba; no corresponde a un inmueble real."
-        } }
-      }));
-    });
     await page.route("https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js", route => route.abort());
     const response = await page.goto(BASE_URL + "/mapa-ia/", { waitUntil: "domcontentloaded" });
     check(Boolean(response && response.ok()), "mapa-ia fallback: la página responde aunque falle el motor cartográfico");
@@ -820,76 +584,35 @@ async function auditMapFallback(browser) {
     check(await page.locator(".map-static-diagram").count() === 1, "mapa-ia fallback: se genera el esquema SVG sin MapLibre");
     const fallbackReferenceCount = await page.locator("#atlas-total-count").evaluate(element => Number(element.textContent.split("/")[0].trim()));
     check(fallbackReferenceCount > 0, "mapa-ia fallback: el índice publica el total del inventario");
-    check(await page.locator("[data-fallback-reference]").count() === fallbackReferenceCount, "mapa-ia fallback: el índice alternativo incluye todo el inventario");
+    check(await page.locator("[data-fallback-reference]").count() === fallbackReferenceCount, "mapa-ia fallback: el esquema conserva todas las referencias del índice");
     check((await page.locator(".map-static-note").innerText()).includes("no tiene escala"), "mapa-ia fallback: el alcance no parcelario queda explicado");
-    check(await page.locator('[data-fallback-reference="terreno-san-juan-bautista-1374"]').count() === 1, "mapa-ia fallback: una publicación nueva permanece en el índice aunque no tenga coordenadas");
-    check((await page.locator('[data-fallback-reference="terreno-san-juan-bautista-1374"]').innerText()).includes("Geolocalización pendiente"), "mapa-ia fallback: las publicaciones sin coincidencia no reciben un punto ficticio");
-    check((await page.locator(".map-review-privacy").innerText()).includes("sin cifrado"), "mapa-ia: la bitácora advierte que el almacenamiento local no está cifrado");
-    check(await page.locator("#clear-review").isVisible(), "mapa-ia: el control para borrar la bitácora está disponible");
-    check(await page.locator("#duplicate-review-disclosure").evaluate(element => element.open), "mapa-ia: la bandeja de coincidencias se abre por defecto en escritorio");
-    const duplicatePairCount = await page.locator("#duplicate-review-list .map-duplicate-pair").count();
-    check(duplicatePairCount >= 2, "mapa-ia: la bandeja muestra las relaciones de posible duplicación declaradas");
-    const duplicateReviewText = await page.locator("#duplicate-review-list").innerText();
-    check(duplicateReviewText.includes("PIR25") && duplicateReviewText.includes("Polo 24"), "mapa-ia: las dos relaciones territoriales conocidas quedan identificadas");
-    const duplicateReferenceHrefs = await page.locator("#duplicate-review-list [data-duplicate-reference]").evaluateAll(links => links.map(link => link.href));
-    check(duplicateReferenceHrefs.length >= 4 && duplicateReferenceHrefs.every(href => Boolean(new URL(href).searchParams.get("ref"))), "mapa-ia: cada relación ofrece enlaces directos a ambas fichas");
-    check((await page.locator(".map-duplicate-review-note").innerText()).includes("no se fusiona"), "mapa-ia: la interfaz advierte que las coincidencias no fusionan publicaciones");
-    check(await page.evaluate(() => Boolean(localStorage.getItem("moreno-map-review-v2"))), "mapa-ia: la auditoría cargó una bitácora sintética en el navegador");
-    await page.evaluate(() => { window.confirm = () => true; });
-    await page.locator("#clear-review").click();
-    check(await page.evaluate(() => localStorage.getItem("moreno-map-review-v2") === null && localStorage.getItem("moreno-map-review-v1") === null), "mapa-ia: borrar la bitácora elimina las claves actuales y heredadas");
-    check((await page.locator("#review-status").innerText()).includes("Bitácora local borrada"), "mapa-ia: la interfaz confirma el borrado realizado");
-
-    await page.setViewportSize({ width: 390, height: 844 });
-    const duplicateDisclosure = page.locator("#duplicate-review-disclosure");
-    check(!(await duplicateDisclosure.evaluate(element => element.open)), "mapa-ia: la bandeja se pliega por defecto en móvil");
-    await duplicateDisclosure.locator("> summary").click();
-    check(await duplicateDisclosure.evaluate(element => element.open), "mapa-ia: la bandeja se abre con un toque en móvil");
-    check(await page.locator(".map-duplicate-review-note").isVisible(), "mapa-ia: la advertencia de revisión humana queda visible al abrir la bandeja");
-    const fallbackLayoutIsNatural = await page.locator(".map-canvas.is-static-fallback").evaluate(element => {
-      const panel = element.querySelector(".map-static-fallback");
-      const diagram = panel && panel.querySelector(".map-static-diagram");
-      const indexHeading = panel && panel.querySelector(".map-static-index-title");
-      if (!panel || !diagram || !indexHeading) return false;
-      const diagramBox = diagram.getBoundingClientRect();
-      const headingBox = indexHeading.getBoundingClientRect();
-      return getComputedStyle(element).overflowY === "visible" &&
-        getComputedStyle(panel).overflowY === "visible" &&
-        element.scrollHeight <= element.clientHeight + 1 &&
-        panel.scrollHeight <= panel.clientHeight + 1 &&
-        headingBox.top >= diagramBox.bottom - 1;
-    });
-    check(fallbackLayoutIsNatural, "mapa-ia fallback: el diagrama y el índice fluyen sin solapamiento ni scroll anidado en móvil");
-    check(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), "mapa-ia fallback: no hay desbordamiento horizontal en móvil");
-    check(await page.locator("[data-fallback-reference]").count() === fallbackReferenceCount, "mapa-ia fallback: todas las referencias siguen dentro del flujo visible");
-    await page.locator("#kind-filter").selectOption("industrial");
-    check(await page.locator("[data-fallback-reference]").count() === 2, "mapa-ia fallback: el esquema respeta el filtro industrial");
-    const fallbackNames = await page.locator(".map-static-index-button").allInnerTexts();
-    check(fallbackNames.some(value => value.includes("RP25")) && fallbackNames.some(value => value.includes("Ecoparque")), "mapa-ia fallback: las dos referencias industriales permanecen identificables");
-
-    await page.locator('[data-fallback-reference="rp25"]').click();
-    check(new URL(page.url()).searchParams.get("ref") === "rp25", "mapa-ia fallback: seleccionar una referencia actualiza el enlace compartible");
-    check(await page.locator('[data-map-item="rp25"]').evaluate(element => element.open), "mapa-ia fallback: seleccionar una referencia abre su ficha");
-    check(await page.locator('[data-map-item="rp25"]').evaluate(element => element.classList.contains("is-active")), "mapa-ia fallback: la selección se sincroniza con el inventario");
-
-    await page.locator("#search").fill("sin coincidencias");
-    check(await page.locator("[data-fallback-reference]").count() === 0, "mapa-ia fallback: una búsqueda vacía no conserva marcadores ajenos al filtro");
-    check(await page.locator(".map-static-empty").isVisible(), "mapa-ia fallback: informa cuando no hay coincidencias");
+    check(await page.locator('[data-fallback-reference="base-aerea-moreno-norte"]').count() === 1, "mapa-ia fallback: una referencia sin coordenadas sigue accesible en el índice alternativo");
+    check(await page.locator('.map-pin[aria-label*="Base Aérea"]').count() === 0, "mapa-ia fallback: una referencia sin coordenadas no recibe un marcador ficticio");
+    check(await page.locator("#search").isVisible(), "mapa-ia fallback: el buscador sigue disponible");
+    await page.locator("#search").fill("Base Aérea");
+    await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.includes("coincidencias"), null, { timeout: 5000 });
+    check(await page.locator('[data-fallback-reference="base-aerea-moreno-norte"]').count() === 1, "mapa-ia fallback: la búsqueda encuentra una referencia sin geolocalización");
+    check((await page.locator("#search-results-status").innerText()).includes("fichas sin coordenadas verificables siguen en el índice"), "mapa-ia fallback: el recuento declara las referencias sin punto");
+    check(await page.locator("#map-touch-controls").isHidden(), "mapa-ia fallback: oculta controles interactivos cuando no existe motor cartográfico");
+    await page.locator("#search").fill("zzzxqv 918273");
+    check(await page.locator("[data-fallback-reference]").count() === 0, "mapa-ia fallback: una búsqueda vacía no conserva referencias ajenas al filtro");
+    check(await page.locator("#map-empty-state").isVisible(), "mapa-ia fallback: informa cuando no hay coincidencias");
     await page.locator("#reset-map").click();
     check(await page.locator("[data-fallback-reference]").count() === fallbackReferenceCount, "mapa-ia fallback: restablecer recupera todo el inventario");
-
+    await page.setViewportSize({ width: 390, height: 844 });
+    check(await page.locator(".map-sidebar").isVisible(), "mapa-ia fallback: el panel lateral permanece visible en móvil");
+    check(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), "mapa-ia fallback: no hay desbordamiento horizontal en móvil");
     const screenshotDir = path.join(ROOT, "test-results", "visual");
     fs.mkdirSync(screenshotDir, { recursive: true });
     await page.screenshot({ path: path.join(screenshotDir, "mapa-ia-fallback-mobile.png"), fullPage: true, animations: "disabled" });
     check(pageErrors.length === 0, "mapa-ia fallback: errores JavaScript: " + pageErrors.join(" | "));
-    console.log("PASS: mapa-ia — esquema alternativo sin MapLibre, filtros, selección y enlace directo");
+    console.log("PASS: mapa-ia — esquema alternativo, búsqueda, índice sin coordenadas y controles seguros");
   } catch (error) {
     check(false, "mapa-ia fallback: auditoría interrumpida: " + error.message);
   } finally {
     await page.close();
   }
 }
-
 async function auditLegacyMapRedirect(browser) {
   const legacyUrl = BASE_URL + "/web/mapa-moreno/";
   const response = await fetch(legacyUrl);

@@ -475,7 +475,12 @@
     "casa-libertad-300-175": "Casa 3 ambientes · Libertad al 300",
     "casa-puente-marquez-1202-1000": "Casa 4 ambientes con parque y pileta · Puente de Márquez 1202",
     "terreno-san-diego-1687": "Terreno · San Diego Club de Campo · 1.687 m²",
-    "terreno-san-diego-2175-historico": "Lote forestado · San Diego Club de Campo · 2.175 m² · antecedente"
+    "terreno-san-diego-2175-historico": "Lote forestado · San Diego Club de Campo · 2.175 m² · antecedente",
+    "base-aerea-moreno-norte": "Base Aérea Moreno Norte · Cuartel V",
+    "promeba-trujui": "PRO.ME.BA IV · Haras Trujui y Santa Brígida",
+    "promeba-cuartel-v": "PRO.ME.BA · Cuartel V · ocho barrios",
+    "mui-mo-monitoreo-urbano-inmobiliario": "MUI-MO · Monitoreo Urbano Inmobiliario",
+    "utopia-bonaerense-moreno": "Utopía Bonaerense · Parque urbano e infraestructura"
   });
 
   function listMapReferenceIds() {
