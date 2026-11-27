@@ -4927,6 +4927,23 @@ const nov27Turn7FollowupEntries = [
 ];
 publishedProperties.push(...nov27Turn7FollowupEntries);
 
+
+const turn7Sofocles = publishedProperties.find(item => item.id === "sofocles-3000-terreno-casa-330");
+if (turn7Sofocles) {
+  turn7Sofocles.source = "https://terreno.mercadolibre.com.ar/MLA-2256050333-terreno-y-casa-en-venta-zona-industrial-moreno-_JM";
+  turn7Sofocles.sourceAlternates = [
+    ...(turn7Sofocles.sourceAlternates || []),
+    { url: "https://proppies.app/propiedad/buenos-aires/moreno/terreno-en-venta-en-francisco-alvarez-45664953", label: "Ficha sindicada: informa 100 m² cubiertos; el aviso original de MercadoLibre solo publica 330 m² totales" }
+  ];
+  turn7Sofocles.agency = "Calderón Propiedades";
+  turn7Sofocles.contact = "Contacto mediante mensajería de MercadoLibre; no se publica teléfono ni persona de contacto. Publicador identificado: Calderón Propiedades.";
+  turn7Sofocles.surfaceNote = "Terreno de 330 m² totales según el aviso original de MercadoLibre. Una ficha sindicada de Proppies informa 100 m² cubiertos; esa superficie no aparece en el aviso original y queda pendiente de documentación.";
+  turn7Sofocles.observations = "El aviso original describe una construcción con living comedor, cocina integrada, baño y dormitorios, preparada para continuar una planta alta; la ficha sindicada de Proppies atribuye 100 m² cubiertos. La descripción ubica el inmueble a metros de Colectora Norte de Acceso Oeste km 41 y lo denomina zona industrial. Verificar superficie cubierta, planos, zonificación parcelaria y habilitaciones.";
+  turn7Sofocles.lastCheckedAt = "2026-11-27";
+  turn7Sofocles.availabilityStatus = "Pendiente de revalidación";
+  turn7Sofocles.verificationStatus = "MercadoLibre indexó el aviso hace tres semanas, pero el acceso directo devolvió 403 en esta revisión; Proppies conserva una ficha sindicada. Precio y 330 m² totales visibles, superficie cubierta no confirmada en la fuente original. Disponibilidad no confirmada.";
+}
+
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
   ...opportunities.map(item => ({ ...item, type: "opportunity" })),
