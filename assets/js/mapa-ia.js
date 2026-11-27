@@ -3501,7 +3501,7 @@ const nov27CurrentReviewEntries = [
     "address": "Intendente Corvalán 2302, Moreno",
     "source": "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememhoin-maria-eugenia-residences-village-maria-eugenia-50620018.html",
     "agency": "Grupo Vaccaro · desarrolladora",
-    "contact": "Oficina María Eugenia R&V: +54 11 4492-2817 · WhatsApp: +54 11 5053-5918 · info@grupovaccaro.com · atencionalcliente@grupovaccaro.com · showroom en Intendente Corvalán 2302.",
+    "contact": "Oficina María Eugenia R&V: +54 11 4492-28174 según sucursales oficiales; Oficina Moreno: +54 11 4492-2817; WhatsApp general: +54 11 5053-5918; info@grupovaccaro.com · atencionalcliente@grupovaccaro.com · showroom en Intendente Corvalán 2302. El teléfono de la sucursal María Eugenia aparece con un dígito adicional frente al de Oficina Moreno: confirmar al contactar.",
     "price": "Venta desde USD 139.000; alquiler desde USD 700 según la misma ficha. No usar el importe de alquiler como precio de venta.",
     "currency": "USD",
     "lat": null,
