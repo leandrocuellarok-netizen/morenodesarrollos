@@ -527,7 +527,7 @@
 /* Índice dinámico del atlas: el recuento sigue los filtros y nunca representa disponibilidad. */
 .map-atlas-index {
   display: grid;
-  grid-template-columns: minmax(220px, 1.45fr) repeat(4, minmax(105px, .55fr));
+  grid-template-columns: minmax(220px, 1.45fr) repeat(5, minmax(95px, .55fr));
   margin: 14px 0 16px;
   border-top: 1px solid #a9a79b;
   border-bottom: 1px solid #a9a79b;
@@ -1224,4 +1224,55 @@
   border-color: #8b5b43;
   background: #8b5b43;
   color: #f5f2e9;
+}
+
+
+/* Publicaciones inmobiliarias: capa separada de las tesis territoriales. */
+.published-dot {
+  border-radius: 0;
+  background: #e7d8c9;
+  border: 1.5px solid #80533a;
+  clip-path: polygon(50% 0, 90% 25%, 90% 75%, 50% 100%, 10% 75%, 10% 25%);
+}
+.map-pin-published {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #f1efe5;
+  border-radius: 0;
+  background: #b98768;
+  box-shadow: 0 0 0 1.5px #80533a, 0 1px 6px #1d292b55;
+  clip-path: polygon(50% 0, 90% 25%, 90% 75%, 50% 100%, 10% 75%, 10% 25%);
+}
+.map-pin-published.is-selected {
+  transform: scale(1.18);
+}
+.map-item-published {
+  border-left: 3px solid #b98768;
+}
+.map-item-published > summary > span {
+  color: #76523f;
+}
+.map-published-intro {
+  margin: 8px 0 14px;
+  color: #686b62;
+  font: 12px/1.55 var(--sans);
+}
+.map-published-pending {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 8px;
+  border: 1px dashed #9a8a7e;
+  color: #6c5d53;
+  font: 10px/1.4 var(--sans);
+}
+.map-item-published .map-source-primary {
+  font-weight: 700;
+}
+@media (max-width: 760px) {
+  .map-atlas-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .map-published-intro {
+    font-size: 11px;
+  }
 }
