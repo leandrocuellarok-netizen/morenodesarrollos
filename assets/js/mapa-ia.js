@@ -6576,6 +6576,55 @@ function publishedDiligenceSummary(item) {
 }
 
 
+
+function normalizePublishedPhone(value) {
+  const text = String(value || "").trim();
+  const digits = text.replace(/\D/g, "");
+  if (digits.length < 8 || digits.length > 15) return null;
+  return {
+    value: text.replace(/\s+/g, " "),
+    href: "tel:" + (text.startsWith("+") ? "+" : "") + digits
+  };
+}
+
+function publishedContactChannels(item) {
+  if (!item || typeof item !== "object") return { phones: [], emails: [] };
+  const phonePattern = /\+54\s*(?:9\s*)?(?:\(?\d{2,4}\)?[\s.-]*){1,2}\d{3,4}|\(?0(?:11|237|2320|2324|810)\)?[\s.-]?\d{3,4}[\s.-]?\d{3,4}/gi;
+  const phoneCandidates = [];
+
+  [item.phone, item.contact].forEach((raw, index) => {
+    const text = String(raw || "");
+    const matches = text.match(phonePattern) || [];
+    matches.forEach(candidate => phoneCandidates.push(candidate));
+    // The dedicated phone field may contain a complete number in another format.
+    if (index === 0 && text && !matches.length) phoneCandidates.push(text);
+  });
+
+  const phonesByHref = new Map();
+  phoneCandidates.forEach(candidate => {
+    const channel = normalizePublishedPhone(candidate);
+    if (channel && !phonesByHref.has(channel.href)) phonesByHref.set(channel.href, channel);
+  });
+
+  const emailPattern = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi;
+  const emailCandidates = [item.email, item.contact].flatMap(raw =>
+    String(raw || "").match(emailPattern) || []
+  );
+  const emailsByAddress = new Map();
+  emailCandidates.forEach(candidate => {
+    const value = candidate.trim();
+    const key = value.toLocaleLowerCase("en-US");
+    if (value && !emailsByAddress.has(key)) {
+      emailsByAddress.set(key, { value, href: "mailto:" + value });
+    }
+  });
+
+  return {
+    phones: Array.from(phonesByHref.values()),
+    emails: Array.from(emailsByAddress.values())
+  };
+}
+
 function normalizeDuplicateSourceUrl(value) {
   try {
     const url = new URL(String(value || "").trim());
@@ -8322,13 +8371,23 @@ function initMapPage(doc) {
         pending.textContent = "Ubicación textual · geolocalización pendiente";
         actions.append(pending);
       }
-      if (item.phone) {
+      const publicChannels = publishedContactChannels(item);
+      publicChannels.phones.forEach((channel, index) => {
         const phoneLink = doc.createElement("a");
-        phoneLink.className = "map-contact-link";
-        phoneLink.href = "tel:" + item.phone.replace(/[^+\d]/g, "");
-        phoneLink.textContent = "Llamar al anunciante ↗";
+        phoneLink.className = "map-public-contact-link map-public-contact-phone";
+        phoneLink.href = channel.href;
+        phoneLink.textContent = "Llamar · " + channel.value;
+        phoneLink.setAttribute("aria-label", "Llamar al contacto publicado " + (index + 1) + " de " + item.name + ": " + channel.value);
         actions.append(phoneLink);
-      }
+      });
+      publicChannels.emails.forEach((channel, index) => {
+        const emailLink = doc.createElement("a");
+        emailLink.className = "map-public-contact-link map-public-contact-email";
+        emailLink.href = channel.href;
+        emailLink.textContent = "Email · " + channel.value;
+        emailLink.setAttribute("aria-label", "Enviar email al contacto publicado " + (index + 1) + " de " + item.name + ": " + channel.value);
+        actions.append(emailLink);
+      });
       body.append(actions);
       const diligence = publishedDiligenceSummary(item);
       if (diligence) {
@@ -8837,7 +8896,7 @@ function initMapPage(doc) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches,
-    availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, collectPotentialDuplicatePairs,
+    availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, publishedContactChannels, collectPotentialDuplicatePairs,
     paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE,
     resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached,
     readGeorefCache, writeGeorefCache, GEOREF_MAX_CONCURRENCY,
