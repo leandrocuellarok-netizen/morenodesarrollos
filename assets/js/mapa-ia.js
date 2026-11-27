@@ -8115,9 +8115,9 @@ const turn12NewRecords = [
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
+    "availabilityStatus": "Pendiente de revalidación",
     "geolocationStatus": "Pendiente: ubicación textual conservada; no se asignan coordenadas manuales. Georef debe confirmar una coincidencia inequívoca.",
-    "verificationStatus": "Ficha directa accesible el 27/11/2026; precio y disponibilidad comercial sujetos a confirmación escrita del anunciante."
+     "verificationStatus": "La ficha directa permanece accesible, pero el índice de la página figura con rastreo antiguo (1,3 años); el aviso no informa fecha de actualización. Mantener como antecedente publicado pendiente de confirmación directa de vigencia."
   },
   {
     "id": "terreno-haras-maria-victoria-lote32-800",
