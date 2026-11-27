@@ -9993,7 +9993,7 @@ function buildCsv(items) {
   const headers = [
     "tipo", "nombre", "latitud_referencia", "longitud_referencia", "categoria", "nivel_evidencia",
     "linea_a_investigar", "evidencia_publica", "estado_de_verificacion", "proximo_paso", "fuente",
-    "alcance_de_coordenada", "localidad", "ubicacion_publicada", "direccion_publicada", "anunciante",
+    "alcance_de_coordenada", "fuente_de_coordenada", "fecha_de_georreferenciacion", "localidad", "ubicacion_publicada", "direccion_publicada", "anunciante",
     "contacto_publico", "precio_publicado", "moneda", "superficie_terreno_m2", "superficie_cubierta_m2",
     "nota_de_superficie", "fecha_aviso", "fecha_revision", "geolocalizacion", "disponibilidad",
     "actividad", "tipo_de_evidencia", "nivel_de_confianza", "fecha_de_fuente", "fecha_de_consulta"
@@ -10002,9 +10002,11 @@ function buildCsv(items) {
     const isLocality = item.type === "locality";
     const isPublished = item.type === "published";
     const coordinatesAvailable = hasCoordinates(item);
-    const coordinateScope = isLocality
-      ? "Coordenada de referencia de localidad; no identifica una parcela."
-      : (isPublished ? (coordinatesAvailable ? "Georreferencia aproximada de dirección por Georef; no parcelaria." : "Geolocalización pendiente; ubicación textual conservada.") : "Centro aproximado de corredor o área; no identifica una parcela.");
+    const coordinateScope = !coordinatesAvailable
+      ? (isPublished ? "Geolocalización pendiente; ubicación textual conservada." : "Sin coordenada trazable; la ficha permanece en el índice.")
+      : (item.coordinatePrecision || (isPublished ? "Coincidencia inequívoca de dirección por Georef; no parcelaria." : "Punto de referencia con fuente cartográfica identificada; no parcelario."));
+    const coordinateSourceUrl = isLocality ? item.coordinateSource : (isPublished ? item.geolocationSource : item.coordinateSource);
+    const coordinateCheckedAt = isLocality ? item.coordinateCheckedAt : (isPublished ? item.geolocationCheckedAt : item.coordinateCheckedAt);
     const base = [
       isLocality ? "localidad" : (isPublished ? item.recordType : "tesis"), item.name,
       coordinatesAvailable ? item.lat : "", coordinatesAvailable ? item.lng : "",
@@ -10014,7 +10016,7 @@ function buildCsv(items) {
       isLocality ? "Localidad de referencia; no es una evaluación parcelaria." : (isPublished ? item.observations : item.evidence),
       isLocality ? "Centro aproximado de localidad; no parcelario." : (isPublished ? item.verificationStatus : item.status),
       isLocality ? "Definir zona y recopilar información catastral y normativa." : (isPublished ? "Confirmar vigencia, precio, stock y documentación con el anunciante." : item.next),
-      item.source || "", coordinateScope
+      item.source || "", coordinateScope, coordinateSourceUrl || "", coordinateCheckedAt || ""
     ];
     const details = isPublished ? [
       item.locality, item.location || item.address, item.address, item.agency, item.contact,
@@ -10033,11 +10035,12 @@ function buildGeoJson(items) {
     const isLocality = item.type === "locality";
     const isPublished = item.type === "published";
     const evidenceLevel = isLocality ? "referencia territorial" : (isPublished ? "publicación comercial" : (item.stage === "hypothesis" ? "hipotesis de prospeccion" : "contexto con fuente publica"));
-    const coordinateScope = isLocality
-      ? "Centro aproximado de localidad; no identifica una parcela."
-      : (isPublished
-        ? (hasCoordinates(item) ? "Georreferencia aproximada de dirección por Georef; no representa parcela." : "Geolocalización pendiente; no se asignó coordenada.")
-        : (hasCoordinates(item) ? "Centro aproximado de corredor o área; no identifica una parcela." : "Sin coordenada precisa; la fuente no permite ubicar un punto ni identifica una parcela."));
+    const coordinatesAvailable = hasCoordinates(item);
+    const coordinateScope = !coordinatesAvailable
+      ? (isPublished ? "Geolocalización pendiente; no se asignó coordenada." : "Sin coordenada trazable; la ficha permanece en el índice.")
+      : (item.coordinatePrecision || (isPublished ? "Coincidencia inequívoca de dirección por Georef; no representa parcela." : "Punto de referencia con fuente cartográfica identificada; no parcelario."));
+    const coordinateSourceUrl = isLocality ? item.coordinateSource : (isPublished ? item.geolocationSource : item.coordinateSource);
+    const coordinateCheckedAt = isLocality ? item.coordinateCheckedAt : (isPublished ? item.geolocationCheckedAt : item.coordinateCheckedAt);
     const geometry = hasCoordinates(item) ? { type: "Point", coordinates: [Number(item.lng), Number(item.lat)] } : null;
     return {
       type: "Feature",
@@ -10051,6 +10054,8 @@ function buildGeoJson(items) {
         verification_status: isLocality ? "Referencia geográfica de localidad; no es una evaluación parcelaria." : (isPublished ? item.verificationStatus : item.status),
         next_step: isLocality ? "Definir zona y recopilar información catastral y normativa." : (isPublished ? "Confirmar vigencia, precio, disponibilidad, dominio y documentación." : item.next),
         source_url: item.source || null, coordinate_scope: coordinateScope,
+        coordinate_source_url: coordinateSourceUrl || null, coordinate_checked_at: coordinateCheckedAt || null,
+        coordinate_precision: item.coordinatePrecision || (isPublished ? item.geolocationStatus : null),
         activity: item.activity || (isPublished ? "Actividad inmobiliaria publicada" : (kindLabel[item.kind] || null)),
         evidence_type: evidenceMetadata(item).evidenceType, confidence_level: evidenceMetadata(item).confidence,
         source_date: evidenceMetadata(item).sourceDate || null, source_consulted_at: evidenceMetadata(item).consultedAt || null,
@@ -10068,7 +10073,7 @@ function buildGeoJson(items) {
     type: "FeatureCollection",
     name: "Mapa IA de Moreno — referencias territoriales y publicaciones inmobiliarias",
     description: "Exportación de las referencias visibles del inventario exploratorio de MORENO.",
-    disclaimer: "Las coordenadas de localidades y de tesis que sí tienen punto son aproximadas. Las referencias sin ubicación precisa y las publicaciones comerciales conservan geometry:null hasta obtener evidencia suficiente. Ninguna coordenada identifica una parcela ni acredita titularidad, disponibilidad, zonificación, factibilidad o rentabilidad.",
+    disclaimer: "Solo se exportan puntos con fuente cartográfica y fecha de verificación registradas. Las referencias sin coordenada trazable y las publicaciones sin coincidencia inequívoca conservan geometry:null y siguen en el índice. Ninguna coordenada identifica una parcela ni acredita titularidad, disponibilidad, zonificación, factibilidad o rentabilidad.",
     features
   };
 }
@@ -10102,8 +10107,8 @@ function buildTerritorialBrief(item, generatedAt) {
     ? new Date(generatedAt).toISOString()
     : new Date().toISOString();
   const localityScope = coordinatesAvailable
-    ? "Centro aproximado de corredor o área; no identifica una parcela."
-    : "Sin coordenada precisa; la fuente no permite ubicar un punto ni identifica una parcela.";
+    ? (item.coordinatePrecision || "Punto de referencia con fuente cartográfica identificada; no parcelario.")
+    : "Sin coordenada trazable; la ficha se conserva para investigación documental.";
   const stageLabel = item.stage === "hypothesis"
     ? "Hipótesis de prospección"
     : "Contexto con fuente pública";
@@ -10119,8 +10124,11 @@ function buildTerritorialBrief(item, generatedAt) {
       coordinates: {
         latitude: Number.isFinite(latitude) ? latitude : null,
         longitude: Number.isFinite(longitude) ? longitude : null,
-        scope: localityScope
+        scope: localityScope,
+        sourceUrl: coordinatesAvailable ? safeTerritorialSource(item.coordinateSource) : null,
+        checkedAt: coordinatesAvailable ? item.coordinateCheckedAt : null
       },
+      coordinateSourceLabel: item.coordinateSourceLabel || null,
       lineToInvestigate: String(item.business || "").trim().slice(0, 1200),
       evidence: String(item.evidence || "").trim().slice(0, 1600),
       evidenceType: evidenceMetadata(item).evidenceType, confidence: evidenceMetadata(item).confidence,
@@ -10158,6 +10166,12 @@ function buildTerritorialBriefHtml(brief) {
   const coordinateText = Number.isFinite(coordinates.latitude) && Number.isFinite(coordinates.longitude)
     ? coordinates.latitude.toFixed(5) + ", " + coordinates.longitude.toFixed(5)
     : "No informadas";
+  const safeCoordinateSource = safeTerritorialSource(coordinates.sourceUrl);
+  const coordinateSourceMarkup = safeCoordinateSource
+    ? '<a href="' + escapeTerritorialHtml(safeCoordinateSource) + '" target="_blank" rel="noopener noreferrer">' +
+      escapeTerritorialHtml(reference.coordinateSourceLabel || "Fuente cartográfica") + "</a>"
+    : "<span>Sin fuente cartográfica; no se representa un punto.</span>";
+  const coordinateCheckedAt = coordinates.checkedAt ? " · Verificada: " + escapeTerritorialHtml(coordinates.checkedAt) : "";
   const sourceMarkup = safeSource
     ? '<a href="' + escapeTerritorialHtml(safeSource) + '" target="_blank" rel="noopener noreferrer">' +
       escapeTerritorialHtml(safeSource) + "</a>"
@@ -10221,7 +10235,8 @@ function buildTerritorialBriefHtml(brief) {
     '</p><p class="muted">La disponibilidad y la identificación parcelaria no se presuponen.</p></section>' +
     "<section><h2>Próximo paso sugerido</h2><p>" + escapeTerritorialHtml(reference.nextStep) + "</p></section>" +
     '<section><h2>Referencia cartográfica</h2><p class="coordinate">' + escapeTerritorialHtml(coordinateText) +
-    "</p><p class=\"muted\">" + escapeTerritorialHtml(coordinates.scope || "Referencia aproximada; no parcelaria.") + "</p></section></div>" +
+    "</p><p class=\"muted\">" + escapeTerritorialHtml(coordinates.scope || "Sin coordenada trazable; ficha conservada en el índice.") + "</p>" +
+    '<p class="muted"><strong>Fuente de coordenada:</strong> ' + coordinateSourceMarkup + coordinateCheckedAt + "</p></section></div>" +
     '<section class="source"><h2>Fuente de origen</h2><p>' + sourceMarkup +
     '</p><p class="muted">Enlace consignado en el inventario MORENO. Consultar el documento original y su fecha antes de utilizarlo en una evaluación.</p></section>' +
     '<section><h2>Bitácora para diligencia documental</h2><table><thead><tr><th>Control</th><th>Documento / fuente</th><th>Fecha</th></tr></thead><tbody>' +
