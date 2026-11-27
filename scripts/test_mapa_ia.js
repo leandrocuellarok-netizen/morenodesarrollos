@@ -286,7 +286,28 @@ assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
 assert.ok(publishedProperties.length >= 28, "la capa publicada conserva el inventario histórico y las incorporaciones verificadas");
 assert.equal(all.length, localities.length + opportunities.length + publishedProperties.length, "el total coincide con localidades, tesis y publicaciones");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
-assert.equal(new Set(publishedProperties.map(item => item.source)).size, publishedProperties.length, "los enlaces de publicaciones no se duplican");
+const publishedByPrimarySource = new Map();
+publishedProperties.forEach(item => {
+  const url = String(item.source || "").trim();
+  if (!url) return;
+  if (!publishedByPrimarySource.has(url)) publishedByPrimarySource.set(url, []);
+  publishedByPrimarySource.get(url).push(item);
+});
+for (const [url, items] of publishedByPrimarySource) {
+  if (items.length < 2) continue;
+  for (let leftIndex = 0; leftIndex < items.length; leftIndex += 1) {
+    for (let rightIndex = leftIndex + 1; rightIndex < items.length; rightIndex += 1) {
+      assert.ok(
+        pairHasIds(duplicateReview.pairs, items[leftIndex].id, items[rightIndex].id),
+        "cada URL primaria compartida queda en la bandeja de revisión: " + url
+      );
+    }
+  }
+}
+assert.ok(
+  pairHasIds(duplicateReview.pairs, "moreno-lote-tres-de-febrero-7800", "terreno-tres-de-febrero-7800-316"),
+  "las dos fichas que comparten la fuente de Tres de Febrero 7800 se conservan para revisión humana"
+);
 
 const nov27ExpectedIds = [
   "terreno-san-juan-bautista-1374",
