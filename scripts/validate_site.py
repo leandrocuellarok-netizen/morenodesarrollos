@@ -835,7 +835,7 @@ def main() -> None:
             errors.append("Mesa Operativa debe enlazar la plantilla CSV de seguimiento comercial")
         for required_control in (
             "pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset",
-            "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions",
+            "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-counterparty-summary", "pipeline-next-actions",
             "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-followup", "pipeline-filter-text",
             "pipeline-download-summary", "pipeline-download-agenda", "pipeline-download-calendar",
             "originacion-workbench", "originacion-import-file", "originacion-import-button",
@@ -859,6 +859,8 @@ def main() -> None:
         pipeline_ui = ROOT / "assets/js/pipeline-dashboard-ui.js"
         if not pipeline_ui.is_file() or 'downloadCalendarButton.addEventListener("click"' not in pipeline_ui.read_text(encoding="utf-8"):
             errors.append("Mesa Operativa debe conectar el control de descarga iCalendar.")
+        elif "renderCounterparties" not in pipeline_ui.read_text(encoding="utf-8") or "pipeline-counterparty-summary" not in pipeline_ui.read_text(encoding="utf-8"):
+            errors.append("Mesa Operativa debe representar el desglose por tipo de contraparte.")
         if '<link rel="stylesheet" href="../assets/css/originacion.css">' not in operations_html:
             errors.append("Mesa Operativa debe cargar la hoja responsive de originación")
         for script_src in (
@@ -941,7 +943,7 @@ def main() -> None:
         for required_logic in ("agendaItems", "buildAgendaCsv", "spreadsheetSafeCell"):
             if required_logic not in pipeline_agenda_source:
                 errors.append(f"assets/js/pipeline-agenda.js: falta lógica requerida: {required_logic}")
-        for required_logic in ("MorenoPipelineDashboard", "file.text()", "textContent", "pipeline-csv-file", "currentSummary = null", "downloadSummaryButton.disabled = true", "downloadAgendaButton.disabled = true", "buildAgendaCsv", "pipeline-download-agenda", "identificacion_catastral", "fuente_origen", "tipo_operacion"):
+        for required_logic in ("MorenoPipelineDashboard", "file.text()", "textContent", "pipeline-csv-file", "currentSummary = null", "downloadSummaryButton.disabled = true", "downloadAgendaButton.disabled = true", "buildAgendaCsv", "pipeline-download-agenda", "identificacion_catastral", "fuente_origen", "tipo_operacion", "counterpartyCounts", "normalizeCounterpartyType", "Otro / revisar"):
             if required_logic not in pipeline_ui_source:
                 errors.append(f"assets/js/pipeline-dashboard-ui.js: falta lógica requerida: {required_logic}")
         for forbidden_logic in ("localStorage", "sessionStorage", "fetch(", "XMLHttpRequest", "innerHTML"):
