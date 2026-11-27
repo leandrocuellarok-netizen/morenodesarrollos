@@ -239,6 +239,17 @@ for (const id of nov27ExpectedIds) {
 }
 
 const followupExpectedIds = [
+  "terreno-r25-2000-200000",
+  "terreno-r25-lote33-2888",
+  "terreno-r25-5000-500000",
+  "terreno-ricchieri-50000-industrial",
+  "terreno-ruta25-4700-9835",
+  "terreno-goncalves-eiras-don-bosco-75020",
+  "terreno-polo24-gral-hornos-6100-4860",
+  "terreno-pueyrredon-2025-337",
+  "terreno-jose-maria-paz-600-356",
+  "terreno-prados-oeste2-lote145-781",
+  "terreno-joaquin-v-gonzalez-2400-615",
   "casa-patricias-argentinas-2300-2762",
   "casa-chiclana-100-1988",
   "desarrollo-chacras-teofilo-galileo-7300",
@@ -268,6 +279,7 @@ assert.equal(publishedProperties.find(item => item.id === "terreno-san-fernando-
 assert.equal(publishedProperties.find(item => item.id === "chacras-teofilo-lote-324-historico").availabilityStatus, "No vigente");
 assert.equal(publishedProperties.find(item => item.id === "desarrollo-fructuoso-rivera-ruta25-460000-338parcelas").availabilityStatus, "No vigente");
 assert.ok(publishedProperties.filter(item => item.geocodeDisabled === true).every(item => item.lat === null && item.lng === null), "las ubicaciones aproximadas o ambiguas no reciben coordenadas");
+assert.equal(publishedProperties.find(item => item.id === "terreno-r25-lote33-2888").availabilityStatus, "No confirmada");
 
 const hourlyExpectedIds = [
   "terreno-bouchard-300-461",
