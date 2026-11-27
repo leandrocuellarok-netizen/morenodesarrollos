@@ -712,8 +712,12 @@ async function auditMapFallback(browser) {
     check(Boolean(response && response.ok()), "mapa-ia fallback: la página responde aunque falle el motor cartográfico");
     await page.locator(".map-static-fallback").waitFor({ state: "visible", timeout: 5000 });
     check(await page.locator(".map-static-diagram").count() === 1, "mapa-ia fallback: se genera el esquema SVG sin MapLibre");
-    check(await page.locator("[data-fallback-reference]").count() === 11, "mapa-ia fallback: el índice alternativo incluye las once referencias");
+    const fallbackReferenceCount = await page.locator("#atlas-total-count").evaluate(element => Number(element.textContent.split("/")[0].trim()));
+    check(fallbackReferenceCount > 0, "mapa-ia fallback: el índice publica el total del inventario");
+    check(await page.locator("[data-fallback-reference]").count() === fallbackReferenceCount, "mapa-ia fallback: el índice alternativo incluye todo el inventario");
     check((await page.locator(".map-static-note").innerText()).includes("no tiene escala"), "mapa-ia fallback: el alcance no parcelario queda explicado");
+    check(await page.locator('[data-fallback-reference="terreno-san-juan-bautista-1374"]').count() === 1, "mapa-ia fallback: una publicación nueva permanece en el índice aunque no tenga coordenadas");
+    check((await page.locator('[data-fallback-reference="terreno-san-juan-bautista-1374"]').innerText()).includes("Geolocalización pendiente"), "mapa-ia fallback: las publicaciones sin coincidencia no reciben un punto ficticio");
     check((await page.locator(".map-review-privacy").innerText()).includes("sin cifrado"), "mapa-ia: la bitácora advierte que el almacenamiento local no está cifrado");
     check(await page.locator("#clear-review").isVisible(), "mapa-ia: el control para borrar la bitácora está disponible");
     check(await page.evaluate(() => Boolean(localStorage.getItem("moreno-map-review-v2"))), "mapa-ia: la auditoría cargó una bitácora sintética en el navegador");
@@ -738,7 +742,7 @@ async function auditMapFallback(browser) {
     });
     check(fallbackLayoutIsNatural, "mapa-ia fallback: el diagrama y el índice fluyen sin solapamiento ni scroll anidado en móvil");
     check(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), "mapa-ia fallback: no hay desbordamiento horizontal en móvil");
-    check(await page.locator("[data-fallback-reference]").count() === 11, "mapa-ia fallback: las once referencias siguen dentro del flujo visible");
+    check(await page.locator("[data-fallback-reference]").count() === fallbackReferenceCount, "mapa-ia fallback: todas las referencias siguen dentro del flujo visible");
     await page.locator("#kind-filter").selectOption("industrial");
     check(await page.locator("[data-fallback-reference]").count() === 2, "mapa-ia fallback: el esquema respeta el filtro industrial");
     const fallbackNames = await page.locator(".map-static-index-button").allInnerTexts();
@@ -753,7 +757,7 @@ async function auditMapFallback(browser) {
     check(await page.locator("[data-fallback-reference]").count() === 0, "mapa-ia fallback: una búsqueda vacía no conserva marcadores ajenos al filtro");
     check(await page.locator(".map-static-empty").isVisible(), "mapa-ia fallback: informa cuando no hay coincidencias");
     await page.locator("#reset-map").click();
-    check(await page.locator("[data-fallback-reference]").count() === 11, "mapa-ia fallback: restablecer recupera las once referencias");
+    check(await page.locator("[data-fallback-reference]").count() === fallbackReferenceCount, "mapa-ia fallback: restablecer recupera todo el inventario");
 
     const screenshotDir = path.join(ROOT, "test-results", "visual");
     fs.mkdirSync(screenshotDir, { recursive: true });
