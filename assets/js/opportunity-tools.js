@@ -181,6 +181,8 @@
     "terreno-salto-600-595": "Lote en esquina · Salto 600 · 595 m²",
     "terreno-juan-diaz-solis-1800-595": "Lote en esquina · Juan Díaz de Solís 1800 y Funes · Paso del Rey · 595 m²",
 
+    "terreno-los-abedules-lote121-600": "Lote central N.º 121 · Los Abedules 4100 · Álvarez del Bosque · 600 m²",
+
   });
 
   function readMapReference(search) {
