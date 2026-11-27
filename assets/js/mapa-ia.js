@@ -659,7 +659,7 @@ if (nov27MartinFierro5000) {
 const nov27MorenitoProject = nov27ById("parques-morenito-proyecto");
 if (nov27MorenitoProject) {
   nov27MorenitoProject.verificationStatus = "Antecedente de desarrollo finalizado: la ficha original informa entrega en julio de 2022.";
-  nov27MorenitoProject.availabilityStatus = "No vigente como desarrollo nuevo; antecedente histórico.";
+  nov27MorenitoProject.availabilityStatus = "No vigente";
 }
 const nov27SantaTeresa = nov27ById("la-reja-casa-quinta-santa-teresa-2401");
 if (nov27SantaTeresa) {
