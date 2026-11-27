@@ -9756,7 +9756,11 @@ function countInventory(items) {
 }
 
 function csvCell(value) {
-  return '"' + String(value == null ? "" : value).replace(/"/g, '""') + '"';
+  const raw = String(value == null ? "" : value);
+  const formulaLike = typeof value === "string" &&
+    (/^[\t\r\n]/.test(raw) || /^[\s\uFEFF]*[=+\-@]/.test(raw));
+  const safe = formulaLike ? "'" + raw : raw;
+  return '"' + safe.replace(/"/g, '""') + '"';
 }
 
 function hasCoordinates(item) {

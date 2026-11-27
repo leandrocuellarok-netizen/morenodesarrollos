@@ -669,6 +669,33 @@ const publishedCsv = buildCsv(all.filter(item => item.type === "published").slic
 assert.ok(publishedCsv.includes("precio_publicado"), "CSV incluye el campo de precio de los avisos");
 assert.ok(publishedCsv.includes("Anticipo USD 12.000"), "CSV conserva el precio publicado sin reinterpretarlo");
 assert.ok(publishedCsv.includes("Geolocalización pendiente"), "CSV conserva el estado de geolocalización pendiente");
+
+const spreadsheetSafetyCsv = buildCsv([{
+  type: "published",
+  recordType: "Terreno",
+  name: '=HYPERLINK("https://example.invalid","Abrir")',
+  locality: "Moreno",
+  address: "Moreno",
+  agency: "  +SUM(1,1)",
+  contact: String.fromCharCode(9) + "=1+1",
+  observations: "@SUM(1,1)",
+  lat: -34.6,
+  lng: -58.8,
+  source: "https://example.invalid",
+  price: "-1+1",
+  surfaceNote: "\r=1+1",
+  publicationDate: "\n=1+1",
+  currency: "\uFEFF=1+1"
+}]);
+assert.ok(spreadsheetSafetyCsv.includes('"\'=HYPERLINK'), "CSV neutraliza fórmulas que comienzan con =");
+assert.ok(spreadsheetSafetyCsv.includes('"\'  +SUM'), "CSV neutraliza fórmulas precedidas por espacios");
+assert.ok(spreadsheetSafetyCsv.includes("'" + String.fromCharCode(9) + "=1+1"), "CSV neutraliza fórmulas precedidas por tabulación");
+assert.ok(spreadsheetSafetyCsv.includes('"\'@SUM'), "CSV neutraliza fórmulas que comienzan con @");
+assert.ok(spreadsheetSafetyCsv.includes('"\'-1+1"'), "CSV neutraliza fórmulas que comienzan con -");
+assert.ok(spreadsheetSafetyCsv.includes('"\r=1+1"') === false && spreadsheetSafetyCsv.includes('"\'\r=1+1"'), "CSV neutraliza fórmulas precedidas por retorno de carro");
+assert.ok(spreadsheetSafetyCsv.includes('"\'\n=1+1"'), "CSV neutraliza fórmulas precedidas por salto de línea");
+assert.ok(spreadsheetSafetyCsv.includes("'\uFEFF=1+1"), "CSV neutraliza fórmulas precedidas por BOM");
+assert.ok(spreadsheetSafetyCsv.includes('"-34.6","-58.8"'), "CSV conserva coordenadas numéricas negativas");
 const filteredGeoJson = buildGeoJson(filterReferences(all, {
   category: "opportunity",
   evidence: "hypothesis"
