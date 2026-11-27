@@ -4265,22 +4265,23 @@ const nov27FreshEntries = [
     "address": "Independencia 2400, Centro de Moreno",
     "geocodeQuery": "Independencia 2400, Moreno",
     "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--20793012",
-  sourceAlternates: [{url:"https://platastar.com/propiedad/terreno-de-1462-m2-en-venta-en-moreno-e11a5176",label:"PlataStar: mismo domicilio y superficie aproximada (1.462 m²), publicado a USD 350.000; posible mismo activo que la ficha Argenprop de USD 320.000."}],
+  sourceAlternates: [{url:"https://platastar.com/propiedad/terreno-de-1462-m2-en-venta-en-moreno-e11a5176",label:"PlataStar: mismo domicilio y superficie aproximada (1.462 m²), publicado a USD 350.000; posible mismo activo que la ficha Argenprop de USD 320.000."},
+      {url:"https://www.argenprop.com/casa-en-venta-en-centro-moreno-6-ambientes--20956082",label:"Ficha anterior de Argenprop: USD 320.000, casa de seis ambientes; precio anterior y superficies contradictorias."}],
     "agency": "RE/MAX Fly · publicación en Argenprop / RAU S.R.L.",
     "contact": "Paola Silva; corredora responsable Evelyn Buzzelli, CPI 8884 / CMCPDJMGR 311. Teléfono visible parcialmente como +54 (11).",
     "price": "USD 350.000",
     "currency": "USD",
     "landSurfaceM2": 1462.41,
-    "coveredSurfaceM2": 41.2,
-    "surfaceNote": "El aviso declara 663 m² semicubiertos y 618,98 m² descubiertos; también informa 1.323 m² de superficie total.",
-    "observations": "La ficha anuncia una casa de seis ambientes y cuatro dormitorios, construida en 1979, y afirma que existirían derechos constructivos aprobados, planos electromecánicos y prefactibilidad eléctrica abonada. Son afirmaciones del aviso, no documentación revisada. Hay inconsistencia de superficies: terreno 1.462,41 m², total 1.323 m² y componentes publicados que no cierran con el total. Exigir planos aprobados, certificados, nomenclatura, mensura y constancia municipal antes de valorar el potencial. Fuente alternativa de PlataStar, publicada 30/06/2026 y vista 23/11/2026, ofrece el mismo lote de 1.462 m² a USD 350.000; se mantiene el precio primario de Argenprop (USD 320.000) y se registra la discrepancia. Los derechos constructivos y planos siguen sin verificación documental. Se actualiza el precio de referencia a USD 350.000 por la ficha actual de terreno de Argenprop; se conserva como fuente alternativa la ficha anterior de casa a USD 320.000 y la ficha de PlataStar a USD 350.000. Confirmar si los derechos y planos anunciados siguen vigentes y corresponden a la parcela.",
+    "coveredSurfaceM2": null,
+    "surfaceNote": "La ficha actual publica 1.462 m² de terreno. La ficha anterior de casa muestra 41,2 m² cubiertos, 663 m² semicubiertos, 618,98 m² descubiertos y 1.323 m² totales, cifras que no concilian; no se adopta superficie cubierta como dato confirmado.",
+    "observations": "La publicación actual ofrece el terreno de 1.462 m² a USD 350.000 e incluye una construcción existente de seis ambientes. El anunciante afirma que hay derechos constructivos aprobados, planos electromecánicos y prefactibilidad eléctrica abonada; no se revisaron expedientes ni certificados. La ficha anterior de casa publicaba USD 320.000 y superficies componentes que no concilian (41,2 m² cubiertos, 663 m² semicubiertos, 618,98 m² descubiertos y 1.323 m² totales). Exigir nomenclatura, mensura, título, planos aprobados y constancia municipal antes de valorar el potencial.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: dirección pública con lote extenso; geocodificar solo si Georef devuelve coincidencia inequívoca."
   ,
-    "verificationStatus": "Ficha actual de Argenprop accesible el 27/11/2026 a USD 350.000 y 1.462 m²; PlataStar publica el mismo activo a USD 350.000 y una ficha anterior de Argenprop lo ofrecía como casa a USD 320.000. Los derechos constructivos, planos y factibilidades son afirmaciones del anunciante, no verificados documentalmente; disponibilidad no confirmada."
+    "verificationStatus": "Argenprop actual accesible el 27/11/2026 a USD 350.000 y 1.462 m²; PlataStar publica el mismo domicilio/superficie a USD 350.000. Una ficha anterior de Argenprop lo ofrecía como casa a USD 320.000. Derechos constructivos, planos y factibilidades son declaraciones del anunciante, no verificados documentalmente; disponibilidad no confirmada."
   },
   {
     "id": "casa-los-abedules-4100-485",
