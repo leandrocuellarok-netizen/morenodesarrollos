@@ -934,3 +934,109 @@ main#main-content:focus {
   .dossier-import-body{padding:0 12px 15px}
   .dossier-import.form-disclosure>summary{padding-left:13px}
 }
+
+
+/* Portada editorial: dibujo arquitectónico de línea y mapa de coordenadas coherente con Mapa IA. */
+.site-header .nav a{font-size:10px}
+.site-header .brand small{font-size:9px}
+.mobile-menu{min-width:44px;min-height:44px;padding:8px 10px}
+.mobile-menu-label{font-size:10px}
+.home-page .hero{min-height:0;padding-block:clamp(62px,7vw,96px)}
+.home-page .hero h1{font-size:clamp(58px,7.1vw,98px);line-height:.94;max-width:620px}
+.home-page .hero-copy{max-width:540px;color:#53584f;font-size:16px;line-height:1.82}
+.home-page .hero-commercial-actions .button{min-height:54px;font-size:10px}
+.home-page .hero-commercial-note{font-size:12px;color:#686b62}
+.home-page .section-heading p{font-size:16px;line-height:1.8;color:#565b53}
+.home-page .value-card h3{font-size:29px}
+.home-page .value-card p{font-size:14px;line-height:1.8;color:#565b53}
+.home-page .map-copy p,.home-page .about-preview p{font-size:15px;line-height:1.85;color:#565b53}
+.home-page .hero .art-panel{
+  min-height:0;
+  aspect-ratio:760 / 820;
+  background:#eeece4;
+  border:1px solid #c7c2b6;
+  box-shadow:inset 0 0 0 7px #f4f1e8,inset 0 0 0 8px #c7c2b6;
+}
+.home-page .hero .art-panel:before{background:linear-gradient(180deg,#eeece4 0%,#e5e1d7 100%);opacity:.34}
+.home-page .hero .art-panel:after{content:none}
+.home-page .architecture-drawing{filter:grayscale(1) contrast(1.08)}
+.home-page .art-index{color:#555b52}
+.home-page .art-caption{color:#454b43;font-size:12px;letter-spacing:.06em}
+
+.home-map-plate{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  padding:13px 14px 11px;
+  overflow:hidden;
+  border:1px solid #c7c2b6;
+  background:#eeece4;
+  box-shadow:inset 0 0 0 5px #f4f1e8,inset 0 0 0 6px #c7c2b6;
+}
+.map-plate-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px 18px;
+  padding:7px 7px 12px;
+  border-bottom:1px solid #c9c5b9;
+  color:#666a61;
+  font:9px/1.5 var(--sans);
+  letter-spacing:.13em;
+}
+.territory-diagram{display:block;width:100%;height:auto;background:#eeece4}
+.territory-heading text,.territory-footer text{
+  fill:#656960;
+  font:11px var(--sans);
+  letter-spacing:1.4px;
+}
+.territory-plot-frame{fill:none;stroke:#99998e;stroke-width:1.1}
+.territory-grid-lines path{fill:none;stroke:#c3c1b6;stroke-width:.8;stroke-dasharray:2 6}
+.territory-ticks text{fill:#85877e;font:12px var(--sans);letter-spacing:.4px}
+.territory-north text{fill:#555b52;font:14px var(--sans);letter-spacing:1px}
+.territory-north path{fill:none;stroke:#4d554d;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.territory-north circle{fill:#4d554d}
+.territory-marker .locality-halo{fill:none;stroke:#898d82;stroke-width:1}
+.territory-marker .locality-point{fill:#f4f1e8;stroke:#3f4940;stroke-width:2.1}
+.territory-marker.documented-mark rect{fill:#555f56;stroke:#eeece4;stroke-width:1.6}
+.territory-marker.hypothesis-mark path{fill:#a95d3c;stroke:#eeece4;stroke-width:1.8}
+.territory-labels text{fill:#3f463e;font:16px var(--sans);font-weight:600;letter-spacing:1.15px}
+.territory-labels .territory-reference-label{fill:#8b5a40;font-size:14px;letter-spacing:1px}
+.territory-callouts path{fill:none;stroke:#8a8b80;stroke-width:1;stroke-dasharray:3 4}
+.map-art-legend{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:9px 18px;
+  padding:10px 7px 8px;
+  border-top:1px solid #c9c5b9;
+  color:#5e625a;
+  font:10px/1.5 var(--sans);
+}
+.map-art-legend span{display:inline-flex;align-items:center;gap:7px}
+.map-key{display:inline-block;width:9px;height:9px;flex:0 0 9px;border:1px solid #4f5a50}
+.locality-key{border-radius:50%;background:#eeece4}
+.documented-key{background:#555f56}
+.hypothesis-key{background:#a95d3c;border-color:#a95d3c;transform:rotate(45deg);width:8px;height:8px;flex-basis:8px}
+.home-map-plate figcaption{padding:9px 7px 2px;color:#73766c;font:10px/1.7 var(--sans)}
+@media(max-width:760px){
+  .site-header .nav a{font-size:10px}
+  .mobile-menu-label{font-size:11px}
+  .home-page .hero{padding-block:52px 62px}
+  .home-page .hero h1{font-size:clamp(52px,12.5vw,70px)}
+  .home-page .hero-copy{font-size:15px;line-height:1.78}
+  .home-page .hero .art-panel{aspect-ratio:760 / 820}
+  .home-page .art-index{top:14px;right:15px;font-size:11px}
+  .home-page .art-caption{left:16px;bottom:14px;font-size:10px}
+  .map-plate-head{align-items:flex-start;flex-direction:column;gap:3px;font-size:9px}
+  .territory-labels text{font-size:22px;letter-spacing:1.2px}
+  .territory-labels .territory-reference-label{font-size:19px}
+  .territory-ticks text{font-size:16px}
+  .territory-heading text,.territory-footer text{font-size:13px;letter-spacing:1px}
+  .map-art-legend{display:grid;grid-template-columns:1fr;gap:7px;font-size:10px}
+  .home-map-plate figcaption{font-size:10px}
+}
+@media(max-width:420px){
+  .home-page .hero h1{font-size:clamp(49px,12vw,58px)}
+  .map-plate-head{font-size:8px}
+}

@@ -29,6 +29,64 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+async function auditHomeCartography(page) {
+  const markers = await page.locator(".territory-marker").evaluateAll(elements => elements.map(element => ({
+    id: element.dataset.id,
+    kind: element.dataset.kind,
+    lat: Number(element.dataset.lat),
+    lng: Number(element.dataset.lng),
+    x: Number(element.dataset.x),
+    y: Number(element.dataset.y)
+  })));
+  const source = fs.readFileSync(path.join(ROOT, "assets/js/mapa-ia.js"), "utf8");
+
+  function readRecords(name, defaultKind) {
+    const match = source.match(new RegExp("const " + name + "=\\[([\\s\\S]*?)\\];"));
+    if (!match) return [];
+    return (match[1].match(/\{[^{}]*\}/g) || []).map(entry => {
+      const id = entry.match(/id:"([^"]+)"/);
+      const lat = entry.match(/lat:([-0-9.]+)/);
+      const lng = entry.match(/lng:([-0-9.]+)/);
+      const stage = entry.match(/stage:"([^"]+)"/);
+      return {
+        id: id ? id[1] : null,
+        lat: lat ? Number(lat[1]) : NaN,
+        lng: lng ? Number(lng[1]) : NaN,
+        kind: defaultKind === "locality" ? "locality" : (stage ? stage[1] : null)
+      };
+    });
+  }
+
+  const expected = [
+    ...readRecords("localities", "locality"),
+    ...readRecords("opportunities", "reference")
+  ];
+  const expectedById = new Map(expected.map(record => [record.id, record]));
+  check(markers.length === 11, "inicio: el plano contiene seis localidades y cinco referencias territoriales");
+  check(new Set(markers.map(marker => marker.id)).size === markers.length, "inicio: los identificadores del plano no están duplicados");
+  check(markers.filter(marker => marker.kind === "locality").length === 6, "inicio: el plano distingue las seis localidades");
+  check(markers.filter(marker => marker.kind === "documented").length === 4, "inicio: el plano distingue las cuatro referencias documentadas");
+  check(markers.filter(marker => marker.kind === "hypothesis").length === 1, "inicio: el plano distingue la hipótesis de prospección");
+
+  for (const marker of markers) {
+    const record = expectedById.get(marker.id);
+    check(Boolean(record), "inicio: " + marker.id + " existe en el inventario del Mapa IA");
+    if (!record) continue;
+    check(Math.abs(marker.lat - record.lat) < 0.000001 && Math.abs(marker.lng - record.lng) < 0.000001, "inicio: " + marker.id + " conserva las coordenadas de su ficha");
+    check(marker.kind === record.kind, "inicio: " + marker.id + " conserva su clasificación de evidencia");
+    const expectedX = 78 + ((record.lng + 58.9) / 0.18) * 600;
+    const expectedY = 430 - ((record.lat + 34.69) / 0.15) * 352;
+    check(Math.abs(marker.x - expectedX) < 0.16 && Math.abs(marker.y - expectedY) < 0.16, "inicio: " + marker.id + " está colocado según su coordenada geográfica");
+  }
+
+  check(await page.locator("body.home-page").count() === 1, "inicio: la portada usa su sistema editorial específico");
+  check(await page.locator(".home-map-plate .territory-diagram[role='img']").count() === 1, "inicio: el plano editorial tiene descripción accesible");
+  check(await page.locator(".home-map-plate figcaption").textContent().then(text => text.includes("no representa límites municipales")), "inicio: el plano aclara que no representa límites municipales");
+  check(await page.locator(".architecture-drawing").count() === 1, "inicio: la portada incorpora una única lámina arquitectónica");
+  const drawingText = await page.locator(".architecture-drawing").textContent();
+  check(drawingText.includes("ESTUDIO VOLUMÉTRICO") && drawingText.includes("no corresponde a un inmueble identificado"), "inicio: la lámina identifica el dibujo como estudio conceptual");
+}
+
 async function startServer() {
   const server = spawn("python3", ["-m", "http.server", String(PORT), "--bind", "127.0.0.1"], {
     cwd: ROOT,
@@ -77,6 +135,7 @@ async function auditRoute(browser, route) {
       check(investorLinks.length >= 2, "inicio: se esperan accesos de inversor en portada y cierre comercial");
       check(ownerLinks.every(href => new URL(href).searchParams.get("interes") === "terreno"), "inicio: los accesos de propietario transmiten la intención correcta");
       check(investorLinks.every(href => new URL(href).searchParams.get("interes") === "inversion"), "inicio: los accesos de inversor transmiten la intención correcta");
+      await auditHomeCartography(page);
     }
     check(await page.locator(".skip-link[href='#main-content']").count() === 1, `${route.slug}: falta el enlace único para saltar al contenido`);
     check(await page.locator("main#main-content[tabindex='-1']").count() === 1, `${route.slug}: falta el destino de foco del enlace de salto`);
