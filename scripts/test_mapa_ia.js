@@ -238,6 +238,37 @@ for (const id of nov27ExpectedIds) {
   assert.ok(publishedProperties.some(item => item.id === id), "la revisión incorpora " + id);
 }
 
+const followupExpectedIds = [
+  "casa-patricias-argentinas-2300-2762",
+  "casa-chiclana-100-1988",
+  "desarrollo-chacras-teofilo-galileo-7300",
+  "terreno-derqui-7660-384",
+  "terreno-abdon-calderon-1000-250",
+  "terreno-conscripto-bernardi-1800-3888",
+  "terreno-lamadrid-el-vergel-2161",
+  "terreno-camilli-60-1000",
+  "terreno-justo-daract-2000-630",
+  "terreno-vidt-1700-420",
+  "terreno-paramaribo-alvarez-jonte-425",
+  "terreno-jose-obregoso-600-600",
+  "terreno-diario-la-nacion-iguazu-420",
+  "terreno-nanduti-2000-324-mejoras",
+  "terreno-san-fernando-araucanos-7522-historico",
+  "desarrollo-fructuoso-rivera-ruta25-460000-338parcelas",
+  "desarrollo-ampliacion-sip2-cuarter-v-52ha",
+  "chacras-teofilo-lote-324-historico",
+  "casa-el-casco-733-212-historico",
+  "casa-cervino-100-350-historico",
+  "casa-leandro-alem-2100-562-historico"
+];
+for (const id of followupExpectedIds) {
+  assert.ok(publishedProperties.some(item => item.id === id), "la revisión de seguimiento incorpora " + id);
+}
+assert.equal(publishedProperties.find(item => item.id === "terreno-san-fernando-araucanos-7522-historico").availabilityStatus, "No vigente");
+assert.equal(publishedProperties.find(item => item.id === "chacras-teofilo-lote-324-historico").availabilityStatus, "No vigente");
+assert.equal(publishedProperties.find(item => item.id === "desarrollo-fructuoso-rivera-ruta25-460000-338parcelas").availabilityStatus, "Pendiente de revalidación");
+assert.ok(publishedProperties.filter(item => item.geocodeDisabled === true).every(item => item.lat === null && item.lng === null), "las ubicaciones aproximadas o ambiguas no reciben coordenadas");
+
 const hourlyExpectedIds = [
   "terreno-bouchard-300-461",
   "terreno-sarmiento-500-750",
@@ -690,7 +721,8 @@ async function testGeorefRequestQueue() {
     { id: "shared-b", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
     { id: "camilli", geocodeQuery: "Camilli 140", geocodeMatch: "CAMILLI 140" },
     { id: "ambiguous", geocodeQuery: "Ambigua 500", geocodeMatch: "AMBIGUA 500" },
-    { id: "failed", geocodeQuery: "Falla 10", geocodeMatch: "FALLA 10" }
+    { id: "failed", geocodeQuery: "Falla 10", geocodeMatch: "FALLA 10" },
+    { id: "approximate", geocodeQuery: "Galileo Galilei al 7300", geocodeDisabled: true }
   ];
   let active = 0;
   let maximumActive = 0;
@@ -741,6 +773,7 @@ async function testGeorefRequestQueue() {
   assert.equal(result.get("Camilli 140"), null, "una respuesta HTTP fallida queda pendiente");
   assert.equal(result.get("Ambigua 500"), null, "las coincidencias ambiguas no generan coordenadas");
   assert.equal(result.get("Falla 10"), null, "un error de red queda pendiente sin interrumpir la cola");
+  assert.equal(result.has("Galileo Galilei al 7300"), false, "una ubicación aproximada marcada como no geocodificable no consulta Georef");
   assert.equal((await resolvePublishedGeoreferences([], fakeFetch)).size, 0, "un inventario vacío no genera consultas");
 }
 
