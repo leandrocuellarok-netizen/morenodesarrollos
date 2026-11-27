@@ -1240,6 +1240,7 @@ const harasVictoria = publishedProperties.find(record => record.id === "terreno-
 assert.ok(harasVictoria.sourceAlternates.length === 1);
 const sanCarlos = publishedProperties.find(record => record.id === "terreno-san-carlos-4500-552");
 assert.ok(sanCarlos.observations.includes("cesión de derechos"));
+assert.ok(sanCarlos.sourceAlternates.some(source => source.url.includes("59995707") && source.label.includes("410 Gone")));
 const laProvidencia = publishedProperties.find(record => record.id === "quinta-la-providencia-900-1537");
 assert.ok(laProvidencia.observations.includes("no cuentan con planos aprobados"));
 const sourceUrls = publishedProperties.map(record => record.source).filter(Boolean);
