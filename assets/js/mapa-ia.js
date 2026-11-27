@@ -9,11 +9,14 @@ const localities=[
 {id:"cuartel",name:"Cuartel V",lat:-34.5583,lng:-58.8139,info:"Sector norte. Prospección productiva y de parcelas de mayor escala."}
 ];
 const opportunities=[
-{id:"rp25",stage:"documented",name:"RP25 · Darwin Passaponti · Av. San Fernando",lat:-34.5705,lng:-58.7955,kind:"industrial",business:"Suelo industrial/logístico, depósitos, patios operativos, agrupamientos PyME y proveedores industriales.",evidence:"La Ordenanza municipal 7443/25 documenta rezonificaciones puntuales a I1/I2 para parcelas individualizadas. No debe extrapolarse a predios vecinos.",status:"Normativa documentada para polígonos específicos; parcelas y disponibilidad por verificar.",next:"Cruzar polígonos con catastro; verificar CVI, dominio, servicios, accesos y disponibilidad.",source:"https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465"},
-{id:"ecoparque",stage:"documented",name:"Nodo RP24/RP25 · Ecoparque Industrial",lat:-34.57755,lng:-58.87202,kind:"industrial",business:"Servicios a empresas, depósitos complementarios, oficinas operativas, gastronomía de ruta y mantenimiento de flotas.",evidence:"El operador publica un fraccionamiento de 78 parcelas de 2.000 a 10.000 m² y describe infraestructura, servicios y parámetros FOS 0,6/FOT 1,2. Son datos publicados por el operador, no una verificación independiente.",status:"Disponibilidad, precios, reglamento y factibilidad actual por parcela sin confirmar.",next:"Solicitar disponibilidad y documentación vigente; contrastar indicadores con el Municipio y revisar dominio, servicios y accesos de cada parcela.",source:"https://ecoparque.com.ar/"},
-{id:"ribera",stage:"documented",name:"Paso del Rey · Camino de la Ribera",lat:-34.6575,lng:-58.744,kind:"commercial",business:"Comercio, gastronomía, servicios, estacionamiento y reconversión de inmuebles.",evidence:"La Provincia documentó obras de conexión, puente, pavimentos, drenajes e iluminación.",status:"Infraestructura documentada; activos inmobiliarios concretos por detectar.",next:"Identificar frentes y parcelas; revisar cotas, drenaje, riesgo hídrico y usos.",source:"https://www.gba.gob.ar/node/51424"},
-{id:"roggero",stage:"documented",name:"Distrito Ecológico Roggero",lat:-34.675,lng:-58.875,kind:"tourism",business:"Turismo de naturaleza, recreación, gastronomía y servicios compatibles con la protección ambiental.",evidence:"IDUAR presenta el DER como plataforma de desarrollo urbano, ambiental y turístico, articulada con un área natural protegida y obras de infraestructura. Es contexto de planificación, no autorización para desarrollar en cualquier parcela.",status:"Potencial de articulación público-privada sujeto a restricciones ambientales y urbanísticas; predios concretos y usos permitidos por verificar.",next:"Verificar límites del área protegida, Ordenanza 7164/24, zonificación, restricciones ambientales e hidráulicas, servicios y titularidad.",source:"https://iduar.moreno.gob.ar/2025/08/12/distrito-ecologico-roggero-un-espacio-natural-para-descubrir/"},
-{id:"norte",stage:"hypothesis",name:"Cuartel V · Trujui · La Reja",lat:-34.61,lng:-58.815,kind:"land",business:"Prospección de parcelas grandes, ensamble de tierra, asociaciones con propietarios y desarrollos por etapas.",evidence:"Los avisos inmobiliarios son pistas de prospección, no prueba de dominio, zonificación ni disponibilidad.",status:"Hipótesis de prospección; sin parcelas individualizadas verificadas.",next:"Construir inventario con nomenclatura catastral, superficie, precio pedido y contacto verificable.",source:"https://www.zonaprop.com.ar/terrenos-venta-moreno-mas-9000-m2.html"}
+{id:"rp25",stage:"documented",name:"RP25 · Darwin Passaponti · Av. San Fernando",lat:-34.5705,lng:-58.7955,kind:"industrial",locality:"",activity:"Productivo y logístico",evidenceType:"Ordenanza municipal publicada en SIBOM",confidence:"Alta para las parcelas expresamente individualizadas; no extrapolable a predios vecinos.",sourceDate:"Sancionada 11/12/2025 · promulgada 16/12/2025",lastCheckedAt:"2026-11-27",business:"Suelo industrial/logístico, depósitos, patios operativos, agrupamientos PyME y proveedores industriales.",evidence:"La Ordenanza 7443/25 desafecta y afecta a I2 las parcelas de Circunscripción V 1380 AB, 1399 C, H, M, N y 1399 B; y a I1 parcelas de Circunscripción II, Sección B, Quinta 14, Manzana 14a, 1C, 1D, 7, 8, 9 y 14, Fracción 1 parcelas 2, 3, 4A y 4B; además de Circunscripción V parcelas 1341 F y 1341 G. El artículo 5 limita el cambio a los polígonos y linderos expresamente descriptos; el artículo 6 prevé CVI. No se extiende a predios vecinos.",status:"Normativa publicada y promulgada; la aplicación parcelaria, la CVI y la disponibilidad de inmuebles concretos requieren verificación individual.",next:"Superponer los polígonos y nomenclaturas de los artículos 1 a 5 con Catastro; obtener constancia urbanística vigente; revisar CVI, dominio, servicios, accesos y restricciones antes de evaluar un inmueble.",source:"https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465"},
+{id:"ecoparque",stage:"documented",name:"Nodo RP24/RP25 · Ecoparque Industrial",lat:-34.57755,lng:-58.87202,kind:"industrial",locality:"",activity:"Industria, logística y servicios a empresas",evidenceType:"Sitio oficial del operador",confidence:"Media: la información es declarada por el operador y requiere corroboración documental independiente.",sourceDate:"No informada en la página consultada",lastCheckedAt:"2026-11-27",business:"Servicios a empresas, depósitos complementarios, oficinas operativas, gastronomía de ruta y mantenimiento de flotas.",evidence:"El sitio del operador describe un fraccionamiento industrial de 78 parcelas de 2.000 a 10.000 m², infraestructura para tránsito pesado y parámetros publicados FOS 0,6/FOT 1,2. Son características declaradas por el operador; no acreditan parcelas disponibles, precios ni factibilidad individual.",status:"Existencia y características generales publicadas por el operador; disponibilidad, precios, reglamento y factibilidad actual por parcela sin confirmar.",next:"Solicitar plano de subdivisión, reglamento, estado de cada parcela y condiciones económicas; contrastar indicadores con el Municipio y revisar dominio, servicios y accesos.",source:"https://ecoparque.com.ar/"},
+{id:"ribera",stage:"documented",name:"Paso del Rey · Camino de la Ribera",lat:-34.6575,lng:-58.744,kind:"commercial",locality:"Paso del Rey",activity:"Comercio, servicios y conectividad urbana",evidenceType:"Nota oficial del Ministerio de Infraestructura de la Provincia",confidence:"Alta para el contenido de la publicación oficial; el estado actual de obra y sus efectos sobre inmuebles debe revalidarse.",sourceDate:"31/10/2025",lastCheckedAt:"2026-11-27",business:"Comercio, gastronomía, servicios, estacionamiento y reconversión de inmuebles.",evidence:"La Provincia informó el 31/10/2025 trabajos sobre más de 6 km del Camino de la Ribera en Paso del Rey, un nuevo puente sobre el Río Reconquista, pavimentación, cañerías, sumideros, cámaras, drenaje e iluminación. La nota es un antecedente de obra publicado en 2025, no una certificación de su estado actual.",status:"Infraestructura documentada en una publicación provincial de 2025; avance actual, cotas y activos inmobiliarios concretos por verificar.",next:"Confirmar el estado y recepción de las obras; identificar frentes y parcelas; revisar cotas, drenaje, riesgo hídrico, accesos, normativa y usos.",source:"https://www.gba.gob.ar/node/51424"},
+{id:"roggero",stage:"documented",name:"Distrito Ecológico Roggero",lat:-34.675,lng:-58.875,kind:"tourism",locality:"",activity:"Turismo de naturaleza, recreación y servicios compatibles",evidenceType:"Fuente institucional municipal · IDUAR",confidence:"Alta para el contexto y las obras descriptas por el Municipio; baja para cualquier conclusión sobre usos o disponibilidad de una parcela concreta.",sourceDate:"12/08/2025",lastCheckedAt:"2026-11-27",business:"Turismo de naturaleza, recreación, gastronomía y servicios compatibles con la protección ambiental.",evidence:"IDUAR presenta el Distrito Ecológico Roggero como política pública de desarrollo urbano, ambiental y turístico. La nota informa la ampliación del Área Natural Protegida de 250 a 550 hectáreas y obras financiadas por FonDER. El contexto no autoriza desarrollos en cualquier parcela ni reemplaza la revisión de límites, normativa y restricciones.",status:"Contexto institucional documentado; predios concretos, límites del área protegida y usos permitidos requieren verificación parcelaria y ambiental.",next:"Obtener cartografía oficial del área protegida; verificar Ordenanza 7164/24, zonificación vigente, restricciones ambientales e hidráulicas, servicios y titularidad.",source:"https://iduar.moreno.gob.ar/2025/08/12/distrito-ecologico-roggero-un-espacio-natural-para-descubrir/"},
+{id:"norte",stage:"hypothesis",name:"Cuartel V · Trujui · La Reja",lat:-34.61,lng:-58.815,kind:"land",locality:"",activity:"Prospección de suelo y ensamble de parcelas",evidenceType:"Búsqueda agregada en portal inmobiliario",confidence:"Baja: la página es dinámica y no individualiza activos, titularidad, zonificación ni disponibilidad.",sourceDate:"Listado dinámico; fecha individual de publicación no consolidada",lastCheckedAt:"2026-11-27",business:"Prospección de parcelas grandes, ensamble de tierra, asociaciones con propietarios y desarrollos por etapas.",evidence:"La búsqueda agregada de Zonaprop muestra oferta de terrenos de gran superficie en el Partido de Moreno y filtros por distintas localidades. Es una pista para localizar avisos individuales; no prueba dominio, zonificación ni disponibilidad de un activo específico.",status:"Hipótesis de prospección multizona; sin parcelas individualizadas verificadas.",next:"Seleccionar avisos individuales, registrar URL y fecha por ficha, y construir inventario con nomenclatura catastral, superficie, precio pedido y contacto verificable.",source:"https://www.zonaprop.com.ar/terrenos-venta-moreno-mas-9000-m2.html"},
+{id:"base-aerea-moreno-norte",stage:"documented",name:"Base Aérea Moreno Norte · Cuartel V",lat:null,lng:null,kind:"industrial",locality:"Cuartel V",activity:"Logística, desarrollo PyME y planificación urbana",evidenceType:"Nota institucional municipal · IDUAR",confidence:"Alta para el plan y las cifras comunicadas por IDUAR; no identifica parcelas privadas disponibles ni acredita factibilidad individual.",sourceDate:"12/08/2025",lastCheckedAt:"2026-11-27",business:"Planificación urbana, infraestructura vial, transporte de carga y pasajeros, logística aeroportuaria y desarrollo productivo PyME.",evidence:"IDUAR describe un Plan Integral para Cuartel V con actualización normativa, nuevo trazado urbano, infraestructura vial y planificación de transporte. La publicación informa procesos de recuperación de suelo —400.000 m² por vacancia, 30.000 m² por prescripción adquisitiva y 20.000 m² correspondientes a 16 inmuebles— y avances de diseño del loteo San Joaquín y continuidad urbana de La Gloria. Estas cifras describen actuaciones públicas, no suelo ofrecido ni disponible.",status:"Antecedente de planificación y gestión de suelo pública; no se asigna punto cartográfico porque la fuente no identifica una parcela o coordenada única.",next:"Solicitar a IDUAR planos, polígonos y estado administrativo de cada actuación; distinguir tierra pública de activos privados y verificar dominio, régimen de uso, zonificación, servidumbres, accesos y factibilidad.",source:"https://iduar.moreno.gob.ar/2025/08/12/urbanizacion-participacion-y-desarrollo-en-la-base-aerea-moreno-norte/"},
+{id:"promeba-trujui-cuartel-v",stage:"documented",name:"PRO.ME.BA · Trujui y Cuartel V",lat:null,lng:null,kind:"infrastructure",locality:"Trujui · Cuartel V",activity:"Infraestructura urbana, saneamiento y equipamiento comunitario",evidenceType:"Página institucional municipal · IDUAR",confidence:"Alta para la existencia del programa y las áreas mencionadas; estado de ejecución, polígonos y alcance actual por verificar.",sourceDate:"No informada en la página consultada",lastCheckedAt:"2026-11-27",business:"Infraestructura urbana, saneamiento ambiental, equipamiento comunitario y regularización de la tenencia.",evidence:"La página institucional de IDUAR describe PRO.ME.BA y enlaza intervenciones identificadas como PROMEBA en Trujui y Cuartel V. El programa contempla infraestructura, saneamiento ambiental, equipamiento social y legalización de la tenencia; la página consultada no certifica el estado actual de cada obra ni individualiza parcelas.",status:"Programa y áreas de intervención publicados por IDUAR; expedientes, PEI, polígonos y estado actual pendientes de consulta.",next:"Consultar los PEI y sus anexos para Trujui y Cuartel V; ubicar polígonos exactos, revisar consultas públicas y confirmar con IDUAR el estado de cada componente.",source:"https://iduar.moreno.gob.ar/pro-me-ba/"},
+{id:"utopia-bonaerense-moreno",stage:"documented",name:"Utopía Bonaerense · Parque urbano e infraestructura",lat:null,lng:null,kind:"infrastructure",locality:"Partido de Moreno · localidad no precisada",activity:"Equipamiento público, parque urbano e infraestructura",evidenceType:"Ficha oficial de licitación provincial",confidence:"Alta para el llamado y los datos publicados; adjudicación, ejecución y ubicación precisa no confirmadas.",sourceDate:"Autorización 19/11/2025 · apertura 20/01/2026",lastCheckedAt:"2026-11-27",business:"Equipamiento público, infraestructura y parque urbano; referencia de inversión pública y transformación territorial.",evidence:"La ficha del Ministerio de Infraestructura registra la Licitación Pública 51/2025 para equipamiento, infraestructura y parque urbano de la Utopía Bonaerense en Moreno. Publica estado “En Evaluación”, presupuesto oficial de $7.396.350.515,64 y plazo de obra de 457 días. La ficha no precisa la localidad ni identifica suelo privado disponible; los datos corresponden al proceso licitatorio.",status:"Estado publicado “En Evaluación” en la ficha oficial consultada el 27/11/2026; adjudicación, ejecución, localización exacta y alcance físico deben confirmarse.",next:"Obtener pliego, acta de apertura y actos posteriores; confirmar adjudicación, contratista, ejecución y polígono del proyecto antes de atribuir efectos a parcelas cercanas.",source:"https://www.minfra.gba.gob.ar/licitacionesV2/bidding/show/1130/"}
 ];
 
 const publishedProperties = [
@@ -9147,7 +9150,8 @@ const kindLabel = {
   industrial: "Productivo / logístico",
   commercial: "Comercial / servicios",
   tourism: "Turismo / recreación",
-  land: "Prospección de suelo"
+  land: "Prospección de suelo",
+  infrastructure: "Infraestructura urbana"
 };
 
 const reviewTasks = Object.freeze([
@@ -9392,10 +9396,13 @@ function mergeReviewStates(localState, importedState, items) {
   return { state: normalizeReviewState(merged, allowedItems), addedRecords, combinedRecords, conflicts };
 }
 
-const MAP_VIEW_QUERY_KEYS = ["q", "tipo", "sector", "evidencia", "vigencia", "diligencia", "ref"];
+const MAP_VIEW_QUERY_KEYS = ["q", "tipo", "sector", "localidad", "actividad", "proximo", "evidencia", "vigencia", "diligencia", "ref"];
 const MAP_VIEW_CATEGORIES = ["all", "locality", "opportunity", "published"];
-const MAP_VIEW_KINDS = ["all", "industrial", "commercial", "tourism", "land"];
-const MAP_VIEW_EVIDENCE = ["all", "documented", "hypothesis"];
+const MAP_VIEW_KINDS = ["all", "industrial", "commercial", "tourism", "land", "infrastructure"];
+const MAP_VIEW_LOCALITIES = ["all", "moreno", "paso", "lareja", "alvarez", "trujui", "cuartel", "unassigned"];
+const MAP_VIEW_ACTIVITIES = ["all", "industrial", "commercial", "tourism", "land", "residential", "infrastructure"];
+const MAP_VIEW_NEXT_STEPS = ["all", "cadastral", "planning", "publication", "contact", "fieldwork", "feasibility"];
+const MAP_VIEW_EVIDENCE = ["all", "documented", "hypothesis", "published-source"];
 const MAP_VIEW_AVAILABILITY = ["all", "no-confirmada", "pendiente-revalidacion", "no-vigente", "no-es-oferta"];
 const MAP_VIEW_DILIGENCE = ["all", "complete", "pending"];
 
@@ -9636,44 +9643,33 @@ function paginatePublishedCards(items, limit, selectedId) {
 }
 
 function normalizeMapViewState(state, items) {
-  const settings = state || {};
-  const query = String(settings.query || "").trim().slice(0, 100);
-  const category = MAP_VIEW_CATEGORIES.includes(settings.category) ? settings.category : "all";
-  const kind = MAP_VIEW_KINDS.includes(settings.kind) ? settings.kind : "all";
-  const evidence = MAP_VIEW_EVIDENCE.includes(settings.evidence) ? settings.evidence : "all";
-  const availability = MAP_VIEW_AVAILABILITY.includes(settings.availability) ? settings.availability : "all";
-  const diligence = MAP_VIEW_DILIGENCE.includes(settings.diligence) ? settings.diligence : "all";
-  const candidateReference = String(settings.ref || "");
-  const reference = (items || []).some(item => item.id === candidateReference)
-    ? candidateReference
-    : null;
-  return { query, category, kind, evidence, availability, diligence, ref: reference };
+  const s=state||{},query=String(s.query||"").trim().slice(0,100);
+  const category=MAP_VIEW_CATEGORIES.includes(s.category)?s.category:"all",kind=MAP_VIEW_KINDS.includes(s.kind)?s.kind:"all";
+  const locality=MAP_VIEW_LOCALITIES.includes(s.locality)?s.locality:"all",activity=MAP_VIEW_ACTIVITIES.includes(s.activity)?s.activity:"all";
+  const nextStep=MAP_VIEW_NEXT_STEPS.includes(s.nextStep)?s.nextStep:"all",evidence=MAP_VIEW_EVIDENCE.includes(s.evidence)?s.evidence:"all";
+  const availability=MAP_VIEW_AVAILABILITY.includes(s.availability)?s.availability:"all",diligence=MAP_VIEW_DILIGENCE.includes(s.diligence)?s.diligence:"all";
+  const candidate=String(s.ref||""),ref=(items||[]).some(item=>item.id===candidate)?candidate:null;
+  return {query,category,kind,locality,activity,nextStep,evidence,availability,diligence,ref};
 }
 
 function parseMapViewState(search, items) {
-  const parameters = new URLSearchParams(String(search || ""));
-  return normalizeMapViewState({
-    query: parameters.get("q") || "",
-    category: parameters.get("tipo") || "all",
-    kind: parameters.get("sector") || "all",
-    evidence: parameters.get("evidencia") || "all",
-    availability: parameters.get("vigencia") || "all",
-    diligence: parameters.get("diligencia") || "all",
-    ref: parameters.get("ref")
-  }, items);
+  const p=new URLSearchParams(String(search||""));
+  return normalizeMapViewState({query:p.get("q")||"",category:p.get("tipo")||"all",kind:p.get("sector")||"all",locality:p.get("localidad")||"all",activity:p.get("actividad")||"all",nextStep:p.get("proximo")||"all",evidence:p.get("evidencia")||"all",availability:p.get("vigencia")||"all",diligence:p.get("diligencia")||"all",ref:p.get("ref")},items);
 }
 
 function buildMapViewUrl(baseUrl, state, items) {
-  const url = new URL(String(baseUrl));
-  const normalized = normalizeMapViewState(state, items);
-  MAP_VIEW_QUERY_KEYS.forEach(key => url.searchParams.delete(key));
-  if (normalized.query) url.searchParams.set("q", normalized.query);
-  if (normalized.category !== "all") url.searchParams.set("tipo", normalized.category);
-  if (normalized.kind !== "all") url.searchParams.set("sector", normalized.kind);
-  if (normalized.evidence !== "all") url.searchParams.set("evidencia", normalized.evidence);
-  if (normalized.availability !== "all") url.searchParams.set("vigencia", normalized.availability);
-  if (normalized.diligence !== "all") url.searchParams.set("diligencia", normalized.diligence);
-  if (normalized.ref) url.searchParams.set("ref", normalized.ref);
+  const url=new URL(String(baseUrl)),n=normalizeMapViewState(state,items);
+  MAP_VIEW_QUERY_KEYS.forEach(key=>url.searchParams.delete(key));
+  if(n.query)url.searchParams.set("q",n.query);
+  if(n.category!=="all")url.searchParams.set("tipo",n.category);
+  if(n.kind!=="all")url.searchParams.set("sector",n.kind);
+  if(n.locality!=="all")url.searchParams.set("localidad",n.locality);
+  if(n.activity!=="all")url.searchParams.set("actividad",n.activity);
+  if(n.nextStep!=="all")url.searchParams.set("proximo",n.nextStep);
+  if(n.evidence!=="all")url.searchParams.set("evidencia",n.evidence);
+  if(n.availability!=="all")url.searchParams.set("vigencia",n.availability);
+  if(n.diligence!=="all")url.searchParams.set("diligencia",n.diligence);
+  if(n.ref)url.searchParams.set("ref",n.ref);
   return url.toString();
 }
 
@@ -9712,35 +9708,32 @@ function prefersReducedMotion(view) {
   );
 }
 
-function filterReferences(items, options) {
-  const settings = options || {};
-  const query = String(settings.query || "").toLocaleLowerCase("es-AR").trim();
-  const category = settings.category || "all";
-  const kind = settings.kind || "all";
-  const evidence = settings.evidence || "all";
-  const availability = MAP_VIEW_AVAILABILITY.includes(settings.availability) ? settings.availability : "all";
-  const diligence = MAP_VIEW_DILIGENCE.includes(settings.diligence) ? settings.diligence : "all";
-  return items.filter(item => {
-    const categoryMatches =
-      category === "all" ||
-      (category === "locality" && item.type === "locality") ||
-      (category === "opportunity" && item.type === "opportunity") ||
-      (category === "published" && item.type === "published");
-    const kindMatches = kind === "all" || (item.type === "opportunity" && item.kind === kind);
-    const evidenceMatches = evidence === "all" || (item.type === "opportunity" && evidence === item.stage);
-    const availabilityMatches = availability === "all" ||
-      (item.type === "published" && availabilityFilterKey(item.availabilityStatus) === availability);
-    const diligenceSummary = item.type === "published" ? publishedDiligenceSummary(item) : null;
-    const diligenceMatches = diligence === "all" ||
-      (item.type === "published" && diligenceSummary && (diligenceSummary.complete ? "complete" : "pending") === diligence);
-    const searchable = [
-      item.name, item.info, item.business, item.status, item.evidence, item.next,
-      item.kind, kindLabel[item.kind], item.recordType, item.locality, item.address,
-      item.agency, item.contact, item.price, item.verificationStatus, item.availabilityStatus,
-      item.lastCheckedAt, item.observations
-    ].filter(Boolean).join(" ").toLocaleLowerCase("es-AR");
-    return categoryMatches && kindMatches && evidenceMatches && availabilityMatches && diligenceMatches && searchable.includes(query);
-  });
+function normalizeSearchText(value) {
+  return String(value==null?"":value).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-AR").replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
+}
+function editDistanceAtMostOne(a,b){if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,e=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue;}if(++e>1)return false;if(a.length===b.length){i++;j++;}else if(a.length>b.length)i++;else j++;}if(i<a.length||j<b.length)e++;return e<=1;}
+function searchQueryMatches(query,searchable){const q=normalizeSearchText(query);if(!q)return true;const words=normalizeSearchText(searchable).split(" ").filter(Boolean);return q.split(" ").filter(Boolean).every(token=>words.some(word=>word===token||word.startsWith(token)||(token.length>=5&&word.length>=5&&editDistanceAtMostOne(token,word))));}
+const LOCALITY_FILTER_TERMS={moreno:["moreno centro","moreno"],paso:["paso del rey"],lareja:["la reja"],alvarez:["francisco alvarez"],trujui:["trujui"],cuartel:["cuartel v"]};
+const ACTIVITY_FILTER_TERMS={industrial:["industrial","logistico","logistica","productivo","deposito","pyme","carga","transporte","flota","galpon"],commercial:["comercial","comercio","servicios","gastronomia","oficina","local comercial","estacionamiento"],tourism:["turismo","recreacion","recreativo","naturaleza","quinta","dique","hotel"],land:["terreno","lote","parcela","suelo","fraccion","predio","quinta"],residential:["residencial","vivienda","casa","barrio","loteo","habitacional"],infrastructure:["infraestructura","saneamiento","cloacal","desague","pluvial","vial","parque urbano","equipamiento","urbanizacion","obras"]};
+const NEXT_STEP_FILTER_TERMS={cadastral:["catastro","nomenclatura","mensura","dominio","titularidad","plancheta","parcela"],planning:["zonificacion","normativa","indicadores","fos","fot","usos","urbanistica","certificado","restricciones"],publication:["publicacion","aviso","vigencia","revalidacion","disponibilidad","stock","precio","fuente","revisar"],contact:["solicitar","consultar","contactar","pedir","comunicar","llamar","contacto","documentacion","expediente"],fieldwork:["identificar","relevar","recorrer","visita","campo","frente","acceso","poligono"],feasibility:["servicios","factibilidad","hidraul","ambient","drenaje","infraestructura","accesos","cota"]};
+function referenceMatchesLocality(item,key){if(key==="all")return true;const t=normalizeSearchText([item&&item.locality,item&&item.name,item&&item.address].filter(Boolean).join(" "));if(key==="unassigned")return !Object.values(LOCALITY_FILTER_TERMS).some(a=>a.some(x=>t.includes(x)));return (LOCALITY_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
+function referenceMatchesActivity(item,key){if(key==="all")return true;const t=normalizeSearchText([item&&item.activity,item&&item.kind,item&&kindLabel[item.kind],item&&item.name,item&&item.business,item&&item.recordType,item&&item.observations,item&&item.evidence].filter(Boolean).join(" "));return Boolean(item&&item.kind===key)||(ACTIVITY_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
+function referenceMatchesNextStep(item,key){if(key==="all")return true;const pub=item&&item.type==="published"?"confirmar vigencia precio stock documentacion contacto":"";const t=normalizeSearchText([item&&item.next,item&&item.status,item&&item.observations,item&&item.verificationStatus,pub].filter(Boolean).join(" "));return (NEXT_STEP_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
+function evidenceMetadata(item){if(!item)return {evidenceType:"No clasificada",confidence:"No asignada",sourceDate:"",consultedAt:""};if(item.type==="published")return {evidenceType:"Aviso inmobiliario de tercero",confidence:"Baja para disponibilidad, dominio y precio final; el registro solo conserva el contenido publicado en la fecha de revisión.",sourceDate:item.publicationDate||"No informada",consultedAt:item.lastCheckedAt||"No informada"};if(item.type==="locality")return {evidenceType:"Referencia cartográfica orientativa",confidence:"No aplicable a una parcela ni a una oportunidad inmobiliaria.",sourceDate:"",consultedAt:""};return {evidenceType:item.evidenceType||"Fuente pública no clasificada",confidence:item.confidence||"No asignada; requiere revisión de la fuente y su alcance.",sourceDate:item.sourceDate||"No informada",consultedAt:item.lastCheckedAt||"No informada"};}
+function filterReferences(items,options){
+ const s=options||{},q=String(s.query||"").trim(),category=s.category||"all",kind=s.kind||"all";
+ const locality=MAP_VIEW_LOCALITIES.includes(s.locality)?s.locality:"all",activity=MAP_VIEW_ACTIVITIES.includes(s.activity)?s.activity:"all",nextStep=MAP_VIEW_NEXT_STEPS.includes(s.nextStep)?s.nextStep:"all";
+ const evidence=MAP_VIEW_EVIDENCE.includes(s.evidence)?s.evidence:"all",availability=MAP_VIEW_AVAILABILITY.includes(s.availability)?s.availability:"all",diligence=MAP_VIEW_DILIGENCE.includes(s.diligence)?s.diligence:"all";
+ return items.filter(item=>{
+  const categoryMatches=category==="all"||(category==="locality"&&item.type==="locality")||(category==="opportunity"&&item.type==="opportunity")||(category==="published"&&item.type==="published");
+  const kindMatches=kind==="all"||(item.type==="opportunity"&&item.kind===kind);
+  const localityMatches=referenceMatchesLocality(item,locality),activityMatches=referenceMatchesActivity(item,activity),nextStepMatches=referenceMatchesNextStep(item,nextStep);
+  const evidenceMatches=evidence==="all"||(evidence==="published-source"&&item.type==="published")||(item.type==="opportunity"&&evidence===item.stage);
+  const availabilityMatches=availability==="all"||(item.type==="published"&&availabilityFilterKey(item.availabilityStatus)===availability);
+  const d=item.type==="published"?publishedDiligenceSummary(item):null,diligenceMatches=diligence==="all"||(item.type==="published"&&d&&(d.complete?"complete":"pending")===diligence);
+  const searchable=[item.id,item.name,item.info,item.business,item.status,item.evidence,item.next,item.kind,kindLabel[item.kind],item.activity,item.recordType,item.locality,item.address,item.agency,item.contact,item.price,item.verificationStatus,item.availabilityStatus,item.lastCheckedAt,item.observations,item.evidenceType,item.confidence,item.sourceDate,item.source].filter(Boolean).join(" ");
+  return categoryMatches&&kindMatches&&localityMatches&&activityMatches&&nextStepMatches&&evidenceMatches&&availabilityMatches&&diligenceMatches&&searchQueryMatches(q,searchable);
+ });
 }
 
 function countInventory(items) {
@@ -9990,7 +9983,8 @@ function buildCsv(items) {
     "linea_a_investigar", "evidencia_publica", "estado_de_verificacion", "proximo_paso", "fuente",
     "alcance_de_coordenada", "localidad", "ubicacion_publicada", "direccion_publicada", "anunciante",
     "contacto_publico", "precio_publicado", "moneda", "superficie_terreno_m2", "superficie_cubierta_m2",
-    "nota_de_superficie", "fecha_aviso", "fecha_revision", "geolocalizacion", "disponibilidad"
+    "nota_de_superficie", "fecha_aviso", "fecha_revision", "geolocalizacion", "disponibilidad",
+    "actividad", "tipo_de_evidencia", "nivel_de_confianza", "fecha_de_fuente", "fecha_de_consulta"
   ];
   const rows = items.map(item => {
     const isLocality = item.type === "locality";
@@ -10015,7 +10009,9 @@ function buildCsv(items) {
       item.price, item.currency, item.landSurfaceM2, item.coveredSurfaceM2, item.surfaceNote,
       item.publicationDate, item.lastCheckedAt, item.geolocationStatus, item.availabilityStatus
     ] : ["","","","","","","","","","","","","",""];
-    return base.concat(details);
+    const metadata = evidenceMetadata(item);
+    const traceability = [item.activity || (isLocality ? "" : (isPublished ? "Actividad inmobiliaria publicada" : (kindLabel[item.kind] || ""))), metadata.evidenceType, metadata.confidence, metadata.sourceDate, metadata.consultedAt];
+    return base.concat(details, traceability);
   });
   return "\uFEFF" + [headers, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n");
 }
@@ -10041,7 +10037,10 @@ function buildGeoJson(items) {
         verification_status: isLocality ? "Referencia geográfica de localidad; no es una evaluación parcelaria." : (isPublished ? item.verificationStatus : item.status),
         next_step: isLocality ? "Definir zona y recopilar información catastral y normativa." : (isPublished ? "Confirmar vigencia, precio, disponibilidad, dominio y documentación." : item.next),
         source_url: item.source || null, coordinate_scope: coordinateScope,
-        locality: isPublished ? item.locality : null, published_address: isPublished ? item.address : null,
+        activity: item.activity || (isPublished ? "Actividad inmobiliaria publicada" : (kindLabel[item.kind] || null)),
+        evidence_type: evidenceMetadata(item).evidenceType, confidence_level: evidenceMetadata(item).confidence,
+        source_date: evidenceMetadata(item).sourceDate || null, source_consulted_at: evidenceMetadata(item).consultedAt || null,
+        locality: isPublished ? item.locality : (item.locality || null), published_address: isPublished ? item.address : null,
         agency: isPublished ? item.agency : null, public_contact: isPublished ? item.contact : null,
         published_price: isPublished ? item.price : null, currency: isPublished ? item.currency : null,
         land_surface_m2: isPublished ? item.landSurfaceM2 : null, covered_surface_m2: isPublished ? item.coveredSurfaceM2 : null,
@@ -10107,6 +10106,8 @@ function buildTerritorialBrief(item, generatedAt) {
       },
       lineToInvestigate: String(item.business || "").trim().slice(0, 1200),
       evidence: String(item.evidence || "").trim().slice(0, 1600),
+      evidenceType: evidenceMetadata(item).evidenceType, confidence: evidenceMetadata(item).confidence,
+      sourceDate: evidenceMetadata(item).sourceDate, consultedAt: evidenceMetadata(item).consultedAt,
       verificationStatus: String(item.status || "").trim().slice(0, 800),
       nextStep: String(item.next || "").trim().slice(0, 1000),
       sourceUrl: safeTerritorialSource(item.source)
@@ -10195,6 +10196,10 @@ function buildTerritorialBriefHtml(brief) {
     escapeTerritorialHtml(reference.lineToInvestigate) + "</p></section>" +
     '<div class="grid"><section><h2>Evidencia disponible</h2><p>' + escapeTerritorialHtml(reference.evidence) +
     '</p><p class="muted">La clasificación indica el tipo de respaldo registrado en el inventario; no certifica exactitud o vigencia.</p></section>' +
+    '<section><h2>Calidad y trazabilidad</h2><p><strong>Tipo:</strong> ' + escapeTerritorialHtml(reference.evidenceType || "No clasificada") +
+    '</p><p><strong>Confianza:</strong> ' + escapeTerritorialHtml(reference.confidence || "No asignada") +
+    '</p><p><strong>Fecha de la fuente:</strong> ' + escapeTerritorialHtml(reference.sourceDate || "No informada") +
+    '</p><p><strong>Última consulta registrada:</strong> ' + escapeTerritorialHtml(reference.consultedAt || "No informada") + "</p></section>" +
     "<section><h2>Estado de verificación</h2><p>" + escapeTerritorialHtml(reference.verificationStatus) +
     '</p><p class="muted">La disponibilidad y la identificación parcelaria no se presuponen.</p></section>' +
     "<section><h2>Próximo paso sugerido</h2><p>" + escapeTerritorialHtml(reference.nextStep) + "</p></section>" +
@@ -10225,12 +10230,17 @@ function buildTerritorialDossier(items, filters, generatedAt) {
 
   const state = normalizeMapViewState(filters, all);
   const categoryLabels = { all: "Todas las capas", locality: "Localidades", opportunity: "Tesis de oportunidad", published: "Propiedades y desarrollos publicados" };
-  const evidenceLabels = { all: "Todos los niveles", documented: "Contextos con fuente pública", hypothesis: "Hipótesis de prospección" };
+  const evidenceLabels = { all: "Todos los niveles", documented: "Contextos con fuente pública", hypothesis: "Hipótesis de prospección", "published-source": "Avisos de terceros" };
   const filterLabels = [];
   if (state.query) filterLabels.push("Búsqueda: " + state.query);
   if (state.category !== "all") filterLabels.push("Tipo: " + categoryLabels[state.category]);
   if (state.kind !== "all") filterLabels.push("Sector: " + (kindLabel[state.kind] || state.kind));
+  if (state.locality !== "all") filterLabels.push("Localidad: " + state.locality);
+  if (state.activity !== "all") filterLabels.push("Actividad: " + state.activity);
+  if (state.nextStep !== "all") filterLabels.push("Próximo paso: " + state.nextStep);
   if (state.evidence !== "all") filterLabels.push("Evidencia: " + evidenceLabels[state.evidence]);
+  if (state.availability !== "all") filterLabels.push("Estado de publicación: " + state.availability);
+  if (state.diligence !== "all") filterLabels.push("Integridad de ficha: " + state.diligence);
   if (state.ref) {
     const selectedReference = selected.find(item => item.id === state.ref);
     if (selectedReference) filterLabels.push("Referencia destacada: " + selectedReference.name);
@@ -10259,6 +10269,9 @@ function buildTerritorialDossier(items, filters, generatedAt) {
       },
       lineToInvestigate: isLocality ? String(item.info || "") : (isPublished ? [item.recordType,item.locality,item.address,item.price].filter(Boolean).join(" · ") : String(item.business || "")),
       evidence: isLocality ? "Referencia geográfica de localidad; no es una evaluación parcelaria." : (isPublished ? String(item.observations || "") : String(item.evidence || "")),
+      activity: item.activity || (isPublished ? "Actividad inmobiliaria publicada" : (kindLabel[item.kind] || "")),
+      evidenceType: evidenceMetadata(item).evidenceType, confidence: evidenceMetadata(item).confidence,
+      sourceDate: evidenceMetadata(item).sourceDate, consultedAt: evidenceMetadata(item).consultedAt,
       verificationStatus: isLocality ? "No identifica un inmueble ni acredita titularidad o disponibilidad." : (isPublished ? String(item.verificationStatus || "") : String(item.status || "")),
       nextStep: isLocality ? "Definir un área concreta y reunir información catastral, urbanística y de servicios." : (isPublished ? "Confirmar vigencia, precio, stock, contacto, dominio, mensura y documentación antes de negociar." : String(item.next || "")),
       sourceUrl: safeTerritorialSource(item.source)
@@ -10271,7 +10284,7 @@ function buildTerritorialDossier(items, filters, generatedAt) {
     : new Date().toISOString();
   const title = state.kind !== "all"
     ? "Dossier sectorial · " + (kindLabel[state.kind] || state.kind)
-    : (state.category !== "all" || state.evidence !== "all" || state.query
+    : (state.category !== "all" || state.evidence !== "all" || state.query || state.locality !== "all" || state.activity !== "all" || state.nextStep !== "all" || state.availability !== "all" || state.diligence !== "all"
       ? "Dossier de selección territorial"
       : "Dossier territorial · Moreno");
 
@@ -10478,9 +10491,13 @@ function initMapPage(doc) {
   const searchInput = doc.getElementById("search");
   const categoryInput = doc.getElementById("category");
   const kindInput = doc.getElementById("kind-filter");
+  const localityInput = doc.getElementById("locality-filter");
+  const activityInput = doc.getElementById("activity-filter");
+  const nextStepInput = doc.getElementById("next-step-filter");
   const evidenceInput = doc.getElementById("evidence-filter");
   const availabilityInput = doc.getElementById("availability-filter");
   const diligenceInput = doc.getElementById("diligence-filter");
+  const emptyState = doc.getElementById("map-empty-state");
   const duplicateReviewDisclosure = doc.getElementById("duplicate-review-disclosure");
   const duplicateReviewSummary = doc.getElementById("duplicate-review-summary");
   const duplicateReviewList = doc.getElementById("duplicate-review-list");
@@ -10532,6 +10549,9 @@ function initMapPage(doc) {
   searchInput.value = initialViewState.query;
   categoryInput.value = initialViewState.category;
   kindInput.value = initialViewState.kind;
+  localityInput.value = initialViewState.locality;
+  activityInput.value = initialViewState.activity;
+  nextStepInput.value = initialViewState.nextStep;
   evidenceInput.value = initialViewState.evidence;
   availabilityInput.value = initialViewState.availability;
   diligenceInput.value = initialViewState.diligence;
@@ -10766,6 +10786,11 @@ function initMapPage(doc) {
     addLine("Qué sabemos:", item.evidence);
     addLine("Estado:", item.status);
     addLine("Siguiente paso:", item.next);
+    const traceability = evidenceMetadata(item);
+    addLine("Tipo de evidencia:", traceability.evidenceType);
+    addLine("Confianza:", traceability.confidence);
+    addLine("Fecha de la fuente:", traceability.sourceDate);
+    addLine("Última consulta registrada:", traceability.consultedAt);
     const link = doc.createElement("a");
     link.href = item.source;
     link.target = "_blank";
@@ -10876,6 +10901,9 @@ function initMapPage(doc) {
       query: searchInput.value,
       category: categoryInput.value,
       kind: kindInput.value,
+      locality: localityInput.value,
+      activity: activityInput.value,
+      nextStep: nextStepInput.value,
       evidence: evidenceInput.value,
       availability: availabilityInput.value,
       diligence: diligenceInput.value,
@@ -11151,7 +11179,7 @@ function initMapPage(doc) {
       shareLink.textContent = "Abrir ficha compartible ↗";
       actions.append(shareLink);
 
-      if (map) {
+      if (map && hasCoordinates(item)) {
         const focusButton = doc.createElement("button");
         focusButton.type = "button";
         focusButton.className = "map-focus-button";
@@ -11159,6 +11187,11 @@ function initMapPage(doc) {
         focusButton.setAttribute("aria-label", "Centrar el mapa en " + item.name);
         focusButton.addEventListener("click", () => focusItem(item));
         actions.append(focusButton);
+      } else if (map && item.type === "opportunity") {
+        const pendingLocation = doc.createElement("span");
+        pendingLocation.className = "map-published-pending";
+        pendingLocation.textContent = "Sin marcador · la fuente no identifica un punto preciso";
+        actions.append(pendingLocation);
       }
       body.append(actions);
 
@@ -11178,6 +11211,12 @@ function initMapPage(doc) {
         addDetail("Qué sabemos", item.evidence);
         addDetail("Estado de verificación", item.status);
         addDetail("Próximo paso", item.next);
+        const traceability = evidenceMetadata(item);
+        addDetail("Tipo de evidencia", traceability.evidenceType);
+        addDetail("Nivel de confianza", traceability.confidence);
+        addDetail("Fecha de la fuente", traceability.sourceDate);
+        addDetail("Última consulta registrada", traceability.consultedAt);
+        addDetail("Localidad declarada", item.locality);
         if (item.source) {
           const link = doc.createElement("a");
           link.className = "map-source-link";
@@ -11329,6 +11368,11 @@ function initMapPage(doc) {
       addDetail("Disponibilidad:", item.availabilityStatus);
       addDetail("Geolocalización:", item.geolocationStatus);
       addDetail("Observaciones:", item.observations);
+      const traceability = evidenceMetadata(item);
+      addDetail("Tipo de evidencia:", traceability.evidenceType);
+      addDetail("Confianza:", traceability.confidence);
+      addDetail("Fecha de la fuente:", traceability.sourceDate);
+      addDetail("Última consulta registrada:", traceability.consultedAt);
       card.append(body);
       target.append(card);
     });
@@ -11439,14 +11483,18 @@ function initMapPage(doc) {
 
   function render() {
     const shown = filterReferences(all, {
-      query: doc.getElementById("search").value,
-      category: doc.getElementById("category").value,
-      kind: doc.getElementById("kind-filter").value,
-      evidence: doc.getElementById("evidence-filter").value,
+      query: searchInput.value,
+      category: categoryInput.value,
+      kind: kindInput.value,
+      locality: localityInput.value,
+      activity: activityInput.value,
+      nextStep: nextStepInput.value,
+      evidence: evidenceInput.value,
       availability: availabilityInput.value,
       diligence: diligenceInput.value
     });
     visibleItems = shown;
+    if (emptyState) emptyState.hidden = shown.length > 0;
     updateAtlasIndex(shown);
     exportButton.disabled = shown.length === 0;
     geoJsonExportButton.disabled = shown.length === 0;
@@ -11771,15 +11819,23 @@ function initMapPage(doc) {
   searchInput.addEventListener("input", resetPublishedPaginationAndRender);
   categoryInput.addEventListener("change", resetPublishedPaginationAndRender);
   kindInput.addEventListener("change", resetPublishedPaginationAndRender);
+  localityInput.addEventListener("change", resetPublishedPaginationAndRender);
+  activityInput.addEventListener("change", resetPublishedPaginationAndRender);
+  nextStepInput.addEventListener("change", resetPublishedPaginationAndRender);
   evidenceInput.addEventListener("change", resetPublishedPaginationAndRender);
   availabilityInput.addEventListener("change", resetPublishedPaginationAndRender);
   diligenceInput.addEventListener("change", resetPublishedPaginationAndRender);
   shareViewButton.addEventListener("click", shareCurrentView);
   dossierExportButton.addEventListener("click", downloadTerritorialDossier);
+  const emptyResetButton = doc.getElementById("reset-empty-state");
+  if (emptyResetButton) emptyResetButton.addEventListener("click", () => doc.getElementById("reset-map").click());
   doc.getElementById("reset-map").addEventListener("click", () => {
     searchInput.value = "";
     categoryInput.value = "all";
     kindInput.value = "all";
+    localityInput.value = "all";
+    activityInput.value = "all";
+    nextStepInput.value = "all";
     evidenceInput.value = "all";
     availabilityInput.value = "all";
     diligenceInput.value = "all";
