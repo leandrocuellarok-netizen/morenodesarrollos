@@ -370,6 +370,43 @@ async function auditRoute(browser, route) {
       check(await ordinanceCard.locator(".map-published-pending").isVisible(), "mapa-ia: RP25 permanece en el índice sin coordenada trazable");
       check(await page.locator('.map-pin[data-map-reference="rp25"]').count() === 0, "mapa-ia: RP25 no recibe un marcador sin coordenada fuente");
 
+
+      await searchFor("Ordenanza 7497/26 mensuras títulos imperfectos", "opportunity");
+      const imperfectTitleCard = page.locator('#opportunity-list [data-map-item="ordenanza-7497-26-titulos-imperfectos"]');
+      await imperfectTitleCard.waitFor({ state: "attached", timeout: 5000 });
+      if (!(await imperfectTitleCard.evaluate(element => element.open))) await imperfectTitleCard.locator("summary").click();
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: la ordenanza 7497/26 devuelve una coincidencia real");
+      check((await imperfectTitleCard.innerText()).includes("no confiere dominio"), "mapa-ia: la ficha distingue permiso provisorio de titularidad dominial");
+      check(await imperfectTitleCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"]').isVisible(), "mapa-ia: la ficha enlaza la ordenanza oficial");
+      check(await page.locator('.map-pin[data-map-reference="ordenanza-7497-26-titulos-imperfectos"]').count() === 0, "mapa-ia: la ordenanza sin coordenadas permanece solo en el índice");
+
+      await searchFor("Ordenanza 7542/26 depósitos 300 m²", "opportunity");
+      const habilitationCard = page.locator('#opportunity-list [data-map-item="ordenanza-7542-26-habilitaciones-industriales-logistica"]');
+      await habilitationCard.waitFor({ state: "attached", timeout: 5000 });
+      if (!(await habilitationCard.evaluate(element => element.open))) await habilitationCard.locator("summary").click();
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: la ordenanza 7542/26 devuelve una coincidencia real");
+      check((await habilitationCard.innerText()).includes("300 m²") && (await habilitationCard.innerText()).includes("1.000 m²"), "mapa-ia: la ficha conserva los umbrales de superficie de la norma");
+      check(await habilitationCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"]').isVisible(), "mapa-ia: la ficha enlaza la fuente oficial de habilitaciones");
+      check(await page.locator('.map-pin[data-map-reference="ordenanza-7542-26-habilitaciones-industriales-logistica"]').count() === 0, "mapa-ia: la norma industrial no recibe coordenadas inventadas");
+
+      await searchFor("Los Olivos 9.897,35 m² cesiones", "opportunity");
+      const losOlivosCard = page.locator('#opportunity-list [data-map-item="los-olivos-convenio-urbanistico-7572-26"]');
+      await losOlivosCard.waitFor({ state: "attached", timeout: 5000 });
+      if (!(await losOlivosCard.evaluate(element => element.open))) await losOlivosCard.locator("summary").click();
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: Los Olivos devuelve una coincidencia real por proyecto y superficie");
+      check((await losOlivosCard.innerText()).includes("USD 138.562,90") && (await losOlivosCard.innerText()).includes("no precios de mercado"), "mapa-ia: las valuaciones del convenio se distinguen de precios de oferta");
+      check(await losOlivosCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"]').isVisible(), "mapa-ia: la ficha enlaza el convenio urbanístico oficial");
+      check(await page.locator('.map-pin[data-map-reference="los-olivos-convenio-urbanistico-7572-26"]').count() === 0, "mapa-ia: Los Olivos permanece en el índice sin geolocalización no verificada");
+
+      await page.locator("#search").fill("Los Olivos");
+      await page.locator("#activity-filter").selectOption("land");
+      await page.locator("#next-step-filter").selectOption("cadastral");
+      await page.locator("#evidence-filter").selectOption("documented");
+      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("1 coincidencias:"), null, { timeout: 5000 });
+      const losOlivosFilteredIds = await page.locator("#opportunity-list [data-map-item]").evaluateAll(elements => elements.map(element => element.dataset.mapItem));
+      check(losOlivosFilteredIds.length === 1 && losOlivosFilteredIds[0] === "los-olivos-convenio-urbanistico-7572-26", "mapa-ia: los filtros de sector, próximo paso y evidencia se combinan con la búsqueda normativa");
+      await page.locator("#reset-map").click();
+
       await searchFor("Ecoparque Industrial", "opportunity");
       await page.locator('#opportunity-list [data-map-item="ecoparque"]').waitFor({ state: "attached", timeout: 5000 });
       const ecoparqueCard = page.locator('#opportunity-list [data-map-item="ecoparque"]');
