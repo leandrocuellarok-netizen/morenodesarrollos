@@ -993,7 +993,172 @@ assert.equal(publishedProperties.find(item => item.id === "casa-concordia-2545-3
 
 console.log("OK: pruebas del Mapa IA, exportaciones cartográficas y fichas editoriales imprimibles.");
 
-async function 
+async function testGeorefRequestQueue() {
+  const items = [
+    { id: "shared-a", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
+    { id: "shared-b", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
+    { id: "camilli", geocodeQuery: "Camilli 140", geocodeMatch: "CAMILLI 140" },
+    { id: "ambiguous", geocodeQuery: "Ambigua 500", geocodeMatch: "AMBIGUA 500" },
+    { id: "failed", geocodeQuery: "Falla 10", geocodeMatch: "FALLA 10" },
+    { id: "out-of-range", geocodeQuery: "Fuera de rango 1", geocodeMatch: "FUERA DE RANGO 1" },
+    { id: "approximate", geocodeQuery: "Galileo Galilei al 7300", geocodeDisabled: true }
+  ];
+  let active = 0;
+  let maximumActive = 0;
+  const calls = [];
+  const fakeFetch = async url => {
+    const query = new URL(url).searchParams.get("direccion");
+    calls.push(query);
+    active += 1;
+    maximumActive = Math.max(maximumActive, active);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 8));
+      if (query === "Camilli 140") return { ok: false, json: async () => ({ direcciones: [] }) };
+      if (query === "Falla 10") throw new Error("fallo simulado");
+      if (query === "Fuera de rango 1") {
+        return {
+          ok: true,
+          json: async () => ({
+            direcciones: [{
+              nomenclatura: "FUERA DE RANGO 1, MORENO, BUENOS AIRES",
+              ubicacion: { lat: "95", lon: "-58.80" }
+            }]
+          })
+        };
+      }
+      if (query === "Ambigua 500") {
+        return {
+          ok: true,
+          json: async () => ({
+            direcciones: [
+              { nomenclatura: "AMBIGUA 500, MORENO, BUENOS AIRES", ubicacion: { lat: "-34.60", lon: "-58.80" } },
+              { nomenclatura: "AMBIGUA 500, MORENO, BUENOS AIRES", ubicacion: { lat: "-34.61", lon: "-58.81" } }
+            ]
+          })
+        };
+      }
+      return {
+        ok: true,
+        json: async () => ({
+          direcciones: [
+            { nomenclatura: "SAN JUAN BAUTISTA 100, MORENO, BUENOS AIRES", ubicacion: { lat: "-34.62", lon: "-58.82" } }
+          ]
+        })
+      };
+    } finally {
+      active -= 1;
+    }
+  };
+
+  const result = await resolvePublishedGeoreferences(items, fakeFetch, null, 2);
+  assert.equal(calls.length, 5, "una dirección repetida genera una sola consulta");
+  assert.equal(new Set(calls).size, 5, "cada consulta única se procesa una vez");
+  assert.ok(maximumActive <= 2, "la cola respeta el límite de dos solicitudes simultáneas de la prueba");
+  assert.ok(maximumActive > 1, "la cola conserva concurrencia controlada sin serializar todas las consultas");
+  assert.deepEqual(result.get("San Juan Bautista 100"), {
+    lat: -34.62,
+    lng: -58.82,
+    nomenclatura: "SAN JUAN BAUTISTA 100, MORENO, BUENOS AIRES"
+  });
+  assert.equal(result.get("Camilli 140"), null, "una respuesta HTTP fallida queda pendiente");
+  assert.equal(result.get("Ambigua 500"), null, "las coincidencias ambiguas no generan coordenadas");
+  assert.equal(result.get("Falla 10"), null, "un error de red queda pendiente sin interrumpir la cola");
+  assert.equal(result.get("Fuera de rango 1"), null, "coordenadas fuera del rango geográfico válido se rechazan");
+  assert.equal(result.has("Galileo Galilei al 7300"), false, "una ubicación aproximada marcada como no geocodificable no consulta Georef");
+  assert.equal((await resolvePublishedGeoreferences([], fakeFetch)).size, 0, "un inventario vacío no genera consultas");
+}
+
+async function testGeorefCache() {
+  const item = {
+    id: "cache-a",
+    geocodeQuery: "Av. Derqui 5890",
+    geocodeMatch: "DERQUI 5890",
+    address: "Av. Derqui 5890"
+  };
+  const storage = {
+    value: null,
+    getItem(key) {
+      assert.equal(key, GEOREF_CACHE_KEY);
+      return this.value;
+    },
+    setItem(key, value) {
+      assert.equal(key, GEOREF_CACHE_KEY);
+      this.value = value;
+    }
+  };
+  let calls = 0;
+  const fakeFetch = async url => {
+    calls += 1;
+    assert.equal(new URL(url).searchParams.get("direccion"), "Av. Derqui 5890");
+    return {
+      ok: true,
+      json: async () => ({
+        direcciones: [{
+          nomenclatura: "DERQUI 5890, MORENO, BUENOS AIRES",
+          ubicacion: { lat: "-34.6508", lon: "-58.7914" }
+        }]
+      })
+    };
+  };
+
+  const first = await resolvePublishedGeoreferencesCached([item], fakeFetch, null, storage, 1000, 2);
+  assert.equal(first.requested, 1, "la primera visita consulta la dirección en Georef");
+  assert.equal(first.cacheHits, 0, "la primera visita no informa aciertos de caché");
+  assert.equal(calls, 1);
+  assert.equal(first.results.get(item.geocodeQuery).lat, -34.6508);
+  assert.ok(storage.value && storage.value.includes("DERQUI 5890, MORENO, BUENOS AIRES"), "la coordenada inequívoca se conserva en caché local");
+
+  const second = await resolvePublishedGeoreferencesCached([item], fakeFetch, null, storage, 2000, 2);
+  assert.equal(second.cacheHits, 1, "la visita siguiente recupera la dirección de caché");
+  assert.equal(second.requested, 0, "una dirección cacheada no vuelve a consultar Georef");
+  assert.equal(calls, 1, "la caché evita la solicitud repetida");
+  assert.equal(second.results.get(item.geocodeQuery).lng, -58.7914);
+
+  const expired = await resolvePublishedGeoreferencesCached(
+    [item], fakeFetch, null, storage, 1000 + GEOREF_CACHE_TTL_MS + 1, 2
+  );
+  assert.equal(expired.cacheHits, 0, "una coordenada vencida no se reutiliza");
+  assert.equal(expired.requested, 1, "una coordenada vencida vuelve a verificarse");
+  assert.equal(calls, 2);
+
+  storage.value = JSON.stringify({
+    version: 1,
+    records: {
+      "AV DERQUI 5890": {
+        checkedAt: 5000,
+        lat: 95,
+        lng: -58.7914,
+        nomenclatura: "DERQUI 5890, MORENO, BUENOS AIRES"
+      }
+    }
+  });
+  const corrupted = await resolvePublishedGeoreferencesCached([item], fakeFetch, null, storage, 6000, 2);
+  assert.equal(corrupted.cacheHits, 0, "la caché descarta latitudes fuera de rango");
+  assert.equal(corrupted.requested, 1);
+  assert.equal(calls, 3);
+
+  const unavailableStorage = await resolvePublishedGeoreferencesCached([item], fakeFetch, null, null, 7000, 2);
+  assert.equal(unavailableStorage.cacheHits, 0, "sin almacenamiento local el mapa conserva la consulta normal");
+  assert.equal(unavailableStorage.requested, 1);
+  assert.equal(calls, 4);
+
+  let failedCalls = 0;
+  const failedStorage = {
+    value: null,
+    getItem() { return this.value; },
+    setItem(key, value) { this.value = value; }
+  };
+  const failedFetch = async () => {
+    failedCalls += 1;
+    return { ok: false, json: async () => ({ direcciones: [] }) };
+  };
+  await resolvePublishedGeoreferencesCached([item], failedFetch, null, failedStorage, 8000, 2);
+  await resolvePublishedGeoreferencesCached([item], failedFetch, null, failedStorage, 9000, 2);
+  assert.equal(failedCalls, 2, "los errores HTTP no se cachean como si fueran coordenadas válidas");
+  assert.equal(failedStorage.value, null, "los resultados fallidos no se persisten");
+}
+
+
 const turn11ExpectedIds = [
   "terreno-riccheri-638",
   "terreno-gervasio-mendez-300-umbrales",
@@ -1030,15 +1195,15 @@ const racineReactivated = publishedProperties.find(record => record.id === "casa
 assert.ok(racineReactivated);
 assert.equal(racineReactivated.availabilityStatus, "No confirmada");
 assert.ok(racineReactivated.source.includes("20962051"));
+const sourceUrls = publishedProperties.map(record => record.source).filter(Boolean);
+assert.equal(new Set(sourceUrls).size, sourceUrls.length, "no se duplican enlaces primarios");
 assert.equal(publishedProperties.length, 313, "el catálogo incorpora 23 altas netas sin duplicados");
 assert.equal(all.length, 324, "el inventario completo refleja 313 publicaciones y 11 referencias territoriales");
 
 
 testGeorefRequestQueue()
   .then(() => testGeorefCache())
-  .then(() => {
-    console.log("OK: Georef con concurrencia limitada, deduplicación, caché local temporal y rechazo de coordenadas inválidas.");
-  })
+  .then(() => console.log("OK: Georef con concurrencia limitada, deduplicación, caché local temporal y rechazo de coordenadas inválidas."))
   .catch(error => {
     console.error(error);
     process.exitCode = 1;
