@@ -1827,10 +1827,24 @@ function mergeReviewStates(localState, importedState, items) {
   return { state: normalizeReviewState(merged, allowedItems), addedRecords, combinedRecords, conflicts };
 }
 
-const MAP_VIEW_QUERY_KEYS = ["q", "tipo", "sector", "evidencia", "ref"];
+const MAP_VIEW_QUERY_KEYS = ["q", "tipo", "sector", "evidencia", "vigencia", "ref"];
 const MAP_VIEW_CATEGORIES = ["all", "locality", "opportunity", "published"];
 const MAP_VIEW_KINDS = ["all", "industrial", "commercial", "tourism", "land"];
 const MAP_VIEW_EVIDENCE = ["all", "documented", "hypothesis"];
+const MAP_VIEW_AVAILABILITY = ["all", "no-confirmada", "pendiente-revalidacion", "no-vigente"];
+
+function availabilityFilterKey(value) {
+  const normalized = String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es-AR").trim();
+  if (normalized === "no confirmada") return "no-confirmada";
+  if (normalized === "pendiente de revalidacion") return "pendiente-revalidacion";
+  if (normalized === "no vigente") return "no-vigente";
+  return "sin-estado";
+}
+
+function formatSourceReviewDate(value) {
+  const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return match ? match[3] + "/" + match[2] + "/" + match[1] : "No informada";
+}
 
 function normalizeMapViewState(state, items) {
   const settings = state || {};
@@ -1838,11 +1852,12 @@ function normalizeMapViewState(state, items) {
   const category = MAP_VIEW_CATEGORIES.includes(settings.category) ? settings.category : "all";
   const kind = MAP_VIEW_KINDS.includes(settings.kind) ? settings.kind : "all";
   const evidence = MAP_VIEW_EVIDENCE.includes(settings.evidence) ? settings.evidence : "all";
+  const availability = MAP_VIEW_AVAILABILITY.includes(settings.availability) ? settings.availability : "all";
   const candidateReference = String(settings.ref || "");
   const reference = (items || []).some(item => item.id === candidateReference)
     ? candidateReference
     : null;
-  return { query, category, kind, evidence, ref: reference };
+  return { query, category, kind, evidence, availability, ref: reference };
 }
 
 function parseMapViewState(search, items) {
@@ -1852,6 +1867,7 @@ function parseMapViewState(search, items) {
     category: parameters.get("tipo") || "all",
     kind: parameters.get("sector") || "all",
     evidence: parameters.get("evidencia") || "all",
+    availability: parameters.get("vigencia") || "all",
     ref: parameters.get("ref")
   }, items);
 }
@@ -1864,6 +1880,7 @@ function buildMapViewUrl(baseUrl, state, items) {
   if (normalized.category !== "all") url.searchParams.set("tipo", normalized.category);
   if (normalized.kind !== "all") url.searchParams.set("sector", normalized.kind);
   if (normalized.evidence !== "all") url.searchParams.set("evidencia", normalized.evidence);
+  if (normalized.availability !== "all") url.searchParams.set("vigencia", normalized.availability);
   if (normalized.ref) url.searchParams.set("ref", normalized.ref);
   return url.toString();
 }
@@ -1909,6 +1926,7 @@ function filterReferences(items, options) {
   const category = settings.category || "all";
   const kind = settings.kind || "all";
   const evidence = settings.evidence || "all";
+  const availability = MAP_VIEW_AVAILABILITY.includes(settings.availability) ? settings.availability : "all";
   return items.filter(item => {
     const categoryMatches =
       category === "all" ||
@@ -1917,12 +1935,15 @@ function filterReferences(items, options) {
       (category === "published" && item.type === "published");
     const kindMatches = kind === "all" || (item.type === "opportunity" && item.kind === kind);
     const evidenceMatches = evidence === "all" || (item.type === "opportunity" && evidence === item.stage);
+    const availabilityMatches = availability === "all" ||
+      (item.type === "published" && availabilityFilterKey(item.availabilityStatus) === availability);
     const searchable = [
       item.name, item.info, item.business, item.status, item.evidence, item.next,
       item.kind, kindLabel[item.kind], item.recordType, item.locality, item.address,
-      item.agency, item.contact, item.price, item.verificationStatus, item.observations
+      item.agency, item.contact, item.price, item.verificationStatus, item.availabilityStatus,
+      item.lastCheckedAt, item.observations
     ].filter(Boolean).join(" ").toLocaleLowerCase("es-AR");
-    return categoryMatches && kindMatches && evidenceMatches && searchable.includes(query);
+    return categoryMatches && kindMatches && evidenceMatches && availabilityMatches && searchable.includes(query);
   });
 }
 
@@ -2450,6 +2471,7 @@ function initMapPage(doc) {
   const categoryInput = doc.getElementById("category");
   const kindInput = doc.getElementById("kind-filter");
   const evidenceInput = doc.getElementById("evidence-filter");
+  const availabilityInput = doc.getElementById("availability-filter");
   const shareViewButton = doc.getElementById("share-map-view");
   const shareViewStatus = doc.getElementById("map-share-status");
   const shareFallbackWrap = doc.getElementById("map-share-fallback-wrap");
@@ -2497,6 +2519,7 @@ function initMapPage(doc) {
   categoryInput.value = initialViewState.category;
   kindInput.value = initialViewState.kind;
   evidenceInput.value = initialViewState.evidence;
+  availabilityInput.value = initialViewState.availability;
   let selectedReferenceId = initialViewState.ref;
   let userHasNavigated = false;
 
@@ -2859,6 +2882,7 @@ function initMapPage(doc) {
       category: categoryInput.value,
       kind: kindInput.value,
       evidence: evidenceInput.value,
+      availability: availabilityInput.value,
       ref: typeof referenceId === "undefined" ? selectedReferenceId : referenceId
     };
   }
@@ -3185,8 +3209,17 @@ function initMapPage(doc) {
       const title = doc.createElement("strong");
       title.textContent = item.name;
       const meta = doc.createElement("span");
-      meta.textContent = item.recordType + " · " + item.locality + " · " + item.verificationStatus;
-      summary.append(title, meta);
+      meta.className = "map-published-meta";
+      meta.textContent = item.recordType + " · " + item.locality;
+      const availability = doc.createElement("span");
+      availability.className = "map-published-status map-published-status--" + availabilityFilterKey(item.availabilityStatus);
+      availability.textContent = item.availabilityStatus || "Estado no informado";
+      const reviewDate = doc.createElement("small");
+      reviewDate.className = "map-published-review-date";
+      reviewDate.textContent = item.lastCheckedAt
+        ? "Fuente consultada el " + formatSourceReviewDate(item.lastCheckedAt)
+        : "Fecha de consulta no informada";
+      summary.append(title, meta, availability, reviewDate);
       card.append(summary);
       const body = doc.createElement("div");
       body.className = "map-item-body";
@@ -3280,7 +3313,8 @@ function initMapPage(doc) {
       query: doc.getElementById("search").value,
       category: doc.getElementById("category").value,
       kind: doc.getElementById("kind-filter").value,
-      evidence: doc.getElementById("evidence-filter").value
+      evidence: doc.getElementById("evidence-filter").value,
+      availability: availabilityInput.value
     });
     visibleItems = shown;
     updateAtlasIndex(shown);
@@ -3604,6 +3638,7 @@ function initMapPage(doc) {
   categoryInput.addEventListener("change", render);
   kindInput.addEventListener("change", render);
   evidenceInput.addEventListener("change", render);
+  availabilityInput.addEventListener("change", render);
   shareViewButton.addEventListener("click", shareCurrentView);
   dossierExportButton.addEventListener("click", downloadTerritorialDossier);
   doc.getElementById("reset-map").addEventListener("click", () => {
@@ -3611,6 +3646,7 @@ function initMapPage(doc) {
     categoryInput.value = "all";
     kindInput.value = "all";
     evidenceInput.value = "all";
+    availabilityInput.value = "all";
     selectedReferenceId = null;
     updateShareUrl(null);
     render();
@@ -3626,6 +3662,7 @@ function initMapPage(doc) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches,
+    availabilityFilterKey, formatSourceReviewDate,
     getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl,
     buildReferenceUrl, buildOpportunityContactUrl, referenceContactLabel,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
