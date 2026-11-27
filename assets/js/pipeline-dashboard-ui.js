@@ -9,6 +9,7 @@
   const downloadAgendaButton = document.getElementById("pipeline-download-agenda");
   const downloadCalendarButton = document.getElementById("pipeline-download-calendar");
   const followUpFilter = document.getElementById("pipeline-filter-followup");
+  const counterpartyTable = document.getElementById("pipeline-counterparty-summary");
   if (!api || !fileInput || !status || !output || !resetButton || !downloadSummaryButton || !downloadAgendaButton || !downloadCalendarButton || !followUpFilter || !counterpartyTable) return;
   let records = [];
   let currentSummary = null;
@@ -18,7 +19,6 @@
   const metrics = document.getElementById("pipeline-metrics");
   const financeTable = document.getElementById("pipeline-finance-summary");
   const stageTable = document.getElementById("pipeline-stage-summary");
-  const counterpartyTable = document.getElementById("pipeline-counterparty-summary");
   const actionsList = document.getElementById("pipeline-next-actions");
   const recordsTable = document.getElementById("pipeline-records-body");
   const recordsCount = document.getElementById("pipeline-records-count");
