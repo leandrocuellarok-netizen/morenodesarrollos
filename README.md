@@ -48,6 +48,7 @@ La investigación inicial identifica cinco tesis territoriales preliminares: cor
 - La capa independiente **Propiedades y desarrollos publicados** reúne avisos y proyectos de terceros. La cantidad exacta se calcula desde el inventario vigente del Mapa IA y se muestra en su índice, para evitar cifras duplicadas que queden desactualizadas en esta documentación. Última revisión pública registrada: 27/11/2026. Los avisos no implican disponibilidad confirmada; antecedentes y publicaciones retiradas permanecen en el historial con su estado señalado.
 - El filtro de integridad de ficha cuenta la presencia de siete datos de prospección (fuente, fecha de revisión, referencia de precio, superficie, anunciante, referencia de contacto y ubicación textual). El recuento no verifica exactitud, autenticidad, vigencia ni disponibilidad.
 - La georreferenciación de avisos se intenta por dirección mediante Georef. Si no existe una coincidencia inequívoca o falta una altura pública, se conserva la ubicación textual y no se asigna un marcador parcelario.
+- Las coordenadas inequívocas de Georef se guardan en una caché local del navegador por un máximo de 30 días para evitar consultas repetidas al abrir el Mapa IA. Solo se cachean coincidencias positivas con coordenadas dentro de rango; los errores de red, respuestas fallidas y coincidencias ambiguas se vuelven a consultar.
 
 
 ## Sitio de marca personal — Erica M. Acosta
