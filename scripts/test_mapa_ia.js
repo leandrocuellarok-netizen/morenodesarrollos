@@ -724,8 +724,9 @@ assert.deepEqual(
   ["rp25"]
 );
 assert.deepEqual(
-  filterReferences(all, { query: "sin coincidencias" }),
-  []
+  filterReferences(all, { query: "zzzxqv 918273" }).map(item => item.id),
+  [],
+  "una consulta realmente ajena al inventario devuelve cero coincidencias"
 );
 
 const csv = buildCsv([{
