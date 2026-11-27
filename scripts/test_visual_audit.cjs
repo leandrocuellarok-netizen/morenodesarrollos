@@ -223,6 +223,7 @@ async function auditRoute(browser, route) {
     }
 
     if (route.slug === "mesa-operativa") {
+      await page.locator(".pipeline-workbench").evaluate(element => { element.open = true; });
       const calendarButton = page.locator("#pipeline-download-calendar");
       check(await calendarButton.count() === 1, "mesa-operativa: existe el control de exportación iCalendar");
       check(await calendarButton.isDisabled(), "mesa-operativa: el calendario permanece deshabilitado antes de validar un CSV");
@@ -277,6 +278,7 @@ async function auditRoute(browser, route) {
       check(await calendarButton.isDisabled(), "mesa-operativa: los registros sin fecha no generan eventos de calendario");
       await page.locator("#pipeline-reset").click();
       check(await calendarButton.isDisabled(), "mesa-operativa: limpiar la sesión deshabilita nuevamente el calendario");
+      await page.locator(".pipeline-workbench").evaluate(element => { element.open = false; });
     }
     if (route.slug === "mapa-ia") {
       const disclosureIds = [
