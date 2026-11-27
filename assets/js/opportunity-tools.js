@@ -136,7 +136,8 @@
     "paso-del-rey-casa-lebensohn-300": "Casa de 6 ambientes · Lebensohn 300",
     "moreno-lote-tres-de-febrero-7800": "Lote baldío · Tres de Febrero 7800 · 316 m²",
     "moreno-lote-industrial-gutenberg-5662": "Lote industrial · Gutenberg 5662 · 3.192 m²",
-    "cuartel-v-lote-lamadrid-2737": "Lote 16 · Gral. Aráoz de Lamadrid 6702 · 2.737 m²"
+    "cuartel-v-lote-lamadrid-2737": "Lote 16 · Gral. Aráoz de Lamadrid 6702 · 2.737 m²",
+    "la-reja-casa-quinta-santa-teresa-2401": "Casa quinta con parque, pileta y tenis · Santa Teresa de Jesús 2401"
   });
 
   function readMapReference(search) {
