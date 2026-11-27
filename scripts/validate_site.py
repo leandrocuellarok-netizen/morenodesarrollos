@@ -252,6 +252,9 @@ def main() -> None:
                 'id="availability-filter"',
                 "Estado registrado de publicación",
                 'id="diligence-filter"',
+                'id="duplicate-review-disclosure"',
+                'id="duplicate-review-summary"',
+                'id="duplicate-review-list"',
                 "Datos de prospección",
                 'option value="no-confirmada"',
                 'option value="pendiente-revalidacion"',
@@ -263,6 +266,8 @@ def main() -> None:
             ):
                 if required_atlas_markup not in page_source:
                     errors.append(f"mapa-ia/index.html: falta el índice cartográfico: {required_atlas_markup}")
+            if "no duplicados confirmados" not in page_source or "no se fusiona ni elimina ninguna publicación" not in page_source:
+                errors.append("mapa-ia/index.html: la bandeja de coincidencias debe aclarar que requiere revisión humana y no fusiona publicaciones")
             if "documento imprimible" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar el dossier imprimible de la vista filtrada")
             if "ficha editorial descargable" not in page_source:
