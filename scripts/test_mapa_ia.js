@@ -430,6 +430,33 @@ for (const id of nov27CurrentReviewIds) {
   assert.equal(item.lng, null, "no se inventa longitud para " + id);
 }
 
+
+const turn7ExpectedIds = [
+  "moreno-terreno-el-salvador-tupungato-393",
+  "prados-oeste-1b-lote-182-800",
+  "sofocles-3000-terreno-casa-330",
+  "casa-quinta-patricias-argentinas-2100-5150",
+  "alvarez-prado-2031-terreno-339",
+  "parques-morenito-felix-de-azara-300",
+  "colectora-sur-km31-5-fraccion-33000",
+  "casa-leopoldo-lugones-900-5000"
+];
+for (const id of turn7ExpectedIds) {
+  const item = publishedProperties.find(record => record.id === id);
+  assert.ok(item, "la séptima revisión horaria incorpora " + id);
+  assert.equal(item.availabilityStatus, "No confirmada", "no se presume disponibilidad para " + id);
+  assert.equal(item.lastCheckedAt, "2026-11-27", "fecha de revisión registrada para " + id);
+  assert.equal(item.lat, null, "no se inventa latitud para " + id);
+  assert.equal(item.lng, null, "no se inventa longitud para " + id);
+}
+const turn7Ibis = publishedProperties.find(item => item.id === "desarrollo-ibis-iv-273");
+assert.equal(turn7Ibis.source, "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-edificio-ibis-iv-58757107.html");
+assert.ok(turn7Ibis.sourceAlternates.some(item => item.url === "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-edificio-ibis-iv-58757105.html"));
+assert.match(turn7Ibis.observations, /3 unidades/);
+assert.match(turn7Ibis.observations, /estructura ya es visible/);
+const turn7Chacras = publishedProperties.find(item => item.id === "desarrollo-chacras-teofilo-galileo-7300");
+assert.match(turn7Chacras.observations, /entrega aproximada mayo de 2027/);
+
 assert.equal(publishedProperties.find(item => item.id === "la-reja-casa-quinta-santa-teresa-2401").availabilityStatus, "No vigente");
 assert.equal(publishedProperties.find(item => item.id === "parques-morenito-proyecto").availabilityStatus, "No confirmada");
 assert.equal(publishedProperties.find(item => item.id === "sumio-lote-450").availabilityStatus, "No vigente");
