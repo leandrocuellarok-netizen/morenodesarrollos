@@ -28,7 +28,7 @@ class Element {
   const ids = [
     "pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset",
     "pipeline-download-summary", "pipeline-download-agenda", "pipeline-download-calendar", "pipeline-filter-stage", "pipeline-filter-followup", "pipeline-filter-text", "pipeline-metrics",
-    "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions",
+    "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-counterparty-summary", "pipeline-next-actions",
     "pipeline-records-body", "pipeline-records-count", "pipeline-warnings"
   ];
   const elements = Object.fromEntries(ids.map(id => [id, new Element(id)]));
@@ -73,7 +73,7 @@ class Element {
   const validCsv = headers.join(";") + "\n" + makeRow({
     id_oportunidad:"M-UI-1", localidad:"Moreno", tipo_activo:"Terreno",
     identificacion_catastral:"PARCELA-123", fuente_origen:"Catastro consultado",
-    etapa_comercial:"primer contacto", proxima_accion:"Solicitar documentación",
+    tipo_contraparte:"Propietario/a", etapa_comercial:"primer contacto", proxima_accion:"Solicitar documentación",
     fecha_proximo_seguimiento:"2026-11-27"
   });
   fileInput.files = [{size:validCsv.length, text:async () => validCsv}];
@@ -94,6 +94,10 @@ class Element {
   assert.doesNotMatch(initialCalendarText, /email|telefono|DNI/i);
   assert.equal(textFilter.value, "", "la búsqueda anterior se limpia al importar otro CSV");
   assert.equal(elements["pipeline-dashboard-output"].hidden, false);
+  const firstCounterpartyTable = elements["pipeline-counterparty-summary"].children[0];
+  assert.equal(firstCounterpartyTable.children[1].children[0].children[0].textContent, "Propietario/a");
+  assert.equal(firstCounterpartyTable.children[1].children[0].children[1].textContent, "1");
+  assert.equal(firstCounterpartyTable.children[1].children[1].children[0].textContent, "Total general");
   textFilter.value = "PARCELA-123";
   elements["pipeline-filter-text"].listeners.input();
   assert.match(elements["pipeline-records-count"].textContent, /Mostrando 1 de 1/);
@@ -105,14 +109,24 @@ class Element {
     return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0"), String(date.getDate()).padStart(2, "0")].join("-");
   }
   const followUpCsv = headers.join(";") + "\n" + [
-    makeRow({id_oportunidad:"M-OVERDUE", localidad:"Moreno", tipo_activo:"Terreno", etapa_comercial:"primer contacto", proxima_accion:"Llamar", fecha_proximo_seguimiento:offsetDate(-1)}),
-    makeRow({id_oportunidad:"M-DUE-SOON", localidad:"Paso del Rey", tipo_activo:"Terreno", etapa_comercial:"reunión pendiente", proxima_accion:"Enviar antecedentes", fecha_proximo_seguimiento:offsetDate(3)}),
-    makeRow({id_oportunidad:"M-NO-DATE", localidad:"La Reja", tipo_activo:"Inmueble", etapa_comercial:"documentación solicitada", proxima_accion:"Solicitar fecha", fecha_proximo_seguimiento:""}),
-    makeRow({id_oportunidad:"M-NO-ACTION", localidad:"Trujui", tipo_activo:"Terreno", etapa_comercial:"análisis preliminar", proxima_accion:"", fecha_proximo_seguimiento:offsetDate(10)}),
-    makeRow({id_oportunidad:"M-CLOSED", localidad:"Cuartel V", tipo_activo:"Terreno", etapa_comercial:"ganada", proxima_accion:"", fecha_proximo_seguimiento:""})
+    makeRow({id_oportunidad:"M-OVERDUE", localidad:"Moreno", tipo_activo:"Terreno", tipo_contraparte:"Propietario/a", etapa_comercial:"primer contacto", proxima_accion:"Llamar", fecha_proximo_seguimiento:offsetDate(-1)}),
+    makeRow({id_oportunidad:"M-DUE-SOON", localidad:"Paso del Rey", tipo_activo:"Terreno", tipo_contraparte:"Desarrollador/a", etapa_comercial:"reunión pendiente", proxima_accion:"Enviar antecedentes", fecha_proximo_seguimiento:offsetDate(3)}),
+    makeRow({id_oportunidad:"M-NO-DATE", localidad:"La Reja", tipo_activo:"Inmueble", tipo_contraparte:"Inversor/a", etapa_comercial:"documentación solicitada", proxima_accion:"Solicitar fecha", fecha_proximo_seguimiento:""}),
+    makeRow({id_oportunidad:"M-NO-ACTION", localidad:"Trujui", tipo_activo:"Terreno", tipo_contraparte:"Fondo confidencial de prueba", etapa_comercial:"análisis preliminar", proxima_accion:"", fecha_proximo_seguimiento:offsetDate(10)}),
+    makeRow({id_oportunidad:"M-CLOSED", localidad:"Cuartel V", tipo_activo:"Terreno", tipo_contraparte:"", etapa_comercial:"ganada", proxima_accion:"", fecha_proximo_seguimiento:""})
   ].join("\n");
   fileInput.files = [{size:followUpCsv.length, text:async () => followUpCsv}];
   await fileInput.listeners.change();
+  const counterpartyRows = elements["pipeline-counterparty-summary"].children[0].children[1].children;
+  const counterpartyLabels = counterpartyRows.map(row => row.children[0].textContent);
+  assert.ok(counterpartyLabels.includes("Propietario/a"));
+  assert.ok(counterpartyLabels.includes("Desarrollador/a"));
+  assert.ok(counterpartyLabels.includes("Inversor/a"));
+  assert.ok(counterpartyLabels.includes("Otro / revisar"));
+  assert.ok(counterpartyLabels.includes("Sin clasificar"));
+  assert.ok(!counterpartyLabels.includes("Fondo confidencial de prueba"), "la interfaz no debe mostrar valores libres que podrían contener datos personales");
+  assert.equal(counterpartyRows[counterpartyRows.length - 1].children[0].textContent, "Total general");
+  assert.equal(counterpartyRows[counterpartyRows.length - 1].children[1].textContent, "5");
   assert.equal(followUpFilter.children.length, 5, "el filtro ofrece todas las categorías de seguimiento");
   assert.match(followUpFilter.children[1].textContent, /Vencidas \(1\)/, "el filtro informa el total de seguimientos vencidos");
   assert.match(followUpFilter.children[2].textContent, /Próximos 7 días \(1\)/, "el filtro informa los próximos siete días");
