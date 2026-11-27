@@ -221,6 +221,17 @@
     "casa-el-casco-733-212-historico": "Casa 4 ambientes · Barrio El Casco · Paso del Rey · 733 m²",
     "casa-cervino-100-350-historico": "Casa · Cervino 100 · Moreno · 350 m²",
     "casa-leandro-alem-2100-562-historico": "Casa 6 ambientes · Leandro N. Alem al 2100 · Moreno",
+    "terreno-r25-2000-200000": "R25 Parque Industrial · lote de 2.000 m²",
+    "terreno-r25-lote33-2888": "R25 Parque Industrial · lote 33 perimetral · 2.888 m²",
+    "terreno-r25-5000-500000": "R25 Parque Industrial · lote de 5.000 m²",
+    "terreno-ricchieri-50000-industrial": "Teniente General Pablo Ricchieri · fracción industrial de 5 ha",
+    "terreno-ruta25-4700-9835": "Ruta Provincial 25 4700 · fracción de 9.835 m²",
+    "terreno-goncalves-eiras-don-bosco-75020": "Gonçalves Eiras y Don Bosco 100 · predio de 75.020 m²",
+    "terreno-polo24-gral-hornos-6100-4860": "Parque Industrial Polo 24 · lotes A04 y A18 · 4.860 m²",
+    "terreno-pueyrredon-2025-337": "Juan Martín de Pueyrredón 2025 · 337,5 m²",
+    "terreno-jose-maria-paz-600-356": "José María Paz 600 · 356 m²",
+    "terreno-prados-oeste2-lote145-781": "Prados del Oeste II · lote 145 · 781 m²",
+    "terreno-joaquin-v-gonzalez-2400-615": "Joaquín V. González 2400 · 615 m² y estructura de hormigón",
   });
 
   function readMapReference(search) {
