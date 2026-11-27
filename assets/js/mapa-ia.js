@@ -366,13 +366,13 @@ const publishedProperties = [
 publishedProperties.push(
   {
     id:"moreno-lote-tres-de-febrero-7800",recordType:"Terreno individual",name:"Lote baldío · Tres de Febrero 7800 · 316 m²",
-    locality:"Moreno",address:"Tres de Febrero 7800, entre Montevideo y Río de la Plata",
-    geocodeQuery:"Tres de Febrero 7800",geocodeMatch:"TRES DE FEBRERO 7800",
+    locality:"Moreno · entorno limítrofe con José C. Paz",address:"Tres de Febrero 7800, entre Montevideo y Río de la Plata, Moreno",
+    geocodeQuery:"Tres de Febrero 7800, Moreno, Buenos Aires",geocodeMatch:"TRES DE FEBRERO 7800",
     source:"https://pabloaquinoinmobiliaria.com.ar/propiedades/venta-lotemoreno/",
-    agency:"Pablo Aquino Inmobiliaria",contact:"Tel. +54 9 11 7001-7411 / 02320-423003",phone:"+54 9 11 7001-7411",
-    price:"USD 16.000 contado; financiación: anticipo USD 10.000 + 30 cuotas de USD 260",currency:"USD",
-    landSurfaceM2:316,coveredSurfaceM2:null,surfaceNote:"13,40 × 22,40 m. La ficha tiene un campo técnico que muestra 'superficie cubierta 316 m²', pero la descripción lo identifica como lote baldío y superficie total.",
-    observations:"La inmobiliaria informa escritura lista para transferir. No tiene servicios instalados; el aviso indica posibilidad de solicitar energía prepaga. Precio contado y plan de cuotas publicados en la descripción."
+    agency:"Pablo Aquino Inmobiliaria",contact:"Tel. +54 9 11 7001-7411 / 02320-423003; oficina Hipólito Yrigoyen 1119, José C. Paz",phone:"+54 9 11 7001-7411",
+    price:"USD 16.000 contado; financiación: anticipo USD 10.000 + 30 cuotas de USD 260 (total financiado USD 17.800)",currency:"USD",
+    landSurfaceM2:316,coveredSurfaceM2:null,surfaceNote:"316 m² (13,40 × 22,40 m). Lote baldío; la ficha técnica muestra un campo de superficie cubierta de 316 m², pero la descripción lo identifica como terreno sin mejoras; no se registra superficie cubierta.",
+    observations:"El anunciante afirma escritura lista para transferir. No tiene servicios instalados; indica posibilidad de solicitar energía prepaga. La descripción publica USD 16.000 contado o USD 10.000 de anticipo más 30 cuotas de USD 260 (USD 17.800 financiado); la cabecera destaca el anticipo. Confirmar precio, plan, servicios, escritura y nomenclatura. La ubicación está a dos cuadras del límite con José C. Paz."
   ,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Pablo Aquino accesible el 27/11/2026; publica USD 16.000 contado o anticipo USD 10.000 + 30 cuotas de USD 260. Disponibilidad no confirmada.",
@@ -5841,30 +5841,6 @@ const nov27_1032NewEntries = [
     "verificationStatus": "Ficha directa de MercadoProp accesible el 27/11/2026; precio USD 60.000, 590 m², anunciante y dimensiones publicados. Disponibilidad no confirmada."
   },
   {
-    "id": "moreno-lote-tres-de-febrero-7800",
-    "recordType": "Terreno individual · lote baldío",
-    "name": "Lote baldío · Tres de Febrero 7800 · 316 m²",
-    "locality": "Moreno · entorno limítrofe con José C. Paz",
-    "address": "Tres de Febrero 7800, entre Montevideo y Río de la Plata, Moreno",
-    "geocodeQuery": "Tres de Febrero 7800, Moreno, Buenos Aires",
-    "geocodeMatch": "TRES DE FEBRERO 7800",
-    "source": "https://pabloaquinoinmobiliaria.com.ar/propiedades/venta-lotemoreno/", 
-    "agency": "Pablo Aquino Inmobiliaria",
-    "contact": "+54 9 11 7001-7411 · 02320-423003; oficina Hipólito Yrigoyen 1119, José C. Paz.",
-    "phone": "+5491170017411",
-    "price": "USD 16.000 contado; financiación anunciada: anticipo USD 10.000 + 30 cuotas de USD 260 (total financiado USD 17.800).",
-    "currency": "USD",
-    "landSurfaceM2": 316,
-    "surfaceNote": "316 m² (13,40 × 22,40 m). Lote baldío; el anunciante indica que no tiene servicios instalados y que la energía podría solicitarse con sistema prepago.",
-    "observations": "El anunciante afirma escritura lista para transferir. La cabecera del sitio muestra USD 10.000 / cuotas, mientras la descripción fija USD 16.000 al contado y USD 10.000 más 30 cuotas de USD 260; la financiación suma USD 17.800. Confirmar precio, plan, servicios, escritura y nomenclatura. La ubicación está a dos cuadras del límite con José C. Paz según la descripción.",
-    "lat": null,
-    "lng": null,
-    "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
-    "geolocationStatus": "Pendiente: dirección pública disponible; el mapa solo colocará un punto si Georef devuelve una única coincidencia exacta.",
-    "verificationStatus": "Ficha directa de Pablo Aquino Inmobiliaria accesible el 27/11/2026; 316 m², medidas, precio contado, financiación y contacto publicados. Disponibilidad no confirmada."
-  },
-  {
     "id": "terreno-justo-daract-2751-2163",
     "recordType": "Fracción de terreno · dos parcelas",
     "name": "Justo Daract 2751 · dos parcelas por 2.163 m²",
@@ -5901,14 +5877,14 @@ const nov27_1032NewEntries = [
     "address": "Esquina Samaniego y Pedro de Angelis, Barrio El Ensueño, Francisco Álvarez, Moreno (ficha: Samaniego 4900)",
     "geocodeQuery": "Samaniego 4900, Francisco Alvarez, Moreno, Buenos Aires",
     "geocodeMatch": "SAMANIEGO 4900",
-    "source": "https://emilianoescola17.kitepropcrm.com/site/properties/592799/casa-quinta-de-4200-m2-parque-vegetacion-pileta", 
+    "source": "https://emilianoescola17.kitepropcrm.com/site/properties/592799/casa-quinta-de-4200-m2-parque-vegetacion-pileta",
     "agency": "Emiliano Escola Servicios Inmobiliarios",
     "contact": "Emiliano Escola · +54 11 5126-5160 · emilianoescola@deinmobiliarios.com · leads@eeservicios.com.",
     "price": "USD 89.000",
     "currency": "USD",
     "landSurfaceM2": 4200,
     "coveredSurfaceM2": 130,
-        "surfaceNote": "Dos fracciones de 70 × 30 m (2.100 m² cada una), unidas en 4.200 m² de terreno; la ficha directa declara 130 m² cubiertos y 4.100 m² no cubiertos, pero su mismo cuadro técnico también muestra 153 m² totales, dato incompatible. Prevalecen mensura y título.",
+    "surfaceNote": "Dos fracciones de 70 × 30 m (2.100 m² cada una), unidas en 4.200 m² de terreno; la ficha directa declara 130 m² cubiertos y 4.100 m² no cubiertos, pero su mismo cuadro técnico también muestra 153 m² totales, dato incompatible. Prevalecen mensura y título.",
     "observations": "Casa quinta en esquina Samaniego y Pedro de Angelis, con vivienda principal, dependencia para casero, galpón, parque arbolado y pileta tipo tanque australiano. El aviso ofrece el conjunto de dos parcelas; no asumir subdivisión o venta separada. La ficha técnica es inconsistente entre superficie total y cubierta/no cubierta. Verificar títulos, agua de pozo, instalaciones, planos y disponibilidad.",
     "lat": null,
     "lng": null,
@@ -5981,7 +5957,12 @@ const nov27_1032NewEntries = [
     "geocodeQuery": "Concordia 2545, Moreno, Buenos Aires",
     "geocodeMatch": "CONCORDIA 2545",
     "source": "https://www.jorgelinamartinezpropiedades.com.ar/propiedad/183298_casa-de-dos-plantas-en-venta-en-moreno/",
-    "sourceAlternates": [{"url":"https://proppies.app/propiedad/buenos-aires/moreno/casa-5-amb-en-venta-en-moreno-45631482","label":"Ficha sindicada de Proppies para la misma casa; publicada hace 2 meses"}],
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/casa-5-amb-en-venta-en-moreno-45631482",
+        "label": "Ficha sindicada de Proppies para la misma casa; publicada hace 2 meses"
+      }
+    ],
     "agency": "Jorgelina Martinez Propiedades",
     "contact": "Jorgelina Martínez · +54 11 6732-4994 · Jorgelinamartinezprop@gmail.com.",
     "phone": "+541167324994",
