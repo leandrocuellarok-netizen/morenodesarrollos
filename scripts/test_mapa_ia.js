@@ -239,6 +239,8 @@ for (const id of nov27ExpectedIds) {
 }
 
 const followupExpectedIds = [
+  "desarrollo-parque-industrial-reconquista-80ha",
+  "desarrollo-parque-industrial-desarrollo-productivo-40ha",
   "desarrollo-polo-veinticinco-15ha-37-lotes",
   "terreno-r25-2000-200000",
   "terreno-r25-lote33-2888",
