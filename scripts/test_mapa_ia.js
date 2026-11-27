@@ -265,7 +265,7 @@ assert.ok(csv.startsWith("\uFEFF"), "CSV compatible con acentos en hojas de cál
 assert.ok(csv.includes('"Parcela ""A"", sector norte"'), "CSV escapa comillas y comas");
 assert.ok(csv.includes("alcance_de_coordenada"), "CSV informa el alcance de las coordenadas");
 assert.ok(csv.includes("no identifica una parcela"), "CSV conserva la advertencia parcelaria");
-const publishedCsv = buildCsv(publishedProperties.slice(0, 1));
+const publishedCsv = buildCsv(all.filter(item => item.type === "published").slice(0, 1));
 assert.ok(publishedCsv.includes("precio_publicado"), "CSV incluye el campo de precio de los avisos");
 assert.ok(publishedCsv.includes("Anticipo USD 12.000"), "CSV conserva el precio publicado sin reinterpretarlo");
 assert.ok(publishedCsv.includes("Geolocalización pendiente"), "CSV conserva el estado de geolocalización pendiente");
