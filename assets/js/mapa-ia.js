@@ -181,7 +181,7 @@ const publishedProperties = [
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No vigente",
+    "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
   ,
     "verificationStatus": "La ficha de desarrollo informa entrega en julio de 2022; se conserva como antecedente histórico y no se considera un proyecto nuevo en ejecución."
