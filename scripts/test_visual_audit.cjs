@@ -371,7 +371,6 @@ async function auditRoute(browser, route) {
       await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("0 coincidencias"), null, { timeout: 5000 });
       check(await page.locator("#map-empty-state").isVisible(), "mapa-ia: una consulta sin coincidencias presenta un estado vacío útil");
       await page.locator("#reset-empty-state").click();
-      await page.waitForFunction(() => document.getElementById("atlas-total-count")?.textContent.startsWith(String(document.getElementById("atlas-total-count")?.textContent.split("/")[1] || "").trim()) === false, null, { timeout: 1000 }).catch(() => {});
       check((await page.locator("#atlas-total-count").innerText()).startsWith(mapInventory.length + " /"), "mapa-ia: restablecer recupera el inventario completo");
 
       const localityMarker = page.locator('.map-pin[aria-label="Ver Moreno Centro en el mapa"]');
@@ -381,9 +380,9 @@ async function auditRoute(browser, route) {
         check(await page.locator('#locality-list [data-map-item="moreno"]').evaluate(element => element.open), "mapa-ia: seleccionar un marcador abre la ficha lateral correspondiente");
       }
 
-      const thesisCard = page.locator('#opportunity-list [data-map-item="rp25"]');
-      await thesisCard.locator("summary").click();
-      check(await thesisCard.evaluate(element => element.open && element.classList.contains("is-active")), "mapa-ia: seleccionar una ficha lateral sincroniza la referencia activa");
+      const selectedThesisCard = page.locator('#opportunity-list [data-map-item="rp25"]');
+      await selectedThesisCard.locator("summary").click();
+      check(await selectedThesisCard.evaluate(element => element.open && element.classList.contains("is-active")), "mapa-ia: seleccionar una ficha lateral sincroniza la referencia activa");
 
       await page.setViewportSize({ width: 390, height: 844 });
       check(await page.locator(".map-sidebar").isVisible(), "mapa-ia: el panel lateral permanece disponible en móvil");
