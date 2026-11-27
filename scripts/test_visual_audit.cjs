@@ -140,7 +140,7 @@ async function auditRoute(browser, route) {
       check(developerLinks.every(href => new URL(href).searchParams.get("interes") === "desarrollo"), "inicio: los accesos de desarrollador transmiten la intención correcta");
       await auditHomeCartography(page);
     }
-    if (route.slug === "erica-acosta") {
+    if (route.slug === "sobre-erica") {
       const developerLinks = await page.locator(".about-contact-path[href*='perfil=desarrollador'], .about-hero a[href*='perfil=desarrollador']").count();
       check(developerLinks >= 2, "perfil: el recorrido de desarrollador aparece en la presentación y en el cierre comercial");
       check(await page.locator(".about-contact-path").count() === 3, "perfil: se presentan tres recorridos comerciales diferenciados");
@@ -387,8 +387,12 @@ async function auditOpportunityFlow(browser) {
     check(await page.locator("#contact-type").isVisible(), "oportunidades: el tipo de oportunidad aparece dentro de los detalles al abrirlos");
 
     check(await page.locator(".opportunity-path").count() === 3, "oportunidades: existen tres recorridos comerciales diferenciados");
-    const pathColumns = await page.locator(".opportunity-path").evaluateAll(cards => new Set(cards.map(card => Math.round(card.getBoundingClientRect().x))).size);
-    check(pathColumns === 3, "oportunidades: las tres tarjetas se presentan en columnas independientes en escritorio");
+    const mobilePathColumns = await page.locator(".opportunity-path").evaluateAll(cards => new Set(cards.map(card => Math.round(card.getBoundingClientRect().x))).size);
+    check(mobilePathColumns === 1, "oportunidades: las tarjetas se apilan en una columna en móvil");
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const desktopPathColumns = await page.locator(".opportunity-path").evaluateAll(cards => new Set(cards.map(card => Math.round(card.getBoundingClientRect().x))).size);
+    check(desktopPathColumns === 3, "oportunidades: las tres tarjetas se presentan en columnas independientes en escritorio");
+    await page.setViewportSize({ width: 390, height: 844 });
     const investorResponse = await page.goto(BASE_URL + "/oportunidades/?perfil=inversor&interes=inversion", { waitUntil: "domcontentloaded" });
     check(Boolean(investorResponse && investorResponse.ok()), "oportunidades: el enlace de inversor responde");
     check(await page.locator("#contact-profile").inputValue() === "Inversor/a", "oportunidades: el enlace de inversor preselecciona el perfil");
