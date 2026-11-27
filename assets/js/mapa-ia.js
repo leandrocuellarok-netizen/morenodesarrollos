@@ -8669,10 +8669,12 @@ function buildTerritorialDossierDiagram(references) {
     '</svg>';
 }
 
+const MAX_TERRITORIAL_DOSSIER_REFERENCES = 500;
+
 function buildTerritorialDossierHtml(dossier) {
   if (!dossier || dossier.schema !== "moreno.territorial-dossier" ||
       dossier.schemaVersion !== 1 || !Array.isArray(dossier.references) ||
-      !dossier.references.length || dossier.references.length > 300) return "";
+      !dossier.references.length || dossier.references.length > MAX_TERRITORIAL_DOSSIER_REFERENCES) return "";
   const dateLabel = escapeTerritorialHtml(String(dossier.generatedAt || "").slice(0, 10));
   const title = escapeTerritorialHtml(dossier.title || "Dossier territorial · Moreno");
   const counts = dossier.counts || {};
@@ -10140,7 +10142,7 @@ if (typeof module !== "undefined" && module.exports) {
     isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState,
     getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates,
     buildTerritorialBrief, buildTerritorialBriefHtml,
-    buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml
+    MAX_TERRITORIAL_DOSSIER_REFERENCES, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml
   };
 }
 if (typeof document !== "undefined") initMapPage(document);
