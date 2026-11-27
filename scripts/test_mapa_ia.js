@@ -284,6 +284,7 @@ for (const item of all) {
   if (item.type === "published") {
     assert.equal(hasCoordinates(item), false, "no se inventan coordenadas para publicaciones pendientes: " + item.name);
     assert.match(item.geolocationStatus, /Pendiente/);
+    assert.ok(item.verificationStatus && item.verificationStatus.length > 0, "cada ficha conserva un estado de verificación: " + item.name);
     assert.ok(["No confirmada", "No vigente", "Pendiente de revalidación"].includes(item.availabilityStatus), "el estado comercial se conserva sin afirmar disponibilidad: " + item.name);
     assert.match(item.source, /^https:\/\//);
     continue;
