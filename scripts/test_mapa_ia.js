@@ -620,7 +620,7 @@ for (const item of opportunities) {
 }
 
 assert.equal(filterReferences(all, { category: "locality" }).length, 6);
-assert.equal(filterReferences(all, { category: "opportunity" }).length, 5);
+assert.equal(filterReferences(all, { category: "opportunity" }).length, 8);
 assert.equal(filterReferences(all, { category: "published" }).length, publishedProperties.length);
 for (const [status, key] of [
   ["No confirmada", "no-confirmada"],
@@ -834,7 +834,7 @@ assert.equal(clearReviewState({ removeItem: () => { throw new Error("storage blo
 const reviewExport = buildReviewExport(firstReviewState, all, "2026-11-25T06:00:00.000Z");
 assert.equal(reviewExport.schema_version, 2);
 assert.equal(reviewExport.generated_at, "2026-11-25T06:00:00.000Z");
-assert.equal(reviewExport.references.length, 5, "la exportación excluye localidades y conserva las cinco tesis visibles");
+assert.equal(reviewExport.references.length, 8, "la exportación excluye localidades y conserva las ocho tesis visibles");
 const exportedRp25 = reviewExport.references.find(reference => reference.id === "rp25");
 assert.equal(exportedRp25.completed_tasks, 1);
 assert.equal(exportedRp25.total_tasks, 5);
