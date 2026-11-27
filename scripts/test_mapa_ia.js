@@ -619,6 +619,17 @@ for (const item of all) {
     assert.match(item.source, /^https:\/\//);
     continue;
   }
+  if (!hasCoordinates(item)) {
+    assert.equal(item.type, "opportunity", "solo las tesis sin coordenadas permanecen sin punto: " + item.name);
+    assert.equal(item.lat, null, "no se inventa latitud para " + item.id);
+    assert.equal(item.lng, null, "no se inventa longitud para " + item.id);
+    assert.match(item.source, /^https:\/\//, "la tesis sin coordenadas conserva fuente pública: " + item.id);
+    assert.ok(item.sourceDate && item.lastCheckedAt, "la tesis sin coordenadas conserva fecha de fuente y consulta: " + item.id);
+    assert.equal(item.price, undefined, "no se inventa precio para " + item.id);
+    assert.equal(item.contact, undefined, "no se inventa contacto para " + item.id);
+    assert.equal(item.availabilityStatus, undefined, "no se inventa disponibilidad para " + item.id);
+    continue;
+  }
   assert.ok(Number.isFinite(item.lat) && item.lat > -35 && item.lat < -34, "latitud plausible para Moreno: " + item.name);
   assert.ok(Number.isFinite(item.lng) && item.lng > -59 && item.lng < -58, "longitud plausible para Moreno: " + item.name);
 }
@@ -697,6 +708,10 @@ assert.deepEqual(
 );
 const combinedFilters = filterReferences(all, { query: "cuartel v", locality: "cuartel", activity: "industrial", nextStep: "contact", evidence: "documented" });
 assert.deepEqual(combinedFilters.map(item => item.id), ["base-aerea-moreno-norte"], "la búsqueda y los filtros de localidad, actividad, próximo paso y evidencia se combinan");
+const unlocatedOpportunityIds = opportunities.filter(item => !hasCoordinates(item)).map(item => item.id).sort();
+assert.deepEqual(unlocatedOpportunityIds, ["base-aerea-moreno-norte", "mui-mo-monitoreo-urbano-inmobiliario", "promeba-cuartel-v", "promeba-trujui", "utopia-bonaerense-moreno"].sort(), "las cinco referencias sin geolocalización no reciben coordenadas inventadas");
+const utopiaReference = opportunities.find(item => item.id === "utopia-bonaerense-moreno");
+assert.ok(utopiaReference.sourceAlternates.some(source => source.url === "https://nube.minfra.gba.gob.ar/index.php/s/TrMYQtYjHf4tSrJ/download"), "la ficha Utopía conserva el acta oficial de apertura como fuente directa");
 const baseAereaReference = opportunities.find(item => item.id === "base-aerea-moreno-norte");
 assert.equal(hasCoordinates(baseAereaReference), false, "la referencia sin coordenadas no recibe un punto inventado");
 assert.ok(filterReferences(all, { query: "base aérea", category: "opportunity" }).some(item => item.id === "base-aerea-moreno-norte"), "la referencia sin coordenadas sigue encontrándose desde el índice");
