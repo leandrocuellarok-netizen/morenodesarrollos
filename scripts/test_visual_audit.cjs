@@ -565,7 +565,7 @@ async function auditOpportunityFaq(browser) {
       const item = items.nth(index);
       check(!(await item.evaluate(element => element.open)), "FAQ oportunidades: la respuesta " + (index + 1) + " inicia contraída");
       check(await item.locator("summary").isVisible(), "FAQ oportunidades: la pregunta " + (index + 1) + " es visible");
-      check((await item.locator(".opportunity-faq-answer").innerText()).trim().length > 40, "FAQ oportunidades: la respuesta " + (index + 1) + " tiene contenido útil");
+      check((await item.locator(".opportunity-faq-answer").textContent()).trim().length > 40, "FAQ oportunidades: la respuesta " + (index + 1) + " tiene contenido útil");
     }
     const firstSummary = items.first().locator("summary");
     await firstSummary.focus();
