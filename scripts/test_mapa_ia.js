@@ -675,7 +675,7 @@ const spreadsheetSafetyCsv = buildCsv([{
   name: '=HYPERLINK("https://example.invalid","Abrir")',
   locality: "Moreno",
   agency: "  +SUM(1,1)",
-  contact: "\t=1+1",
+  contact: String.fromCharCode(9) + "=1+1",
   observations: "@SUM(1,1)",
   lat: -34.6,
   lng: -58.8,
@@ -683,7 +683,7 @@ const spreadsheetSafetyCsv = buildCsv([{
 }]);
 assert.ok(spreadsheetSafetyCsv.includes('"\'=HYPERLINK'), "CSV neutraliza fórmulas que comienzan con =");
 assert.ok(spreadsheetSafetyCsv.includes('"\'  +SUM'), "CSV neutraliza fórmulas precedidas por espacios");
-assert.ok(spreadsheetSafetyCsv.includes('"\'\\t=1+1'), "CSV neutraliza fórmulas precedidas por tabulación");
+assert.ok(spreadsheetSafetyCsv.includes("'" + String.fromCharCode(9) + "=1+1"), "CSV neutraliza fórmulas precedidas por tabulación");
 assert.ok(spreadsheetSafetyCsv.includes('"\'@SUM'), "CSV neutraliza fórmulas que comienzan con @");
 assert.ok(spreadsheetSafetyCsv.includes('"-34.6"') && spreadsheetSafetyCsv.includes('"-58.8"'), "CSV conserva coordenadas numéricas negativas sin convertirlas en texto");
 
