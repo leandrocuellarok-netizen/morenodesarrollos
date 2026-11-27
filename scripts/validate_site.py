@@ -871,6 +871,7 @@ def main() -> None:
             'class="about-contact-path"',
             'href="../oportunidades/?perfil=propietario&interes=terreno"',
             'href="../oportunidades/?perfil=inversor&interes=inversion"',
+            'href="../oportunidades/?perfil=desarrollador&interes=desarrollo"',
         )
         for required in required_markup:
             if required not in about_html:
@@ -885,6 +886,12 @@ def main() -> None:
             errors.append("Oportunidades: falta el prellenado del perfil propietario desde la página de Erica")
         if 'if(profileFromLink==="inversor")' not in opportunity_html:
             errors.append("Oportunidades: falta el prellenado del perfil inversor desde la página de Erica")
+        if 'if(profileFromLink==="desarrollador")' not in opportunity_html:
+            errors.append("Oportunidades: falta el prellenado del perfil desarrollador")
+        if 'option value="Desarrollador/a"' not in opportunity_html or 'option value="Evaluar una oportunidad de desarrollo"' not in opportunity_html:
+            errors.append("Oportunidades: falta el perfil o la intención explícita de desarrollador")
+        if len(re.findall(r'<article class="opportunity-path"', opportunity_html)) != 3:
+            errors.append("Oportunidades: deben existir tres recorridos comerciales diferenciados")
         if "const interestByLink={" not in opportunity_html or "Object.prototype.hasOwnProperty.call(interestByLink,interestFromLink)" not in opportunity_html:
             errors.append("Oportunidades: falta la preselección de intención mediante una lista permitida")
         opportunity_css_path = ROOT / "assets/css/erica.css"
@@ -990,6 +997,7 @@ def main() -> None:
             'class="hero-actions hero-commercial-actions"',
             'href="./oportunidades/?perfil=propietario&interes=terreno"',
             'href="./oportunidades/?perfil=inversor&interes=inversion"',
+            'href="./oportunidades/?perfil=desarrollador&interes=desarrollo"',
             'class="hero-commercial-note"',
             'Conecto propietarios, inversores y desarrolladores en Moreno.',
         ):

@@ -347,8 +347,8 @@ const dossierFieldLimits = Object.freeze({
     referencia_mapa: "referencia territorial", detalle: "contexto"
   });
   const dossierSelectOptions = Object.freeze({
-    perfil: ["Propietario/a", "Inversor/a", "Profesional o empresa", "Otro"],
-    interes: ["Presentar un terreno o inmueble", "Analizar un proyecto en marcha", "Explorar una inversión", "Buscar un socio o alianza", "Ofrecer servicios profesionales", "Todavía estoy explorando"],
+    perfil: ["Propietario/a", "Inversor/a", "Desarrollador/a", "Profesional o empresa", "Otro"],
+    interes: ["Presentar un terreno o inmueble", "Analizar un proyecto en marcha", "Evaluar una oportunidad de desarrollo", "Explorar una inversión", "Buscar un socio o alianza", "Ofrecer servicios profesionales", "Todavía estoy explorando"],
     tipo: ["No definido", "Terreno", "Inmueble existente", "Proyecto en desarrollo", "Inversión o alianza", "Servicios profesionales"]
   });
   const dossierChecklistOptions = Object.freeze({
