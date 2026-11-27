@@ -10133,7 +10133,7 @@ function buildTerritorialBrief(item, generatedAt) {
     : new Date().toISOString();
   const localityScope = coordinatesAvailable
     ? (item.coordinatePrecision || "Punto de referencia con fuente cartográfica identificada; no parcelario.")
-    : "Sin coordenada trazable; la ficha se conserva para investigación documental.";
+    : "Sin coordenada trazable; la ficha se conserva para investigación documental y no identifica una parcela.";
   const stageLabel = item.stage === "hypothesis"
     ? "Hipótesis de prospección"
     : "Contexto con fuente pública";
