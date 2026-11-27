@@ -8313,9 +8313,9 @@ const turn12NewRecords = [
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
+    "availabilityStatus": "Pendiente de revalidación",
     "geolocationStatus": "Pendiente: ubicación textual conservada; no se asignan coordenadas manuales. Georef debe confirmar una coincidencia inequívoca.",
-    "verificationStatus": "Ficha directa accesible el 27/11/2026; precio y disponibilidad comercial sujetos a confirmación escrita del anunciante."
+     "verificationStatus": "El resultado de búsqueda y la ficha sindicada describen el aviso, pero la URL directa devolvió error interno durante la consulta del 27/11/2026; mantener como pendiente de revalidación y no confirmar disponibilidad."
   },
   {
     "id": "terreno-reverendo-padre-fahy-2300-756",
