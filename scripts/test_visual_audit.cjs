@@ -94,7 +94,7 @@ async function auditHomeCartography(page) {
   check(markers.length === expected.length, "inicio: el plano solo muestra referencias con coordenadas, fuente y fecha verificables");
   check(expectedCounts.locality === 6 && markers.filter(marker => marker.kind === "locality").length === 6, "inicio: el plano conserva las seis localidades con fuente trazable");
   check(expectedCounts.documented === 1 && markers.filter(marker => marker.kind === "documented").length === 1, "inicio: el plano muestra únicamente el contexto documentado con coordenada trazable");
-  check(expectedCounts.hypothesis === 0 && markers.filter(marker => marker.kind === "hypothesis").length === 0, "inicio: las hipótesis sin coordenada trazable permanecen sin marcador");
+  check((expectedCounts.hypothesis || 0) === 0 && markers.filter(marker => marker.kind === "hypothesis").length === 0, "inicio: las hipótesis sin coordenada trazable permanecen sin marcador");
   check(new Set(markers.map(marker => marker.id)).size === markers.length, "inicio: los identificadores del plano no están duplicados");
 
   for (const marker of markers) {
