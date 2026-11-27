@@ -18,7 +18,7 @@ const opportunities=[
 {id:"promeba-trujui",stage:"documented",name:"PRO.ME.BA IV · Haras Trujui y Santa Brígida",lat:null,lng:null,kind:"infrastructure",locality:"Trujui",activity:"Infraestructura urbana y equipamiento comunitario",evidenceType:"Ficha institucional municipal · IDUAR",confidence:"Alta para las obras que IDUAR describe como ejecutadas; no acredita estado actual de conservación ni disponibilidad de suelo.",sourceDate:"Fecha de publicación no informada en la página consultada",lastCheckedAt:"2026-11-27",business:"Equipamiento comunitario, salud, educación, red vial, iluminación y espacio público.",evidence:"La ficha de IDUAR sobre PROMEBA IV en Trujui informa obras en Haras Trujui y Santa Brígida: salón vecinal, espacios deportivos y recreativos, equipamiento educativo de 600 m², centro de salud de 548 m², pavimentación perimetral, extensión eléctrica, luminarias LED y señalética. La publicación describe obras realizadas; no constituye una oferta inmobiliaria.",status:"Obras descritas por IDUAR como ejecutadas; estado actual, mantenimiento, nuevas etapas y polígono exacto requieren consulta.",next:"Verificar con IDUAR el estado de conservación y si existen nuevas etapas; ubicar el polígono del PEI y separar equipamiento público de posibles activos privados sin vinculación demostrada.",source:"https://iduar.moreno.gob.ar/promeba-en-trujui/"},
 {id:"promeba-cuartel-v",stage:"documented",name:"PRO.ME.BA · Cuartel V · ocho barrios",lat:null,lng:null,kind:"infrastructure",locality:"Cuartel V",activity:"Infraestructura urbana, espacio público y equipamiento comunitario",evidenceType:"Ficha institucional municipal · IDUAR/PROMEBA",confidence:"Alta para los barrios y ejes de intervención descritos; la ejecución por módulo y el estado actual requieren el PEI y actas de obra.",sourceDate:"Fecha de publicación no informada en la página consultada",lastCheckedAt:"2026-11-27",business:"Veredas, plazas, mobiliario urbano, equipamiento comunitario y mejora del espacio público.",evidence:"IDUAR identifica ocho barrios de Cuartel V: 6 de Enero, San Norberto, San Norberto II, Complejo Alem, El Milenio, Namuncurá, Don Sancho y Papa Francisco. La ficha describe el proyecto “Potenciar el Hábitat”: Módulo I de veredas como primera etapa realizada; Módulo II de veredas y juegos en las plazas Alem y 6 de Enero como etapa planificada; y Módulo III de puesta en valor de plazas y equipamiento comunitario, que la página informa como ejecutado, con dos plazas públicas, veredas y taller de nomencladores urbanos. No identifica parcelas privadas disponibles.",status:"Intervención PROMEBA documentada para ocho barrios; el estado de cada módulo y de conservación actual debe revalidarse.",next:"Descargar y revisar el PEI de Cuartel V; confirmar con IDUAR la ejecución del Módulo II, polígonos, obras posteriores y estado actual de plazas y veredas. No inferir disponibilidad de suelo privado.",source:"https://iduar.moreno.gob.ar/promeba-en-cuartel-v/"},
 {id:"mui-mo-monitoreo-urbano-inmobiliario",stage:"documented",name:"MUI-MO · Monitoreo Urbano Inmobiliario",lat:null,lng:null,kind:"land",locality:"Alcance distrital",activity:"Monitoreo de oferta de suelo y loteos autorizados",evidenceType:"Política pública municipal · IDUAR",confidence:"Alta para la existencia y los objetivos declarados del sistema; la publicación no certifica que cada ficha del registro esté actualizada ni que un inmueble esté disponible o autorizado.",sourceDate:"12/08/2025",lastCheckedAt:"2026-11-27",business:"Consulta de loteos y barrios autorizados, control de urbanizaciones irregulares y verificación de oferta de suelo.",evidence:"IDUAR presentó MUI-MO como política pública para monitorear la oferta de inmuebles y loteos, prevenir urbanizaciones irregulares no declaradas y sistematizar información del mercado local de suelo. La publicación describe una Plataforma Inteligente con sistemas de información geográfica e inteligencia artificial, capacitación de más de 150 agentes municipales y un Registro de Loteos y Barrios Autorizados, abiertos y cerrados, que poseen autorización o están en proceso. Es una fuente de control y diligencia; no una lista de activos disponibles.",status:"Política y herramientas institucionales documentadas; acceso actual, cobertura, actualización del registro y situación de cada loteo requieren consulta individual.",next:"Consultar MUI-MO y el Registro de Loteos y Barrios Autorizados; verificar cada desarrollo por expediente, autorización, ubicación, titularidad y fecha de actualización antes de evaluar una oferta.",source:"https://iduar.moreno.gob.ar/2025/08/12/mui-mo-monitoreo-urbano-inmobiliario-de-moreno/"},
-{id:"utopia-bonaerense-moreno",stage:"documented",name:"Utopía Bonaerense · Parque urbano e infraestructura",lat:null,lng:null,kind:"infrastructure",locality:"No precisada",activity:"Equipamiento público, parque urbano e infraestructura",evidenceType:"Ficha oficial de licitación provincial",confidence:"Alta para el llamado y las cuatro ofertas consignadas en el acta; no equivale a adjudicación ni contrato.",sourceDate:"Autorización 19/11/2025 · apertura y acta 20/01/2026",lastCheckedAt:"2026-11-27",business:"Equipamiento público, infraestructura y parque urbano; referencia de inversión pública y transformación territorial.",evidence:"La ficha del Ministerio de Infraestructura registra la Licitación Pública 51/2025 para equipamiento, infraestructura y parque urbano de la Utopía Bonaerense en Moreno. Publica estado “En Evaluación”, presupuesto oficial de $7.396.350.515,64 y plazo de 457 días. El acta de apertura del 20/01/2026 registra cuatro ofertas; la menor cotización consignada es $5.506.587.350,43 de Grupo Constructor del Oeste S.R.L. La apertura de ofertas no acredita adjudicación, contrato ni inicio de obra; la ficha no precisa la localidad ni identifica suelo privado disponible.",status:"La ficha oficial seguía indicando “En Evaluación” al 27/11/2026; el acta acredita recepción de cuatro ofertas, pero no se verificó un acto de adjudicación.",next:"Obtener el acto de adjudicación y contrato; confirmar contratista, monto contractual, redeterminaciones, inicio y avance de obra, y polígono exacto antes de atribuir efectos a parcelas cercanas.",source:"https://www.minfra.gba.gob.ar/licitacionesV2/bidding/show/1130/"}
+{id:"utopia-bonaerense-moreno",stage:"documented",name:"Utopía Bonaerense · Parque urbano e infraestructura",lat:null,lng:null,kind:"infrastructure",locality:"No precisada",activity:"Equipamiento público, parque urbano e infraestructura",evidenceType:"Ficha oficial de licitación provincial",confidence:"Alta para el llamado y las cuatro ofertas consignadas en el acta; no equivale a adjudicación ni contrato.",sourceDate:"Autorización 19/11/2025 · apertura y acta 20/01/2026",lastCheckedAt:"2026-11-27",business:"Equipamiento público, infraestructura y parque urbano; referencia de inversión pública y transformación territorial.",evidence:"La ficha del Ministerio de Infraestructura registra la Licitación Pública 51/2025 para equipamiento, infraestructura y parque urbano de la Utopía Bonaerense en Moreno. Publica estado “En Evaluación”, presupuesto oficial de $7.396.350.515,64 y plazo de 457 días. El acta de apertura del 20/01/2026 registra cuatro ofertas; la menor cotización consignada es $5.506.587.350,43 de Grupo Constructor del Oeste S.R.L. La apertura de ofertas no acredita adjudicación, contrato ni inicio de obra; la ficha no precisa la localidad ni identifica suelo privado disponible.",status:"La ficha oficial seguía indicando “En Evaluación” al 27/11/2026; el acta acredita recepción de cuatro ofertas, pero no se verificó un acto de adjudicación.",next:"Obtener el acto de adjudicación y contrato; confirmar contratista, monto contractual, redeterminaciones, inicio y avance de obra, y polígono exacto antes de atribuir efectos a parcelas cercanas.",source:"https://www.minfra.gba.gob.ar/licitacionesV2/bidding/show/1130/",sourceAlternates:[{label:"Acta de apertura oficial · PDF · 20/01/2026",url:"https://nube.minfra.gba.gob.ar/index.php/s/TrMYQtYjHf4tSrJ/download"}]}
 ];
 
 const publishedProperties = [
@@ -9686,16 +9686,19 @@ function buildReferenceUrl(baseUrl, referenceId) {
 }
 
 function buildOpportunityContactUrl(baseUrl, item) {
-  const url = new URL("../oportunidades/", String(baseUrl));
-  url.searchParams.set("map_ref", String(item.id));
-  url.searchParams.delete("map_name");
+  const referenceName = String(item && item.name || "una referencia territorial").slice(0, 180);
+  const referenceId = String(item && item.id || "").slice(0, 80);
+  const message = "Hola, quiero consultar con MORENO sobre esta referencia del Mapa IA: " +
+    referenceName + " (ID " + referenceId + "). ¿Podemos revisar la fuente y el próximo paso?";
+  const url = new URL("https://wa.me/5491141671674");
+  url.searchParams.set("text", message);
   return url.toString();
 }
 
 function referenceContactLabel(item) {
-  if (item && item.type === "opportunity") return "Conversar sobre esta tesis ↗";
-  if (item && item.type === "published") return "Consultar esta publicación ↗";
-  return "Consultar sobre esta localidad ↗";
+  if (item && item.type === "opportunity") return "Consultar esta tesis con MORENO ↗";
+  if (item && item.type === "published") return "Consultar esta ficha con MORENO ↗";
+  return "Consultar esta localidad con MORENO ↗";
 }
 
 function shouldFitMunicipalBounds(selectedReferenceId, userHasNavigated) {
@@ -9711,7 +9714,7 @@ function prefersReducedMotion(view) {
 }
 
 function normalizeSearchText(value) {
-  return String(value==null?"":value).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-AR").replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
+  return String(value==null?"":value).replace(/[²]/g,"2").replace(/[³]/g,"3").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-AR").replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
 }
 function editDistanceAtMostOne(a,b){if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,e=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue;}if(++e>1)return false;if(a.length===b.length){i++;j++;}else if(a.length>b.length)i++;else j++;}if(i<a.length||j<b.length)e++;return e<=1;}
 function searchQueryMatches(query,searchable){const q=normalizeSearchText(query);if(!q)return true;const words=normalizeSearchText(searchable).split(" ").filter(Boolean);return q.split(" ").filter(Boolean).every(token=>words.some(word=>word===token||word.startsWith(token)||(token.length>=5&&word.length>=5&&editDistanceAtMostOne(token,word))));}
@@ -9730,7 +9733,12 @@ function referenceMatchesLocality(item,key){
 }
 function referenceMatchesActivity(item,key){if(key==="all")return true;const t=normalizeSearchText([item&&item.activity,item&&item.kind,item&&kindLabel[item.kind],item&&item.name,item&&item.business,item&&item.recordType,item&&item.observations,item&&item.evidence].filter(Boolean).join(" "));return Boolean(item&&item.kind===key)||(ACTIVITY_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
 function referenceMatchesNextStep(item,key){if(key==="all")return true;const pub=item&&item.type==="published"?"confirmar vigencia precio stock documentacion contacto":"";const t=normalizeSearchText([item&&item.next,item&&item.status,item&&item.observations,item&&item.verificationStatus,pub].filter(Boolean).join(" "));return (NEXT_STEP_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
-function evidenceMetadata(item){if(!item)return {evidenceType:"No clasificada",confidence:"No asignada",sourceDate:"",consultedAt:""};if(item.type==="published")return {evidenceType:"Aviso inmobiliario de tercero",confidence:"Baja para disponibilidad, dominio y precio final; el registro solo conserva el contenido publicado en la fecha de revisión.",sourceDate:item.publicationDate||"No informada",consultedAt:item.lastCheckedAt||"No informada"};if(item.type==="locality")return {evidenceType:"Referencia cartográfica orientativa",confidence:"No aplicable a una parcela ni a una oportunidad inmobiliaria.",sourceDate:"",consultedAt:""};return {evidenceType:item.evidenceType||"Fuente pública no clasificada",confidence:item.confidence||"No asignada; requiere revisión de la fuente y su alcance.",sourceDate:item.sourceDate||"No informada",consultedAt:item.lastCheckedAt||"No informada"};}
+function evidenceMetadata(item){
+  if(!item)return {classification:"Sin clasificar",evidenceType:"No clasificada",confidence:"No asignada",sourceDate:"",consultedAt:""};
+  if(item.type==="published")return {classification:"Publicación de tercero; el contenido comercial no acredita disponibilidad ni precio final.",evidenceType:"Aviso inmobiliario de tercero",confidence:"Baja para disponibilidad, dominio y precio final; el registro solo conserva el contenido publicado en la fecha de revisión.",sourceDate:item.publicationDate||"No informada",consultedAt:item.lastCheckedAt||"No informada"};
+  if(item.type==="locality")return {classification:"Referencia cartográfica orientativa; no representa una parcela.",evidenceType:"Referencia cartográfica orientativa",confidence:"No aplicable a una parcela ni a una oportunidad inmobiliaria.",sourceDate:"",consultedAt:""};
+  return {classification:item.stage==="hypothesis"?"Hipótesis de prospección; no es un hecho comprobado.":"Contexto documentado; los hechos se atribuyen a la fuente citada.",evidenceType:item.evidenceType||"Fuente pública no clasificada",confidence:item.confidence||"No asignada; requiere revisión de la fuente y su alcance.",sourceDate:item.sourceDate||"No informada",consultedAt:item.lastCheckedAt||"No informada"};
+}
 function filterReferences(items,options){
  const s=options||{},q=String(s.query||"").trim(),category=s.category||"all",kind=s.kind||"all";
  const locality=MAP_VIEW_LOCALITIES.includes(s.locality)?s.locality:"all",activity=MAP_VIEW_ACTIVITIES.includes(s.activity)?s.activity:"all",nextStep=MAP_VIEW_NEXT_STEPS.includes(s.nextStep)?s.nextStep:"all";
@@ -9743,7 +9751,8 @@ function filterReferences(items,options){
   const availabilityMatches=availability==="all"||(item.type==="published"&&availabilityFilterKey(item.availabilityStatus)===availability);
   const d=item.type==="published"?publishedDiligenceSummary(item):null,diligenceMatches=diligence==="all"||(item.type==="published"&&d&&(d.complete?"complete":"pending")===diligence);
   const alternateSources=Array.isArray(item.sourceAlternates)?item.sourceAlternates.flatMap(source=>[source&&source.label,source&&source.url]):[];
-  const searchable=[item.id,item.name,item.info,item.business,item.status,item.evidence,item.next,item.kind,kindLabel[item.kind],item.activity,item.recordType,item.locality,item.address,item.agency,item.contact,item.price,item.verificationStatus,item.availabilityStatus,item.lastCheckedAt,item.observations,item.surfaceNote,item.publicationDate,item.geolocationStatus,item.evidenceType,item.confidence,item.sourceDate,item.source,...alternateSources].filter(Boolean).join(" ");
+  const surfaceSearch=[item.landSurfaceM2!=null?String(item.landSurfaceM2)+" m2 superficie terreno":"",item.coveredSurfaceM2!=null?String(item.coveredSurfaceM2)+" m2 superficie cubierta":""];
+  const searchable=[item.id,item.name,item.info,item.business,item.status,item.evidence,item.next,item.kind,kindLabel[item.kind],item.activity,item.recordType,item.locality,item.address,item.agency,item.contact,item.price,item.currency,item.verificationStatus,item.availabilityStatus,item.lastCheckedAt,item.observations,item.surfaceNote,item.landSurfaceM2,item.coveredSurfaceM2,...surfaceSearch,item.publicationDate,item.geolocationStatus,item.evidenceType,item.confidence,item.sourceDate,item.source,...alternateSources].filter(Boolean).join(" ");
   return categoryMatches&&kindMatches&&localityMatches&&activityMatches&&nextStepMatches&&evidenceMatches&&availabilityMatches&&diligenceMatches&&searchQueryMatches(q,searchable);
  });
 }
@@ -10503,6 +10512,10 @@ function initMapPage(doc) {
   if (!mapElement) return;
   initResponsiveDisclosures(doc);
 
+  const zoomInButton = doc.getElementById("map-zoom-in");
+  const zoomOutButton = doc.getElementById("map-zoom-out");
+  const reframeMapButton = doc.getElementById("map-fit-all");
+  const mapTouchControls = doc.getElementById("map-touch-controls");
   const statusElement = doc.getElementById("map-status");
   const boundaryElement = doc.getElementById("boundary-status");
   const searchInput = doc.getElementById("search");
@@ -10548,6 +10561,7 @@ function initMapPage(doc) {
   let publishedCardsLimit = PUBLISHED_CARD_PAGE_SIZE;
   let renderedPublishedCardIds = new Set();
   let map = null;
+  let municipalBounds = null;
   let visibleItems = all;
   let reviewStorage = null;
   try {
@@ -10745,6 +10759,7 @@ function initMapPage(doc) {
       try { marker.remove(); } catch (error) {}
     });
     markers.clear();
+    if (mapTouchControls) mapTouchControls.hidden = true;
     const activeMap = map;
     map = null;
     if (activeMap) {
@@ -10753,6 +10768,31 @@ function initMapPage(doc) {
     renderStaticFallback(visibleItems);
     statusElement.textContent = "Esquema territorial alternativo · fichas de investigación activas";
     boundaryElement.textContent = "Límite municipal: no representado en el esquema";
+  }
+
+  function reframeMap() {
+    if (!map) return false;
+    let bounds = municipalBounds;
+    if ((!bounds || bounds.isEmpty()) && typeof maplibregl !== "undefined" && maplibregl.LngLatBounds) {
+      bounds = new maplibregl.LngLatBounds();
+      all.forEach(item => {
+        if (hasCoordinates(item)) bounds.extend([Number(item.lng), Number(item.lat)]);
+      });
+    }
+    const view = doc.defaultView;
+    if (bounds && !bounds.isEmpty()) {
+      map.fitBounds(bounds, {
+        padding: view && Number(view.innerWidth) <= 760 ? 24 : 56,
+        maxZoom: 12,
+        duration: prefersReducedMotion(view) ? 0 : 450
+      });
+    } else {
+      const camera = { center: [-58.7914, -34.6508], zoom: 11 };
+      if (prefersReducedMotion(view)) map.jumpTo(camera);
+      else map.flyTo({ ...camera, essential: true });
+    }
+    statusElement.textContent = "Vista general del Partido de Moreno.";
+    return true;
   }
 
   function popupNode(item) {
@@ -10805,6 +10845,7 @@ function initMapPage(doc) {
     addLine("Estado:", item.status);
     addLine("Siguiente paso:", item.next);
     const traceability = evidenceMetadata(item);
+    addLine("Clasificación:", traceability.classification);
     addLine("Tipo de evidencia:", traceability.evidenceType);
     addLine("Confianza:", traceability.confidence);
     addLine("Fecha de la fuente:", traceability.sourceDate);
@@ -11230,6 +11271,7 @@ function initMapPage(doc) {
         addDetail("Estado de verificación", item.status);
         addDetail("Próximo paso", item.next);
         const traceability = evidenceMetadata(item);
+        addDetail("Clasificación de evidencia", traceability.classification);
         addDetail("Tipo de evidencia", traceability.evidenceType);
         addDetail("Nivel de confianza", traceability.confidence);
         addDetail("Fecha de la fuente", traceability.sourceDate);
@@ -11387,6 +11429,7 @@ function initMapPage(doc) {
       addDetail("Geolocalización:", item.geolocationStatus);
       addDetail("Observaciones:", item.observations);
       const traceability = evidenceMetadata(item);
+      addDetail("Clasificación de evidencia:", traceability.classification);
       addDetail("Tipo de evidencia:", traceability.evidenceType);
       addDetail("Confianza:", traceability.confidence);
       addDetail("Fecha de la fuente:", traceability.sourceDate);
@@ -11515,14 +11558,15 @@ function initMapPage(doc) {
     if (searchResultsStatus) {
       const noActiveFilters = !searchInput.value.trim() && categoryInput.value === "all" && kindInput.value === "all" && localityInput.value === "all" && activityInput.value === "all" && nextStepInput.value === "all" && evidenceInput.value === "all" && availabilityInput.value === "all" && diligenceInput.value === "all";
       if (noActiveFilters) {
-        searchResultsStatus.textContent = all.length + " referencias cargadas. Escribí una localidad, actividad, fuente o próximo paso para buscar.";
+        searchResultsStatus.textContent = all.length + " referencias cargadas. Buscá localidad, calle, actividad, evidencia, fuente, superficie o próximo paso. Las fichas sin coordenadas siguen en el índice.";
       } else if (shown.length) {
         const publishedCount = shown.filter(item => item.type === "published").length;
         const opportunityCount = shown.filter(item => item.type === "opportunity").length;
         const localityCount = shown.filter(item => item.type === "locality").length;
-        searchResultsStatus.textContent = shown.length + " coincidencias: " + publishedCount + " publicaciones, " + opportunityCount + " tesis y " + localityCount + " localidades. Los avisos sin coordenadas verificadas quedan en la lista, no como puntos.";
+        const unlocatedCount = shown.filter(item => !hasCoordinates(item)).length;
+        searchResultsStatus.textContent = shown.length + " coincidencias: " + publishedCount + " publicaciones, " + opportunityCount + " tesis y " + localityCount + " localidades; " + unlocatedCount + " fichas sin coordenadas verificables siguen en el índice.";
       } else {
-        searchResultsStatus.textContent = "No encontramos coincidencias. Probá con menos palabras o restablecé los filtros.";
+        searchResultsStatus.textContent = "0 coincidencias. Probá con menos palabras o restablecé los filtros.";
       }
     }
     if (emptyState) emptyState.hidden = shown.length > 0;
@@ -11721,6 +11765,8 @@ function initMapPage(doc) {
         center: [-58.7914, -34.6508],
         zoom: 12,
         maxZoom: 19,
+        dragPan: true,
+        touchZoomRotate: true,
         attributionControl: { compact: false },
         renderWorldCopies: false
       });
@@ -11793,6 +11839,7 @@ function initMapPage(doc) {
           geo.features.forEach(feature => {
             if (feature.geometry) collectCoordinates(feature.geometry.coordinates);
           });
+          municipalBounds = bounds;
           if (!bounds.isEmpty() && shouldFitMunicipalBounds(selectedReferenceId, userHasNavigated)) {
             map.fitBounds(bounds, { padding: 36, maxZoom: 12, duration: 0 });
           }
@@ -11857,6 +11904,13 @@ function initMapPage(doc) {
   availabilityInput.addEventListener("change", resetPublishedPaginationAndRender);
   diligenceInput.addEventListener("change", resetPublishedPaginationAndRender);
   shareViewButton.addEventListener("click", shareCurrentView);
+  if (zoomInButton) zoomInButton.addEventListener("click", () => {
+    if (map) map.zoomIn({ duration: prefersReducedMotion(doc.defaultView) ? 0 : 180 });
+  });
+  if (zoomOutButton) zoomOutButton.addEventListener("click", () => {
+    if (map) map.zoomOut({ duration: prefersReducedMotion(doc.defaultView) ? 0 : 180 });
+  });
+  if (reframeMapButton) reframeMapButton.addEventListener("click", reframeMap);
   dossierExportButton.addEventListener("click", downloadTerritorialDossier);
   const emptyResetButton = doc.getElementById("reset-empty-state");
   if (emptyResetButton) emptyResetButton.addEventListener("click", () => doc.getElementById("reset-map").click());
