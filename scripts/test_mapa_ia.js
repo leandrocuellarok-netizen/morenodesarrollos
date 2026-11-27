@@ -188,11 +188,30 @@ assert.ok(source.includes('link.download = "moreno-mapa-ia-referencias.geojson"'
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
 assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
-assert.equal(publishedProperties.length, 18, "la capa publicada contiene dieciocho avisos y desarrollos");
-assert.equal(all.length, 29, "el inventario completo contiene veintinueve referencias");
+assert.equal(publishedProperties.length, 28, "la capa publicada contiene veintiocho avisos y desarrollos");
+assert.equal(all.length, 39, "el inventario completo contiene treinta y nueve referencias");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
 assert.equal(new Set(publishedProperties.map(item => item.source)).size, publishedProperties.length, "los enlaces de publicaciones no se duplican");
-assert.deepEqual(countInventory(all), { localities: 6, documented: 4, hypotheses: 1, published: 18, total: 29 });
+
+const nov27ExpectedIds = [
+  "terreno-san-juan-bautista-1374",
+  "terreno-ricardo-rojas-4418-3830",
+  "terreno-general-alvarado-322-922",
+  "casa-bernardino-rivadavia-1000",
+  "casa-naciones-unidas-1500",
+  "casa-country-san-diego-1500",
+  "desarrollo-barrio-del-golf-atuel-2700",
+  "desarrollo-colonos-ii-2300",
+  "desarrollo-ibis-iv-273",
+  "desarrollo-140-camilli"
+];
+for (const id of nov27ExpectedIds) {
+  assert.ok(publishedProperties.some(item => item.id === id), "la revisión incorpora " + id);
+}
+assert.equal(publishedProperties.find(item => item.id === "la-reja-casa-quinta-santa-teresa-2401").availabilityStatus, "No vigente");
+assert.equal(publishedProperties.find(item => item.id === "parques-morenito-proyecto").availabilityStatus, "No vigente como desarrollo nuevo; antecedente histórico.");
+
+assert.deepEqual(countInventory(all), { localities: 6, documented: 4, hypotheses: 1, published: 28, total: 39 });
 assert.deepEqual(
   countInventory(filterReferences(all, { evidence: "documented" })),
   { localities: 0, documented: 4, hypotheses: 0, published: 0, total: 4 },
@@ -208,7 +227,7 @@ for (const item of all) {
   if (item.type === "published") {
     assert.equal(hasCoordinates(item), false, "no se inventan coordenadas para publicaciones pendientes: " + item.name);
     assert.match(item.geolocationStatus, /Pendiente/);
-    assert.equal(item.availabilityStatus, "No confirmada");
+    assert.ok(["No confirmada", "No vigente", "Pendiente de revalidación"].includes(item.availabilityStatus), "el estado comercial se conserva sin afirmar disponibilidad: " + item.name);
     assert.match(item.source, /^https:\/\//);
     continue;
   }
@@ -224,7 +243,7 @@ for (const item of opportunities) {
 
 assert.equal(filterReferences(all, { category: "locality" }).length, 6);
 assert.equal(filterReferences(all, { category: "opportunity" }).length, 5);
-assert.equal(filterReferences(all, { category: "published" }).length, 18);
+assert.equal(filterReferences(all, { category: "published" }).length, 28);
 assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { query: "Santa Teresa", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");
@@ -527,7 +546,7 @@ assert.equal(buildTerritorialDossier([], {}, "2026-11-26T03:00:00.000Z"), null, 
 const completeDossier = buildTerritorialDossier(all, {}, "2026-11-26T03:00:00.000Z");
 assert.equal(completeDossier.references.length, 29);
 assert.deepEqual(completeDossier.counts, { localities: 6, documented: 4, hypotheses: 1, published: 18, total: 29 });
-assert.equal(completeDossier.references.filter(reference => reference.type === "published").length, 18);
+assert.equal(completeDossier.references.filter(reference => reference.type === "published").length, 28);
 assert.equal(completeDossier.references.filter(reference => reference.sourceUrl).length, 23, "las tesis y publicaciones conservan sus fuentes registradas");
 const dossierDiagram = buildTerritorialDossierDiagram(industrialDossier.references);
 assert.match(dossierDiagram, /<svg/);
