@@ -49,8 +49,8 @@ assert.ok(mapPage.includes(initialInventoryCounts.total + " de " + initialInvent
 assert.ok(mapPage.includes("La forma distingue la clase"), "la leyenda explica la semántica de los símbolos sin depender del color");
 assert.ok(mapPage.includes('option value="published"'), "el filtro ofrece la capa de publicaciones inmobiliarias");
 assert.ok(mapPage.includes('id="published-list"'), "el mapa contiene una lista independiente de publicaciones");
-const publicationIntro = mapPage.match(/<p class="map-published-intro">([\\s\\S]*?)<\\/p>/)?.[1] || "";
-assert.ok(publicationIntro && !/\\d{2}\\/\\d{2}\\/\\d{4}/.test(publicationIntro), "la introducción no debe congelar una fecha global de revisión");
+const publicationIntro = mapPage.match(/<p class="map-published-intro">([\s\S]*?)<\/p>/)?.[1] || "";
+assert.ok(publicationIntro && !/\d{2}\/\d{2}\/\d{4}/.test(publicationIntro), "la introducción no debe congelar una fecha global de revisión");
 assert.ok(source.includes("function geocodePublishedAddresses()"), "la capa intenta georreferenciar las direcciones publicadas");
 assert.ok(source.includes("https://apis.datos.gob.ar/georef/api/v2.0/direcciones"), "la georreferencia utiliza el servicio oficial Georef");
 assert.ok(source.includes("function availabilityFilterKey(value)"), "el motor normaliza estados comerciales permitidos");
