@@ -29,7 +29,7 @@ assert.ok(mapPage.includes('label class="map-filter-field'), "cada filtro tiene 
 assert.ok(mapPage.includes("Sector / línea de desarrollo"), "la función del filtro sectorial se explica en pantalla");
 assert.ok(source.includes('getElementById("kind-filter")'), "el motor conecta el control sectorial");
 assert.ok(source.includes('kind: doc.getElementById("kind-filter").value'), "la renderización utiliza el sector seleccionado");
-assert.ok(source.includes('kindInput.addEventListener("change", render)'), "el cambio de sector vuelve a renderizar el inventario");
+assert.ok(source.includes('kindInput.addEventListener("change", resetPublishedPaginationAndRender)'), "el cambio de sector reinicia la página visible y vuelve a renderizar el inventario");
 assert.ok(source.includes('kindInput.value = "all"'), "restablecer limpia también el filtro sectorial");
 assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye la mesa de verificación documental");
 for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-documented-count", "atlas-hypotheses-count", "atlas-published-count", "atlas-total-count"]) {
@@ -453,7 +453,7 @@ const turn7ExpectedIds = [
 for (const id of turn7ExpectedIds) {
   const item = publishedProperties.find(record => record.id === id);
   assert.ok(item, "la séptima revisión horaria incorpora " + id);
-  assert.equal(item.availabilityStatus, "No confirmada", "no se presume disponibilidad para " + id);
+  assert.equal(item.availabilityStatus, id === "sofocles-3000-terreno-casa-330" ? "Pendiente de revalidación" : "No confirmada", "no se presume disponibilidad para " + id);
   assert.equal(item.lastCheckedAt, "2026-11-27", "fecha de revisión registrada para " + id);
   assert.equal(item.lat, null, "no se inventa latitud para " + id);
   assert.equal(item.lng, null, "no se inventa longitud para " + id);
