@@ -1658,10 +1658,11 @@ body > noscript {
 }
 #main-content {
   width: 100%;
+  max-width: none !important;
   height: 100%;
   min-height: 0;
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 .map-shell {
   position: fixed !important;
@@ -1687,6 +1688,7 @@ body > noscript {
   min-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
+  overflow: hidden;
 }
 .map-layout > #map,
 .map-canvas {
@@ -1699,6 +1701,7 @@ body > noscript {
   min-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
+  border-radius: 0 !important;
 }
 .map-canvas .maplibregl-canvas {
   width: 100% !important;
