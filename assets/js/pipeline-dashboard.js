@@ -161,6 +161,17 @@
     return String(value || "").trim().toLocaleLowerCase("es-AR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
+  function normalizeCounterpartyType(value) {
+    const key = normalizeStage(value).replace(/[._-]+/g, " ").replace(/\s+/g, " ").trim();
+    if (!key) return "Sin clasificar";
+    if (["propietario", "propietaria", "propietario/a", "propietaria/o", "dueno", "duena", "dueno/a"].includes(key)) return "Propietario/a";
+    if (["inversor", "inversora", "inversor/a"].includes(key)) return "Inversor/a";
+    if (["desarrollador", "desarrolladora", "desarrollador/a"].includes(key)) return "Desarrollador/a";
+    if (["profesional", "empresa", "profesional o empresa", "profesional/empresa"].includes(key)) return "Profesional o empresa";
+    if (["otro", "otra"].includes(key)) return "Otro / revisar";
+    return "Otro / revisar";
+  }
+
   function addDays(dateString, days) {
     const parts = dateString.split("-").map(Number);
     return new Date(Date.UTC(parts[0], parts[1] - 1, parts[2] + days)).toISOString().slice(0, 10);
@@ -171,6 +182,7 @@
     if (!validDate(currentDate)) throw new Error("La fecha de referencia debe usar AAAA-MM-DD.");
     const active = records.filter(record => !CLOSED_STAGES.has(normalizeStage(record.fields.etapa_comercial)));
     const stageCounts = {};
+    const counterparties = {};
     const finance = {};
     const overdue = [];
     const dueSoon = [];
@@ -179,8 +191,19 @@
     records.forEach(record => {
       const fields = record.fields;
       const stage = fields.etapa_comercial.trim() || "Sin etapa";
+      const normalizedStage = normalizeStage(stage);
       stageCounts[stage] = (stageCounts[stage] || 0) + 1;
-      if (!CLOSED_STAGES.has(normalizeStage(stage))) {
+      const counterpartyType = normalizeCounterpartyType(fields.tipo_contraparte);
+      if (!counterparties[counterpartyType]) {
+        counterparties[counterpartyType] = { total: 0, active: 0, won: 0, notCompleted: 0, paused: 0 };
+      }
+      const counterpartyCounts = counterparties[counterpartyType];
+      counterpartyCounts.total += 1;
+      if (normalizedStage === "ganada") counterpartyCounts.won += 1;
+      else if (normalizedStage === "no concretada") counterpartyCounts.notCompleted += 1;
+      else if (normalizedStage === "pausada") counterpartyCounts.paused += 1;
+      else counterpartyCounts.active += 1;
+      if (!CLOSED_STAGES.has(normalizedStage)) {
         if (!fields.fecha_proximo_seguimiento) missingFollowUp.push(record);
         else if (fields.fecha_proximo_seguimiento < currentDate) overdue.push(record);
         else if (fields.fecha_proximo_seguimiento <= endOfWindow) dueSoon.push(record);
@@ -209,6 +232,8 @@
       total: records.length, active: active.length, overdue: overdue.length, dueSoon: dueSoon.length,
       missingFollowUp: missingFollowUp.length,
       stageCounts: Object.entries(stageCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "es")),
+      counterpartyCounts: Object.entries(counterparties).map(([type, counts]) => Object.assign({ type: type }, counts))
+        .sort((a, b) => b.total - a.total || a.type.localeCompare(b.type, "es")),
       finance: finance, nextActions: overdue.concat(dueSoon).slice(0, 20), today: currentDate
     };
   }
@@ -233,6 +258,17 @@
     });
     summary.stageCounts.forEach(function (entry) {
       rows.push([summary.today, "etapa", entry[0], "", String(entry[1])]);
+    });
+    (summary.counterpartyCounts || []).forEach(function (entry) {
+      [
+        ["total", entry.total],
+        ["activas", entry.active],
+        ["ganadas", entry.won],
+        ["no_concretadas", entry.notCompleted],
+        ["pausadas", entry.paused]
+      ].forEach(function (metric) {
+        rows.push([summary.today, "contraparte", entry.type + " · " + metric[0], "", String(metric[1])]);
+      });
     });
     Object.keys(summary.finance).sort().forEach(function (currency) {
       const values = summary.finance[currency];

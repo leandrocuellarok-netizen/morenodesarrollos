@@ -9,7 +9,8 @@
   const downloadAgendaButton = document.getElementById("pipeline-download-agenda");
   const downloadCalendarButton = document.getElementById("pipeline-download-calendar");
   const followUpFilter = document.getElementById("pipeline-filter-followup");
-  if (!api || !fileInput || !status || !output || !resetButton || !downloadSummaryButton || !downloadAgendaButton || !downloadCalendarButton || !followUpFilter) return;
+  const counterpartyTable = document.getElementById("pipeline-counterparty-summary");
+  if (!api || !fileInput || !status || !output || !resetButton || !downloadSummaryButton || !downloadAgendaButton || !downloadCalendarButton || !followUpFilter || !counterpartyTable) return;
   let records = [];
   let currentSummary = null;
   let importSequence = 0;
@@ -143,6 +144,41 @@
     table.append(head, body);
     stageTable.append(table);
   }
+  function renderCounterparties(items) {
+    counterpartyTable.replaceChildren();
+    if (!items.length) {
+      counterpartyTable.append(node("p", "pipeline-empty", "Todavía no hay contrapartes para clasificar."));
+      return;
+    }
+    const table = node("table", "pipeline-table pipeline-counterparty-table");
+    const head = node("thead");
+    const headerRow = node("tr");
+    ["Tipo de contraparte", "Total", "Activas", "Ganadas", "No concretadas", "Pausadas"].forEach(label => appendCell(headerRow, label, "th"));
+    head.append(headerRow);
+    const body = node("tbody");
+    const totals = { total: 0, active: 0, won: 0, notCompleted: 0, paused: 0 };
+    items.forEach(entry => {
+      const row = node("tr");
+      appendCell(row, entry.type);
+      appendCell(row, String(entry.total));
+      appendCell(row, String(entry.active));
+      appendCell(row, String(entry.won));
+      appendCell(row, String(entry.notCompleted));
+      appendCell(row, String(entry.paused));
+      body.append(row);
+      Object.keys(totals).forEach(key => { totals[key] += entry[key]; });
+    });
+    const totalRow = node("tr", "pipeline-counterparty-total");
+    appendCell(totalRow, "Total general");
+    appendCell(totalRow, String(totals.total));
+    appendCell(totalRow, String(totals.active));
+    appendCell(totalRow, String(totals.won));
+    appendCell(totalRow, String(totals.notCompleted));
+    appendCell(totalRow, String(totals.paused));
+    body.append(totalRow);
+    table.append(head, body);
+    counterpartyTable.append(table);
+  }
   function renderNextActions(summary) {
     actionsList.replaceChildren();
     if (!summary.nextActions.length) {
@@ -225,6 +261,7 @@
     renderMetrics(summary);
     renderFinance(summary.finance);
     renderStages(summary.stageCounts);
+    renderCounterparties(summary.counterpartyCounts || []);
     renderNextActions(summary);
     updateFollowUpFilter(summary);
     stageFilter.replaceChildren(node("option", "", "Todas las etapas"));

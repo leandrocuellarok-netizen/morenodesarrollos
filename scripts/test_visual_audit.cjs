@@ -239,6 +239,7 @@ async function auditRoute(browser, route) {
           id_oportunidad: "AUDIT-ICS-001",
           localidad: "Moreno",
           tipo_activo: "Terreno",
+          tipo_contraparte: "Desarrollador/a",
           etapa_comercial: "primer contacto",
           proxima_accion: "Revisar documentación pública",
           fecha_proximo_seguimiento: dateValue
@@ -257,6 +258,9 @@ async function auditRoute(browser, route) {
       });
       await page.waitForFunction(() => document.querySelector("#pipeline-status")?.textContent.includes("CSV validado"), null, { timeout: 5000 });
       check(!(await calendarButton.isDisabled()), "mesa-operativa: una fecha validada habilita la exportación de calendario");
+      check(await page.locator("#pipeline-counterparty-summary table").count() === 1, "mesa-operativa: el resumen por contraparte se renderiza tras validar el CSV");
+      check((await page.locator("#pipeline-counterparty-summary").innerText()).includes("Desarrollador/a"), "mesa-operativa: la categoría de desarrollador aparece en el resumen");
+      check((await page.locator("#pipeline-counterparty-summary").innerText()).includes("Total general"), "mesa-operativa: el resumen muestra el total general");
       const [calendarDownload] = await Promise.all([
         page.waitForEvent("download"),
         calendarButton.click()
