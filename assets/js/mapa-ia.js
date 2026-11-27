@@ -366,7 +366,8 @@ publishedProperties.push(
     landSurfaceM2:2737,coveredSurfaceM2:null,surfaceNote:"37,50 × 73 m · lote 16",
     observations:"La inmobiliaria informa escritura e impuestos al día y entrega inmediata. La página de listado muestra anticipo USD 15.000; la descripción especifica USD 28.000 contado o 15.000 + 25 cuotas de 600."
   }
-).forEach(item => {
+);
+publishedProperties.slice(-3).forEach(item => {
   item.lat = null;
   item.lng = null;
   item.lastCheckedAt = "2026-11-27";
@@ -1568,7 +1569,9 @@ function initMapPage(doc) {
     element.setAttribute("aria-label", "Ver " + item.name + " en el mapa");
     element.title = item.name;
     const popup = new maplibregl.Popup({ offset: 16, maxWidth: "340px" }).setDOMContent(popupNode(item));
-    element.addEventListener("click", () => setActiveReference(item, { reveal: true, scroll: true }));
+    element.addEventListener("click", () => {
+      setActiveReference(item, { reveal: true, scroll: true });
+    });
     const marker = new maplibregl.Marker({ element, anchor: "center" })
       .setLngLat([Number(item.lng), Number(item.lat)])
       .setPopup(popup)
