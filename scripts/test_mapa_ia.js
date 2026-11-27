@@ -1233,6 +1233,49 @@ for (const id of turn12ExpectedIds) {
   assert.ok(item.source && item.source.startsWith("https://"));
   assert.equal(item.availabilityStatus, id === "casa-salvador-6300-300" || id === "terreno-san-carlos-4500-552" ? "Pendiente de revalidación" : "No confirmada");
 }
+
+const turn13ExpectedIds = [
+  "casa-bolivia-2100-400",
+  "casa-panama-5300-300",
+  "quinta-formosa-3400-3600",
+  "casa-urquiza-2600-299",
+  "desarrollo-altos-del-monte-san-juan-bautista-2400",
+  "casa-concordia-1600-219",
+  "casa-maria-eugenia-residences-coravalan-2300-187",
+  "terreno-diario-la-prensa-700-960",
+  "quinta-intendente-dastugue-4200-2500",
+  "quinta-rembrandt-3800-2700",
+  "casa-libertad-300-175",
+  "casa-puente-marquez-1202-1000",
+  "terreno-san-diego-1687",
+  "terreno-san-diego-2175-historico"
+];
+const turn13PendingIds = new Set([
+  "casa-libertad-300-175",
+  "casa-puente-marquez-1202-1000",
+  "terreno-san-diego-1687"
+]);
+const turn13WithdrawnIds = new Set(["terreno-san-diego-2175-historico"]);
+for (const id of turn13ExpectedIds) {
+  const item = publishedProperties.find(record => record.id === id);
+  assert.ok(item, "la revisión 13 incorpora " + id);
+  assert.equal(item.lastCheckedAt, "2026-11-27");
+  assert.ok(item.source && item.source.startsWith("https://"));
+  const expectedStatus = turn13WithdrawnIds.has(id)
+    ? "No vigente"
+    : turn13PendingIds.has(id)
+      ? "Pendiente de revalidación"
+      : "No confirmada";
+  assert.equal(item.availabilityStatus, expectedStatus);
+}
+const maipuReactivated = publishedProperties.find(record => record.id === "casa-maipu-1341-el-casco-historica");
+assert.equal(maipuReactivated.availabilityStatus, "No confirmada");
+assert.ok(maipuReactivated.source.includes("0c28e77c"));
+assert.ok(maipuReactivated.sourceAlternates.some(source => source.url.includes("20725083") && source.label.includes("410 Gone")));
+assert.ok(publishedProperties.find(record => record.id === "casa-ituzaingo-1400-723").sourceAlternates.some(source => source.url.includes("77606a04")));
+assert.ok(publishedProperties.find(record => record.id === "casa-doctor-asseff-400-361").sourceAlternates.some(source => source.url.includes("3023930f")));
+
+
 const parqueCentral = publishedProperties.find(record => record.id === "desarrollo-parque-central-av-libertador-6400");
 assert.ok(parqueCentral.publicationDate.includes("12/11/2026"));
 assert.ok(parqueCentral.sourceAlternates.some(source => source.url.includes("infraestructura-electrica")));
@@ -1245,8 +1288,8 @@ const laProvidencia = publishedProperties.find(record => record.id === "quinta-l
 assert.ok(laProvidencia.observations.includes("no cuentan con planos aprobados"));
 const sourceUrls = publishedProperties.map(record => record.source).filter(Boolean);
 assert.equal(new Set(sourceUrls).size, sourceUrls.length, "no se duplican enlaces primarios");
-assert.equal(publishedProperties.length, 342, "el catálogo incorpora 29 altas netas sin duplicados");
-assert.equal(all.length, 353, "el inventario completo refleja 342 publicaciones y 11 referencias territoriales");
+assert.equal(publishedProperties.length, 356, "el catálogo incorpora 29 altas netas sin duplicados");
+assert.equal(all.length, 367, "el inventario completo refleja 342 publicaciones y 11 referencias territoriales");
 
 
 testGeorefRequestQueue()
