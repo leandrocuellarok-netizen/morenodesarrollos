@@ -1226,7 +1226,7 @@ for (const id of turn12ExpectedIds) {
   assert.ok(item, "la revisión 12 incorpora " + id);
   assert.equal(item.lastCheckedAt, "2026-11-27");
   assert.ok(item.source && item.source.startsWith("https://"));
-  assert.equal(item.availabilityStatus, "No confirmada");
+  assert.equal(item.availabilityStatus, id === "casa-salvador-6300-300" ? "Pendiente de revalidación" : "No confirmada");
 }
 const parqueCentral = publishedProperties.find(record => record.id === "desarrollo-parque-central-av-libertador-6400");
 assert.ok(parqueCentral.publicationDate.includes("12/11/2026"));
