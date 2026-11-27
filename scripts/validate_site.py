@@ -837,7 +837,7 @@ def main() -> None:
             "pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset",
             "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions",
             "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-followup", "pipeline-filter-text",
-            "pipeline-download-summary", "pipeline-download-agenda",
+            "pipeline-download-summary", "pipeline-download-agenda", "pipeline-download-calendar",
             "originacion-workbench", "originacion-import-file", "originacion-import-button",
             "originacion-import-status", "originacion-print-dossier", "originacion-download-dossier",
             "originacion-clear", "originacion-status"
@@ -846,6 +846,19 @@ def main() -> None:
                 errors.append(f"mesa-operativa/index.html: falta control interno {required_control}")
         if 'id="pipeline-download-summary" type="button" disabled' not in operations_html:
             errors.append("Mesa Operativa debe mantener deshabilitada la exportación hasta validar un CSV.")
+        if 'id="pipeline-download-calendar" type="button" disabled' not in operations_html:
+            errors.append("Mesa Operativa debe mantener deshabilitada la exportación iCalendar hasta validar fechas.")
+        agenda_module = ROOT / "assets/js/pipeline-agenda.js"
+        if not agenda_module.is_file():
+            errors.append("Falta assets/js/pipeline-agenda.js para exportar seguimientos al calendario")
+        else:
+            agenda_source = agenda_module.read_text(encoding="utf-8")
+            for required_logic in ("api.buildAgendaIcs = function (summary)", "DTSTART;VALUE=DATE:", "DTEND;VALUE=DATE:", "function foldIcsLine(line)", "function icsEscape(value)"):
+                if required_logic not in agenda_source:
+                    errors.append(f"assets/js/pipeline-agenda.js: falta exportación iCalendar: {required_logic}")
+        pipeline_ui = ROOT / "assets/js/pipeline-dashboard-ui.js"
+        if not pipeline_ui.is_file() or 'downloadCalendarButton.addEventListener("click"' not in pipeline_ui.read_text(encoding="utf-8"):
+            errors.append("Mesa Operativa debe conectar el control de descarga iCalendar.")
         if '<link rel="stylesheet" href="../assets/css/originacion.css">' not in operations_html:
             errors.append("Mesa Operativa debe cargar la hoja responsive de originación")
         for script_src in (

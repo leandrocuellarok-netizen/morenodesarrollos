@@ -7,8 +7,9 @@
   const resetButton = document.getElementById("pipeline-reset");
   const downloadSummaryButton = document.getElementById("pipeline-download-summary");
   const downloadAgendaButton = document.getElementById("pipeline-download-agenda");
+  const downloadCalendarButton = document.getElementById("pipeline-download-calendar");
   const followUpFilter = document.getElementById("pipeline-filter-followup");
-  if (!api || !fileInput || !status || !output || !resetButton || !downloadSummaryButton || !downloadAgendaButton || !followUpFilter) return;
+  if (!api || !fileInput || !status || !output || !resetButton || !downloadSummaryButton || !downloadAgendaButton || !downloadCalendarButton || !followUpFilter) return;
   let records = [];
   let currentSummary = null;
   let importSequence = 0;
@@ -203,6 +204,7 @@
   }
   downloadSummaryButton.disabled = true;
   downloadAgendaButton.disabled = true;
+  downloadCalendarButton.disabled = true;
 
   function renderWarnings(items) {
     warnings.replaceChildren();
@@ -219,6 +221,7 @@
     currentSummary = summary;
     downloadSummaryButton.disabled = false;
     downloadAgendaButton.disabled = false;
+    downloadCalendarButton.disabled = !(summary.agendaItems || []).some(item => api.validDate(item.record.fields.fecha_proximo_seguimiento));
     renderMetrics(summary);
     renderFinance(summary.finance);
     renderStages(summary.stageCounts);
@@ -240,6 +243,7 @@
     currentSummary = null;
     downloadSummaryButton.disabled = true;
     downloadAgendaButton.disabled = true;
+    downloadCalendarButton.disabled = true;
     stageFilter.replaceChildren(node("option", "", "Todas las etapas"));
     stageFilter.value = "";
     followUpFilter.replaceChildren(node("option", "", "Todos los seguimientos"));
@@ -316,6 +320,29 @@
       status.textContent = "No se pudo generar la agenda CSV en este navegador.";
     }
   });
+  downloadCalendarButton.addEventListener("click", function () {
+    if (!currentSummary) return;
+    const datedItems = (currentSummary.agendaItems || []).filter(item => api.validDate(item.record.fields.fecha_proximo_seguimiento));
+    if (!datedItems.length) {
+      status.textContent = "No hay seguimientos con fecha para incorporar al calendario. Las tareas sin fecha permanecen en la agenda CSV.";
+      return;
+    }
+    try {
+      const blob = new Blob([api.buildAgendaIcs(currentSummary)], { type: "text/calendar;charset=utf-8" });
+      const objectUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = "moreno-agenda-seguimiento-" + currentSummary.today + ".ics";
+      link.style.display = "none";
+      document.body.append(link);
+      link.click();
+      link.remove();
+      window.setTimeout(function () { window.URL.revokeObjectURL(objectUrl); }, 1000);
+      status.textContent = "Calendario descargado: " + datedItems.length + " seguimientos como eventos de día completo, sin horarios inventados ni datos de contacto.";
+    } catch (error) {
+      status.textContent = "No se pudo generar el archivo de calendario en este navegador.";
+    }
+  });
   fileInput.addEventListener("change", importFile);
   resetButton.addEventListener("click", () => {
     importSequence += 1;
@@ -323,6 +350,7 @@
     currentSummary = null;
     downloadSummaryButton.disabled = true;
     downloadAgendaButton.disabled = true;
+    downloadCalendarButton.disabled = true;
     fileInput.value = "";
     stageFilter.replaceChildren(node("option", "", "Todas las etapas"));
     stageFilter.value = "";

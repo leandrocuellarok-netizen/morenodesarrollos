@@ -27,7 +27,7 @@ class Element {
 (async function () {
   const ids = [
     "pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset",
-    "pipeline-download-summary", "pipeline-download-agenda", "pipeline-filter-stage", "pipeline-filter-followup", "pipeline-filter-text", "pipeline-metrics",
+    "pipeline-download-summary", "pipeline-download-agenda", "pipeline-download-calendar", "pipeline-filter-stage", "pipeline-filter-followup", "pipeline-filter-text", "pipeline-metrics",
     "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-next-actions",
     "pipeline-records-body", "pipeline-records-count", "pipeline-warnings"
   ];
@@ -38,10 +38,11 @@ class Element {
     body: new Element("body")
   };
   let objectUrlCalls = 0;
+  let lastBlob = null;
   const window = {
     MorenoPipelineDashboard: dashboard,
     URL: {
-      createObjectURL() { objectUrlCalls += 1; return "blob:test"; },
+      createObjectURL(blob) { objectUrlCalls += 1; lastBlob = blob; return "blob:test"; },
       revokeObjectURL() {}
     },
     setTimeout() {}
@@ -51,12 +52,14 @@ class Element {
   const fileInput = elements["pipeline-csv-file"];
   const download = elements["pipeline-download-summary"];
   const agendaDownload = elements["pipeline-download-agenda"];
+  const calendarDownload = elements["pipeline-download-calendar"];
   const reset = elements["pipeline-reset"];
   const stageFilter = elements["pipeline-filter-stage"];
   const followUpFilter = elements["pipeline-filter-followup"];
   const textFilter = elements["pipeline-filter-text"];
   assert.equal(download.disabled, true, "la descarga del resumen debe comenzar deshabilitada");
   assert.equal(agendaDownload.disabled, true, "la descarga de agenda debe comenzar deshabilitada");
+  assert.equal(calendarDownload.disabled, true, "la descarga de calendario debe comenzar deshabilitada");
 
   const headers = dashboard.headers;
   function makeRow(overrides) {
@@ -81,6 +84,14 @@ class Element {
   agendaDownload.listeners.click();
   assert.equal(objectUrlCalls, 1, "la agenda válida debe generar un archivo descargable");
   assert.match(elements["pipeline-status"].textContent, /Agenda descargada/);
+  calendarDownload.listeners.click();
+  assert.equal(objectUrlCalls, 2, "el calendario se genera como un archivo independiente");
+  assert.equal(lastBlob.type, "text/calendar;charset=utf-8");
+  const initialCalendarText = await lastBlob.text();
+  assert.match(initialCalendarText, /BEGIN:VCALENDAR/);
+  assert.match(initialCalendarText, /DTSTART;VALUE=DATE:20261127/);
+  assert.match(initialCalendarText, /M-UI-1/);
+  assert.doesNotMatch(initialCalendarText, /email|telefono|DNI/i);
   assert.equal(textFilter.value, "", "la búsqueda anterior se limpia al importar otro CSV");
   assert.equal(elements["pipeline-dashboard-output"].hidden, false);
   textFilter.value = "PARCELA-123";
@@ -121,17 +132,27 @@ class Element {
   followUpFilter.value = "";
   followUpFilter.listeners.change();
   assert.equal(visibleIds().length, 5, "restablecer la prioridad vuelve a mostrar todas las oportunidades, incluidas las cerradas");
+  calendarDownload.listeners.click();
+  assert.equal(objectUrlCalls, 3, "la segunda importación válida genera su propio calendario");
+  const followUpCalendarText = await lastBlob.text();
+  assert.equal((followUpCalendarText.match(/BEGIN:VEVENT/g) || []).length, 3, "solo se exportan seguimientos activos que tienen fecha");
+  assert.match(followUpCalendarText, /M-OVERDUE/);
+  assert.match(followUpCalendarText, /M-DUE-SOON/);
+  assert.match(followUpCalendarText, /M-NO-ACTION/);
+  assert.doesNotMatch(followUpCalendarText, /M-NO-DATE|M-CLOSED/, "se excluyen tareas sin fecha y etapas cerradas");
 
   const invalidCsv = "encabezado;incorrecto\nvalor";
   fileInput.files = [{size:invalidCsv.length, text:async () => invalidCsv}];
   await fileInput.listeners.change();
   assert.equal(download.disabled, true, "un CSV inválido no debe permitir exportar el resumen anterior");
   assert.equal(agendaDownload.disabled, true, "un CSV inválido no debe permitir exportar la agenda anterior");
+  assert.equal(calendarDownload.disabled, true, "un CSV inválido no debe permitir exportar el calendario anterior");
   assert.equal(elements["pipeline-dashboard-output"].hidden, true);
   assert.equal(followUpFilter.value, "", "una importación inválida restablece el filtro de prioridad");
   download.listeners.click();
   agendaDownload.listeners.click();
-  assert.equal(objectUrlCalls, 1, "no debe generarse ningún archivo con datos de una importación anterior");
+  calendarDownload.listeners.click();
+  assert.equal(objectUrlCalls, 3, "no debe generarse ningún archivo con datos de una importación anterior");
 
   fileInput.files = [{size:validCsv.length, text:async () => validCsv}];
   await fileInput.listeners.change();
@@ -180,6 +201,7 @@ class Element {
   await pendingResetPromise;
   assert.equal(download.disabled, true, "limpiar la sesión invalida también el resumen");
   assert.equal(agendaDownload.disabled, true, "limpiar la sesión invalida también la agenda");
+  assert.equal(calendarDownload.disabled, true, "limpiar la sesión invalida también el calendario");
   assert.match(elements["pipeline-status"].textContent, /Sesión local limpiada/, "una lectura pendiente no debe revertir el mensaje de limpieza");
   assert.equal(elements["pipeline-dashboard-output"].hidden, true);
   assert.equal(textFilter.value, "");

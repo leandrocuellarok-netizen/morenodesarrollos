@@ -27,6 +27,34 @@
     return /[;"\r\n]/.test(safeText) ? '"' + safeText.replace(/"/g, '""') + '"' : safeText;
   }
 
+  function icsEscape(value) {
+    return String(value == null ? "" : value)
+      .replace(/\\/g, "\\\\")
+      .replace(/\r\n|\r|\n/g, "\\n")
+      .replace(/;/g, "\\;")
+      .replace(/,/g, "\\,");
+  }
+
+  function foldIcsLine(line) {
+    const output = [];
+    let current = "";
+    let octets = 0;
+    Array.from(String(line)).forEach(function (character) {
+      const code = character.codePointAt(0);
+      const size = code <= 0x7f ? 1 : code <= 0x7ff ? 2 : code <= 0xffff ? 3 : 4;
+      if (octets + size > 75) {
+        output.push(current);
+        current = " " + character;
+        octets = 1 + size;
+      } else {
+        current += character;
+        octets += size;
+      }
+    });
+    output.push(current);
+    return output.join("\r\n");
+  }
+
   function install(api) {
     if (!api || api.__agendaInstalled || typeof api.summarizePipeline !== "function") return api;
     const summarize = api.summarizePipeline;
@@ -70,6 +98,52 @@
         ]);
       });
       return "\uFEFF" + rows.map(function (row) { return row.map(spreadsheetSafeCell).join(";"); }).join("\r\n") + "\r\n";
+    };
+    api.buildAgendaIcs = function (summary) {
+      const datedItems = (summary.agendaItems || []).filter(function (item) {
+        const fields = item && item.record && item.record.fields;
+        return fields && api.validDate(fields.fecha_proximo_seguimiento);
+      });
+      const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+      const lines = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//MORENO//Agenda comercial//ES",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH",
+        "X-WR-CALNAME:MORENO - Seguimientos"
+      ];
+      datedItems.forEach(function (item) {
+        const record = item.record || {};
+        const fields = record.fields || {};
+        const date = fields.fecha_proximo_seguimiento;
+        const action = String(fields.proxima_accion || "").trim() || "Definir próxima acción";
+        const description = [
+          "Prioridad: " + item.priority,
+          "ID interno: " + record.id,
+          "Localidad: " + (fields.localidad || "Sin dato"),
+          "Tipo de activo: " + (fields.tipo_activo || "Sin dato"),
+          "Etapa comercial: " + (fields.etapa_comercial || "Sin etapa"),
+          "Estado documental: " + (fields.estado_documental || "Sin dato"),
+          "Próxima acción: " + action,
+          "Fecha de seguimiento: " + date,
+          "Registro operativo de MORENO. No incluye datos de contacto."
+        ].join("\n");
+        lines.push(
+          "BEGIN:VEVENT",
+          "UID:moreno-" + encodeURIComponent(String(record.id || "sin-id")) + "-" + date.replace(/-/g, "") + "@morenodesarrollos.github.io",
+          "DTSTAMP:" + stamp,
+          "DTSTART;VALUE=DATE:" + date.replace(/-/g, ""),
+          "DTEND;VALUE=DATE:" + addDays(date, 1).replace(/-/g, ""),
+          "SUMMARY:" + icsEscape("MORENO · " + String(record.id || "Sin ID") + " · " + action),
+          "DESCRIPTION:" + icsEscape(description),
+          "LOCATION:" + icsEscape(fields.localidad || ""),
+          "TRANSP:TRANSPARENT",
+          "END:VEVENT"
+        );
+      });
+      lines.push("END:VCALENDAR");
+      return lines.map(foldIcsLine).join("\r\n") + "\r\n";
     };
     Object.defineProperty(api, "__agendaInstalled", { value: true, enumerable: false });
     return api;

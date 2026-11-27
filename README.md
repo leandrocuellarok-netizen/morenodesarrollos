@@ -296,13 +296,15 @@ La sección desplegable de /oportunidades/ permite importar la plantilla CSV com
 
 ### Agenda operativa de seguimiento
 
-El tablero local de `/oportunidades/` permite descargar una agenda CSV separada del resumen financiero:
+La Mesa Operativa de `/mesa-operativa/` permite descargar una agenda CSV separada del resumen financiero y un archivo iCalendar (`.ics`) para incorporar seguimientos fechados a una aplicación de calendario:
 
 - Incluye oportunidades activas con seguimiento vencido, fecha dentro de los próximos siete días, fecha pendiente o próxima acción sin definir.
 - Excluye etapas cerradas o pausadas y no limita la exportación a las veinte tarjetas visibles.
 - Ordena vencidas, próximas, registros sin fecha y acciones todavía no definidas.
 - Incluye ID interno, localidad, tipo de activo, etapa, estado documental, próxima acción y fecha; no incorpora datos de contacto, observaciones ni datos bancarios.
 - Se genera en el navegador con protección frente a fórmulas. No se transmite ni se almacena en el servidor.
+- La descarga `.ics` incluye únicamente seguimientos activos con fecha registrada, como eventos de día completo; no inventa horarios ni alarmas. Las tareas sin fecha permanecen en la agenda CSV para completar.
+- El archivo iCalendar contiene ID interno, localidad, tipo de activo, etapa, estado documental y próxima acción; no incorpora datos de contacto, observaciones ni datos bancarios. Se genera localmente y debe importarse en un calendario con acceso privado.
 
 - La agenda marca por separado los seguimientos vencidos, los próximos, los registros sin fecha y las oportunidades sin próxima acción; no asigna probabilidades de cierre ni importes estimados.
 
