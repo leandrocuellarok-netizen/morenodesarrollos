@@ -797,6 +797,26 @@ def main() -> None:
         for script_src in ("../assets/js/originacion-workbench.js", "../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-agenda.js", "../assets/js/pipeline-dashboard-ui.js", "../assets/js/originacion-export.js"):
             if script_src in opportunity_html:
                 errors.append(f"oportunidades/index.html: no debe cargar el módulo interno {script_src}")
+        faq_ids = ("faq-documentacion", "faq-indicadores", "faq-privacidad", "faq-mapa", "faq-inversores")
+        for faq_id in faq_ids:
+            if f'id="{faq_id}"' not in opportunity_html:
+                errors.append(f"oportunidades/index.html: falta respuesta frecuente {faq_id}")
+        if len(re.findall(r'<details class="opportunity-faq-item" id="faq-[^"]+"', opportunity_html)) != 5:
+            errors.append("Oportunidades debe mostrar exactamente cinco preguntas frecuentes")
+        if 'href="#opportunity-form"' not in opportunity_html or 'id="opportunity-faq"' not in opportunity_html:
+            errors.append("Oportunidades debe conectar las preguntas frecuentes con el formulario")
+        faq_schema_match = re.search(r'<script type="application/ld\\+json" id="opportunity-faq-schema">(.*?)</script>', opportunity_html, re.S)
+        if not faq_schema_match:
+            errors.append("Oportunidades debe incluir datos estructurados FAQPage")
+        else:
+            try:
+                faq_schema = json.loads(faq_schema_match.group(1))
+                if faq_schema.get("@type") != "FAQPage" or len(faq_schema.get("mainEntity", [])) != 5:
+                    errors.append("El esquema FAQPage debe contener exactamente cinco preguntas")
+                elif any(item.get("@type") != "Question" or not item.get("name") or not item.get("acceptedAnswer", {}).get("text") for item in faq_schema["mainEntity"]):
+                    errors.append("El esquema FAQPage contiene preguntas o respuestas incompletas")
+            except (json.JSONDecodeError, AttributeError, TypeError):
+                errors.append("El esquema FAQPage de Oportunidades no es JSON válido")
 
     operations_page = ROOT / INTERNAL_PAGE
     if not operations_page.is_file():
