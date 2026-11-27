@@ -3319,7 +3319,7 @@ function buildTerritorialDossierDiagram(references) {
 function buildTerritorialDossierHtml(dossier) {
   if (!dossier || dossier.schema !== "moreno.territorial-dossier" ||
       dossier.schemaVersion !== 1 || !Array.isArray(dossier.references) ||
-      !dossier.references.length || dossier.references.length > 100) return "";
+      !dossier.references.length || dossier.references.length > 150) return "";
   const dateLabel = escapeTerritorialHtml(String(dossier.generatedAt || "").slice(0, 10));
   const title = escapeTerritorialHtml(dossier.title || "Dossier territorial · Moreno");
   const counts = dossier.counts || {};
