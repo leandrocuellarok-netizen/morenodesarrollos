@@ -62,6 +62,38 @@ const staticGeolocatedReferences = [...localities, ...opportunities].filter(hasC
 assert.equal(staticGeolocatedReferences.length, localities.length + 1, "solo las seis localidades y el Ecoparque tienen puntos estáticos con coordenadas trazables");
 assert.deepEqual(opportunities.filter(hasCoordinates).map(item => item.id), ["ecoparque"], "el único contexto con punto tiene una fuente cartográfica publicada por su operador");
 assert.ok(localities.every(item => /^https:\/\/www\.openstreetmap\.org\/node\//.test(item.coordinateSource || "") && item.coordinateCheckedAt === "2026-11-27" && /no identifica una parcela/.test(item.coordinatePrecision || "")), "cada localidad conserva nodo OSM, fecha y alcance no parcelario");
+const coordinateValidationSample = {
+  type: "opportunity",
+  id: "coordinate-validation",
+  lat: -34.6,
+  lng: -58.8,
+  coordinateSource: "https://www.openstreetmap.org/node/1",
+  coordinateCheckedAt: "2026-11-27"
+};
+assert.equal(hasCoordinates(coordinateValidationSample), true, "una coordenada con fuente HTTPS, fecha real y rango válido se acepta");
+for (const [field, value] of [
+  ["lat", 91],
+  ["lat", -91],
+  ["lng", 181],
+  ["lng", -181],
+  ["lat", ""],
+  ["lng", " "],
+  ["lat", "no-es-un-numero"],
+  ["coordinateCheckedAt", "2026-02-30"],
+  ["coordinateSource", "https://"],
+  ["coordinateSource", "http://www.openstreetmap.org/node/1"],
+  ["coordinateSource", "https://usuario:clave@www.openstreetmap.org/node/1"]
+]) {
+  assert.equal(
+    hasCoordinates({ ...coordinateValidationSample, [field]: value }),
+    false,
+    "una coordenada con " + field + " inválido no se dibuja ni se exporta como punto: " + String(value)
+  );
+}
+const invalidCoordinateGeoJson = buildGeoJson([{ ...coordinateValidationSample, lat: 91 }]);
+assert.equal(invalidCoordinateGeoJson.features.length, 1, "la referencia inválida se conserva en la exportación");
+assert.equal(invalidCoordinateGeoJson.features[0].geometry, null, "una coordenada fuera de rango conserva geometry:null");
+
 assert.ok(["rp25", "ribera", "roggero", "norte"].every(id => !hasCoordinates(opportunities.find(item => item.id === id))), "los corredores y la hipótesis sin punto cartográfico permanecen sin coordenadas");
 assert.ok(opportunities.find(item => item.id === "norte").stage === "hypothesis" && !hasCoordinates(opportunities.find(item => item.id === "norte")), "la hipótesis agregada no recibe un marcador geográfico ficticio");
 assert.ok(source.includes("geolocationSource") && source.includes("geolocationCheckedAt") && source.includes("coordinateSourceLink"), "la georreferencia dinámica también conserva fuente y fecha");
