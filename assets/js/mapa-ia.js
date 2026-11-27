@@ -949,7 +949,7 @@ const nov27HourlyEntries = [
     "price": "USD 249.990",
     "currency": "USD",
     "landSurfaceM2": 2493,
-    "surfaceNote": "Expensas aproximadas publicadas: ARS 500.000; el aviso informa FOS 0,60 / FOT 1,20 y altura máxima 21 m.",
+    "surfaceNote": "Expensas publicadas: $ 500.000 (moneda no especificada en la ficha); el aviso informa FOS 0,60 / FOT 1,20 y altura máxima 21 m.",
     "observations": "El aviso lo ubica en parque operativo con calles pavimentadas, seguridad 24/7 y servicios. Categorías industriales I, II y III según publicación; verificar reglamento, expensas y admisibilidad municipal.",
     "lat": null,
     "lng": null,
