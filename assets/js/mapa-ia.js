@@ -10223,7 +10223,7 @@ function buildTerritorialBriefHtml(brief) {
     '<div class="grid"><section><h2>Evidencia disponible</h2><p>' + escapeTerritorialHtml(reference.evidence) +
     '</p><p class="muted">La clasificación indica el tipo de respaldo registrado en el inventario; no certifica exactitud o vigencia.</p></section>' +
     '<section><h2>Calidad y trazabilidad</h2><p><strong>Tipo:</strong> ' + escapeTerritorialHtml(reference.evidenceType || "No clasificada") +
-    '</p><p><strong>Confianza:</strong> ' + escapeTerritorialHtml(reference.confidence || "No asignada") +
+    '</p><p><strong>Nivel de confianza:</strong> ' + escapeTerritorialHtml(reference.confidence || "No asignada") +
     '</p><p><strong>Fecha de la fuente:</strong> ' + escapeTerritorialHtml(reference.sourceDate || "No informada") +
     '</p><p><strong>Última consulta registrada:</strong> ' + escapeTerritorialHtml(reference.consultedAt || "No informada") + "</p></section>" +
     "<section><h2>Estado de verificación</h2><p>" + escapeTerritorialHtml(reference.verificationStatus) +
