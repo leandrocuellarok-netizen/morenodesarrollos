@@ -156,7 +156,7 @@
     "casa-francisco-de-aguirre-6400": "Casa en Francisco de Aguirre 6400",
     "casa-racine-800-no-vigente": "Casa en Racine 800 · publicación retirada",
     "desarrollo-prados-del-oeste-hornos-2800": "Prados del Oeste 1 y 2 · Gral. Hornos al 2800",
-    "terreno-teniente-camilli-240-975": "Teniente Camilli al 200/240 · 975 m²",
+    "terreno-teniente-camilli-240-975": "Camilli al 200/240 · casa sobre lote publicado de 975 m²",
     "terreno-yapeyu-rafael-arcos-2850": "Yapeyú y Rafael Arcos · fracción de 2.850 m²",
     "terreno-prados-del-oeste-lote-230-800": "Prados del Oeste 1-B · Lote 230 · 800 m²",
     "terreno-general-savio-100-2050": "General Savio 100 · 2.050 m² (superficie contradictoria)",
@@ -183,6 +183,23 @@
 
     "terreno-los-abedules-lote121-600": "Lote central N.º 121 · Los Abedules 4100 · Álvarez del Bosque · 600 m²",
 
+    "terreno-ensenada-6000-36000": "Ensenada 6000 · 36.000 m² · cinco viviendas",
+    "terreno-ruta25-2500-404": "Ruta Provincial 25 2500 · fracción de 404 m²",
+    "casa-padre-fahy-90-322": "Casa 3 ambientes · Padre Fahy al 90 · La Reja",
+    "casa-jose-hernandez-4001-400": "Casa quinta · José Hernández 4001 y Lobos · Paso del Rey",
+    "casa-general-belgrano-600-593": "Casa 4 ambientes · General Manuel Belgrano 600",
+    "casa-nemesio-alvarez-200-688": "Casa a refaccionar · Avenida Nemesio Álvarez 200",
+    "casa-camilli-5200-300": "Casa 4 ambientes · Camilli al 5200",
+    "casa-dorrego-2800-731": "Chalet 5 ambientes · Dorrego al 2800",
+    "casa-canton-400-400": "Casa 4 ambientes con parque y pileta · Cantón al 400",
+    "terreno-chiclana-600-359-historico": "Chiclana 600 · lote de 359 m² · antecedente retirado",
+    "terreno-ensenada-6300-30000-historico": "Ensenada 6300 · 30.000 m² · tres viviendas · antecedente retirado",
+    "terreno-lamadrid-6300-2737-historico": "General Aráoz de Lamadrid 6300 · cuatro lotes de 2.737 m² · antecedente retirado",
+    "terreno-jose-maria-paz-del-canon-594-historico": "José María Paz y Del Cañón · lote de 594 m² · antecedente retirado",
+    "desarrollo-pir25-ruta25-donbosco": "PIR 25 · Parque Industrial · 27 ha · 60 unidades funcionales",
+    "pir25-up30-2713": "PIR 25 · UP 30 · 2.713,73 m²",
+    "pir25-up50-2895": "PIR 25 · UP 50 · 2.895,61 m²",
+    "pir25-up60-4171": "PIR 25 · UP 60 · 4.171,73 m²",
   });
 
   function readMapReference(search) {
