@@ -1950,8 +1950,8 @@ const nov27FollowupEntries = [
   "id": "casa-patricias-argentinas-2300-2762",
   "recordType": "Casa quinta individual",
   "name": "Casa quinta · Patricias Argentinas 2300/2301 · 2.762 m²",
-  "locality": "Cuartel V",
-  "address": "Patricias Argentinas 2300 (la descripción menciona 2301), Cuartel V, Moreno",
+  "locality": "Cuartel V / Trujui (discrepancia interna del aviso)",
+  "address": "Patricias Argentinas 2300 (la descripción menciona 2301), barrio Tierras del Morenito; el encabezado ubica en Cuartel V y la descripción menciona Trujui, Moreno",
   "source": "https://www.argenprop.com/quinta-en-venta-en-cuartel-v--20907347",
   "sourceAlternates": [
     {
@@ -1976,7 +1976,7 @@ const nov27FollowupEntries = [
   "geocodeDisabled": true,
   "lastCheckedAt": "2026-11-27",
   "availabilityStatus": "No confirmada",
-  "geolocationStatus": "Pendiente: la dirección presenta discrepancia entre 2300 y 2301; no se asigna coordenada.",
+  "geolocationStatus": "Pendiente: el aviso discrepa entre Cuartel V y Trujui y entre altura 2300 y 2301; no se asigna coordenada.",
   "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio y superficies publicados, pero disponibilidad comercial no confirmada."
 },
   {
