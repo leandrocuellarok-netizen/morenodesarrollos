@@ -16,6 +16,11 @@ assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece
 const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
 assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
 assert.ok(mapPage.includes('id="kind-filter"'), "el atlas permite filtrar por sector o línea de desarrollo");
+assert.ok(mapPage.includes('id="locality-filter"'), "el atlas permite filtrar por localidad");
+assert.ok(mapPage.includes('id="activity-filter"'), "el atlas permite filtrar por actividad");
+assert.ok(mapPage.includes('id="next-step-filter"'), "el atlas permite filtrar por próximo paso");
+assert.ok(mapPage.includes('id="map-empty-state"'), "la búsqueda presenta un estado vacío útil");
+assert.equal(mapPage.split("<details").length - 1, 0, "las secciones de página ya no se ocultan detrás de disclosures móviles");
 assert.ok(mapPage.includes('id="availability-filter"'), "el atlas permite filtrar el estado registrado de las publicaciones");
 assert.ok(mapPage.includes('id="diligence-filter"'), "el atlas permite filtrar la presencia de datos de prospección");
 assert.ok(mapPage.includes('id="duplicate-review-disclosure"') && mapPage.includes('id="duplicate-review-summary"') && mapPage.includes('id="duplicate-review-list"'), "el atlas ofrece una bandeja accesible para revisar posibles duplicados");
@@ -24,15 +29,18 @@ assert.ok(mapPage.includes("El recuento mide la presencia de siete campos"), "el
 for (const state of ["no-confirmada", "pendiente-revalidacion", "no-vigente"]) {
   assert.ok(mapPage.includes('option value="' + state + '"'), "el filtro ofrece el estado " + state);
 }
-for (const kind of ["industrial", "commercial", "tourism", "land"]) {
+for (const kind of ["industrial", "commercial", "tourism", "land", "infrastructure"]) {
   assert.ok(mapPage.includes('option value="' + kind + '"'), "el filtro ofrece el sector " + kind);
 }
 assert.ok(mapPage.includes('label class="map-filter-field'), "cada filtro tiene una etiqueta visible y asociada");
 assert.ok(mapPage.includes("Sector / línea de desarrollo"), "la función del filtro sectorial se explica en pantalla");
 assert.ok(source.includes('getElementById("kind-filter")'), "el motor conecta el control sectorial");
-assert.ok(source.includes('kind: doc.getElementById("kind-filter").value'), "la renderización utiliza el sector seleccionado");
+assert.ok(source.includes("kind: kindInput.value"), "la renderización utiliza el sector seleccionado");
+assert.ok(source.includes("locality: localityInput.value") && source.includes("activity: activityInput.value") && source.includes("nextStep: nextStepInput.value"), "la renderización combina localidad, actividad y próximo paso");
+assert.ok(source.includes("function searchQueryMatches(query,searchable)") && source.includes("function normalizeSearchText(value)"), "el buscador normaliza acentos, tokens y pequeñas erratas");
 assert.ok(source.includes('kindInput.addEventListener("change", resetPublishedPaginationAndRender)'), "el cambio de sector reinicia la página visible y vuelve a renderizar el inventario");
 assert.ok(source.includes('kindInput.value = "all"'), "restablecer limpia también el filtro sectorial");
+assert.ok(source.includes('localityInput.value = "all"') && source.includes('activityInput.value = "all"') && source.includes('nextStepInput.value = "all"'), "restablecer limpia los filtros nuevos");
 assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye la mesa de verificación documental");
 for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-documented-count", "atlas-hypotheses-count", "atlas-published-count", "atlas-total-count"]) {
   assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
@@ -130,6 +138,7 @@ assert.equal(readStaticAtlasCount("atlas-published-count"), String(initialInvent
 assert.equal(readStaticAtlasCount("atlas-total-count"), initialInventoryCounts.total + " / " + initialInventoryCounts.total, "el HTML inicial coincide con el total del inventario");
 assert.ok(mapPage.includes(initialInventoryCounts.total + " referencias · " + initialInventoryCounts.localities + " localidades · " + initialInventoryCounts.documented + " contextos con fuente · " + initialInventoryCounts.hypotheses + " hipótesis · " + initialInventoryCounts.published + " avisos y proyectos"), "el resumen estático coincide con el catálogo");
 assert.ok(mapPage.includes(initialInventoryCounts.total + " de " + initialInventoryCounts.total + " referencias visibles"), "el estado estático coincide con el catálogo");
+assert.ok(mapPage.includes("No hay referencias para esta combinación"), "el estado vacío ayuda a recuperar una búsqueda sin resultados");
 assert.ok(mapPage.includes("La forma distingue la clase"), "la leyenda explica la semántica de los símbolos sin depender del color");
 assert.ok(mapPage.includes('option value="published"'), "el filtro ofrece la capa de publicaciones inmobiliarias");
 assert.ok(mapPage.includes('id="published-list"'), "el mapa contiene una lista independiente de publicaciones");
@@ -210,32 +219,41 @@ assert.equal(getSharedReferenceId("?ref=rp25", all), "rp25", "se reconoce una re
 assert.equal(getSharedReferenceId("?ref=no-existe", all), null, "se descarta una referencia desconocida");
 assert.equal(getSharedReferenceId("", all), null, "sin parámetro no se fuerza una selección");
 const parsedMapView = parseMapViewState(
-  "?q=log%C3%ADstica&tipo=opportunity&sector=industrial&evidencia=documented&vigencia=no-vigente&diligencia=pending&ref=rp25",
+  "?q=log%C3%ADstica&tipo=opportunity&sector=industrial&localidad=cuartel&actividad=industrial&proximo=planning&evidencia=documented&vigencia=no-vigente&diligencia=pending&ref=rp25",
   all
 );
 assert.deepEqual(parsedMapView, {
   query: "logística",
   category: "opportunity",
   kind: "industrial",
+  locality: "cuartel",
+  activity: "industrial",
+  nextStep: "planning",
   evidence: "documented",
   availability: "no-vigente",
   diligence: "pending",
   ref: "rp25"
 }, "la URL restaura búsqueda, tipo, sector, evidencia, estado de publicación y referencia");
 assert.deepEqual(parseMapViewState("?tipo=desconocido&sector=ilegal&evidencia=pendiente&vigencia=ilegal&diligencia=ilegal&ref=falso", all), {
-  query: "", category: "all", kind: "all", evidence: "all", availability: "all", diligence: "all", ref: null
+  query: "", category: "all", kind: "all", locality: "all", activity: "all", nextStep: "all", evidence: "all", availability: "all", diligence: "all", ref: null
 }, "los parámetros no permitidos vuelven a valores seguros");
 assert.equal(parseMapViewState("?q=" + "x".repeat(140), all).query.length, 100, "la búsqueda compartida se limita a cien caracteres");
 const normalizedMapView = normalizeMapViewState({
   query: "  suelo  ",
   category: "opportunity",
   kind: "land",
+  locality: "trujui",
+  activity: "land",
+  nextStep: "cadastral",
   evidence: "hypothesis",
   availability: "pendiente-revalidacion",
   diligence: "complete",
   ref: "cuartel"
 }, all);
 assert.equal(normalizedMapView.query, "suelo");
+assert.equal(normalizedMapView.locality, "trujui");
+assert.equal(normalizedMapView.activity, "land");
+assert.equal(normalizedMapView.nextStep, "cadastral");
 assert.equal(normalizedMapView.availability, "pendiente-revalidacion");
 assert.equal(normalizedMapView.diligence, "complete");
 const mapViewUrl = new URL(buildMapViewUrl(
@@ -247,6 +265,9 @@ assert.equal(mapViewUrl.searchParams.get("utm_source"), "mail", "se conservan pa
 assert.equal(mapViewUrl.searchParams.get("q"), "logística");
 assert.equal(mapViewUrl.searchParams.get("tipo"), "opportunity");
 assert.equal(mapViewUrl.searchParams.get("sector"), "industrial");
+assert.equal(mapViewUrl.searchParams.get("localidad"), "cuartel");
+assert.equal(mapViewUrl.searchParams.get("actividad"), "industrial");
+assert.equal(mapViewUrl.searchParams.get("proximo"), "planning");
 assert.equal(mapViewUrl.searchParams.get("evidencia"), "documented");
 assert.equal(mapViewUrl.searchParams.get("vigencia"), "no-vigente");
 assert.equal(mapViewUrl.searchParams.get("diligencia"), "pending");
@@ -257,7 +278,7 @@ const defaultMapViewUrl = new URL(buildMapViewUrl(
   {},
   all
 ));
-assert.equal(["q", "tipo", "sector", "evidencia", "vigencia", "diligencia", "ref"].some(key => defaultMapViewUrl.searchParams.has(key)), false, "restablecer elimina todos los parámetros del mapa");
+assert.equal(["q", "tipo", "sector", "localidad", "actividad", "proximo", "evidencia", "vigencia", "diligencia", "ref"].some(key => defaultMapViewUrl.searchParams.has(key)), false, "restablecer elimina todos los parámetros del mapa");
 const sharedUrl = new URL(buildReferenceUrl("https://example.org/mapa-ia/?layer=all&sector=industrial&q=dep%C3%B3sitos&vigencia=no-confirmada#inventario", "rp25"));
 assert.equal(sharedUrl.searchParams.get("ref"), "rp25", "la URL compartible identifica la referencia");
 assert.equal(sharedUrl.searchParams.get("layer"), "all", "la URL compartible conserva otros parámetros");
@@ -265,7 +286,7 @@ assert.equal(sharedUrl.searchParams.get("sector"), "industrial", "la ficha compa
 assert.equal(sharedUrl.searchParams.get("q"), "depósitos", "la ficha compartible conserva la búsqueda activa");
 assert.equal(sharedUrl.searchParams.get("vigencia"), "no-confirmada", "la ficha compartible conserva el filtro de estado registrado");
 assert.equal(sharedUrl.hash, "#inventario", "la URL compartible conserva el fragmento existente");
-assert.ok(mapPage.includes('id="map-data-export-disclosure"'), "las exportaciones cartográficas se agrupan en un acceso secundario");
+assert.ok(mapPage.includes('id="map-data-export-disclosure"'), "las exportaciones cartográficas permanecen integradas como sección visible");
 assert.ok(mapPage.includes("CSV para hojas de cálculo"), "la descarga CSV explica su uso");
 assert.ok(mapPage.includes("GeoJSON para QGIS y otros GIS"), "la descarga GeoJSON explica su uso");
 assert.ok(mapPage.includes('id="share-map-view"'), "el atlas ofrece una acción para compartir la vista filtrada");
@@ -310,7 +331,7 @@ assert.ok(source.includes('link.download = "moreno-mapa-ia-referencias.geojson"'
 
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
-assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
+assert.equal(opportunities.length, 8, "se conservan cinco tesis previas y se agregan tres contextos públicos documentados");
 assert.ok(publishedProperties.length >= 28, "la capa publicada conserva el inventario histórico y las incorporaciones verificadas");
 assert.equal(all.length, localities.length + opportunities.length + publishedProperties.length, "el total coincide con localidades, tesis y publicaciones");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
@@ -533,7 +554,7 @@ assert.ok(publishedProperties.find(item => item.id === "casa-bernardino-rivadavi
 
 assert.equal(new Set(publishedProperties.map(item => item.id)).size, publishedProperties.length, "no hay IDs duplicados en publicaciones");
 
-const expectedInventoryCounts = { localities: 6, documented: 4, hypotheses: 1, published: publishedProperties.length, total: all.length };
+const expectedInventoryCounts = { localities: 6, documented: 7, hypotheses: 1, published: publishedProperties.length, total: all.length };
 assert.deepEqual(countInventory(all), expectedInventoryCounts);
 
 const allPublishedForPaging = filterReferences(all, { category: "published" });
@@ -566,7 +587,7 @@ assert.ok(styles.includes(".map-published-pagination"));
 assert.ok(styles.includes(".map-published-more:focus-visible"));
 assert.deepEqual(
   countInventory(filterReferences(all, { evidence: "documented" })),
-  { localities: 0, documented: 4, hypotheses: 0, published: 0, total: 4 },
+  { localities: 0, documented: 7, hypotheses: 0, published: 0, total: 7 },
   "el índice refleja el filtro de contextos con fuente"
 );
 assert.deepEqual(
@@ -626,15 +647,23 @@ assert.ok(!source.includes('publishedProperties.forEach(item => {\n  item.lastCh
 assert.ok(source.includes("No hay constancia individual de consulta de la fuente"), "una ficha sin evidencia individual no recibe una afirmación automática de accesibilidad");
 assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { query: "Santa Teresa", category: "published" }).length, 2, "la búsqueda distingue las dos publicaciones de Santa Teresa con direcciones diferentes");
-assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");
+assert.equal(filterReferences(all, { evidence: "documented" }).length, 7, "el filtro documentado solo muestra tesis con fuente");
+assert.equal(filterReferences(all, { evidence: "published-source" }).length, publishedProperties.length, "el nivel de evidencia separa avisos de terceros de contextos institucionales");
 assert.equal(filterReferences(all, { evidence: "hypothesis" }).length, 1, "el filtro de hipótesis no mezcla localidades sin clasificar");
-assert.deepEqual(filterReferences(all, { kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque"], "el filtro productivo/logístico muestra las dos referencias industriales existentes");
+assert.deepEqual(filterReferences(all, { kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque", "base-aerea-moreno-norte"], "el filtro productivo/logístico incluye el antecedente de Base Aérea");
 assert.deepEqual(filterReferences(all, { kind: "commercial" }).map(item => item.id), ["ribera"], "el filtro comercial muestra la referencia existente");
 assert.deepEqual(filterReferences(all, { kind: "tourism" }).map(item => item.id), ["roggero"], "el filtro de turismo muestra la referencia existente");
 assert.deepEqual(filterReferences(all, { kind: "land" }).map(item => item.id), ["norte"], "el filtro de prospección de suelo muestra la hipótesis existente");
-assert.deepEqual(filterReferences(all, { kind: "industrial", evidence: "documented" }).map(item => item.id), ["rp25", "ecoparque"], "el filtro sectorial se combina con el nivel de evidencia");
+assert.deepEqual(filterReferences(all, { kind: "industrial", evidence: "documented" }).map(item => item.id), ["rp25", "ecoparque", "base-aerea-moreno-norte"], "el filtro sectorial se combina con el nivel de evidencia");
+assert.deepEqual(filterReferences(all, { kind: "infrastructure" }).map(item => item.id), ["promeba-trujui-cuartel-v", "utopia-bonaerense-moreno"], "la infraestructura pública tiene una línea sectorial propia");
+assert.ok(filterReferences(all, { locality: "paso", category: "opportunity" }).some(item => item.id === "ribera"), "la localidad filtra referencias territoriales");
+assert.ok(filterReferences(all, { locality: "cuartel", category: "opportunity" }).some(item => item.id === "base-aerea-moreno-norte"), "las referencias sin coordenadas pueden filtrarse por localidad declarada");
+assert.ok(filterReferences(all, { activity: "infrastructure", category: "opportunity" }).some(item => item.id === "promeba-trujui-cuartel-v"), "la actividad se filtra de forma independiente del sector");
+assert.ok(filterReferences(all, { nextStep: "publication", category: "published" }).length > 0, "el próximo paso permite priorizar revalidaciones de publicaciones");
 assert.deepEqual(filterReferences(all, { kind: "industrial", category: "locality" }), [], "un sector de oportunidad no incorpora localidades");
-assert.deepEqual(filterReferences(all, { query: "productivo", kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque"], "la búsqueda reconoce la etiqueta visible del sector, no solo su código interno");
+assert.deepEqual(filterReferences(all, { query: "productivo", kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque", "base-aerea-moreno-norte"], "la búsqueda reconoce la etiqueta visible del sector, no solo su código interno");
+assert.ok(filterReferences(all, { query: "logistca", category: "opportunity" }).some(item => item.id === "base-aerea-moreno-norte"), "el buscador tolera una errata simple en términos largos");
+assert.ok(filterReferences(all, { query: "saneamiento cuartel", category: "opportunity" }).some(item => item.id === "promeba-trujui-cuartel-v"), "los términos se combinan aunque estén en campos distintos");
 assert.deepEqual(
   filterReferences(all, { query: "paso del rey", category: "locality" }).map(item => item.id),
   ["paso"]
@@ -943,8 +972,8 @@ const industrialDossier = buildTerritorialDossier(
 assert.equal(industrialDossier.schema, "moreno.territorial-dossier");
 assert.equal(industrialDossier.schemaVersion, 1);
 assert.equal(industrialDossier.title, "Dossier sectorial · Productivo / logístico");
-assert.equal(industrialDossier.references.length, 2, "el dossier sectorial solo incluye las referencias visibles");
-assert.equal(industrialDossier.counts.documented, 2);
+assert.equal(industrialDossier.references.length, 3, "el dossier sectorial solo incluye las referencias visibles");
+assert.equal(industrialDossier.counts.documented, 3);
 assert.equal(industrialDossier.counts.localities, 0);
 assert.ok(industrialDossier.filterLabels.includes("Sector: Productivo / logístico"));
 assert.equal(industrialDossier.references[0].sourceUrl, opportunities.find(item => item.id === "rp25").source);
@@ -1318,7 +1347,7 @@ assert.ok(laProvidencia.observations.includes("no cuentan con planos aprobados")
 const sourceUrls = publishedProperties.map(record => record.source).filter(Boolean);
 assert.equal(new Set(sourceUrls).size, sourceUrls.length, "no se duplican enlaces primarios");
 assert.equal(publishedProperties.length, 356, "el catálogo incorpora 29 altas netas sin duplicados");
-assert.equal(all.length, 367, "el inventario completo refleja 342 publicaciones y 11 referencias territoriales");
+assert.equal(all.length, 370, "el inventario completo refleja 356 publicaciones y 14 referencias territoriales");
 
 
 testGeorefRequestQueue()
