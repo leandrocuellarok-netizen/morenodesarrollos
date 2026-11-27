@@ -147,7 +147,26 @@
     "desarrollo-barrio-del-golf-atuel-2700": "Barrio Cerrado del Golf · Francisco Álvarez",
     "desarrollo-colonos-ii-2300": "Complejo Comercial Colonos II",
     "desarrollo-ibis-iv-273": "Edificio Ibis IV · Moreno Centro",
-    "desarrollo-140-camilli": "140 Camilli · Moreno Centro"
+    "desarrollo-140-camilli": "140 Camilli · Moreno Centro",
+    "terreno-bouchard-300-461": "Bouchard 300 · 461 m²",
+    "terreno-sarmiento-500-750": "Sarmiento 500 · esquina con Guatemala · 750 m²",
+    "terreno-ecoparque-irlanda-2000": "Ecoparque Industrial · Ruta 24 y calle Irlanda · 2.000 m²",
+    "casa-centenario-600-360": "Casa · Centenario al 600",
+    "casa-venezuela-2400-456": "Chalet · Venezuela al 2400 · Moreno Norte",
+    "casa-francisco-de-aguirre-6400": "Casa en Francisco de Aguirre 6400",
+    "casa-racine-800-no-vigente": "Casa en Racine 800 · publicación retirada",
+    "desarrollo-prados-del-oeste-hornos-2800": "Prados del Oeste 1 y 2 · Gral. Hornos al 2800",
+    "terreno-teniente-camilli-240-975": "Teniente Camilli al 200/240 · 975 m²",
+    "terreno-yapeyu-rafael-arcos-2850": "Yapeyú y Rafael Arcos · fracción de 2.850 m²",
+    "terreno-prados-del-oeste-lote-230-800": "Prados del Oeste 1-B · Lote 230 · 800 m²",
+    "terreno-general-savio-100-2050": "General Savio 100 · 2.050 m² (superficie contradictoria)",
+    "desarrollo-ecoparque-industrial-78-parcelas": "Ecoparque Industrial Moreno · 78 parcelas",
+    "terreno-parques-morenito-300-300": "Parques del Morenito · lote 300 m²",
+    "terreno-pim-i-parque-municipal-2493": "Parque Municipal PIM I · 2.493 m²",
+    "terreno-pim-ii-rp24-2677": "Parque Industrial PIM II · 2.677 m²",
+    "terreno-pim-ii-rp24-7700-2103": "PIM II · parcela 67 · RP 24 al 7700 · 2.103 m²",
+    "casa-san-ramon-2700-251": "Dos casas independientes · San Ramón al 2700",
+    "casa-perito-moreno-3800-350": "Casa · Perito Moreno 3800/3870 · La Reja"
   });
 
   function readMapReference(search) {
