@@ -377,6 +377,7 @@ async function auditRoute(browser, route) {
       if (!(await imperfectTitleCard.evaluate(element => element.open))) await imperfectTitleCard.locator("summary").click();
       check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: la ordenanza 7497/26 devuelve una coincidencia real");
       check((await imperfectTitleCard.innerText()).includes("no confiere dominio"), "mapa-ia: la ficha distingue permiso provisorio de titularidad dominial");
+      check((await imperfectTitleCard.innerText()).includes("09/10/2026"), "mapa-ia: la ficha muestra la fecha de publicación del Boletín 331");
       check(await imperfectTitleCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"]').isVisible(), "mapa-ia: la ficha enlaza la ordenanza oficial");
       check(await page.locator('.map-pin[data-map-reference="ordenanza-7497-26-titulos-imperfectos"]').count() === 0, "mapa-ia: la ordenanza sin coordenadas permanece solo en el índice");
 
@@ -386,6 +387,7 @@ async function auditRoute(browser, route) {
       if (!(await habilitationCard.evaluate(element => element.open))) await habilitationCard.locator("summary").click();
       check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: la ordenanza 7542/26 devuelve una coincidencia real");
       check((await habilitationCard.innerText()).includes("300 m²") && (await habilitationCard.innerText()).includes("1.000 m²"), "mapa-ia: la ficha conserva los umbrales de superficie de la norma");
+      check((await habilitationCard.innerText()).includes("22/10/2026"), "mapa-ia: la ficha muestra la fecha de publicación del Boletín 334");
       check(await habilitationCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"]').isVisible(), "mapa-ia: la ficha enlaza la fuente oficial de habilitaciones");
       check(await page.locator('.map-pin[data-map-reference="ordenanza-7542-26-habilitaciones-industriales-logistica"]').count() === 0, "mapa-ia: la norma industrial no recibe coordenadas inventadas");
 
@@ -395,6 +397,7 @@ async function auditRoute(browser, route) {
       if (!(await losOlivosCard.evaluate(element => element.open))) await losOlivosCard.locator("summary").click();
       check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: Los Olivos devuelve una coincidencia real por proyecto y superficie");
       check((await losOlivosCard.innerText()).includes("USD 138.562,90") && (await losOlivosCard.innerText()).includes("no precios de mercado"), "mapa-ia: las valuaciones del convenio se distinguen de precios de oferta");
+      check((await losOlivosCard.innerText()).includes("22/10/2026"), "mapa-ia: la ficha muestra la fecha de publicación del Boletín 334");
       check(await losOlivosCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"]').isVisible(), "mapa-ia: la ficha enlaza el convenio urbanístico oficial");
       check(await page.locator('.map-pin[data-map-reference="los-olivos-convenio-urbanistico-7572-26"]').count() === 0, "mapa-ia: Los Olivos permanece en el índice sin geolocalización no verificada");
 
