@@ -689,7 +689,7 @@ function buildOpportunityContactUrl(baseUrl, item) {
 
 function referenceContactLabel(item) {
   if (item && item.type === "opportunity") return "Conversar sobre esta tesis ↗";
-  if (item && item.type === "published") return "Abrir publicación original ↗";
+  if (item && item.type === "published") return "Consultar esta publicación ↗";
   return "Consultar sobre esta localidad ↗";
 }
 
@@ -1515,6 +1515,7 @@ function initMapPage(doc) {
       sourceLink.rel = "noopener noreferrer";
       sourceLink.textContent = "Abrir aviso original ↗";
       box.append(sourceLink);
+      box.append(contactLinkNode(item, "map-contact-link"));
       const caution = doc.createElement("p");
       caution.textContent = "Publicación de terceros. No acredita stock, disponibilidad, dominio ni condiciones vigentes.";
       box.append(caution);
@@ -2000,6 +2001,7 @@ function initMapPage(doc) {
       sourceLink.rel = "noopener noreferrer";
       sourceLink.textContent = "Abrir aviso original ↗";
       actions.append(sourceLink);
+      actions.append(contactLinkNode(item, "map-contact-link"));
       const shareLink = doc.createElement("a");
       shareLink.className = "map-share-link";
       shareLink.href = buildReferenceUrl(doc.defaultView.location.href, item.id);
