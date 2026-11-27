@@ -367,6 +367,26 @@ publishedProperties.push(
     observations:"La inmobiliaria informa escritura e impuestos al día y entrega inmediata. La página de listado muestra anticipo USD 15.000; la descripción especifica USD 28.000 contado o 15.000 + 25 cuotas de 600."
   }
 );
+publishedProperties.push({
+  id:"la-reja-casa-quinta-santa-teresa-2401",recordType:"Casa quinta / fracción con vivienda",
+  name:"Casa quinta con parque, pileta y tenis · Santa Teresa de Jesús 2401",
+  locality:"La Reja",address:"Santa Teresa de Jesús 2401, La Reja",
+  geocodeQuery:"Santa Teresa de Jesus 2401",geocodeMatch:"SANTA TERESA DE JESUS 2401",
+  source:"https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-lote-terreno-en-venta-la-reja-moreno-9962-m-sup2-60468286.html",
+  agency:"Aviso en Zonaprop · corredor responsable Fernando Ariel García, CPI 9898 / CMCPDJLM 1137",
+  contact:"Romina Aran · formulario de contacto de Zonaprop; teléfono no visible",
+  price:"USD 425.000",currency:"USD",landSurfaceM2:9966,coveredSurfaceM2:300,
+  surfaceNote:"El título del aviso indica 9.962 m²; la descripción informa aproximadamente 9.966 m². Vivienda de 7 ambientes, quincho, pileta y cancha de tenis.",
+  observations:"La publicación describe seis lotes integrados y una casa quinta. Verificar si se vende como una sola unidad o por parcelas, títulos, plano de subdivisión, superficies exactas, estado de la vivienda y permisos de uso."
+});
+publishedProperties.slice(-1).forEach(item => {
+  item.lat = null;
+  item.lng = null;
+  item.lastCheckedAt = "2026-11-27";
+  item.verificationStatus = "Aviso Zonaprop accesible el 27/11/2026; disponibilidad comercial no confirmada.";
+  item.availabilityStatus = "No confirmada";
+  item.geolocationStatus = "Pendiente: se consultará Georef para la dirección publicada.";
+});
 publishedProperties.slice(-3).forEach(item => {
   item.lat = null;
   item.lng = null;
