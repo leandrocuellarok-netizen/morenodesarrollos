@@ -1632,9 +1632,9 @@ publishedProperties.push(
     "name": "Casa 3 ambientes · Padre Fahy al 90 · La Reja",
     "locality": "La Reja",
     "address": "Padre Fahy al 90",
-    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-venta-casa-3-ambientes-jardin-patio-galeria-59326892.html",
-    "agency": "Aviso en Zonaprop; corredor Luciana L. Fedele CPI 7756 / CMCPSI 6712; agencia no indicada en la ficha",
-    "contact": "Mensaje al anunciante mediante Zonaprop; teléfono no publicado",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-venta-casa-3-ambientes-jardin-patio-galeria-59326892.html?n_pg=0&n_pos=1&n_src=Listado",
+    "agency": "Meraki Real Estate · Luciana L. Fedele, CPI 7756 / CMCPSI 6712",
+    "contact": "WhatsApp público en ficha sindicada: +54 11 3019-7772; verificar número con la corredora antes de avanzar.",
     "price": "USD 64.900",
     "currency": "USD",
     "landSurfaceM2": 322.78,
@@ -1647,7 +1647,11 @@ publishedProperties.push(
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se intentará geocodificar la dirección pública.",
-    "verificationStatus": "Ficha individual accesible en Zonaprop el 27/11/2026; disponibilidad no confirmada con el anunciante."
+    "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio y datos de superficie publicados. Disponibilidad no confirmada; el teléfono proviene de una ficha sindicada del mismo aviso."
+  ,
+    "sourceAlternates": [{"url":"https://proppies.app/propiedad/buenos-aires/moreno/casa-3-amb-en-venta-en-la-reja-8053008","label":"Ficha sindicada con contacto de Luciana L. Fedele ↗"}]
+  ,
+    "phone": "+54 11 3019-7772"
   },
   {
     "id": "casa-jose-hernandez-4001-400",
@@ -1772,7 +1776,7 @@ publishedProperties.push(
     "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-venta-de-casa-4-ambientes-con-parque-y-pileta-en-56644991.html",
     "agency": "Aviso en Zonaprop; responsables Matías G. Valencia, Col. 3034 CMCPM y Matías F. Viudes, Col. 3047 CMCPM",
     "contact": "Formulario / WhatsApp de Zonaprop; contacto comercial a través de Valencia Viudes Bienes Raíces.",
-    "price": "USD 159.000",
+    "price": "USD 173.000",
     "currency": "USD",
     "landSurfaceM2": 400,
     "coveredSurfaceM2": 160,
@@ -1784,7 +1788,7 @@ publishedProperties.push(
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se intentará geocodificar la dirección pública.",
-    "verificationStatus": "Ficha individual accesible en Zonaprop el 27/11/2026; disponibilidad no confirmada."
+    "verificationStatus": "Ficha individual accesible en Zonaprop; la ficha consultada publica USD 173.000 y 400 m² totales / 160 m² cubiertos. Disponibilidad y precio final no confirmados con el anunciante."
   },
   {
     "id": "terreno-chiclana-600-359-historico",
