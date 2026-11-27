@@ -8301,6 +8301,12 @@ const turn12NewRecords = [
     "address": "San Carlos al 4500, La Reja, Moreno",
     "geocodeQuery": "San Carlos 4500, La Reja, Moreno, Buenos Aires",
     "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-terreno-quincho-con-pileta-o-quinta-eventos-en-60806884.html",
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-terreno-quincho-con-pileta-o-quinta-eventos-en-59995707.html",
+        "label": "Publicación alternativa indexada; el enlace directo devuelve 410 Gone (no vigente)."
+      }
+    ],
     "agency": "Anuncio en Zonaprop; corredores responsables Cristian Guirin, CPI 6042, y Diego Lo Nigro, CSM 2708 / CPI 7530.",
     "contact": "Consultas mediante formulario de Zonaprop; teléfono no visible.",
     "price": "USD 29.000",
@@ -8315,7 +8321,7 @@ const turn12NewRecords = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "Pendiente de revalidación",
     "geolocationStatus": "Pendiente: ubicación textual conservada; no se asignan coordenadas manuales. Georef debe confirmar una coincidencia inequívoca.",
-     "verificationStatus": "El resultado de búsqueda y la ficha sindicada describen el aviso, pero la URL directa devolvió error interno durante la consulta del 27/11/2026; mantener como pendiente de revalidación y no confirmar disponibilidad."
+     "verificationStatus": "La URL principal 60806884 devolvió error interno el 27/11/2026. Una publicación alternativa del mismo título (59995707) devuelve 410 Gone y queda marcada como no vigente en el historial. La oportunidad se mantiene pendiente de revalidación, sin confirmar disponibilidad."
   },
   {
     "id": "terreno-reverendo-padre-fahy-2300-756",
