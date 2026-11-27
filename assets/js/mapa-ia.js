@@ -5064,7 +5064,12 @@ const nov27_0855NewEntries = [
     "address": "De la Vega al 200, entre Alem y Aristóbulo del Valle, Moreno",
     "geocodeDisabled": true,
     "source": "https://inmoclick.com/251109-cuccioli-propiedades/inmuebles/71/ficha/terreno-en-venta-en-de-la-vega-al-200",
-    "sourceAlternates": [{ "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-moreno-52616745.html", "label": "Ficha paralela del mismo aviso en Zonaprop" }],
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-moreno-52616745.html",
+        "label": "Ficha paralela del mismo aviso en Zonaprop"
+      }
+    ],
     "agency": "Cuccioli Propiedades",
     "contact": "Formulario público de Inmoclick; teléfono no visible en la ficha.",
     "price": "USD 160.000",
@@ -5245,6 +5250,126 @@ const nov27_0855NewEntries = [
     "availabilityStatus": "No vigente",
     "geolocationStatus": "Pendiente: ubicación textual conservada; no se geocodifica un aviso retirado.",
     "verificationStatus": "Fuente primaria inaccesible (HTTP 410 Gone) el 27/11/2026; agregador Proppies muestra el aviso inactivo. Último precio indexado USD 53.000; no se confirmó causa de retiro."
+  },
+  {
+    "id": "terreno-espana-700-928-casa-galpon",
+    "recordType": "Terreno con casa a refaccionar, galpón y pileta",
+    "name": "España 700/747 · lote de 928 m² con casa, galpón y pileta",
+    "locality": "Moreno",
+    "address": "España 700 en cabecera; descripción indica España 747, Moreno",
+    "geocodeDisabled": true,
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-lote-928-m-sup2--con-casa-a-refaccionar-en-60811389.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/terreno-en-venta-en-moreno-76059131",
+        "label": "Ficha de Proppies; la marca como publicada hoy"
+      }
+    ],
+    "agency": "RE/MAX Data Work / RAU S.R.L. como plataforma",
+    "contact": "Contacto publicado: Rosa Susana Gonzalez. Corredor responsable: Leonardo Misuraca, CMCPSM 2568 / CUCICBA 7970. Consultas mediante Zonaprop; teléfono no visible.",
+    "price": "USD 150.000",
+    "currency": "USD",
+    "landSurfaceM2": 928,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "928 m² en la cabecera; descripción indica aproximadamente 930 m² y medidas 20 × 46 m. Casa a refaccionar y galpón existentes, pero no se informa superficie cubierta.",
+    "publicationDate": "Proppies la indexa como publicada hoy; ficha directa de Zonaprop consultada el 27/11/2026, sin fecha original visible.",
+    "observations": "Activo mixto: terreno con casa a refaccionar, galpón, pileta y portón para vehículos. La dirección difiere entre cabecera (España 700) y descripción (España 747); no geolocalizar hasta resolver. El aviso declara apto crédito, sujeto a documentación bancaria. El potencial de uso residencial/comercial depende de normativa municipal y habilitaciones.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: discrepancia de altura 700/747; conservar ubicación textual y no asignar coordenadas.",
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026 y ficha sindicada indexada como publicada hoy. Precio y superficie publicados; disponibilidad, superficies edificadas y numeración exacta no confirmadas."
+  },
+  {
+    "id": "fraccion-monsegur-3100-6150-la-reja",
+    "recordType": "Fracción de terreno · residencial extraurbano de baja densidad",
+    "name": "Avenida Monsegur 3100 · fracción de 6.150 m² · La Reja",
+    "locality": "La Reja · Moreno",
+    "address": "Avenida Monsegur 3100, La Reja, Moreno",
+    "geocodeQuery": "Avenida Monsegur 3100, La Reja, Moreno, Buenos Aires",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-en-moreno-60805231.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/terreno-en-venta-en-moreno-76055840",
+        "label": "Ficha de Proppies; la marca como publicada hoy"
+      }
+    ],
+    "agency": "Luis Esposito Propiedades",
+    "contact": "Martillero responsable: Luis Esposito, CMCPDJMGR 298. Consultas mediante Zonaprop; teléfono no visible en la ficha.",
+    "price": "USD 60.000",
+    "currency": "USD",
+    "landSurfaceM2": 6150,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "6.150 m²; frente 50 m y fondo 123 m. No se informa superficie cubierta.",
+    "publicationDate": "Proppies la indexa como publicada hoy; ficha directa de Zonaprop consultada el 27/11/2026, sin fecha original visible.",
+    "observations": "El aviso declara zonificación Residencial 5 (R5), FOS 0,4, FOT 0,5, densidad neta 80 hab/ha y parcela mínima de 600 m² con 20 m de frente; también indica electricidad, agua de pozo y gas natural pasando por la puerta. La aptitud de loteo y todos los indicadores son afirmaciones del anunciante, no aprobación municipal. El precio pedido equivale a aproximadamente USD 9,76/m², valor inusualmente bajo que exige verificar título, restricciones, accesos, agua/cloacas, condiciones hidráulicas y certificado urbanístico antes de considerarlo oportunidad.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: dirección publicada a nivel de altura; colocar marcador solo si Georef devuelve coincidencia inequívoca.",
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026 y ficha sindicada indexada como publicada hoy. Precio, superficie y parámetros declarados visibles; disponibilidad y aptitud de subdivisión no confirmadas."
+  },
+  {
+    "id": "activo-mixto-bartolome-mitre-1400-4000",
+    "recordType": "Activo comercial mixto · terreno con local y rentas anunciadas",
+    "name": "Av. Bartolomé Mitre 1400 · 4.000 m² · triple acceso",
+    "locality": "Moreno",
+    "address": "Av. Bartolomé Mitre al 1400, Moreno",
+    "geocodeQuery": "Avenida Bartolome Mitre 1400, Moreno, Buenos Aires",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-oportunidad-para-desarrolladores-4.000-m-sup2--60791107.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/terreno-en-venta-en-moreno-76056135",
+        "label": "Ficha de Proppies; la marca como publicada hoy"
+      }
+    ],
+    "agency": "Grupo Morada Real Estate · plataforma de comercialización",
+    "contact": "Consultas mediante Zonaprop. Profesional matriculado indicado: CMCPSI 6908, folio 175; nombre y teléfono no visibles en la ficha.",
+    "price": "USD 420.000",
+    "currency": "USD",
+    "landSurfaceM2": 4000,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "Aproximadamente 4.000 m². Incluye un local comercial con salida a la avenida; superficie cubierta de local y demás mejoras no informada.",
+    "publicationDate": "Proppies la indexa como publicada hoy; ficha directa de Zonaprop consultada el 27/11/2026, sin fecha original visible.",
+    "observations": "El anunciante declara acceso por tres calles, local comercial, antena de telecomunicaciones con renta anual en dólares y una parte del predio alquilada a una empresa logística. No se publican montos, contratos, plazos ni superficies ocupadas. Tratar las rentas como afirmaciones comerciales hasta revisar contratos de antena y logística, habilitaciones, deuda, ocupación y derecho de rescisión. La capacidad constructiva debe verificarse por parcela.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: altura aproximada publicada; se requiere coincidencia Georef inequívoca para colocar marcador.",
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026 y ficha sindicada indexada como publicada hoy. Precio, superficie y rentas declaradas publicados; contratos, disponibilidad y factibilidad urbanística no confirmados."
+  },
+  {
+    "id": "inmueble-comercial-libertador-500-368",
+    "recordType": "Inmueble comercial mixto · lote con galpón y vivienda",
+    "name": "Avenida del Libertador al 500 · galpón y vivienda · 368 m²",
+    "locality": "Moreno Centro",
+    "address": "Avenida del Libertador al 500, Moreno Centro",
+    "geocodeDisabled": true,
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-inmueble-comercial-en-centro-de-moreno-lote-con-60791844.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/terreno-5-amb-en-venta-en-moreno-76056409",
+        "label": "Ficha de Proppies; la marca como publicada hoy"
+      }
+    ],
+    "agency": "Agustín Kirkby Propiedades",
+    "contact": "Agustín Kirkby, CSM 2917. Oficina publicada: Av. León Gallardo 389, Muñiz. Consultas mediante Zonaprop; teléfono no visible.",
+    "price": "USD 450.000",
+    "currency": "USD",
+    "landSurfaceM2": 368,
+    "coveredSurfaceM2": 180,
+    "surfaceNote": "Lote de 10 × 36,80 m (368 m²); 180 m² cubiertos según ficha. La descripción especifica galpón de 10 × 12 m en planta baja y vivienda en planta alta.",
+    "publicationDate": "Proppies la indexa como publicada hoy; ficha directa de Zonaprop consultada el 27/11/2026, sin fecha original visible.",
+    "observations": "Inmueble comercial con galpón, vivienda de cuatro dormitorios, un baño y toilette. El aviso declara Centro Urbano 2, FOS 0,6, FOT 2,4, plano de obra aprobado, títulos perfectos y posible financiación directa. No tomar esos datos como verificación independiente: solicitar plano aprobado, final de obra, dominio, nomenclatura catastral y certificado urbanístico actualizado. El frente de 10 × 25 m se anuncia libre para desarrollo/estacionamiento.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: dirección aproximada “al 500” sin altura exacta; conservar ubicación textual.",
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026 y ficha sindicada indexada como publicada hoy. Precio, superficies y parámetros declarados visibles; documentación, disponibilidad y aprobación de obra no verificadas."
   }
 ];
 publishedProperties.push(...nov27_0855NewEntries);
