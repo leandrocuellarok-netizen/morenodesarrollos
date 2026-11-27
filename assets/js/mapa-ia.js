@@ -1853,7 +1853,7 @@ publishedProperties.push(
     "verificationStatus": "Enlace directo devuelve 410 Gone el 27/11/2026; registro histórico conservado."
   },
   {
-    "id": "terreno-jose-maria-paz-del-canon-594-historico",
+    "id": "terreno-paz-del-canon-594-historico",
     "recordType": "Terreno individual · antecedente no vigente",
     "name": "José María Paz y Del Cañón · lote de 594 m² · antecedente retirado",
     "locality": "Moreno",
