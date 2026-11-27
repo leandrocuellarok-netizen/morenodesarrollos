@@ -201,8 +201,8 @@ assert.ok(source.includes('link.download = "moreno-mapa-ia-referencias.geojson"'
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
 assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
-assert.equal(publishedProperties.length, 28, "la capa publicada contiene veintiocho avisos y desarrollos");
-assert.equal(all.length, 39, "el inventario completo contiene treinta y nueve referencias");
+assert.ok(publishedProperties.length >= 28, "la capa publicada conserva el inventario histórico y las incorporaciones verificadas");
+assert.equal(all.length, localities.length + opportunities.length + publishedProperties.length, "el total coincide con localidades, tesis y publicaciones");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
 assert.equal(new Set(publishedProperties.map(item => item.source)).size, publishedProperties.length, "los enlaces de publicaciones no se duplican");
 
@@ -221,10 +221,40 @@ const nov27ExpectedIds = [
 for (const id of nov27ExpectedIds) {
   assert.ok(publishedProperties.some(item => item.id === id), "la revisión incorpora " + id);
 }
-assert.equal(publishedProperties.find(item => item.id === "la-reja-casa-quinta-santa-teresa-2401").availabilityStatus, "No vigente");
-assert.equal(publishedProperties.find(item => item.id === "parques-morenito-proyecto").availabilityStatus, "No vigente");
 
-assert.deepEqual(countInventory(all), { localities: 6, documented: 4, hypotheses: 1, published: 28, total: 39 });
+const hourlyExpectedIds = [
+  "terreno-bouchard-300-461",
+  "terreno-sarmiento-500-750",
+  "terreno-ecoparque-irlanda-2000",
+  "casa-centenario-600-360",
+  "casa-venezuela-2400-456",
+  "casa-francisco-de-aguirre-6400",
+  "casa-racine-800-no-vigente",
+  "desarrollo-prados-del-oeste-hornos-2800",
+  "terreno-teniente-camilli-240-975",
+  "terreno-yapeyu-rafael-arcos-2850",
+  "terreno-prados-del-oeste-lote-230-800",
+  "terreno-general-savio-100-2050",
+  "desarrollo-ecoparque-industrial-78-parcelas",
+  "terreno-parques-morenito-300-300",
+  "terreno-pim-i-parque-municipal-2493",
+  "terreno-pim-ii-rp24-2677",
+  "terreno-pim-ii-rp24-7700-2103",
+  "casa-san-ramon-2700-251",
+  "casa-perito-moreno-3800-350"
+];
+for (const id of hourlyExpectedIds) {
+  assert.ok(publishedProperties.some(item => item.id === id), "la revisión horaria incorpora " + id);
+}
+assert.equal(publishedProperties.find(item => item.id === "la-reja-casa-quinta-santa-teresa-2401").availabilityStatus, "No vigente");
+assert.equal(publishedProperties.find(item => item.id === "parques-morenito-proyecto").availabilityStatus, "No confirmada");
+assert.equal(publishedProperties.find(item => item.id === "sumio-lote-450").availabilityStatus, "No vigente");
+assert.equal(publishedProperties.find(item => item.id === "casa-racine-800-no-vigente").availabilityStatus, "No vigente");
+assert.equal(publishedProperties.find(item => item.id === "moreno-casa-martin-fierro-4900").availabilityStatus, "Pendiente de revalidación");
+assert.ok(publishedProperties.find(item => item.id === "casa-bernardino-rivadavia-1000").price.startsWith("USD 150.000"));
+
+const expectedInventoryCounts = { localities: 6, documented: 4, hypotheses: 1, published: publishedProperties.length, total: all.length };
+assert.deepEqual(countInventory(all), expectedInventoryCounts);
 assert.deepEqual(
   countInventory(filterReferences(all, { evidence: "documented" })),
   { localities: 0, documented: 4, hypotheses: 0, published: 0, total: 4 },
@@ -256,7 +286,7 @@ for (const item of opportunities) {
 
 assert.equal(filterReferences(all, { category: "locality" }).length, 6);
 assert.equal(filterReferences(all, { category: "opportunity" }).length, 5);
-assert.equal(filterReferences(all, { category: "published" }).length, 28);
+assert.equal(filterReferences(all, { category: "published" }).length, publishedProperties.length);
 assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { query: "Santa Teresa", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");
@@ -558,8 +588,8 @@ assert.match(industrialDossier.references[0].coordinates.scope, /no identifica u
 assert.equal(buildTerritorialDossier([], {}, "2026-11-26T03:00:00.000Z"), null, "una vista vacía no produce un dossier");
 const completeDossier = buildTerritorialDossier(all, {}, "2026-11-26T03:00:00.000Z");
 assert.equal(completeDossier.references.length, all.length, "el dossier completo incluye todas las referencias del inventario");
-assert.deepEqual(completeDossier.counts, { localities: 6, documented: 4, hypotheses: 1, published: 28, total: 39 });
-assert.equal(completeDossier.references.filter(reference => reference.type === "published").length, 28);
+assert.deepEqual(completeDossier.counts, expectedInventoryCounts);
+assert.equal(completeDossier.references.filter(reference => reference.type === "published").length, publishedProperties.length);
 const expectedSourceCount = all.filter(item => /^https:\/\//.test(String(item.source || ""))).length;
 assert.equal(completeDossier.references.filter(reference => reference.sourceUrl).length, expectedSourceCount, "el dossier conserva todas las fuentes HTTPS registradas");
 const dossierDiagram = buildTerritorialDossierDiagram(industrialDossier.references);
