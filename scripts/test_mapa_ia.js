@@ -469,7 +469,7 @@ assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nome
 
 assert.equal(GEOREF_MAX_CONCURRENCY, 3, "las consultas a Georef tienen un límite conservador de concurrencia");
 assert.ok(source.includes("async function resolvePublishedGeoreferences(items, fetcher, context, concurrency)"), "la resolución de Georef está aislada y puede probarse sin red");
-assert.ok(source.includes("resolvePublishedGeoreferences(publishedProperties, fetcher, view, GEOREF_MAX_CONCURRENCY)"), "la página utiliza la cola limitada para consultar direcciones");
+assert.ok(source.includes("resolvePublishedGeoreferencesCached(") && source.includes("reviewStorage,\n      Date.now(),\n      GEOREF_MAX_CONCURRENCY"), "la página utiliza caché local y la cola limitada para consultar direcciones");
 for (const item of opportunities) {
   assert.ok(["documented", "hypothesis"].includes(item.stage), "nivel de evidencia explícito: " + item.name);
   assert.match(item.source, /^https:\/\//, "fuente pública HTTPS: " + item.name);
