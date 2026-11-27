@@ -9700,7 +9700,7 @@ function buildOpportunityContactUrl(baseUrl, item) {
 }
 
 function referenceContactLabel(item) {
-  if (item && item.type === "opportunity") return "Consultar esta tesis con MORENO ↗";
+  if (item && item.type === "opportunity") return "Consultar esta referencia con MORENO ↗";
   if (item && item.type === "published") return "Consultar esta ficha con MORENO ↗";
   return "Consultar esta localidad con MORENO ↗";
 }
