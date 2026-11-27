@@ -1329,3 +1329,70 @@
   color: #77796f;
   font: 10px/1.55 var(--sans);
 }
+
+
+/* Listado inmobiliario progresivo: reduce nodos iniciales sin recortar filtros ni exportaciones. */
+.map-published-pagination {
+  display: grid;
+  gap: 9px;
+  margin: 15px 0 22px;
+  padding: 13px 0 0;
+  border-top: 1px solid #c9c8bc;
+}
+.map-published-pagination-status {
+  margin: 0;
+  color: #686b62;
+  font: 10px/1.55 var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+.map-published-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 42px;
+  max-width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #77796f;
+  border-radius: 0;
+  background: #eeece4;
+  color: #343a33;
+  font: 600 10px/1.4 var(--sans);
+  text-align: center;
+  cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease;
+}
+.map-published-more:hover {
+  border-color: #80533a;
+  background: #e4dfd3;
+}
+.map-published-more:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+.map-published-empty {
+  margin: 12px 0;
+  padding: 14px;
+  border: 1px dashed #c9c5b9;
+  color: #686b62;
+  font: 11px/1.6 var(--sans);
+}
+.map-published-pagination-note {
+  margin: -5px 0 12px;
+  color: #77796f;
+  font: 10px/1.6 var(--sans);
+}
+@media (max-width: 760px) {
+  .map-published-pagination {
+    margin: 12px 0 18px;
+  }
+  .map-published-more {
+    width: 100%;
+    min-height: 46px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-published-more {
+    transition: none;
+  }
+}

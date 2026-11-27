@@ -5274,6 +5274,25 @@ function publishedDiligenceSummary(item) {
   };
 }
 
+const PUBLISHED_CARD_PAGE_SIZE = 24;
+
+function paginatePublishedCards(items, limit, selectedId) {
+  const list = Array.isArray(items) ? items : [];
+  const pageLimit = Number.isInteger(limit) && limit > 0 ? limit : PUBLISHED_CARD_PAGE_SIZE;
+  const pageItems = list.slice(0, pageLimit);
+  const selected = list.find(item => item && item.id === selectedId);
+  const selectedOutsidePage = Boolean(selected && !pageItems.some(item => item.id === selected.id));
+  if (selectedOutsidePage) pageItems.push(selected);
+  return {
+    items: pageItems,
+    shown: Math.min(pageLimit, list.length),
+    total: list.length,
+    hasMore: pageLimit < list.length,
+    nextLimit: Math.min(list.length, pageLimit + PUBLISHED_CARD_PAGE_SIZE),
+    selectedOutsidePage
+  };
+}
+
 function normalizeMapViewState(state, items) {
   const settings = state || {};
   const query = String(settings.query || "").trim().slice(0, 100);
@@ -6140,6 +6159,8 @@ function initMapPage(doc) {
     summary: doc.getElementById("atlas-index-summary")
   };
   const markers = new Map();
+  let publishedCardsLimit = PUBLISHED_CARD_PAGE_SIZE;
+  let renderedPublishedCardIds = new Set();
   let map = null;
   let visibleItems = all;
   let reviewStorage = null;
@@ -6568,6 +6589,9 @@ function initMapPage(doc) {
   function setActiveReference(item, options) {
     const settings = options || {};
     selectedReferenceId = item.id;
+    if (item.type === "published" && !renderedPublishedCardIds.has(item.id)) {
+      makePublishedCards(visibleItems.filter(reference => reference.type === "published"), publishedList);
+    }
     updateShareUrl(item.id);
     markers.forEach((marker, id) => {
       marker.getElement().classList.toggle("is-selected", id === item.id);
@@ -6822,8 +6846,19 @@ function initMapPage(doc) {
 
   function makePublishedCards(items, target) {
     if (!target) return;
+    const page = paginatePublishedCards(items, publishedCardsLimit, selectedReferenceId);
     target.replaceChildren();
-    items.forEach(item => {
+    renderedPublishedCardIds = new Set(page.items.map(item => item.id));
+
+    if (!page.total) {
+      const empty = doc.createElement("p");
+      empty.className = "map-published-empty";
+      empty.textContent = "No hay publicaciones que coincidan con los filtros actuales.";
+      target.append(empty);
+      return;
+    }
+
+    page.items.forEach(item => {
       const card = doc.createElement("details");
       card.className = "map-item map-item-published";
       card.dataset.mapItem = item.id;
@@ -6936,8 +6971,34 @@ function initMapPage(doc) {
       card.append(body);
       target.append(card);
     });
-  }
 
+    const pagination = doc.createElement("div");
+    pagination.className = "map-published-pagination";
+    pagination.setAttribute("aria-label", "Paginación de publicaciones");
+    const paginationStatus = doc.createElement("p");
+    paginationStatus.className = "map-published-pagination-status";
+    paginationStatus.setAttribute("role", "status");
+    paginationStatus.setAttribute("aria-live", "polite");
+    paginationStatus.textContent = page.selectedOutsidePage
+      ? "Mostrando " + page.shown + " de " + page.total + " publicaciones; también se muestra la referencia seleccionada fuera de este tramo."
+      : "Mostrando " + page.shown + " de " + page.total + " publicaciones.";
+    pagination.append(paginationStatus);
+    if (page.hasMore) {
+      const remaining = Math.min(PUBLISHED_CARD_PAGE_SIZE, page.total - page.shown);
+      const more = doc.createElement("button");
+      more.type = "button";
+      more.id = "show-more-published";
+      more.className = "map-published-more";
+      more.textContent = "Mostrar las siguientes " + remaining + " publicaciones";
+      more.setAttribute("aria-label", "Mostrar las siguientes " + remaining + " publicaciones de " + page.total);
+      more.addEventListener("click", () => {
+        publishedCardsLimit = page.nextLimit;
+        makePublishedCards(items, target);
+      });
+      pagination.append(more);
+    }
+    target.append(pagination);
+  }
   function updateAtlasIndex(items) {
     const counts = countInventory(items);
     if (atlasCounts.localities) atlasCounts.localities.textContent = String(counts.localities).padStart(2, "0");
@@ -7286,12 +7347,16 @@ function initMapPage(doc) {
       }
     });
   }
-  searchInput.addEventListener("input", render);
-  categoryInput.addEventListener("change", render);
-  kindInput.addEventListener("change", render);
-  evidenceInput.addEventListener("change", render);
-  availabilityInput.addEventListener("change", render);
-  diligenceInput.addEventListener("change", render);
+  function resetPublishedPaginationAndRender() {
+    publishedCardsLimit = PUBLISHED_CARD_PAGE_SIZE;
+    render();
+  }
+  searchInput.addEventListener("input", resetPublishedPaginationAndRender);
+  categoryInput.addEventListener("change", resetPublishedPaginationAndRender);
+  kindInput.addEventListener("change", resetPublishedPaginationAndRender);
+  evidenceInput.addEventListener("change", resetPublishedPaginationAndRender);
+  availabilityInput.addEventListener("change", resetPublishedPaginationAndRender);
+  diligenceInput.addEventListener("change", resetPublishedPaginationAndRender);
   shareViewButton.addEventListener("click", shareCurrentView);
   dossierExportButton.addEventListener("click", downloadTerritorialDossier);
   doc.getElementById("reset-map").addEventListener("click", () => {
@@ -7301,6 +7366,7 @@ function initMapPage(doc) {
     evidenceInput.value = "all";
     availabilityInput.value = "all";
     diligenceInput.value = "all";
+    publishedCardsLimit = PUBLISHED_CARD_PAGE_SIZE;
     selectedReferenceId = null;
     updateShareUrl(null);
     render();
@@ -7317,6 +7383,7 @@ if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches,
     availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary,
+    paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE,
     resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached,
     readGeorefCache, writeGeorefCache, GEOREF_MAX_CONCURRENCY,
     GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS,

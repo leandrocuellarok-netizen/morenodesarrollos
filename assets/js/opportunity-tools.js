@@ -306,6 +306,24 @@
     "terreno-pir25-2709": "Parque Industrial PIR25 · lote de 2.709,33 m² · Gírgola",
     "terreno-polo24-rp24-rp25-2914": "Ruta 24 y 25 · Polo 24 · terreno de 2.914 m²",
     "terreno-libertad-637-845-historico": "Libertad 637 · lote de 845 m² con mejoras · enlace no vigente",
+
+    "moreno-terreno-el-salvador-tupungato-393": "Calle El Salvador y Tupungato · 393 m²",
+    "prados-oeste-1b-lote-182-800": "Prados del Oeste 1-B · Lote 182 · 800 m²",
+    "sofocles-3000-terreno-casa-330": "Sófocles 3000 · terreno con vivienda · 330 m²",
+    "casa-quinta-patricias-argentinas-2100-5150": "Casa quinta · Patricias Argentinas 2100 · 5.150 m²",
+    "alvarez-prado-2031-terreno-339": "Álvarez Prado 2031 · lote de 339 m² · permiso provisorio para dos locales",
+    "parques-morenito-felix-de-azara-300": "Parques del Morenito · Lote L20 Mza C · Felix de Azara 8200 · 300 m²",
+    "colectora-sur-km31-5-fraccion-33000": "Colectora Sur Acceso Oeste km 31,5 · fracción de 33.000 m²",
+    "casa-leopoldo-lugones-900-5000": "Leopoldo Lugones 900 · casona sobre 5.000 m²",
+    "terreno-marco-sastre-10552-dos-lotes-360": "Marco Sastre 10552 · dos lotes de 360 m² cada uno",
+    "terreno-juan-stefani-torre-alta-iii-420": "Juan Stefani · Barrio Torre Alta III · 420 m²",
+    "terreno-aeronautica-argentina-2300-430": "Aeronautica Argentina 2300 · lote de 430 m²",
+    "loteo-barrio-malaver-etapa-2-pitagoras-echeverria-400": "Barrio Malaver · segunda etapa · lote de 400 m² en Pitágoras y Echeverría",
+    "terreno-gervasio-mendez-10500-400": "Gervasio Méndez 10500 · lote de 400 m²",
+    "casa-quinta-ambrosetti-2000-3195": "Ambrosetti al 2000 · casa quinta · La Reja Sur",
+    "casa-quinta-juan-bautista-alberdi-1400-2000": "Juan Bautista Alberdi 1400 · casa quinta sobre 2.000 m²",
+    "casa-prados-oeste-general-hornos-2900-850": "General Hornos 2900 · casa en construcción · Prados del Oeste II",
+    "casa-quinta-infanta-isabel-4200-1527": "Infanta Isabel 4200 · quinta Parque Gorriti",
   });
 
   function readMapReference(search) {
