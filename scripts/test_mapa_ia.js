@@ -733,6 +733,7 @@ for (const id of newNormativeIds) {
   assert.equal(hasCoordinates(item), false, "la nueva referencia permanece sin coordenadas no verificadas: " + id);
   assert.ok(item.source.startsWith("https://sibom.slyt.gba.gob.ar/"), "la nueva referencia conserva fuente oficial SIBOM: " + id);
   assert.ok(item.sourceDate && item.lastCheckedAt === "2026-11-27", "la nueva referencia conserva fecha de fuente y revisión: " + id);
+  assert.ok(item.sourceDate.includes(id === "ordenanza-7497-26-titulos-imperfectos" ? "09/10/2026" : "22/10/2026"), "la nueva referencia conserva la fecha de publicación del boletín: " + id);
   assert.equal(item.price, undefined, "la nueva referencia no inventa precio: " + id);
   assert.equal(item.contact, undefined, "la nueva referencia no inventa contacto: " + id);
   assert.equal(item.availabilityStatus, undefined, "la nueva referencia no inventa disponibilidad: " + id);
