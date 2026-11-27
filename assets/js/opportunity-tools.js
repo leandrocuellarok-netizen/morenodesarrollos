@@ -409,7 +409,7 @@
     "terreno-diario-la-prensa-general-savio-9200": "Diario La Prensa y General Savio · fracción de 9.200 m²",
     "terreno-parque-industrial-reconquista-3420": "Parque Industrial Reconquista · lote de 3.420 m² · Trujui",
     "desarrollo-distrito-ecologico-roggero": "Distrito Ecológico Roggero · plataforma de desarrollo urbano, ambiental y turístico",
-    "terreno-prados-oeste2-lote132-800-historico": "Prados del Oeste II · lote interno 132 · 800 m² (aviso retirado)"
+    "terreno-prados-oeste2-lote132-800-historico": "Prados del Oeste II · lote interno 132 · 800 m² (aviso retirado)",
     "terreno-riccheri-638": "Teniente General Pablo Riccheri · lote de 638 m²",
     "terreno-gervasio-mendez-300-umbrales": "Gervasio Méndez · lote de 300 m² · precio y financiación a revalidar",
     "terreno-ricardo-gutierrez-8900-312": "Malaver · Ricardo Gutiérrez 8900 · lote 4, manzana 32",
