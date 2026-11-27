@@ -844,16 +844,18 @@ def main() -> None:
             if not test_script.is_file():
                 errors.append(f"Falta scripts/{test_name}")
                 continue
-            unit_test = subprocess.run([node, str(test_script)], capture_output=True, text=True, check=False)
+            unit_test = subprocess.run([node, str(test_script)], capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
             if unit_test.returncode:
                 detail = (unit_test.stderr or unit_test.stdout).strip()
+                if len(detail) > 8000:
+                    detail = "[salida truncada; últimas 8.000 letras]\n" + detail[-8000:]
                 errors.append(f"Pruebas {test_name} fallidas: {detail}")
             elif unit_test.stdout.strip():
                 print(unit_test.stdout.strip())
 
         for script_path in (ROOT / "assets/js/site-navigation.js", ROOT / "assets/js/opportunity-tools.js", ROOT / "assets/js/originacion-workbench.js", ROOT / "assets/js/mapa-ia.js", ROOT / "assets/js/pipeline-dashboard.js", ROOT / "assets/js/pipeline-agenda.js", ROOT / "assets/js/pipeline-dashboard-ui.js", ROOT / "assets/js/originacion-export.js"):
             if script_path.is_file():
-                syntax_check = subprocess.run([node, "--check", str(script_path)], capture_output=True, text=True, check=False)
+                syntax_check = subprocess.run([node, "--check", str(script_path)], capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
                 if syntax_check.returncode:
                     detail = (syntax_check.stderr or syntax_check.stdout).strip()
                     errors.append(f"{script_path.relative_to(ROOT).as_posix()}: sintaxis JavaScript inválida: {detail}")
@@ -865,7 +867,7 @@ def main() -> None:
                 with tempfile.NamedTemporaryFile("w", suffix=".js", encoding="utf-8") as temp:
                     temp.write(source)
                     temp.flush()
-                    check = subprocess.run([node, "--check", temp.name], capture_output=True, text=True, check=False)
+                    check = subprocess.run([node, "--check", temp.name], capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
                 if check.returncode:
                     detail = (check.stderr or check.stdout).strip()
                     errors.append(f"{relative.as_posix()}: JavaScript inline #{index + 1} inválido: {detail}")
