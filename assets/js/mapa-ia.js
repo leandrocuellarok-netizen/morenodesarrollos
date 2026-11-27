@@ -4171,11 +4171,12 @@ function mergeReviewStates(localState, importedState, items) {
   return { state: normalizeReviewState(merged, allowedItems), addedRecords, combinedRecords, conflicts };
 }
 
-const MAP_VIEW_QUERY_KEYS = ["q", "tipo", "sector", "evidencia", "vigencia", "ref"];
+const MAP_VIEW_QUERY_KEYS = ["q", "tipo", "sector", "evidencia", "vigencia", "diligencia", "ref"];
 const MAP_VIEW_CATEGORIES = ["all", "locality", "opportunity", "published"];
 const MAP_VIEW_KINDS = ["all", "industrial", "commercial", "tourism", "land"];
 const MAP_VIEW_EVIDENCE = ["all", "documented", "hypothesis"];
 const MAP_VIEW_AVAILABILITY = ["all", "no-confirmada", "pendiente-revalidacion", "no-vigente"];
+const MAP_VIEW_DILIGENCE = ["all", "complete", "pending"];
 
 function availabilityFilterKey(value) {
   const normalized = String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es-AR").trim();
@@ -4190,6 +4191,27 @@ function formatSourceReviewDate(value) {
   return match ? match[3] + "/" + match[2] + "/" + match[1] : "No informada";
 }
 
+const PUBLISHED_DILIGENCE_FIELDS = [
+  { label: "Fuente original", present: item => /^https:/i.test(String(item.source || "").trim()) },
+  { label: "Fecha de revisión", present: item => isValidReviewDate(String(item.lastCheckedAt || "")) },
+  { label: "Referencia de precio", present: item => Boolean(String(item.price || "").trim()) },
+  { label: "Superficie", present: item => Number(item.landSurfaceM2) > 0 || Number(item.coveredSurfaceM2) > 0 || Boolean(String(item.surfaceNote || "").trim()) },
+  { label: "Anunciante", present: item => Boolean(String(item.agency || "").trim()) },
+  { label: "Referencia de contacto", present: item => Boolean(String(item.phone || "").trim() || String(item.contact || "").trim()) },
+  { label: "Ubicación textual", present: item => Boolean(String(item.address || "").trim() && String(item.locality || "").trim()) }
+];
+
+function publishedDiligenceSummary(item) {
+  if (!item || typeof item !== "object") return null;
+  const missing = PUBLISHED_DILIGENCE_FIELDS.filter(field => !field.present(item)).map(field => field.label);
+  return {
+    reported: PUBLISHED_DILIGENCE_FIELDS.length - missing.length,
+    total: PUBLISHED_DILIGENCE_FIELDS.length,
+    missing,
+    complete: missing.length === 0
+  };
+}
+
 function normalizeMapViewState(state, items) {
   const settings = state || {};
   const query = String(settings.query || "").trim().slice(0, 100);
@@ -4197,11 +4219,12 @@ function normalizeMapViewState(state, items) {
   const kind = MAP_VIEW_KINDS.includes(settings.kind) ? settings.kind : "all";
   const evidence = MAP_VIEW_EVIDENCE.includes(settings.evidence) ? settings.evidence : "all";
   const availability = MAP_VIEW_AVAILABILITY.includes(settings.availability) ? settings.availability : "all";
+  const diligence = MAP_VIEW_DILIGENCE.includes(settings.diligence) ? settings.diligence : "all";
   const candidateReference = String(settings.ref || "");
   const reference = (items || []).some(item => item.id === candidateReference)
     ? candidateReference
     : null;
-  return { query, category, kind, evidence, availability, ref: reference };
+  return { query, category, kind, evidence, availability, diligence, ref: reference };
 }
 
 function parseMapViewState(search, items) {
@@ -4212,6 +4235,7 @@ function parseMapViewState(search, items) {
     kind: parameters.get("sector") || "all",
     evidence: parameters.get("evidencia") || "all",
     availability: parameters.get("vigencia") || "all",
+    diligence: parameters.get("diligencia") || "all",
     ref: parameters.get("ref")
   }, items);
 }
@@ -4225,6 +4249,7 @@ function buildMapViewUrl(baseUrl, state, items) {
   if (normalized.kind !== "all") url.searchParams.set("sector", normalized.kind);
   if (normalized.evidence !== "all") url.searchParams.set("evidencia", normalized.evidence);
   if (normalized.availability !== "all") url.searchParams.set("vigencia", normalized.availability);
+  if (normalized.diligence !== "all") url.searchParams.set("diligencia", normalized.diligence);
   if (normalized.ref) url.searchParams.set("ref", normalized.ref);
   return url.toString();
 }
@@ -4271,6 +4296,7 @@ function filterReferences(items, options) {
   const kind = settings.kind || "all";
   const evidence = settings.evidence || "all";
   const availability = MAP_VIEW_AVAILABILITY.includes(settings.availability) ? settings.availability : "all";
+  const diligence = MAP_VIEW_DILIGENCE.includes(settings.diligence) ? settings.diligence : "all";
   return items.filter(item => {
     const categoryMatches =
       category === "all" ||
@@ -4281,13 +4307,16 @@ function filterReferences(items, options) {
     const evidenceMatches = evidence === "all" || (item.type === "opportunity" && evidence === item.stage);
     const availabilityMatches = availability === "all" ||
       (item.type === "published" && availabilityFilterKey(item.availabilityStatus) === availability);
+    const diligenceSummary = item.type === "published" ? publishedDiligenceSummary(item) : null;
+    const diligenceMatches = diligence === "all" ||
+      (item.type === "published" && diligenceSummary && (diligenceSummary.complete ? "complete" : "pending") === diligence);
     const searchable = [
       item.name, item.info, item.business, item.status, item.evidence, item.next,
       item.kind, kindLabel[item.kind], item.recordType, item.locality, item.address,
       item.agency, item.contact, item.price, item.verificationStatus, item.availabilityStatus,
       item.lastCheckedAt, item.observations
     ].filter(Boolean).join(" ").toLocaleLowerCase("es-AR");
-    return categoryMatches && kindMatches && evidenceMatches && availabilityMatches && searchable.includes(query);
+    return categoryMatches && kindMatches && evidenceMatches && availabilityMatches && diligenceMatches && searchable.includes(query);
   });
 }
 
@@ -4883,6 +4912,7 @@ function initMapPage(doc) {
   const kindInput = doc.getElementById("kind-filter");
   const evidenceInput = doc.getElementById("evidence-filter");
   const availabilityInput = doc.getElementById("availability-filter");
+  const diligenceInput = doc.getElementById("diligence-filter");
   const shareViewButton = doc.getElementById("share-map-view");
   const shareViewStatus = doc.getElementById("map-share-status");
   const shareFallbackWrap = doc.getElementById("map-share-fallback-wrap");
@@ -4931,6 +4961,7 @@ function initMapPage(doc) {
   kindInput.value = initialViewState.kind;
   evidenceInput.value = initialViewState.evidence;
   availabilityInput.value = initialViewState.availability;
+  diligenceInput.value = initialViewState.diligence;
   let selectedReferenceId = initialViewState.ref;
   let userHasNavigated = false;
 
@@ -5265,6 +5296,7 @@ function initMapPage(doc) {
       kind: kindInput.value,
       evidence: evidenceInput.value,
       availability: availabilityInput.value,
+      diligence: diligenceInput.value,
       ref: typeof referenceId === "undefined" ? selectedReferenceId : referenceId
     };
   }
@@ -5655,6 +5687,21 @@ function initMapPage(doc) {
         actions.append(phoneLink);
       }
       body.append(actions);
+      const diligence = publishedDiligenceSummary(item);
+      if (diligence) {
+        const diligencePanel = doc.createElement("section");
+        diligencePanel.className = "map-published-diligence";
+        diligencePanel.dataset.diligence = diligence.complete ? "complete" : "pending";
+        diligencePanel.setAttribute("aria-label", "Control de presencia de datos de prospección");
+        const diligenceTitle = doc.createElement("strong");
+        diligenceTitle.textContent = "Diligencia inicial · " + diligence.reported + "/" + diligence.total + " datos informados";
+        const diligenceNote = doc.createElement("p");
+        diligenceNote.textContent = diligence.missing.length
+          ? "Datos pendientes de completar en esta ficha: " + diligence.missing.join(" · ") + "."
+          : "Los siete campos están informados; contrastá cada dato en la fuente original.";
+        diligencePanel.append(diligenceTitle, diligenceNote);
+        body.append(diligencePanel);
+      }
       const addDetail = (label, value) => {
         if (value == null || value === "") return;
         const paragraph = doc.createElement("p");
@@ -5708,7 +5755,8 @@ function initMapPage(doc) {
       category: doc.getElementById("category").value,
       kind: doc.getElementById("kind-filter").value,
       evidence: doc.getElementById("evidence-filter").value,
-      availability: availabilityInput.value
+      availability: availabilityInput.value,
+      diligence: diligenceInput.value
     });
     visibleItems = shown;
     updateAtlasIndex(shown);
@@ -6033,6 +6081,7 @@ function initMapPage(doc) {
   kindInput.addEventListener("change", render);
   evidenceInput.addEventListener("change", render);
   availabilityInput.addEventListener("change", render);
+  diligenceInput.addEventListener("change", render);
   shareViewButton.addEventListener("click", shareCurrentView);
   dossierExportButton.addEventListener("click", downloadTerritorialDossier);
   doc.getElementById("reset-map").addEventListener("click", () => {
@@ -6041,6 +6090,7 @@ function initMapPage(doc) {
     kindInput.value = "all";
     evidenceInput.value = "all";
     availabilityInput.value = "all";
+    diligenceInput.value = "all";
     selectedReferenceId = null;
     updateShareUrl(null);
     render();
@@ -6056,7 +6106,7 @@ function initMapPage(doc) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches,
-    availabilityFilterKey, formatSourceReviewDate,
+    availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary,
     resolvePublishedGeoreferences, GEOREF_MAX_CONCURRENCY,
     getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl,
     buildReferenceUrl, buildOpportunityContactUrl, referenceContactLabel,
