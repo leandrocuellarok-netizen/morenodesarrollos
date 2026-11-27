@@ -483,6 +483,7 @@ def main() -> None:
                     ".map-verification-disclosure",
                     ".map-mobile-disclosure > summary:focus-visible",
                     ".map-filter-group",
+                    "minmax(300px, 2fr)",
                     ".map-filter-field",
                     ".map-toolbar-actions",
                     ".map-atlas-stat",

@@ -109,6 +109,7 @@ assert.ok(styles.includes(".map-share-link"), "los enlaces compartibles tienen u
 assert.ok(styles.includes(".map-item-actions"), "las acciones principales de cada ficha tienen una composición propia");
 assert.ok(styles.includes(".map-data-export-disclosure"), "las exportaciones tienen un acceso secundario propio");
 assert.ok(styles.includes(".map-filter-group"), "los filtros tienen una composición responsive propia");
+assert.ok(styles.includes("minmax(300px, 2fr)"), "la refinación dispone de ancho suficiente para sus dos selectores en escritorio");
 assert.ok(styles.includes(".map-filter-field"), "los controles muestran etiquetas y foco visible");
 assert.ok(styles.includes(".map-published-status"), "las fichas distinguen visualmente el estado comercial registrado");
 assert.ok(styles.includes(".map-published-review-date"), "las fichas muestran la fecha de consulta de la fuente");

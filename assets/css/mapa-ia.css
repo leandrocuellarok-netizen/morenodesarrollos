@@ -726,7 +726,7 @@
 }
 .map-filter-group {
   display: grid;
-  grid-template-columns: minmax(220px, 1.45fr) repeat(3, minmax(145px, 1fr));
+  grid-template-columns: minmax(220px, 1.45fr) repeat(2, minmax(145px, 1fr)) minmax(300px, 2fr);
   gap: 10px;
 }
 .map-filter-field {
