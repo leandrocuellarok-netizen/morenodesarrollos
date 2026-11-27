@@ -956,12 +956,18 @@ def main() -> None:
             errors.append("Oportunidades: falta el perfil o la intención explícita de desarrollador")
         if len(re.findall(r'<article class="opportunity-path"', opportunity_html)) != 3:
             errors.append("Oportunidades: deben existir tres recorridos comerciales diferenciados")
+        if 'class="opportunity-flow-plate"' not in opportunity_html or 'id="opportunity-flow-title"' not in opportunity_html or 'id="opportunity-flow-desc"' not in opportunity_html:
+            errors.append("Oportunidades: falta la lámina editorial accesible de las tres vías de originación")
+        if "no representa un inmueble, una parcela ni una operación existente" not in opportunity_html:
+            errors.append("Oportunidades: la lámina conceptual debe declarar que no representa un activo real")
         if "const interestByLink={" not in opportunity_html or "Object.prototype.hasOwnProperty.call(interestByLink,interestFromLink)" not in opportunity_html:
             errors.append("Oportunidades: falta la preselección de intención mediante una lista permitida")
         opportunity_css_path = ROOT / "assets/css/erica.css"
         opportunity_css = opportunity_css_path.read_text(encoding="utf-8") if opportunity_css_path.is_file() else ""
         if "#opportunity-form{scroll-margin-top:112px}" not in opportunity_css or ".opportunity-hero-actions" not in opportunity_css:
             errors.append("assets/css/erica.css: falta el desplazamiento accesible del acceso directo al formulario")
+        if ".opportunity-flow-plate" not in opportunity_css or "@media (max-width: 760px)" not in opportunity_css[opportunity_css.find(".opportunity-flow-plate"):]:
+            errors.append("assets/css/erica.css: falta el diseño responsive de la lámina editorial de oportunidades")
         if "function revealPropertyDetails()" not in opportunity_html:
             errors.append("Oportunidades: falta la apertura contextual de los datos del inmueble")
         for disclosure_id in ("feasibility-disclosure", "dossier-import-disclosure", "property-data-disclosure", "evidence-disclosure", "context-disclosure"):
