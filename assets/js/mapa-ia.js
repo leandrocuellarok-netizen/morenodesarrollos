@@ -5807,7 +5807,7 @@ const nov27_1032NewEntries = [
     "price": "USD 490.000",
     "currency": "USD",
     "landSurfaceM2": 1418,
-    "publicationDate": "Proppies indicaba publicado hace 4 meses al 27/11/2026; Argenprop indexado hace aproximadamente 2 meses.",
+    "publicationDate": "Proppies indicaba publicado hace 5 meses / 168 días al 27/11/2026; Argenprop indexado hace aproximadamente 2 meses.",
     "surfaceNote": "1.418 m²; 65,4 m de frente sobre José Mármol y 15,7 m sobre Bernardino Rivadavia. La ficha declara R1b, FOS 0,60, FOT 1,20 y altura máxima 12 m; confirmar en certificado urbanístico.",
     "observations": "La publicación identifica una fracción en esquina y acepta oferta de contado. Detecté otra ficha en José Mármol 100 por 584 m² y USD 190.000, con construcción a demoler; no se incorporó como oportunidad separada porque podría solaparse con esta fracción y no hay nomenclatura catastral para resolverlo. Solicitar plano, partidas y estado parcelario antes de tratar ambos avisos como activos distintos.",
     "lat": null,
@@ -5843,7 +5843,7 @@ const nov27_1032NewEntries = [
   {
     "id": "moreno-lote-tres-de-febrero-7800",
     "recordType": "Terreno individual · lote baldío",
-    "name": "Tres de Febrero 7800 · lote de 316 m²",
+    "name": "Lote baldío · Tres de Febrero 7800 · 316 m²",
     "locality": "Moreno · entorno limítrofe con José C. Paz",
     "address": "Tres de Febrero 7800, entre Montevideo y Río de la Plata, Moreno",
     "geocodeQuery": "Tres de Febrero 7800, Moreno, Buenos Aires",
