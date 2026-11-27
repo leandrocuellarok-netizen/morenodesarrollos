@@ -211,7 +211,7 @@ assert.ok(mapPage.includes('id="kind-filter" type="hidden"') && !mapPage.include
 assert.ok(styles.includes(".map-touch-controls") && styles.includes("min-height: 48px"), "los controles tienen objetivos táctiles amplios");
 assert.ok(source.includes("function reframeMap()") && source.includes("map.zoomIn(") && source.includes("map.zoomOut(") && source.includes("map.fitBounds(bounds"), "el zoom y el reencuadre están conectados al motor cartográfico");
 assert.ok(source.includes('mapTouchControls.hidden = true'), "los controles se ocultan si se activa el esquema estático");
-assert.ok(source.includes('makeCards(shown.filter(item => item.type === "opportunity"), opportunityList)'), "las tesis sin coordenadas permanecen en el índice");
+assert.ok(source.includes('makeCards(shown.filter(item => item.type === "opportunity"), opportunityList)'), "las referencias territoriales sin coordenadas permanecen en el índice");
 assert.ok(source.includes('makePublishedCards(shown.filter(item => item.type === "published"), publishedList)'), "las publicaciones sin coordenadas permanecen en el índice");
 assert.ok(source.includes('if (!bounds.isEmpty() && shouldFitMunicipalBounds(selectedReferenceId, userHasNavigated))'), "el límite municipal no reemplaza una vista elegida o manipulada");
 assert.ok(source.includes("function shouldFitMunicipalBounds(selectedReferenceId, userHasNavigated)"), "la política de encuadre municipal es comprobable");
@@ -328,7 +328,7 @@ assert.equal(contactUrl.hostname, "wa.me", "el CTA no apunta a INFO PYME como si
 assert.equal(contactUrl.pathname, "/5491141671674", "la consulta se dirige al WhatsApp público de MORENO");
 assert.match(contactUrl.searchParams.get("text"), /RP25/);
 assert.match(contactUrl.searchParams.get("text"), /rp25/);
-assert.equal(referenceContactLabel({ type: "opportunity" }), "Consultar esta tesis con MORENO ↗", "la tesis identifica claramente el destino comercial");
+assert.equal(referenceContactLabel({ type: "opportunity" }), "Consultar esta referencia con MORENO ↗", "la referencia territorial identifica claramente el destino comercial");
 assert.equal(referenceContactLabel({ type: "locality" }), "Consultar esta localidad con MORENO ↗", "la localidad identifica claramente el destino comercial");
 assert.equal(referenceContactLabel({ type: "published" }), "Consultar esta ficha con MORENO ↗", "la publicación distingue consulta editorial de contacto del anunciante");
 
