@@ -1622,10 +1622,10 @@ function initMapPage(doc) {
     svg.setAttribute("aria-labelledby", "map-static-title map-static-desc");
     const svgTitle = doc.createElementNS(svgNamespace, "title");
     svgTitle.setAttribute("id", "map-static-title");
-    svgTitle.textContent = "Distribución relativa de las referencias territoriales visibles";
+    svgTitle.textContent = "Distribución relativa de las referencias con coordenadas disponibles";
     const svgDescription = doc.createElementNS(svgNamespace, "desc");
     svgDescription.setAttribute("id", "map-static-desc");
-    svgDescription.textContent = "Esquema construido con coordenadas aproximadas del inventario. No es cartografía oficial, no tiene escala y no representa calles, límites ni parcelas.";
+    svgDescription.textContent = "Esquema construido con coordenadas aproximadas del inventario. Solo muestra referencias con coordenadas disponibles; las publicaciones sin coincidencia inequívoca en Georef permanecen en el índice sin punto. No es cartografía oficial, no tiene escala y no representa calles, límites ni parcelas.";
     const background = doc.createElementNS(svgNamespace, "rect");
     background.setAttribute("class", "map-static-frame");
     background.setAttribute("x", "1");
@@ -1749,7 +1749,7 @@ function initMapPage(doc) {
 
     const note = doc.createElement("p");
     note.className = "map-static-note";
-    note.textContent = "Este esquema conserva la relación espacial aproximada de las fichas sin depender de teselas externas. Las publicaciones sin coincidencia inequívoca en Georef quedan en el índice con ubicación textual y geolocalización pendiente; no se les asigna un punto.";
+    note.textContent = "Este esquema conserva la relación espacial aproximada de las fichas con coordenadas disponibles sin depender de teselas externas; no es cartografía oficial, no tiene escala y no representa calles, límites administrativos ni parcelas. Las publicaciones sin coincidencia inequívoca en Georef permanecen en el índice con su ubicación textual y geolocalización pendiente, sin punto asignado.";
     container.append(heading, svg, indexHeading, index, note);
     mapElement.replaceChildren(container);
   }
