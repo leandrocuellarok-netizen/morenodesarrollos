@@ -928,7 +928,7 @@ assert.equal(clearReviewState({ removeItem: () => { throw new Error("storage blo
 const reviewExport = buildReviewExport(firstReviewState, all, "2026-11-25T06:00:00.000Z");
 assert.equal(reviewExport.schema_version, 2);
 assert.equal(reviewExport.generated_at, "2026-11-25T06:00:00.000Z");
-assert.equal(reviewExport.references.length, 10, "la exportación excluye localidades y conserva las diez tesis visibles");
+assert.equal(reviewExport.references.length, 13, "la exportación excluye localidades y conserva las trece referencias territoriales");
 const exportedRp25 = reviewExport.references.find(reference => reference.id === "rp25");
 assert.equal(exportedRp25.completed_tasks, 1);
 assert.equal(exportedRp25.total_tasks, 5);
