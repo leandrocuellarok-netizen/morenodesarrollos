@@ -197,7 +197,7 @@ assert.ok(source.includes("function getSharedReferenceId(search, items)"), "las 
 assert.ok(source.includes("function buildReferenceUrl(baseUrl, referenceId)"), "cada ficha puede construir una URL compartible");
 assert.ok(source.includes("updateShareUrl(item.id)"), "la selección actualiza la URL sin recargar");
 assert.ok(source.includes('shareLink.textContent = "Abrir ficha compartible ↗"'), "las fichas y ventanas emergentes ofrecen enlaces compartibles");
-assert.ok(source.includes("function referenceContactLabel(item)"), "el enlace comercial distingue localidad y tesis");
+assert.ok(source.includes("function referenceContactLabel(item)"), "el enlace comercial distingue localidad y referencia territorial");
 assert.ok(source.includes("link.textContent = referenceContactLabel(item)"), "la ficha muestra una acción comercial contextual");
 assert.ok(source.includes("function buildOpportunityContactUrl(baseUrl, item)"), "el enlace comercial conserva la referencia de origen");
 assert.ok(source.includes('contactLinkNode(item, "map-contact-link")'), "el CTA comercial aparece en fichas y ventanas emergentes");
@@ -355,7 +355,7 @@ assert.ok(source.includes('link.download = "moreno-mapa-ia-referencias.geojson"'
 assert.equal(localities.length, 6, "se conservan las seis localidades");
 assert.equal(opportunities.length, 13, "se conservan diez referencias territoriales y se agregan tres antecedentes normativos y urbanísticos documentados");
 assert.ok(publishedProperties.length >= 28, "la capa publicada conserva el inventario histórico y las incorporaciones verificadas");
-assert.equal(all.length, localities.length + opportunities.length + publishedProperties.length, "el total coincide con localidades, tesis y publicaciones");
+assert.equal(all.length, localities.length + opportunities.length + publishedProperties.length, "el total coincide con localidades, referencias territoriales y publicaciones");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
 assert.equal(new Set(publishedProperties.map(item => item.source)).size, publishedProperties.length, "los enlaces de publicaciones no se duplican");
 
@@ -628,11 +628,11 @@ for (const item of all) {
     continue;
   }
   if (!hasCoordinates(item)) {
-    assert.equal(item.type, "opportunity", "solo las tesis sin coordenadas permanecen sin punto: " + item.name);
+    assert.equal(item.type, "opportunity", "solo las referencias territoriales sin coordenadas permanecen sin punto: " + item.name);
     assert.equal(item.lat, null, "no se inventa latitud para " + item.id);
     assert.equal(item.lng, null, "no se inventa longitud para " + item.id);
-    assert.match(item.source, /^https:\/\//, "la tesis sin coordenadas conserva fuente pública: " + item.id);
-    assert.ok(item.sourceDate && item.lastCheckedAt, "la tesis sin coordenadas conserva fecha de fuente y consulta: " + item.id);
+    assert.match(item.source, /^https:\/\//, "la referencia sin coordenadas conserva fuente pública: " + item.id);
+    assert.ok(item.sourceDate && item.lastCheckedAt, "la referencia sin coordenadas conserva fecha de fuente y consulta: " + item.id);
     assert.equal(item.price, undefined, "no se inventa precio para " + item.id);
     assert.equal(item.contact, undefined, "no se inventa contacto para " + item.id);
     assert.equal(item.availabilityStatus, undefined, "no se inventa disponibilidad para " + item.id);
@@ -863,7 +863,7 @@ assert.equal(
 );
 
 
-assert.equal(reviewTasks.length, 5, "cada tesis conserva cinco controles internos de diligencia");
+assert.equal(reviewTasks.length, 5, "cada referencia territorial conserva cinco controles internos de diligencia");
 assert.equal(isValidReviewDate("2026-11-25"), true);
 assert.equal(isValidReviewDate("2026-02-29"), false, "se rechazan fechas inexistentes");
 assert.equal(isValidReviewDate("25/11/2026"), false, "la fecha usa el formato ISO del control date");
@@ -1024,7 +1024,7 @@ assert.equal(unlocatedBrief.reference.coordinates.longitude, null, "las referenc
 assert.match(unlocatedBrief.reference.coordinates.scope, /Sin coordenada trazable/);
 assert.equal(territorialBrief.diligence.every(task => task.recorded === false), true);
 assert.equal(territorialBrief.dataToComplete.length, 6);
-assert.equal(buildTerritorialBrief(localities[0]), null, "las localidades no se presentan como tesis inmobiliarias");
+assert.equal(buildTerritorialBrief(localities[0]), null, "las localidades no se presentan como referencias de oportunidad inmobiliaria");
 const territorialHtml = buildTerritorialBriefHtml(territorialBrief);
 assert.match(territorialHtml, /<!doctype html>/i);
 assert.match(territorialHtml, /Evidencia disponible/);
@@ -1053,7 +1053,7 @@ assert.ok(!/<svg onload/i.test(hostileTerritorialHtml));
 assert.ok(source.includes('briefButton.className = "map-brief-button"'));
 assert.ok(source.includes("function downloadTerritorialBrief(item)"));
 assert.ok(source.includes('link.download = "moreno-ficha-prospeccion-" + item.id + ".html"'));
-assert.ok(mapPage.includes("Cada tesis incluye una ficha editorial"));
+assert.ok(mapPage.includes("Cada referencia territorial incluye una ficha editorial"));
 assert.equal((mapPage.match(/class="verification-source"/g) || []).length, 4, "la mesa de verificación presenta cuatro rutas institucionales");
 for (const officialResource of [
   "https://geo.arba.gov.ar/geoserver/idera/wms?request=GetCapabilities&amp;service=WMS",
@@ -1077,11 +1077,12 @@ const industrialDossier = buildTerritorialDossier(
 assert.equal(industrialDossier.schema, "moreno.territorial-dossier");
 assert.equal(industrialDossier.schemaVersion, 1);
 assert.equal(industrialDossier.title, "Dossier sectorial · Productivo / logístico");
-assert.equal(industrialDossier.references.length, 3, "el dossier sectorial solo incluye las referencias visibles");
-assert.equal(industrialDossier.counts.documented, 3);
+assert.equal(industrialDossier.references.length, 4, "el dossier sectorial incluye las cuatro referencias productivas visibles");
+assert.equal(industrialDossier.counts.documented, 4);
 assert.equal(industrialDossier.counts.localities, 0);
 assert.ok(industrialDossier.filterLabels.includes("Sector: Productivo / logístico"));
 assert.equal(industrialDossier.references[0].sourceUrl, opportunities.find(item => item.id === "rp25").source);
+assert.ok(industrialDossier.references.some(reference => reference.id === "ordenanza-7542-26-habilitaciones-industriales-logistica"), "el dossier productivo incorpora la norma de habilitaciones industriales");
 assert.match(industrialDossier.references[0].coordinates.scope, /no identifica una parcela/);
 assert.equal(buildTerritorialDossier([], {}, "2026-11-26T03:00:00.000Z"), null, "una vista vacía no produce un dossier");
 const completeDossier = buildTerritorialDossier(all, {}, "2026-11-26T03:00:00.000Z");
