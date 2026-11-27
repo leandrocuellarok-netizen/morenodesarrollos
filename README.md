@@ -291,7 +291,7 @@ La sección desplegable de /oportunidades/ permite importar la plantilla CSV com
 - No ingresar nombres, teléfonos, correos, datos bancarios, direcciones confidenciales ni documentación dominial sensible en la plantilla. Para datos de contacto, utilizar un sistema con acceso controlado.
 - scripts/test_pipeline_dashboard.js cubre delimitadores y comillas, fechas, importes, duplicados, columnas no admitidas, límites y sumas separadas por moneda.
 
-- El tablero permite descargar un resumen agregado CSV con fecha de corte, recuentos por etapa y honorarios por moneda. El reporte no incluye IDs de oportunidades, localidades ni datos de contacto; las divisas permanecen separadas y las celdas sin importe quedan vacías.
+- El tablero permite descargar un resumen agregado CSV con fecha de corte, recuentos por etapa, composición por tipo de contraparte y honorarios por moneda. El desglose de contrapartes usa categorías controladas (Propietario/a, Inversor/a, Desarrollador/a, Profesional o empresa, Otro / revisar y Sin clasificar); no exporta valores libres del campo, IDs ni datos de contacto. Distingue activas, ganadas, no concretadas y pausadas como recuentos, sin calcular probabilidades ni tasas de conversión. Las divisas permanecen separadas y las celdas sin importe quedan vacías.
 
 
 ### Agenda operativa de seguimiento
