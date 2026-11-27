@@ -463,6 +463,10 @@ assert.equal(turn7Ibis.source, "https://www.zonaprop.com.ar/propiedades/emprendi
 assert.ok(turn7Ibis.sourceAlternates.some(item => item.url === "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-edificio-ibis-iv-58757105.html"));
 assert.match(turn7Ibis.observations, /3 unidades/);
 assert.match(turn7Ibis.observations, /estructura ya es visible/);
+const turn7Sofocles = publishedProperties.find(item => item.id === "sofocles-3000-terreno-casa-330");
+assert.equal(turn7Sofocles.source, "https://terreno.mercadolibre.com.ar/MLA-2256050333-terreno-y-casa-en-venta-zona-industrial-moreno-_JM");
+assert.ok(turn7Sofocles.sourceAlternates.some(item => item.url.includes("proppies.app")));
+assert.equal(turn7Sofocles.availabilityStatus, "Pendiente de revalidación");
 const turn7Chacras = publishedProperties.find(item => item.id === "desarrollo-chacras-teofilo-galileo-7300");
 assert.match(turn7Chacras.observations, /entrega aproximada mayo de 2027/);
 
