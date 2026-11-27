@@ -896,7 +896,7 @@ const nov27HourlyEntries = [
     "geolocationStatus": "Pendiente: la localidad y la altura deben confirmarse por la discrepancia entre título y descripción."
   },
   {
-    "id": "desarrollo-ecoparque-industrial-78-parcelas",
+    "id": "desarrollo-ecoparque-78-parcelas",
     "recordType": "Desarrollo industrial",
     "name": "Ecoparque Industrial Moreno · 78 parcelas",
     "locality": "Francisco Álvarez / Cuartel V",
