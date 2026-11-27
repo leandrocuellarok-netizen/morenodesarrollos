@@ -988,7 +988,7 @@ assert.equal(territorialBrief.generatedAt, "2026-11-25T21:00:00.000Z");
 assert.equal(territorialBrief.classification.label, "Contexto con fuente pública");
 assert.equal(territorialBrief.reference.name, "RP25 · Darwin Passaponti · Av. San Fernando");
 assert.equal(territorialBrief.reference.sourceUrl, opportunities.find(item => item.id === "rp25").source);
-assert.equal(territorialBrief.reference.coordinates.scope, "Sin coordenada trazable; la ficha se conserva para investigación documental.");
+assert.equal(territorialBrief.reference.coordinates.scope, "Sin coordenada trazable; la ficha se conserva para investigación documental y no identifica una parcela.");
 assert.equal(territorialBrief.reference.coordinates.latitude, null);
 assert.equal(territorialBrief.reference.coordinates.longitude, null);
 assert.equal(territorialBrief.reference.coordinates.sourceUrl, null);
