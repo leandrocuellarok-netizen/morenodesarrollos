@@ -1095,6 +1095,9 @@ const hourlySumio338 = hourlyById("sumio-lote-338");
 if (hourlySumio338) {
   hourlySumio338.price = "Anticipo USD 12.000 + 60 cuotas de USD 250";
   hourlySumio338.currency = "USD";
+  hourlySumio338.contact = "Pablo Aquino Inmobiliaria";
+  hourlySumio338.phone = "+54 9 11 7001-7411 / 02320-423003";
+  hourlySumio338.email = "info@pabloaquino.com.ar";
   hourlySumio338.verificationStatus = "Ficha directa de Pablo Aquino Inmobiliaria accesible el 27/11/2026; indica lote 01, manzana 4, 338 m² y preventa con anticipo/cuotas.";
   hourlySumio338.availabilityStatus = "No confirmada";
   hourlyAppendObservation(hourlySumio338, "La inmobiliaria informa visación municipal y subdivisión por Geodesia en trámite ante Catastro PBA; no asumir parcela escriturable hasta verificar la subdivisión.");
@@ -1103,13 +1106,21 @@ const hourlySumio450 = hourlyById("sumio-lote-450");
 if (hourlySumio450) {
   hourlySumio450.verificationStatus = "No vigente: la ficha de la inmobiliaria presenta el aviso como VENDIDO en la revisión del 27/11/2026; se conserva el historial.";
   hourlySumio450.availabilityStatus = "No vigente";
-  hourlyAppendObservation(hourlySumio450, "La ficha original incluye el título VENDIDO para el lote de 450 m².");
+  hourlySumio450.price = "USD 14.000 + 60 cuotas de USD 250 (último precio publicado; aviso VENDIDO)";
+  hourlySumio450.currency = "USD";
+  hourlySumio450.contact = "Pablo Aquino Inmobiliaria";
+  hourlySumio450.phone = "+54 9 11 7001-7411 / 02320-423003";
+  hourlySumio450.email = "info@pabloaquino.com.ar";
+  hourlyAppendObservation(hourlySumio450, "La ficha original incluye el título VENDIDO para el lote de 450 m², aunque conserva en el cuerpo un texto genérico antiguo que dice “últimos 4 lotes disponibles”; prevalece el título VENDIDO y se debe consultar si hubo reactivación.");
 }
 const hourlySumioProject = hourlyById("sumio-proyecto");
 if (hourlySumioProject) {
   hourlySumioProject.publicationDate = "19/03/2026";
   hourlySumioProject.verificationStatus = "Ficha directa de Pablo Aquino Inmobiliaria accesible el 27/11/2026; publicación fechada 19/03/2026 declara que avanzan las obras y describe 26 parcelas.";
   hourlySumioProject.availabilityStatus = "No confirmada";
+  hourlySumioProject.contact = "Pablo Aquino Inmobiliaria · publicación firmada por Rocío Rodríguez";
+  hourlySumioProject.phone = "+54 9 11 7001-7411 / 02320-423003";
+  hourlySumioProject.email = "info@pabloaquino.com.ar";
 }
 const hourlyMorenitoProject = hourlyById("parques-morenito-proyecto");
 if (hourlyMorenitoProject) {
