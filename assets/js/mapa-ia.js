@@ -4691,12 +4691,12 @@ const turn7Ibis = publishedProperties.find(item => item.id === "desarrollo-ibis-
 if (turn7Ibis) {
   turn7Ibis.sourceAlternates = [
     ...(turn7Ibis.sourceAlternates || []),
-    { url: "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-edificio-ibis-iv-58757107.html", label: "Ficha anterior del mismo desarrollo; no usar para contar unidades actuales" }
+    { url: "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-edificio-ibis-iv-58757105.html", label: "Ficha individual paralela del mismo desarrollo: 1 unidad, 43 m² totales y 41 m² cubiertos" }
   ];
-  turn7Ibis.source = "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-edificio-ibis-iv-58757105.html";
-  turn7Ibis.price = "Desde USD 51.600; una unidad publicada de 43 m² totales y 41 m² cubiertos";
-  turn7Ibis.surfaceNote = "La ficha directa actual muestra 1 unidad de 2 ambientes, 43 m² totales y 41 m² cubiertos; el texto general del proyecto menciona unidades de 43 a 54 m².";
-  turn7Ibis.observations = "La ficha directa consultada el 27/11/2026 indica que la estructura ya es visible desde la calle y que la venta se realiza en etapa de obra, con entrega estimada en noviembre de 2027. La ficha muestra simultáneamente las etiquetas “En Pozo”, “En Construcción” y “Terminado”; la etapa física, el stock y la fecha efectiva de entrega deben confirmarse con el anunciante.";
+  turn7Ibis.source = "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-edificio-ibis-iv-58757107.html";
+  turn7Ibis.price = "Desde USD 51.600; ficha del desarrollo: 3 unidades de 43–48 m² totales / 40–45 m² cubiertos; ficha individual paralela: 1 unidad de 43/41 m²";
+  turn7Ibis.surfaceNote = "La ficha del desarrollo publica 3 unidades de 43–48 m² totales y 40–45 m² cubiertos; una ficha individual paralela publica 1 unidad de 43 m² totales y 41 m² cubiertos. No sumar unidades: puede existir solapamiento entre inventarios.";
+  turn7Ibis.observations = "Dos fichas directas consultadas el 27/11/2026: la ficha de emprendimiento muestra 3 unidades y etiquetas simultáneas “En Pozo”, “En Construcción” y “Terminado”; una ficha individual paralela muestra 1 unidad y declara que la estructura ya es visible desde la calle. Ambas indican entrega estimada en noviembre de 2027. No se pudo establecer si la unidad individual está incluida en las tres del emprendimiento, ni confirmar stock, etapa física real o fecha efectiva de entrega; solicitar inventario actualizado y visita de obra.";
   turn7Ibis.lastCheckedAt = "2026-11-27";
   turn7Ibis.availabilityStatus = "No confirmada";
   turn7Ibis.verificationStatus = "Ficha directa de Zonaprop accesible el 27/11/2026; el anunciante declara estructura visible y entrega estimada noviembre de 2027. Avance físico y stock no verificados independientemente.";
