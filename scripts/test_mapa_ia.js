@@ -242,6 +242,15 @@ const hourlyExpectedIds = [
   "terreno-pim-ii-rp24-7700-2103",
   "casa-san-ramon-2700-251",
   "casa-perito-moreno-3800-350"
+  "terreno-los-abedules-4100-521",
+  "terreno-chacabuco-emilio-mitre-206",
+  "casa-francisco-piovano-3700-2960",
+  "casa-faraday-2700-1472",
+  "casa-intendente-pagano-2600-320",
+  "casa-intendente-corvalan-2400-792",
+  "desarrollo-villa-justina-independencia-2199",
+  "terreno-ruta24-10ha-100000",
+  "terreno-larrea-2419-220",
 ];
 for (const id of hourlyExpectedIds) {
   assert.ok(publishedProperties.some(item => item.id === id), "la revisión horaria incorpora " + id);
@@ -252,6 +261,8 @@ assert.equal(publishedProperties.find(item => item.id === "sumio-lote-450").avai
 assert.equal(publishedProperties.find(item => item.id === "casa-racine-800-no-vigente").availabilityStatus, "No vigente");
 assert.equal(publishedProperties.find(item => item.id === "moreno-casa-martin-fierro-4900").availabilityStatus, "Pendiente de revalidación");
 assert.ok(publishedProperties.find(item => item.id === "casa-bernardino-rivadavia-1000").price.startsWith("USD 150.000"));
+
+assert.equal(new Set(publishedProperties.map(item => item.id)).size, publishedProperties.length, "no hay IDs duplicados en publicaciones");
 
 const expectedInventoryCounts = { localities: 6, documented: 4, hypotheses: 1, published: publishedProperties.length, total: all.length };
 assert.deepEqual(countInventory(all), expectedInventoryCounts);
