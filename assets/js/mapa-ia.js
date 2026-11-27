@@ -396,6 +396,271 @@ publishedProperties.slice(-3).forEach(item => {
   item.geolocationStatus = "Pendiente: se consultará Georef para la dirección publicada.";
 });
 
+
+const nov27NewPublishedEntries = [
+  {
+    "id": "terreno-san-juan-bautista-1374",
+    "recordType": "Terreno individual",
+    "name": "Terreno en Altos del Monte · San Juan Bautista s/n · 1.374 m²",
+    "locality": "Moreno · Altos del Monte",
+    "address": "San Juan Bautista s/n, entre Abraham Lincoln y Rafael Arcos",
+    "geocodeQuery": "San Juan Bautista S/N",
+    "geocodeMatch": "SAN JUAN BAUTISTA S/N",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-terreno-en-moreno-provincia-de-buenos-aires-60780068.html",
+    "agency": "RE/MAX · aviso en Zonaprop; corredor responsable Micaela Ferreira CPI 9705",
+    "contact": "Gustavo Hernandez (contacto indicado en el aviso); formulario Zonaprop; teléfono y email no visibles.",
+    "price": "USD 62.300",
+    "currency": "USD",
+    "landSurfaceM2": 1374,
+    "surfaceNote": "25 × 54,95 m; acceso por calle de tierra mejorada.",
+    "observations": "Aviso accesible el 27/11/2026. Ubicado entre Abraham Lincoln y Rafael Arcos, sin altura de puerta publicada. El aviso declara electricidad, agua corriente, gas y cloacas en la zona; verificar disponibilidad efectiva de cada servicio, título, mensura y precio.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Publicación original accesible el 27/11/2026; dirección sin altura y disponibilidad comercial no confirmada.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: ubicación textual sin altura; no se asigna coordenada parcelaria."
+  },
+  {
+    "id": "terreno-ricardo-rojas-4418-3830",
+    "recordType": "Terreno individual",
+    "name": "Lote en Moreno · Ricardo Rojas 4418 · 3.830 m²",
+    "locality": "Moreno",
+    "address": "Ricardo Rojas 4418",
+    "geocodeQuery": "Ricardo Rojas 4418",
+    "geocodeMatch": "RICARDO ROJAS 4418",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--20538336",
+    "agency": "Guillermo Koenig Bienes Raíces · aviso en Argenprop",
+    "contact": "Formulario Argenprop; el teléfono aparece parcialmente oculto por el portal.",
+    "price": "USD 69.000",
+    "currency": "USD",
+    "landSurfaceM2": 3830,
+    "surfaceNote": "3.830 m² totales y construibles según el aviso; incluye construcciones de cancha de tenis y pádel a reciclar o demoler.",
+    "observations": "Aviso accesible el 27/11/2026. La descripción menciona una antena Movistar con contrato hasta octubre de 2026; ese plazo ya transcurrió. Verificar si el contrato fue renovado, si la antena continúa y si existe renta vigente. No tomar el ingreso histórico anunciado como renta actual.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Publicación original accesible el 27/11/2026; condición contractual de la antena requiere actualización.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Georef deberá devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "terreno-general-alvarado-322-922",
+    "recordType": "Fracción de terreno",
+    "name": "Lote industrial · General Alvarado 322 · 922 m²",
+    "locality": "Moreno Centro",
+    "address": "General Alvarado 322",
+    "geocodeQuery": "General Alvarado 322",
+    "geocodeMatch": "GENERAL ALVARADO 322",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-centro-moreno--16095811",
+    "agency": "Dambolena · aviso en Argenprop",
+    "contact": "Corredor Martín Dambolena CMCPDJMGR 205 / CUCICBA 7176; formulario Argenprop; teléfono parcialmente oculto.",
+    "price": "USD 37.500",
+    "currency": "USD",
+    "landSurfaceM2": 922,
+    "surfaceNote": "Lote 4; el aviso declara zonificación Industrial 1, FOS 0,6 y FOT 1,0; a 150 m de Ruta 25.",
+    "observations": "Publicación original accesible el 27/11/2026. Zonificación e indicadores son datos declarados en el aviso, no certificado urbanístico vigente. Verificar nomenclatura, mensura, usos permitidos, retiros y factibilidad ante el Municipio.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Publicación original accesible el 27/11/2026; parámetros urbanísticos sujetos a verificación oficial parcelaria.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Georef deberá devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "casa-bernardino-rivadavia-1000",
+    "recordType": "Casa individual",
+    "name": "Casa en Centro de Moreno · Bernardino Rivadavia 1000",
+    "locality": "Moreno Centro",
+    "address": "Bernardino Rivadavia 1000",
+    "geocodeQuery": "Bernardino Rivadavia 1000",
+    "geocodeMatch": "BERNARDINO RIVADAVIA 1000",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-excelente-ubicacion-y-solida-construccion-59530765.html?n_pg=1&n_pills=Parrilla&n_pos=1&n_src=Listado",
+    "agency": "Mateo Propiedades · aviso en Zonaprop",
+    "contact": "Formulario Zonaprop; matrícula informada: 36 Dpto. M-Gr.; teléfono no visible.",
+    "price": "USD 150.000 en ficha individual; el listado general mostró USD 170.000.",
+    "currency": "USD",
+    "landSurfaceM2": 597,
+    "coveredSurfaceM2": 80,
+    "surfaceNote": "3 ambientes, 2 dormitorios y 2 baños; 597 m² totales y 80 m² cubiertos.",
+    "observations": "Ficha individual accesible el 27/11/2026. Existe una diferencia de USD 20.000 entre el precio de la ficha individual (USD 150.000) y el resumen del listado general (USD 170.000). Confirmar precio vigente y superficies con Mateo Propiedades.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Ficha individual accesible el 27/11/2026; discrepancia de precio entre ficha y listado pendiente de aclaración.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Georef deberá devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "casa-naciones-unidas-1500",
+    "recordType": "Casa individual con local y departamento a terminar",
+    "name": "Casa 3 ambientes con local y departamento a terminar · Naciones Unidas 1500",
+    "locality": "Moreno",
+    "address": "Naciones Unidas 1500",
+    "geocodeQuery": "Naciones Unidas 1500",
+    "geocodeMatch": "NACIONES UNIDAS 1500",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-3-amb.-local-en-esquina-depto-a-terminar-moreno-60097155.html?n_pg=1&n_pills=Luminoso&n_pos=2&n_src=Listado",
+    "agency": "Golden Haus Real Estate S.R.L. · aviso en Zonaprop",
+    "contact": "Corredor Esteban Paz CUCICBA 9214 / MGR 334 y Martín Naidich MGR 337; formulario Zonaprop.",
+    "price": "USD 61.000",
+    "currency": "USD",
+    "landSurfaceM2": 194,
+    "coveredSurfaceM2": 95,
+    "surfaceNote": "95 m² cubiertos y 194 m² totales según el aviso; casa de 3 ambientes, local a la calle y estructura de departamento de 3 ambientes en planta alta sin terminar.",
+    "observations": "Publicación original accesible el 27/11/2026. El departamento de planta alta tiene estructura ejecutada, pero faltan instalaciones y terminaciones. Verificar planos, superficies, estado constructivo, habilitación del local y documentación.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Publicación original accesible el 27/11/2026; estado de terminación y superficies deben comprobarse en visita y planos.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Georef deberá devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "casa-country-san-diego-1500",
+    "recordType": "Casa individual",
+    "name": "Casa 6 ambientes en Club de Campo San Diego",
+    "locality": "Club de Campo San Diego · Moreno",
+    "address": "Club de Campo San Diego, Moreno (sin calle ni lote publicados)",
+    "geocodeQuery": "Club de Campo San Diego, Moreno",
+    "geocodeMatch": "DIRECCION NO PUBLICADA",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-venta-casa-6-ambientes-en-club-country-san-diego-58043920.html?n_pg=1&n_pills=Quincho&n_pos=1&n_src=Listado",
+    "agency": "Central Real Estate Argentina · aviso en Zonaprop",
+    "contact": "Corredores Gustavo Guastello CUCICBA 869 y Carlos Belsito CSI 5790; formulario Zonaprop.",
+    "price": "USD 549.999",
+    "currency": "USD",
+    "landSurfaceM2": 1500,
+    "coveredSurfaceM2": 720,
+    "surfaceNote": "6 ambientes, 5 dormitorios, 5 baños y 6 cocheras; 1.500 m² totales y 720 m² cubiertos según el aviso.",
+    "observations": "Publicación original accesible el 27/11/2026. La ubicación se publica sólo a nivel de barrio, sin calle ni lote; se conserva la referencia textual y no se asigna un punto parcelario.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Publicación original accesible el 27/11/2026; ubicación interna y disponibilidad comercial no confirmadas.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: el aviso no publica calle ni lote; no corresponde asignar coordenadas."
+  },
+  {
+    "id": "desarrollo-barrio-del-golf-atuel-2700",
+    "recordType": "Desarrollo inmobiliario · barrio cerrado",
+    "name": "Barrio Cerrado del Golf · Francisco Álvarez",
+    "locality": "Francisco Álvarez",
+    "address": "Atuel 2700, Barrio del Golf, Francisco Álvarez",
+    "geocodeQuery": "Atuel 2700",
+    "geocodeMatch": "ATUEL 2700",
+    "source": "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememhoin-barrio-cerrado-del-golf-60047239.html?n_pg=1&n_pos=1&n_src=Listado",
+    "agency": "Sarro Pucheta Propiedades · publicación en Zonaprop",
+    "contact": "Formulario Zonaprop; teléfono no visible en la ficha consultada.",
+    "price": "Terrenos desde USD 47.961",
+    "currency": "USD",
+    "surfaceNote": "6 unidades publicadas de 730 a 1.635 m²; desarrollo de 12 hectáreas y 106 lotes declarados por el anunciante.",
+    "observations": "Ficha accesible el 27/11/2026; etapa declarada terminado / entrega inmediata. La publicación muestra 6 unidades, pero no confirma stock individual ni precio final. Verificar reglamento, expensas, servicios y escritura.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Ficha de emprendimiento accesible el 27/11/2026; estado físico declarado por el anunciante, sin verificación independiente.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Georef deberá devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "desarrollo-colonos-ii-2300",
+    "recordType": "Desarrollo inmobiliario comercial · locales y oficinas",
+    "name": "Complejo Comercial Colonos II",
+    "locality": "Francisco Álvarez",
+    "address": "Carola Lorenzini 2300, Francisco Álvarez",
+    "geocodeQuery": "Carola Lorenzini 2300",
+    "geocodeMatch": "CAROLA LORENZINI 2300",
+    "source": "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememhoin-complejo-colonos-ii-58757120.html?n_pg=1&n_pos=8&n_src=Listado",
+    "agency": "Mauricio Moskovic · publicación en Zonaprop",
+    "contact": "Formulario Zonaprop; teléfono y email no visibles en la ficha consultada.",
+    "price": "Desde USD 1.700; la ficha no especifica si es por m², unidad o anticipo.",
+    "currency": "USD",
+    "surfaceNote": "52 a 235 m² totales y cubiertos según ficha; 15 locales y 14 oficinas declarados; entrega anunciada para noviembre de 2028.",
+    "observations": "Ficha accesible el 27/11/2026; el portal la clasifica en pozo / en construcción con entrega noviembre de 2028. El precio desde USD 1.700 no identifica unidad de medida ni alcance; solicitar lista comercial y cronograma de obra.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Ficha de emprendimiento accesible el 27/11/2026; ejecución y condiciones comerciales no verificadas independientemente.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Georef deberá devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "desarrollo-ibis-iv-273",
+    "recordType": "Desarrollo inmobiliario vertical · edificio en construcción",
+    "name": "Edificio Ibis IV · Moreno Centro",
+    "locality": "Moreno Centro",
+    "address": "Dr. Vera 273",
+    "geocodeQuery": "Dr. Vera 273",
+    "geocodeMatch": "VERA 273",
+    "source": "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-edificio-ibis-iv-58757107.html?n_pg=1&n_pos=9&n_src=Listado",
+    "agency": "Mauricio Moskovic · publicación en Zonaprop",
+    "contact": "Formulario Zonaprop; teléfono y email no visibles en la ficha consultada.",
+    "price": "Departamentos desde USD 51.600; anticipo desde USD 19.780 + saldo en 30 cuotas; cocheras desde USD 15.000.",
+    "currency": "USD",
+    "surfaceNote": "3 unidades publicadas de 43 a 48 m² totales y 40 a 45 m² cubiertos; 2 ambientes; inicio de obra informado en febrero de 2025 y entrega estimada en noviembre de 2027.",
+    "observations": "Ficha accesible el 27/11/2026. El inicio de obra y la fecha de entrega son datos informados por el anunciante, no verificación independiente del avance. Confirmar planos, permisos, estado de obra, precio final y disponibilidad.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Ficha de emprendimiento accesible el 27/11/2026; fechas y avance de obra declarados por el anunciante.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Georef deberá devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "desarrollo-140-camilli",
+    "recordType": "Desarrollo inmobiliario vertical · edificio en pozo / construcción",
+    "name": "140 Camilli · Moreno Centro",
+    "locality": "Moreno Centro",
+    "address": "Camilli 140",
+    "geocodeQuery": "Camilli 140",
+    "geocodeMatch": "CAMILLI 140",
+    "source": "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-140-camilli-59085756.html?n_pg=1&n_pos=11&n_src=Listado",
+    "agency": "Rossi Propiedades · Dalmazz Guarino Arquitectura & Construcción · publicación en Zonaprop",
+    "contact": "contacto@rossiprop.com.ar · @rossipropiedades_ (datos publicados en la ficha).",
+    "price": "Desde USD 49.300 en el encabezado; la descripción usa también importes con '$' y cuotas en pesos, por lo que el alcance y la moneda deben confirmarse.",
+    "currency": "USD (encabezado; descripción ambigua)",
+    "surfaceNote": "12 unidades; 35 a 92 m² totales y 32 a 81 m² cubiertos; 1 a 3 ambientes; entrega anunciada para diciembre de 2027.",
+    "observations": "Ficha accesible el 27/11/2026; etapa declarada en pozo / en construcción. La descripción publica planes en pesos y el encabezado indica USD 49.300. No asumir equivalencia: solicitar lista de precios, moneda y esquema de cuotas por escrito.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Ficha de emprendimiento accesible el 27/11/2026; moneda y condiciones comerciales requieren aclaración.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Georef deberá devolver una coincidencia inequívoca para la dirección publicada."
+  }
+];
+publishedProperties.push(...nov27NewPublishedEntries);
+
+publishedProperties.forEach(item => {
+  item.lastCheckedAt = "2026-11-27";
+  if (!item.verificationStatus) {
+    item.verificationStatus = "Fuente original accesible en la revisión del 27/11/2026; disponibilidad comercial no confirmada.";
+  }
+});
+
+const nov27ById = id => publishedProperties.find(item => item.id === id);
+const nov27MartinFierro4900 = nov27ById("moreno-casa-martin-fierro-4900");
+if (nov27MartinFierro4900) {
+  nov27MartinFierro4900.source = "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-en-moreno-apto-credito-59287060.html?n_pg=1&n_pos=5&n_src=Listado";
+  nov27MartinFierro4900.verificationStatus = "Ficha individual accesible el 27/11/2026; precio USD 80.000 y superficies 291 m² totales / 85 m² cubiertos.";
+  nov27MartinFierro4900.availabilityStatus = "No confirmada";
+}
+const nov27MartinFierro5000 = nov27ById("moreno-casa-martin-fierro-5000");
+if (nov27MartinFierro5000) {
+  nov27MartinFierro5000.verificationStatus = "Vigencia pendiente: la URL primaria no abrió en esta revisión; aparecen referencias recientes en agregadores, pero no se confirmó que correspondan exactamente al aviso original.";
+  nov27MartinFierro5000.availabilityStatus = "Pendiente de revalidación";
+  nov27MartinFierro5000.observations = (nov27MartinFierro5000.observations || "") + " En la revisión del 27/11/2026 no se pudo abrir la URL primaria de Zonaprop; existen referencias recientes de terceros para Martín Fierro al 5000, pero no se confirmó identidad ni continuidad exacta del aviso.";
+}
+const nov27MorenitoProject = nov27ById("parques-morenito-proyecto");
+if (nov27MorenitoProject) {
+  nov27MorenitoProject.verificationStatus = "Antecedente de desarrollo finalizado: la ficha original informa entrega en julio de 2022.";
+  nov27MorenitoProject.availabilityStatus = "No vigente como desarrollo nuevo; antecedente histórico.";
+}
+const nov27SantaTeresa = nov27ById("la-reja-casa-quinta-santa-teresa-2401");
+if (nov27SantaTeresa) {
+  nov27SantaTeresa.verificationStatus = "No vigente: el enlace directo de Zonaprop devolvió 410 Gone en la revisión del 27/11/2026; se conserva el registro histórico.";
+  nov27SantaTeresa.availabilityStatus = "No vigente";
+  nov27SantaTeresa.geolocationStatus = "Pendiente: publicación retirada o no accesible; conservar ubicación textual histórica.";
+}
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
   ...opportunities.map(item => ({ ...item, type: "opportunity" })),
