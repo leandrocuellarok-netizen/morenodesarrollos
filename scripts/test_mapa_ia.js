@@ -932,9 +932,7 @@ assert.ok(source.includes("dossierExportButton.addEventListener(\"click\", downl
 assert.ok(styles.includes(".map-dossier-export"));
 assert.ok(styles.includes(".map-dossier-status"));
 
-console.log("OK: pruebas del Mapa IA, exportaciones cartográficas y fichas editoriales imprimibles.");
 
-async 
 const nov27_1032ExpectedIds = [
   "terreno-9-de-julio-46-487",
   "terreno-jose-marmol-rivadavia-1418",
@@ -958,6 +956,8 @@ assert.ok(tresDeFebrero && tresDeFebrero.price.includes("USD 17.800") && tresDeF
 assert.equal(publishedProperties.find(item => item.id === "terreno-9-de-julio-46-487").geocodeDisabled, true, "9 de Julio 46 no se geolocaliza mientras el título del portal contradiga la dirección");
 assert.equal(publishedProperties.find(item => item.id === "terreno-bartolome-mitre-3200-1260").availabilityStatus, "Pendiente de revalidación");
 assert.equal(publishedProperties.find(item => item.id === "casa-concordia-2545-311").availabilityStatus, "Pendiente de revalidación");
+
+console.log("OK: pruebas del Mapa IA, exportaciones cartográficas y fichas editoriales imprimibles.");
 
 async function testGeorefRequestQueue() {
   const items = [
