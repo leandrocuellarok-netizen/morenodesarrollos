@@ -1197,7 +1197,7 @@ if (hourlyCamilliProject) {
 }
 
 publishedProperties.push(
-[
+...[
   {
     "id": "terreno-los-abedules-4100-521",
     "recordType": "Terreno individual · lote en barrio cerrado",
