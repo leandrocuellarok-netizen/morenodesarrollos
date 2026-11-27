@@ -232,6 +232,7 @@
     "terreno-jose-maria-paz-600-356": "José María Paz 600 · 356 m²",
     "terreno-prados-oeste2-lote145-781": "Prados del Oeste II · lote 145 · 781 m²",
     "terreno-joaquin-v-gonzalez-2400-615": "Joaquín V. González 2400 · 615 m² y estructura de hormigón",
+    "desarrollo-polo-veinticinco-15ha-37-lotes": "Polo Veinticinco · parque industrial · 15 ha · 37 lotes",
   });
 
   function readMapReference(search) {
