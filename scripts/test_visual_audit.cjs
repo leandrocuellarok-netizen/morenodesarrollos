@@ -529,6 +529,27 @@ async function auditOpportunityFlow(browser) {
     check(!(await page.locator("#property-data-disclosure").evaluate(element => element.open)), "oportunidades: el recorrido de desarrollador no abre datos de inmueble que todavía no necesita");
 
     await page.goto(BASE_URL + "/oportunidades/", { waitUntil: "domcontentloaded" });
+    const editorialPlate = page.locator(".opportunity-flow-plate");
+    check(await editorialPlate.isVisible(), "oportunidades: la lámina editorial de originación está visible");
+    check(await editorialPlate.locator("svg[role='img'] title#opportunity-flow-title").count() === 1, "oportunidades: la lámina tiene título accesible");
+    check(await editorialPlate.locator("svg desc#opportunity-flow-desc").count() === 1, "oportunidades: la lámina tiene descripción accesible");
+    check((await editorialPlate.innerText()).includes("no representa un inmueble"), "oportunidades: la lámina aclara su carácter conceptual");
+    const plateGeometry = await editorialPlate.evaluate(element => {
+      const rect = element.getBoundingClientRect();
+      const svgRect = element.querySelector("svg").getBoundingClientRect();
+      return { width: rect.width, svgWidth: svgRect.width, scrollWidth: element.scrollWidth };
+    });
+    check(plateGeometry.width > 0 && plateGeometry.svgWidth <= plateGeometry.width + 1 && plateGeometry.scrollWidth <= plateGeometry.width + 1, "oportunidades: la lámina no desborda su contenedor");
+    await page.setViewportSize({ width: 320, height: 844 });
+    const mobilePlate = await editorialPlate.evaluate(element => ({
+      viewport: document.documentElement.clientWidth,
+      right: element.getBoundingClientRect().right,
+      columns: getComputedStyle(element.querySelector("figcaption")).gridTemplateColumns.split(" ").length,
+      pathColumns: getComputedStyle(document.querySelector(".opportunity-paths")).gridTemplateColumns.split(" ").length
+    }));
+    check(mobilePlate.right <= mobilePlate.viewport + 1, "oportunidades: la lámina cabe en 320 px");
+    check(mobilePlate.columns === 1 && mobilePlate.pathColumns === 1, "oportunidades: pie y recorridos se apilan en móvil");
+    await page.setViewportSize({ width: 390, height: 844 });
     const quickStart = page.locator(".opportunity-hero-actions a[href='#opportunity-form']");
     check(await quickStart.isVisible(), "oportunidades: el acceso directo al formulario está visible en el encabezado");
     check((await page.locator(".opportunity-hero-note").innerText()).includes("cuatro datos"), "oportunidades: se explica que la consulta puede comenzar con cuatro datos");
