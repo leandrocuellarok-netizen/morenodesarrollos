@@ -264,7 +264,24 @@
     "inmueble-mixto-saenz-pena-2200": "Casa con dos locales comerciales · Sáenz Peña 2200",
     "casa-alcorta-2400-potencial-desarrollo": "Casa sobre lote con potencial de desarrollo · Alcorta 2400 · 846 m²",
     "desarrollo-maria-eugenia-residences-village": "María Eugenia Residences & Village · Moreno",
-
+    "terreno-bosque-zapiola-dastugue-4051-325": "Bosque Zapiola · Intendente Dastugue 4051 · 325 m²",
+    "terreno-guemes-victorica-2820": "Güemes y Av. Victorica · fracción de 2.820 m²",
+    "terreno-colectora-gaona-5200-2400": "Colectora Av. Gaona 5200 · Belgrano y Entre Ríos · 2.400 m²",
+    "terreno-colectora-norte-tuyuti-3400": "Colectora Norte Acceso Oeste y Tuyutí · 3.400 m²",
+    "terreno-arenales-4300-2508": "Arenales 4300 · esquina Mariscal Antonio José de Sucre · 2.508 m²",
+    "terreno-victor-hugo-1100-1050": "Víctor Hugo 1100 · lote con mejoras · 1.050 m²",
+    "terreno-graham-bell-16781": "Fracción Graham Bell · 16.781 m²",
+    "terreno-jose-cortejarena-7930": "José Cortejarena · fracción de 7.930 m²",
+    "terreno-rodes-edison-2000": "Rodes y Edison · Colectora Norte Acceso Oeste · 2.000 m²",
+    "terreno-acceso-oeste-km34-10900": "Acceso Oeste km 34 · 10.900 m²",
+    "terreno-diagonal-canon-centenario-320": "Diagonal del Cañón y Centenario · lotes desde 320 m²",
+    "casa-ituzaingo-234-1660": "Ituzaingó 200 / 234 · terreno de 1.660 m² con casa a refaccionar",
+    "casa-joly-2400-476": "Chalet · Claudio María Joly 2400",
+    "casa-yapeyu-2300-merged": "Casa con parque y piscina · Yapeyú al 2300",
+    "desarrollo-bufo-maipu-1500": "Complejo Residencial Bufó Maipú · unidades en comercialización anunciada",
+    "desarrollo-copa-entre-rios-2501": "COPA · Entre Ríos 2501",
+    "terreno-carola-lorenzini-aymaraes-2175": "Carola Lorenzini / Aymaraes · lote 6 · 2.175 m²",
+    "predio-industrial-ruta24-66763": "Predio industrial Ruta Provincial 24 · 66.763 m²"
   });
 
   function readMapReference(search) {
