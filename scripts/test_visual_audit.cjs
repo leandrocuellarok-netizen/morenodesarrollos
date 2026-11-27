@@ -781,7 +781,7 @@ async function auditMapFallback(browser) {
     check((await page.locator('[data-fallback-reference="terreno-san-juan-bautista-1374"]').innerText()).includes("Geolocalización pendiente"), "mapa-ia fallback: las publicaciones sin coincidencia no reciben un punto ficticio");
     check((await page.locator(".map-review-privacy").innerText()).includes("sin cifrado"), "mapa-ia: la bitácora advierte que el almacenamiento local no está cifrado");
     check(await page.locator("#clear-review").isVisible(), "mapa-ia: el control para borrar la bitácora está disponible");
-    await page.locator("#duplicate-review-disclosure > summary").click();
+    check(await page.locator("#duplicate-review-disclosure").evaluate(element => element.open), "mapa-ia: la bandeja de coincidencias se abre por defecto en escritorio");
     const duplicatePairCount = await page.locator("#duplicate-review-list .map-duplicate-pair").count();
     check(duplicatePairCount >= 2, "mapa-ia: la bandeja muestra las relaciones de posible duplicación declaradas");
     const duplicateReviewText = await page.locator("#duplicate-review-list").innerText();
@@ -796,6 +796,11 @@ async function auditMapFallback(browser) {
     check((await page.locator("#review-status").innerText()).includes("Bitácora local borrada"), "mapa-ia: la interfaz confirma el borrado realizado");
 
     await page.setViewportSize({ width: 390, height: 844 });
+    const duplicateDisclosure = page.locator("#duplicate-review-disclosure");
+    check(!(await duplicateDisclosure.evaluate(element => element.open)), "mapa-ia: la bandeja se pliega por defecto en móvil");
+    await duplicateDisclosure.locator("> summary").click();
+    check(await duplicateDisclosure.evaluate(element => element.open), "mapa-ia: la bandeja se abre con un toque en móvil");
+    check(await page.locator(".map-duplicate-review-note").isVisible(), "mapa-ia: la advertencia de revisión humana queda visible al abrir la bandeja");
     const fallbackLayoutIsNatural = await page.locator(".map-canvas.is-static-fallback").evaluate(element => {
       const panel = element.querySelector(".map-static-fallback");
       const diagram = panel && panel.querySelector(".map-static-diagram");
