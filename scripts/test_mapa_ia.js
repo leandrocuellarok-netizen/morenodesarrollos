@@ -266,7 +266,7 @@ for (const id of followupExpectedIds) {
 }
 assert.equal(publishedProperties.find(item => item.id === "terreno-san-fernando-araucanos-7522-historico").availabilityStatus, "No vigente");
 assert.equal(publishedProperties.find(item => item.id === "chacras-teofilo-lote-324-historico").availabilityStatus, "No vigente");
-assert.equal(publishedProperties.find(item => item.id === "desarrollo-fructuoso-rivera-ruta25-460000-338parcelas").availabilityStatus, "Pendiente de revalidación");
+assert.equal(publishedProperties.find(item => item.id === "desarrollo-fructuoso-rivera-ruta25-460000-338parcelas").availabilityStatus, "No vigente");
 assert.ok(publishedProperties.filter(item => item.geocodeDisabled === true).every(item => item.lat === null && item.lng === null), "las ubicaciones aproximadas o ambiguas no reciben coordenadas");
 
 const hourlyExpectedIds = [
