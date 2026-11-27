@@ -200,12 +200,33 @@
     "pir25-up30-2713": "PIR 25 · UP 30 · 2.713,73 m²",
     "pir25-up50-2895": "PIR 25 · UP 50 · 2.895,61 m²",
     "pir25-up60-4171": "PIR 25 · UP 60 · 4.171,73 m²",
+        "casa-patricias-argentinas-2300-2762": "Casa quinta · Patricias Argentinas 2300/2301 · 2.762 m²",
+    "casa-chiclana-100-1988": "Casa de 12 ambientes · Chiclana 100 · Moreno",
+    "desarrollo-chacras-teofilo-galileo-7300": "Chacras de Teófilo · lote de 326 m² · Trujui",
+    "terreno-derqui-7660-384": "Lote · Avenida Derqui 7660 · 384 m²",
+    "terreno-abdon-calderon-1000-250": "Lote comercial · Abdón Calderón 1000 · 250 m²",
+    "terreno-conscripto-bernardi-1800-3888": "Conscripto Bernardi al 1800 · 3.888 m²",
+    "terreno-lamadrid-el-vergel-2161": "Gral. Aráoz de Lamadrid 100 · El Vergel · 2.161 m²",
+    "terreno-camilli-60-1000": "Teniente Oscar Camilli al 60 · 1.000 m²",
+    "terreno-justo-daract-2000-630": "Justo Daract al 2000 · 630 m²",
+    "terreno-vidt-1700-420": "Loteo Las Casuarinas · Vidt al 1700 · 420 m²",
+    "terreno-paramaribo-alvarez-jonte-425": "Paramaribo y Álvarez Jonte · 425 m²",
+    "terreno-jose-obregoso-600-600": "Loteo La Herradura · José Obregoso al 600 · 600 m²",
+    "terreno-diario-la-nacion-iguazu-420": "Diario La Nación esquina Iguazú · 420 m²",
+    "terreno-nanduti-2000-324-mejoras": "Ñanduti al 2000 · lote con mejoras · 324 m²",
+    "terreno-san-fernando-araucanos-7522-historico": "Av. San Fernando y Araucanos · macrolote 7.522 m² · no vigente",
+    "desarrollo-fructuoso-rivera-ruta25-460000-338parcelas": "Fracción Ruta 25 y Gral. Fructuoso Rivera · 46 ha · proyecto de 338 parcelas",
+    "desarrollo-ampliacion-sip2-cuarter-v-52ha": "Ampliación del Sector Industrial Planificado II · Cuartel V",
+    "chacras-teofilo-lote-324-historico": "Chacras de Teófilo · lote 324 m² · aviso anterior no vigente",
+    "casa-el-casco-733-212-historico": "Casa 4 ambientes · Barrio El Casco · Paso del Rey · 733 m²",
+    "casa-cervino-100-350-historico": "Casa · Cervino 100 · Moreno · 350 m²",
+    "casa-leandro-alem-2100-562-historico": "Casa 6 ambientes · Leandro N. Alem al 2100 · Moreno",
   });
 
   function readMapReference(search) {
     const parameters = new URLSearchParams(String(search || ""));
     const id = String(parameters.get("map_ref") || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
-    if (!/^[a-z0-9-]{1,40}$/.test(id) || !Object.prototype.hasOwnProperty.call(mapReferenceNames, id)) {
+    if (!/^[a-z0-9-]{1,80}$/.test(id) || !Object.prototype.hasOwnProperty.call(mapReferenceNames, id)) {
       return null;
     }
     return { id: id, name: mapReferenceNames[id] };
