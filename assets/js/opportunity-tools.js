@@ -166,7 +166,7 @@
     "terreno-pim-ii-rp24-2677": "Parque Industrial PIM II · 2.677 m²",
     "terreno-pim-ii-rp24-7700-2103": "PIM II · parcela 67 · RP 24 al 7700 · 2.103 m²",
     "casa-san-ramon-2700-251": "Dos casas independientes · San Ramón al 2700",
-    "casa-perito-moreno-3800-350": "Casa · Perito Moreno 3800/3870 · La Reja"
+    "casa-perito-moreno-3800-350": "Casa · Perito Moreno 3800/3870 · La Reja",
     "terreno-los-abedules-4100-521": "Lote en esquina · Los Abedules 4100 · Álvarez del Bosque · 520,7 m²",
     "terreno-chacabuco-emilio-mitre-206": "Dos lotes en Chacabuco entre Emilio Mitre y Moreno · 206,42 m²",
     "casa-francisco-piovano-3700-2960": "Casa quinta sobre tres lotes · Francisco Piovano 3700 · 2.960 m²",
