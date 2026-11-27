@@ -208,6 +208,7 @@ def main() -> None:
                 else:
                     localities = re.findall(r'\{\s*id:"([^"]+)",\s*name:"([^"]+)",\s*lat:', locality_body)
                     opportunities = re.findall(r'\{\s*id:"([^"]+)",\s*stage:"([^"]+)",\s*name:"([^"]+)",\s*lat:', opportunity_body)
+                    mapped_opportunities = re.findall(r'\{\s*id:"([^"]+)",\s*stage:"([^"]+)",\s*name:"([^"]+)",\s*lat:(-?\d+(?:\.\d+)?),', opportunity_body)
                     svg_match = re.search(r'<svg\b(?=[^>]*\bclass="territory-diagram")[^>]*>(.*?)</svg>', page_source, re.DOTALL)
                     if not svg_match:
                         errors.append("Inicio: falta el esquema SVG de referencias territoriales")
@@ -217,12 +218,12 @@ def main() -> None:
                         thesis_marks = len(re.findall(r'<g\b[^>]*class="territory-marker (?:documented-mark|hypothesis-mark)"', svg_source))
                         documented_marks = len(re.findall(r'<g\b[^>]*class="territory-marker documented-mark"', svg_source))
                         hypothesis_marks = len(re.findall(r'<g\b[^>]*class="territory-marker hypothesis-mark"', svg_source))
-                        expected_documented = sum(stage == "documented" for _, stage, _ in opportunities)
-                        expected_hypothesis = sum(stage == "hypothesis" for _, stage, _ in opportunities)
+                        expected_documented = sum(stage == "documented" for _, stage, _, _ in mapped_opportunities)
+                        expected_hypothesis = sum(stage == "hypothesis" for _, stage, _, _ in mapped_opportunities)
                         if locality_marks != len(localities):
                             errors.append(f"Inicio: el esquema muestra {locality_marks} localidades, pero Mapa IA contiene {len(localities)}")
-                        if thesis_marks != len(opportunities):
-                            errors.append(f"Inicio: el esquema muestra {thesis_marks} tesis, pero Mapa IA contiene {len(opportunities)}")
+                        if thesis_marks != len(mapped_opportunities):
+                            errors.append(f"Inicio: el esquema muestra {thesis_marks} puntos, pero Mapa IA tiene {len(mapped_opportunities)} referencias con coordenadas precisas y {len(opportunities)} tesis en total")
                         if documented_marks != expected_documented or hypothesis_marks != expected_hypothesis:
                             errors.append("Inicio: la leyenda visual de evidencia no coincide con las etapas de las tesis del Mapa IA")
                         for _, locality_name in localities:
@@ -304,12 +305,14 @@ def main() -> None:
                         errors.append(f"assets/js/mapa-ia.js: falta el control de privacidad de la bitácora: {required_logic}")
             for required_source_markup in (
                 'id="map-verification-title"',
-                'id="map-refine-filters"',
+                'id="locality-filter"',
+                'id="activity-filter"',
+                'id="next-step-filter"',
+                'id="map-empty-state"',
                 'id="atlas-index-disclosure"',
                 'id="atlas-index-summary"',
                 'id="map-review-disclosure"',
                 'id="map-verification-disclosure"',
-                'data-mobile-collapsible',
                 'href="https://mapas.moreno.gob.ar/" target="_blank" rel="noopener noreferrer"',
                 'href="https://arba.gov.ar/geoarba/inicio.asp" target="_blank" rel="noopener noreferrer"',
                 'href="https://geo.arba.gov.ar/geoserver/idera/wms?request=GetCapabilities&amp;service=WMS"',
@@ -337,8 +340,8 @@ def main() -> None:
                 for required_style in (".map-dossier-export", ".map-dossier-status"):
                     if required_style not in map_css_source:
                         errors.append(f"assets/css/mapa-ia.css: falta el estilo del dossier: {required_style}")
-            if len(re.findall(r'<details\b[^>]*data-mobile-collapsible', page_source)) != 6:
-                errors.append("mapa-ia/index.html: se esperaban seis disclosures progresivos para móvil")
+            if re.search(r'<details\b', page_source):
+                errors.append("mapa-ia/index.html: los paneles de página deben ser secciones visibles, no desplegables")
             if len(re.findall(r'<article class="verification-source"', page_source)) != 4:
                 errors.append("mapa-ia/index.html: la mesa de verificación debe presentar cuatro rutas institucionales")
 
@@ -441,7 +444,21 @@ def main() -> None:
                     'getElementById("kind-filter")',
                     'getElementById("availability-filter")',
                     'getElementById("diligence-filter")',
-                    'kind: doc.getElementById("kind-filter").value',
+                    "kind: kindInput.value",
+                    "locality: localityInput.value",
+                    "activity: activityInput.value",
+                    "nextStep: nextStepInput.value",
+                    "function normalizeSearchText(value)",
+                    "function searchQueryMatches(query,searchable)",
+                    "function referenceMatchesLocality(item,key)",
+                    "function referenceMatchesActivity(item,key)",
+                    "function referenceMatchesNextStep(item,key)",
+                    "const MAP_VIEW_LOCALITIES",
+                    "const MAP_VIEW_ACTIVITIES",
+                    "const MAP_VIEW_NEXT_STEPS",
+                    'url.searchParams.set("localidad",n.locality)',
+                    'url.searchParams.set("actividad",n.activity)',
+                    'url.searchParams.set("proximo",n.nextStep)',
                     'availability: availabilityInput.value',
                     'diligence: diligenceInput.value',
                     'diligenceInput.addEventListener("change", resetPublishedPaginationAndRender)',
@@ -510,6 +527,11 @@ def main() -> None:
                     ".map-verification-disclosure",
                     ".map-mobile-disclosure > summary:focus-visible",
                     ".map-filter-group",
+                    ".map-section-heading",
+                    ".map-empty-state",
+                    ".map-filter-locality",
+                    ".map-filter-activity",
+                    ".map-filter-next-step",
                     "minmax(300px, 2fr)",
                     ".map-filter-field",
                     ".map-toolbar-actions",
