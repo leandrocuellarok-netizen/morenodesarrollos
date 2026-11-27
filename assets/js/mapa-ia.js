@@ -1105,7 +1105,7 @@ if (hourlySumio450) {
   hourlySumio450.availabilityStatus = "No vigente";
   hourlyAppendObservation(hourlySumio450, "La ficha original incluye el título VENDIDO para el lote de 450 m².");
 }
-const hourlySumioProject = hourlyById("loteo-sumio-proyecto");
+const hourlySumioProject = hourlyById("sumio-proyecto");
 if (hourlySumioProject) {
   hourlySumioProject.publicationDate = "19/03/2026";
   hourlySumioProject.verificationStatus = "Ficha directa de Pablo Aquino Inmobiliaria accesible el 27/11/2026; publicación fechada 19/03/2026 declara que avanzan las obras y describe 26 parcelas.";
