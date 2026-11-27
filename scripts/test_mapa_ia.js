@@ -15,7 +15,7 @@ assert.ok(source.includes("attributionControl: { compact: false }"), "la atribuc
 assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece el enlace para reportar problemas cartográficos");
 const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
 assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
-assert.ok(mapPage.includes('id="kind-filter"'), "el atlas permite filtrar por sector o línea de desarrollo");
+assert.ok(mapPage.includes('id="kind-filter" type="hidden"'), "el atlas conserva compatibilidad con enlaces sectoriales heredados");
 assert.ok(mapPage.includes('id="locality-filter"'), "el atlas permite filtrar por localidad");
 assert.ok(mapPage.includes('id="activity-filter"'), "el atlas permite filtrar por actividad");
 assert.ok(mapPage.includes('id="next-step-filter"'), "el atlas permite filtrar por próximo paso");
@@ -35,7 +35,7 @@ for (const kind of ["industrial", "commercial", "tourism", "land", "infrastructu
   assert.ok(mapPage.includes('option value="' + kind + '"'), "el filtro ofrece el sector " + kind);
 }
 assert.ok(mapPage.includes('label class="map-filter-field'), "cada filtro tiene una etiqueta visible y asociada");
-assert.ok(mapPage.includes("Sector / línea de desarrollo"), "la función del filtro sectorial se explica en pantalla");
+assert.ok(mapPage.includes("Actividad / sector"), "la actividad reúne el filtro sectorial visible");
 assert.ok(source.includes('getElementById("kind-filter")'), "el motor conecta el control sectorial");
 assert.ok(source.includes("kind: kindInput.value"), "la renderización utiliza el sector seleccionado");
 assert.ok(source.includes("locality: localityInput.value") && source.includes("activity: activityInput.value") && source.includes("nextStep: nextStepInput.value"), "la renderización combina localidad, actividad y próximo paso");
