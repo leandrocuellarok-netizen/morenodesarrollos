@@ -1219,7 +1219,12 @@ const turn12ExpectedIds = [
   "predio-deportivo-san-luis-2600-10860",
   "fraccion-rocha-blaquier-2001-10000",
   "terreno-libano-echeverria-2-lotes-456",
-  "terreno-boulogne-sebastian-el-cano-373"
+  "terreno-boulogne-sebastian-el-cano-373",
+  "quinta-nemesio-alvarez-3900-1100",
+  "quinta-tegucigalpa-4500-300",
+  "quinta-los-robles-2900-270",
+  "quinta-mercedes-100-696",
+  "quinta-mercedes-2200-1260"
 ];
 for (const id of turn12ExpectedIds) {
   const item = publishedProperties.find(record => record.id === id);
@@ -1239,8 +1244,8 @@ const laProvidencia = publishedProperties.find(record => record.id === "quinta-l
 assert.ok(laProvidencia.observations.includes("no cuentan con planos aprobados"));
 const sourceUrls = publishedProperties.map(record => record.source).filter(Boolean);
 assert.equal(new Set(sourceUrls).size, sourceUrls.length, "no se duplican enlaces primarios");
-assert.equal(publishedProperties.length, 337, "el catálogo incorpora 24 altas netas sin duplicados");
-assert.equal(all.length, 348, "el inventario completo refleja 337 publicaciones y 11 referencias territoriales");
+assert.equal(publishedProperties.length, 342, "el catálogo incorpora 29 altas netas sin duplicados");
+assert.equal(all.length, 353, "el inventario completo refleja 342 publicaciones y 11 referencias territoriales");
 
 
 testGeorefRequestQueue()
