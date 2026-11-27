@@ -462,20 +462,20 @@
     "quinta-los-robles-2900-270": "Los Robles 2900 · casa quinta tipo loft",
     "quinta-mercedes-100-696": "Mercedes 100 · quinta de tres ambientes",
     "quinta-mercedes-2200-1260": "Mercedes 2200 · quinta con dos viviendas y pileta",
-    "casa-bolivia-2100-400": "Casa 4 ambientes · Bolivia 2100 · 400 m²",
-    "casa-panama-5300-300": "Casa 6 ambientes · Panamá 5300 · 300 m²",
-    "quinta-formosa-3400-3600": "Casa quinta con dos viviendas · Formosa 3400 · 3.600 m²",
+    "casa-bolivia-2100-400": "Casa 4 ambientes · Bolivia 2100",
+    "casa-panama-5300-300": "Casa 6 ambientes · Panamá 5300",
+    "quinta-formosa-3400-3600": "Casa quinta con dos viviendas · Formosa 3400",
     "casa-urquiza-2600-299": "Casa 3 ambientes · Justo José de Urquiza 2600",
-    "desarrollo-altos-del-monte-san-juan-bautista-2400": "Condominio Altos del Monte · unidades terminadas · San Juan Bautista 2400",
-    "casa-concordia-1600-219": "Casa 2 ambientes · Concordia 1600 · 219 m²",
+    "desarrollo-altos-del-monte-san-juan-bautista-2400": "Condominio Altos del Monte · casas terminadas · San Juan Bautista 2400",
+    "casa-concordia-1600-219": "Casa 2 ambientes · Concordia 1600",
     "casa-maria-eugenia-residences-coravalan-2300-187": "Dúplex · María Eugenia Residences & Village · Intendente Coravalan al 2300",
     "terreno-diario-la-prensa-700-960": "Lote UF 272 · Campos de Álvarez · Diario La Prensa 700 · 960 m²",
     "quinta-intendente-dastugue-4200-2500": "Casa quinta con segunda vivienda a terminar · Intendente Dastugue 4200",
-    "quinta-rembrandt-3800-2700": "Casa quinta · Rembrandt 3800 · 2.700 m²",
-    "casa-libertad-300-175": "Casa 3 ambientes · Libertad al 300 · 175 m²",
-    "casa-puente-marquez-1202-1000": "Casa con pileta y quincho · Puente de Márquez 1202 · 1.000 m²",
+    "quinta-rembrandt-3800-2700": "Quinta con pileta · Rembrandt 3800",
+    "casa-libertad-300-175": "Casa 3 ambientes · Libertad al 300",
+    "casa-puente-marquez-1202-1000": "Casa 4 ambientes con parque y pileta · Puente de Márquez 1202",
     "terreno-san-diego-1687": "Terreno · San Diego Club de Campo · 1.687 m²",
-    "terreno-san-diego-2175-historico": "Terreno histórico no vigente · San Diego Club de Campo · 2.175 m²"
+    "terreno-san-diego-2175-historico": "Lote forestado · San Diego Club de Campo · 2.175 m² · antecedente"
   });
 
   function listMapReferenceIds() {
