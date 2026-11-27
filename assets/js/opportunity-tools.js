@@ -233,6 +233,8 @@
     "terreno-prados-oeste2-lote145-781": "Prados del Oeste II · lote 145 · 781 m²",
     "terreno-joaquin-v-gonzalez-2400-615": "Joaquín V. González 2400 · 615 m² y estructura de hormigón",
     "desarrollo-polo-veinticinco-15ha-37-lotes": "Polo Veinticinco · parque industrial · 15 ha · 37 lotes",
+    "desarrollo-parque-industrial-reconquista-80ha": "Parque Industrial Reconquista · 80 ha · Trujui",
+    "desarrollo-parque-industrial-desarrollo-productivo-40ha": "Parque Industrial Desarrollo Productivo · 40 ha · Cuartel V",
   });
 
   function readMapReference(search) {
