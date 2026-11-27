@@ -5803,7 +5803,7 @@ const nov27_1032NewEntries = [
       }
     ],
     "agency": "Dambolena",
-    "contact": "Martín Dambolena, CMCPDJMGR 205 / CUCICBA 7176; formulario de consulta del portal; teléfono completo no visible en la ficha consultada.",
+    "contact": "Martín Dambolena, CMCPDJMGR 205 / CUCICBA 7176; WhatsApp +54 11 2311-0532 según ficha sindicada de Proppies; consulta por formulario de Argenprop.",
     "price": "USD 490.000",
     "currency": "USD",
     "landSurfaceM2": 1418,
@@ -5848,13 +5848,7 @@ const nov27_1032NewEntries = [
     "address": "Tres de Febrero 7800, entre Montevideo y Río de la Plata, Moreno",
     "geocodeQuery": "Tres de Febrero 7800, Moreno, Buenos Aires",
     "geocodeMatch": "TRES DE FEBRERO 7800",
-    "source": "https://pabloaquinoinmobiliaria.com.ar/propiedades/venta-lotemoreno/",
-    "sourceAlternates": [
-      {
-        "url": "https://www.argenprop.com/inmobiliarias/pablo-aquino-soluciones-inmobiliarias/inmuebles/venta",
-        "label": "Perfil de publicaciones de Pablo Aquino; contiene el mismo aviso"
-      }
-    ],
+    "source": "https://pabloaquinoinmobiliaria.com.ar/propiedades/venta-lotemoreno/", 
     "agency": "Pablo Aquino Inmobiliaria",
     "contact": "+54 9 11 7001-7411 · 02320-423003; oficina Hipólito Yrigoyen 1119, José C. Paz.",
     "phone": "+5491170017411",
@@ -5889,7 +5883,7 @@ const nov27_1032NewEntries = [
     "price": "USD 230.000",
     "currency": "USD",
     "landSurfaceM2": 2163,
-    "publicationDate": "Proppies indicaba publicado hace 3 meses al 27/11/2026; ficha directa de Zonaprop accesible el 27/11/2026.",
+    "publicationDate": "Proppies indicaba publicado hace 4 meses / 137 días al 27/11/2026; ficha directa de Zonaprop accesible el 27/11/2026.",
     "surfaceNote": "Dos parcelas: parcela 7 de 1.233 m² y parcela 8 de 930 m². El aviso publica R4b, FOS 0,60, FOT 1,00 y altura máxima 9 m, sujeto a certificado municipal.",
     "observations": "La ficha ofrece venta conjunta, permuta y posibilidad de financiación. Confirmar si ambas parcelas se venden juntas o por separado, títulos, servicios de agua y cloacas, estado parcelario y vigencia del precio. El encabezado dice 2700 y la descripción 2751; geolocalización deshabilitada hasta resolver la numeración.",
     "lat": null,
@@ -5907,22 +5901,15 @@ const nov27_1032NewEntries = [
     "address": "Esquina Samaniego y Pedro de Angelis, Barrio El Ensueño, Francisco Álvarez, Moreno (ficha: Samaniego 4900)",
     "geocodeQuery": "Samaniego 4900, Francisco Alvarez, Moreno, Buenos Aires",
     "geocodeMatch": "SAMANIEGO 4900",
-    "source": "https://emilianoescola17.kitepropcrm.com/site/properties/592799/casa-quinta-de-4200-m2-parque-vegetacion-pileta",
-    "sourceAlternates": [
-      {
-        "url": "https://casa.mercadolibre.com.ar/MLA-2216012443-casa-quinta-de-4200-m2-parque-vegetacion-pileta-_JM",
-        "label": "Publicación sindicada de MercadoLibre para la misma casa quinta"
-      }
-    ],
+    "source": "https://emilianoescola17.kitepropcrm.com/site/properties/592799/casa-quinta-de-4200-m2-parque-vegetacion-pileta", 
     "agency": "Emiliano Escola Servicios Inmobiliarios",
-    "contact": "Formulario de contacto de Emiliano Escola Servicios Inmobiliarios; no se expone un teléfono completo en la ficha consultada.",
+    "contact": "Emiliano Escola · +54 11 5126-5160 · emilianoescola@deinmobiliarios.com · leads@eeservicios.com.",
     "price": "USD 89.000",
     "currency": "USD",
     "landSurfaceM2": 4200,
     "coveredSurfaceM2": 130,
-    "publicationDate": "MercadoLibre indicaba publicado hace aproximadamente 37 días al 27/11/2026; ficha del corredor indexada hace 2 semanas.",
-    "surfaceNote": "Dos fracciones de 70 × 30 m (2.100 m² cada una), unidas en un total anunciado de 4.200 m²; 130 m² cubiertos y 4.100 m² no cubiertos según ficha técnica del anunciante. Otros resultados sindicados muestran 4.230 m² totales, por lo que debe prevalecer mensura/título.",
-    "observations": "Casa quinta en esquina, con vivienda, dependencia secundaria, galpón, parque arbolado y pileta tipo tanque australiano. El aviso ofrece el conjunto de dos parcelas; no asumir subdivisión o venta separada. Verificar títulos, agua de pozo, instalaciones, planos y disponibilidad.",
+        "surfaceNote": "Dos fracciones de 70 × 30 m (2.100 m² cada una), unidas en 4.200 m² de terreno; la ficha directa declara 130 m² cubiertos y 4.100 m² no cubiertos, pero su mismo cuadro técnico también muestra 153 m² totales, dato incompatible. Prevalecen mensura y título.",
+    "observations": "Casa quinta en esquina Samaniego y Pedro de Angelis, con vivienda principal, dependencia para casero, galpón, parque arbolado y pileta tipo tanque australiano. El aviso ofrece el conjunto de dos parcelas; no asumir subdivisión o venta separada. La ficha técnica es inconsistente entre superficie total y cubierta/no cubierta. Verificar títulos, agua de pozo, instalaciones, planos y disponibilidad.");
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
@@ -5994,6 +5981,7 @@ const nov27_1032NewEntries = [
     "geocodeQuery": "Concordia 2545, Moreno, Buenos Aires",
     "geocodeMatch": "CONCORDIA 2545",
     "source": "https://www.jorgelinamartinezpropiedades.com.ar/propiedad/183298_casa-de-dos-plantas-en-venta-en-moreno/",
+    "sourceAlternates": [{"url":"https://proppies.app/propiedad/buenos-aires/moreno/casa-5-amb-en-venta-en-moreno-45631482","label":"Ficha sindicada de Proppies para la misma casa; publicada hace 2 meses"}],
     "agency": "Jorgelina Martinez Propiedades",
     "contact": "Jorgelina Martínez · +54 11 6732-4994 · Jorgelinamartinezprop@gmail.com.",
     "phone": "+541167324994",
@@ -6001,7 +5989,7 @@ const nov27_1032NewEntries = [
     "currency": "USD",
     "landSurfaceM2": 311,
     "coveredSurfaceM2": 198,
-    "publicationDate": "Actualizado el 11/07/2026 a las 10:20 según ficha de la inmobiliaria.",
+    "publicationDate": "Ficha de Jorgelina actualizada el 11/07/2026 a las 10:20; copia sindicada de Proppies indicaba publicada hace 2 meses al 27/11/2026. Las fechas de las dos fuentes no coinciden.",
     "surfaceNote": "311 m² totales y 198 m² cubiertos según la ficha de la inmobiliaria; cuatro dormitorios, cinco ambientes y tres baños.",
     "observations": "Casa de dos plantas, pileta de 7 × 3 m, garage y terraza. La planta baja tiene antigüedad declarada de 60 años y la planta alta de 20. La ficha sigue marcada “En venta”, pero su última actualización es de julio: revalidar precio, estado y disponibilidad antes de una visita.",
     "lat": null,
