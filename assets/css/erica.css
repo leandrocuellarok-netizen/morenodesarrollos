@@ -1174,3 +1174,57 @@ main#main-content:focus {
   .opportunity-path+.opportunity-path{border-left:0;padding-left:0}
   .opportunity-path{padding:22px 0}
 }
+
+
+/* SOY MORENO: perfil personal y territorial. */
+.soy-moreno-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:clamp(36px,7vw,100px);align-items:center;padding:100px 0 112px}
+.soy-moreno-copy h1{max-width:760px;margin:24px 0 26px;font:400 clamp(52px,7vw,88px)/.96 var(--serif);letter-spacing:-.06em}
+.soy-moreno-copy h1 em{color:var(--rust);font-weight:400}
+.soy-moreno-copy p{max-width:680px;color:#5e6058;font:16px/1.85 var(--sans)}
+.soy-moreno-copy .soy-moreno-lead{color:var(--ink);font:400 22px/1.55 var(--serif)}
+.soy-moreno-signature{margin-top:28px;font:italic 20px var(--serif);color:var(--ink)}
+.soy-moreno-signature span{font:11px var(--sans);color:var(--muted);letter-spacing:.08em}
+.soy-moreno-portrait{position:relative;margin:0;padding:14px;border:1px solid var(--line);background:var(--paper2)}
+.soy-moreno-portrait img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 25%;filter:saturate(.82)}
+.soy-moreno-portrait figcaption{padding:13px 4px 2px;color:var(--muted);font:9px var(--sans);letter-spacing:.2em}
+
+/* INFO PYME MORENO: portal editorial de noticias. */
+.pyme-news-hero{padding:90px 0 72px;background:#e8e5d9;border-bottom:1px solid var(--line)}
+.pyme-news-hero-inner{max-width:1280px}
+.pyme-news-hero h1{margin:22px 0 18px;font:400 clamp(58px,8vw,104px)/.92 var(--serif);letter-spacing:-.065em}
+.pyme-news-hero h1 em{color:var(--rust);font-weight:400}
+.pyme-news-hero p{max-width:760px;margin:0;color:#5e6058;font:17px/1.8 var(--sans)}
+.pyme-news-count{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:27px;color:#77796f;font:10px var(--sans);letter-spacing:.13em;text-transform:uppercase}
+.pyme-news-count strong{color:var(--rust);font-weight:700}
+.pyme-featured-section,.pyme-all-news-section{padding:82px 0;border-bottom:1px solid var(--line)}
+.pyme-section-heading{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:end;margin-bottom:34px}
+.pyme-section-heading h2{margin:12px 0 0;font:400 clamp(38px,5vw,60px)/1 var(--serif);letter-spacing:-.045em}
+.pyme-section-heading h2 em{color:var(--rust);font-weight:400}
+.pyme-section-heading p{max-width:620px;margin:0;color:#66685f;font:13px/1.8 var(--sans)}
+.pyme-featured-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.pyme-card{display:flex;flex-direction:column;min-width:0;padding:23px 24px 22px;border:1px solid var(--line);background:#f6f3eb;transition:transform .18s ease,border-color .18s ease}
+.pyme-card:hover{transform:translateY(-3px);border-color:#9b8d78}
+.pyme-card-featured{min-height:280px;padding:28px 30px;background:#2d322d;color:#f4f1e8;border-color:#2d322d}
+.pyme-featured-tag{display:inline-block;margin-bottom:18px;color:#d6b58d;font:700 9px var(--sans);letter-spacing:.16em}
+.pyme-card-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:15px;color:#8a6a4a;font:9px var(--sans);letter-spacing:.13em;text-transform:uppercase}
+.pyme-card-featured .pyme-card-meta{color:#c6b7a2}
+.pyme-card-meta time{white-space:nowrap;letter-spacing:.06em}
+.pyme-card h3{margin:0 0 12px;color:var(--ink);font:400 25px/1.12 var(--serif);letter-spacing:-.02em}
+.pyme-card-featured h3{max-width:620px;color:#f4f1e8;font-size:clamp(25px,3vw,34px)}
+.pyme-card p{margin:0 0 20px;color:#65675f;font:12px/1.75 var(--sans)}
+.pyme-card-featured p{max-width:660px;color:#d3d1c7;font-size:13px}
+.pyme-card-source{margin-top:auto;padding-top:13px;border-top:1px solid var(--line);color:#8a6a4a;font:9px/1.5 var(--sans);letter-spacing:.04em}
+.pyme-card-featured .pyme-card-source{border-color:#555b52;color:#c6b7a2}
+.pyme-read-link{display:inline-block;align-self:flex-start;margin-top:13px;color:#80533a;font:700 10px var(--sans);letter-spacing:.08em;text-decoration:none;text-underline-offset:4px}
+.pyme-read-link:hover{text-decoration:underline}
+.pyme-card-featured .pyme-read-link{color:#e1b98f}
+.pyme-news-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.pyme-news-grid .pyme-card{min-height:270px}
+.pyme-editorial-note{max-width:950px;margin:32px 0 0;color:#77796f;font:10px/1.7 var(--sans)}
+.pyme-contribute-band{padding:62px 0;background:#dedbcf}
+.pyme-contribute-inner{display:flex;justify-content:space-between;align-items:center;gap:35px}
+.pyme-contribute-inner h2{max-width:650px;margin:12px 0;font:400 clamp(32px,4vw,48px)/1.05 var(--serif)}
+.pyme-contribute-inner p{max-width:620px;color:#62645c;font:13px/1.75 var(--sans)}
+.pyme-contribute-inner .button{flex:0 0 auto}
+@media(max-width:900px){.pyme-news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.soy-moreno-hero{gap:35px}.pyme-section-heading{grid-template-columns:1fr;gap:15px}}
+@media(max-width:760px){.soy-moreno-hero{grid-template-columns:1fr;padding:62px 0 72px}.soy-moreno-portrait{max-width:520px}.pyme-news-hero{padding:64px 0 52px}.pyme-featured-section,.pyme-all-news-section{padding:58px 0}.pyme-featured-grid,.pyme-news-grid{grid-template-columns:1fr}.pyme-card-featured{min-height:0;padding:23px}.pyme-contribute-inner{align-items:flex-start;flex-direction:column}.pyme-news-count{line-height:1.7}}
