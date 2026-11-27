@@ -1947,38 +1947,38 @@ publishedProperties.push(
 
 const nov27FollowupEntries = [
   {
-  "id": "casa-patricias-argentinas-2300-2762",
-  "recordType": "Casa quinta individual",
-  "name": "Casa quinta · Patricias Argentinas 2300/2301 · 2.762 m²",
-  "locality": "Cuartel V / Trujui (discrepancia interna del aviso)",
-  "address": "Patricias Argentinas 2300 (la descripción menciona 2301), barrio Tierras del Morenito; el encabezado ubica en Cuartel V y la descripción menciona Trujui, Moreno",
-  "source": "https://www.argenprop.com/quinta-en-venta-en-cuartel-v--20907347",
-  "sourceAlternates": [
-    {
-      "url": "https://www.inmuebles.clarin.com/quinta-en-venta-en-cuartel-v--20907347",
-      "label": "Copia en Inmuebles Clarín"
-    },
-    {
-      "url": "https://proppies.app/propiedad/buenos-aires/cuartel-v/casa-3-amb-en-venta-en-cuartel-v-41711819",
-      "label": "Registro histórico Proppies: inactivo, último precio USD 87.000"
-    }
-  ],
-  "agency": "RE/MAX Grammar; publicación en Zonaprop e Inmuebles Clarín",
-  "contact": "María Laura Torralba; corredor responsable Juan Alberto Crescimone, CMCPSM 2821 / CPI 9670. Teléfono completo no visible en la ficha.",
-  "price": "USD 82.000",
-  "currency": "USD",
-  "landSurfaceM2": 2762,
-  "coveredSurfaceM2": 102,
-  "surfaceNote": "La publicación desglosa vivienda principal de 46 m², vivienda de huéspedes de 23,5 m² y quincho de 32,8 m². Superficie total cubierta declarada: 102 m².",
-  "observations": "La ficha individual de Argenprop publica USD 82.000 y la copia de Inmuebles Clarín coincide. Proppies conserva un registro anterior de la misma propiedad marcado inactivo con último precio USD 87.000 el 24/09/2026. El título indica altura 2300 y la descripción 2301. Confirmar precio, altura, mensura, estado de las construcciones y servicios.",
-  "lat": null,
-  "lng": null,
-  "geocodeDisabled": true,
-  "lastCheckedAt": "2026-11-27",
-  "availabilityStatus": "No confirmada",
-  "geolocationStatus": "Pendiente: el aviso discrepa entre Cuartel V y Trujui y entre altura 2300 y 2301; no se asigna coordenada.",
-  "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio y superficies publicados, pero disponibilidad comercial no confirmada."
-},
+    "id": "casa-patricias-argentinas-2300-2762",
+    "recordType": "Casa quinta individual",
+    "name": "Casa quinta · Patricias Argentinas 2300/2301 · 2.762 m²",
+    "locality": "Cuartel V / Trujui (discrepancia interna del aviso)",
+    "address": "Patricias Argentinas 2300 (la descripción menciona 2301), barrio Tierras del Morenito; el encabezado ubica en Cuartel V y la descripción menciona Trujui, Moreno",
+    "source": "https://www.argenprop.com/quinta-en-venta-en-cuartel-v--20907347",
+    "sourceAlternates": [
+      {
+        "url": "https://www.inmuebles.clarin.com/quinta-en-venta-en-cuartel-v--20907347",
+        "label": "Copia en Inmuebles Clarín"
+      },
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/cuartel-v/casa-3-amb-en-venta-en-cuartel-v-41711819",
+        "label": "Registro histórico Proppies: inactivo, último precio USD 87.000"
+      }
+    ],
+    "agency": "RE/MAX Grammar; publicación en Zonaprop e Inmuebles Clarín",
+    "contact": "María Laura Torralba; corredor responsable Juan Alberto Crescimone, CMCPSM 2821 / CPI 9670. Teléfono completo no visible en la ficha.",
+    "price": "USD 82.000",
+    "currency": "USD",
+    "landSurfaceM2": 2762,
+    "coveredSurfaceM2": 102,
+    "surfaceNote": "La publicación desglosa vivienda principal de 46 m², vivienda de huéspedes de 23,5 m² y quincho de 32,8 m². Superficie total cubierta declarada: 102 m².",
+    "observations": "La ficha individual de Argenprop publica USD 82.000 y la copia de Inmuebles Clarín coincide. Proppies conserva un registro anterior de la misma propiedad marcado inactivo con último precio USD 87.000 el 24/09/2026. El título indica altura 2300 y la descripción 2301. Confirmar precio, altura, mensura, estado de las construcciones y servicios.",
+    "lat": null,
+    "lng": null,
+    "geocodeDisabled": true,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: el aviso discrepa entre Cuartel V y Trujui y entre altura 2300 y 2301; no se asigna coordenada.",
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio y superficies publicados, pero disponibilidad comercial no confirmada."
+  },
   {
     "id": "casa-chiclana-100-1988",
     "recordType": "Casa individual",
@@ -2346,35 +2346,35 @@ const nov27FollowupEntries = [
     "verificationStatus": "Resultado de Argenprop indexado aproximadamente un mes antes de la revisión; ficha individual devolvió 410 Gone el 27/11/2026. Se conserva el precio histórico de USD 4.000.000 y el proyecto declarado de 338 parcelas, pero no se trata como oportunidad vigente. La aprobación de planos y el estado del proyecto no se verificaron independientemente."
   },
   {
-  "id": "desarrollo-ampliacion-sip2-cuarter-v-52ha",
-  "recordType": "Desarrollo industrial público · ampliación del Sector Industrial Planificado II",
-  "name": "Ampliación del Sector Industrial Planificado II · Cuartel V",
-  "locality": "Cuartel V",
-  "address": "Circunscripción V, parcelas 1371 y 1372; entorno de calle Máximo Paz entre Bernardi y Juan B. Molière, Cuartel V (ubicación aproximada)",
-  "source": "https://sibom.slyt.gba.gob.ar/bulletins/13860/contents/2308258",
-  "sourceAlternates": [
-    {
-      "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
-      "label": "Listado municipal de parques industriales y contacto"
-    },
-    {
-      "url": "https://www.perspectivasureste.org/2026/08/20/moreno-ampliara-el-parque-industrial-municipal-ii-con-52-hectareas/",
-      "label": "Nota local del 20/08/2026 sobre la ampliación de 52 ha"
-    }
-  ],
-  "agency": "Municipalidad de Moreno / Fideicomiso Parques Industriales Moreno (FIDEPIM)",
-  "contact": "contacto@pimoreno.com.ar (Parque Industrial Moreno II) · promociondeindustria@moreno.gov.ar (Secretaría municipal de Industria y Comercio) · formulario municipal de consulta de PIM II.",
-  "surfaceNote": "La Ordenanza 7371/25 identifica las parcelas catastrales Circunscripción V, parcelas 1371 y 1372, pero no publica superficie total. La referencia a 52 hectáreas procede de una nota local del 20/08/2026 y no está cuantificada en la ordenanza.",
-  "publicationDate": "Ordenanza sancionada el 31/07/2025; publicación en SIBOM el 28/11/2025; nota sobre ampliación publicada el 20/08/2026.",
-  "observations": "La Ordenanza 7371/25 autoriza aportar las parcelas 1371 y 1372 a FIDEPIM para ampliar el SIP II. El artículo 3 fija USD 1.128.000 como valor de adquisición de los inmuebles aportados; el artículo 4 establece un reintegro municipal del 50% del valor de venta de cada parcela hasta completar ese importe. Esa cifra no es un precio de venta al público. No se verificó avance físico, subdivisión, cronograma ni disponibilidad comercial. No es una oferta individual de tierra.",
-  "lat": null,
-  "lng": null,
-  "geocodeDisabled": true,
-  "lastCheckedAt": "2026-11-27",
-  "availabilityStatus": "No confirmada",
-  "geolocationStatus": "Pendiente: se trata de un polígono industrial y un tramo vial; no se asigna punto parcelario.",
-  "verificationStatus": "Respaldo jurídico oficial en Ordenanza 7371/25; la superficie de 52 ha procede de una nota periodística. Avance físico y comercialización no verificados."
-},
+    "id": "desarrollo-ampliacion-sip2-cuarter-v-52ha",
+    "recordType": "Desarrollo industrial público · ampliación del Sector Industrial Planificado II",
+    "name": "Ampliación del Sector Industrial Planificado II · Cuartel V",
+    "locality": "Cuartel V",
+    "address": "Circunscripción V, parcelas 1371 y 1372; entorno de calle Máximo Paz entre Bernardi y Juan B. Molière, Cuartel V (ubicación aproximada)",
+    "source": "https://sibom.slyt.gba.gob.ar/bulletins/13860/contents/2308258",
+    "sourceAlternates": [
+      {
+        "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
+        "label": "Listado municipal de parques industriales y contacto"
+      },
+      {
+        "url": "https://www.perspectivasureste.org/2026/08/20/moreno-ampliara-el-parque-industrial-municipal-ii-con-52-hectareas/",
+        "label": "Nota local del 20/08/2026 sobre la ampliación de 52 ha"
+      }
+    ],
+    "agency": "Municipalidad de Moreno / Fideicomiso Parques Industriales Moreno (FIDEPIM)",
+    "contact": "contacto@pimoreno.com.ar (Parque Industrial Moreno II) · promociondeindustria@moreno.gov.ar (Secretaría municipal de Industria y Comercio) · formulario municipal de consulta de PIM II.",
+    "surfaceNote": "La Ordenanza 7371/25 identifica las parcelas catastrales Circunscripción V, parcelas 1371 y 1372, pero no publica superficie total. La referencia a 52 hectáreas procede de una nota local del 20/08/2026 y no está cuantificada en la ordenanza.",
+    "publicationDate": "Ordenanza sancionada el 31/07/2025; publicación en SIBOM el 28/11/2025; nota sobre ampliación publicada el 20/08/2026.",
+    "observations": "La Ordenanza 7371/25 autoriza aportar las parcelas 1371 y 1372 a FIDEPIM para ampliar el SIP II. El artículo 3 fija USD 1.128.000 como valor de adquisición de los inmuebles aportados; el artículo 4 establece un reintegro municipal del 50% del valor de venta de cada parcela hasta completar ese importe. Esa cifra no es un precio de venta al público. No se verificó avance físico, subdivisión, cronograma ni disponibilidad comercial. No es una oferta individual de tierra.",
+    "lat": null,
+    "lng": null,
+    "geocodeDisabled": true,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se trata de un polígono industrial y un tramo vial; no se asigna punto parcelario.",
+    "verificationStatus": "Respaldo jurídico oficial en Ordenanza 7371/25; la superficie de 52 ha procede de una nota periodística. Avance físico y comercialización no verificados."
+  },
   {
     "id": "chacras-teofilo-lote-324-historico",
     "recordType": "Terreno individual · antecedente no vigente",
@@ -2606,28 +2606,28 @@ const nov27FollowupEntries = [
     "verificationStatus": "Ficha individual de Argenprop accesible el 27/11/2026; precio, terreno y superficie construida declarados por el anunciante; disponibilidad no confirmada."
   },
   {
-  "id": "terreno-polo24-gral-hornos-6100-4860",
-  "recordType": "Terreno industrial individual · dos lotes linderos",
-  "name": "Parque Industrial Polo 24 · lotes A04 y A18 · 4.860 m²",
-  "locality": "Francisco Álvarez",
-  "address": "General Hornos 6100, Parque Industrial Polo 24, Francisco Álvarez, Moreno",
-  "source": "https://www.argenprop.com/terreno-en-venta-en-francisco-alvarez--20512097",
-  "agency": "Piccione Propiedades",
-  "contact": "Piccione Propiedades; teléfono parcialmente visible en Argenprop: 1140867. Contacto del Parque Industrial Polo 24 publicado por el Municipio: admpolo24@gmail.com.",
-  "price": "USD 365.000",
-  "currency": "USD",
-  "landSurfaceM2": 4860,
-  "surfaceNote": "Dos lotes linderos de 2.430 m² cada uno, identificados como A04 y A18 en el plano del aviso; se venden juntos. Medidas aproximadas conjuntas: 40 × 120 m.",
-  "observations": "El anuncio informa salida a dos calles, pavimento, energía, agua, cloacas, seguridad y alumbrado; declara FOS 60% y FOT 1,20. Verificar plano de mensura, identidad de los lotes, zonificación y que ambos se transmitan conjuntamente.",
-  "lat": null,
-  "lng": null,
-  "geocodeQuery": "General Hornos 6100, Francisco Alvarez, Moreno, Buenos Aires",
-  "geocodeMatch": "GENERAL HORNOS 6100",
-  "lastCheckedAt": "2026-11-27",
-  "availabilityStatus": "No confirmada",
-  "geolocationStatus": "Pendiente: Georef debe devolver una única coincidencia inequívoca para General Hornos 6100.",
-  "verificationStatus": "Ficha individual de Argenprop accesible el 27/11/2026; precio, lotes y superficies publicados; disponibilidad no confirmada."
-},
+    "id": "terreno-polo24-gral-hornos-6100-4860",
+    "recordType": "Terreno industrial individual · dos lotes linderos",
+    "name": "Parque Industrial Polo 24 · lotes A04 y A18 · 4.860 m²",
+    "locality": "Francisco Álvarez",
+    "address": "General Hornos 6100, Parque Industrial Polo 24, Francisco Álvarez, Moreno",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-francisco-alvarez--20512097",
+    "agency": "Piccione Propiedades",
+    "contact": "Piccione Propiedades; teléfono parcialmente visible en Argenprop: 1140867. Contacto del Parque Industrial Polo 24 publicado por el Municipio: admpolo24@gmail.com.",
+    "price": "USD 365.000",
+    "currency": "USD",
+    "landSurfaceM2": 4860,
+    "surfaceNote": "Dos lotes linderos de 2.430 m² cada uno, identificados como A04 y A18 en el plano del aviso; se venden juntos. Medidas aproximadas conjuntas: 40 × 120 m.",
+    "observations": "El anuncio informa salida a dos calles, pavimento, energía, agua, cloacas, seguridad y alumbrado; declara FOS 60% y FOT 1,20. Verificar plano de mensura, identidad de los lotes, zonificación y que ambos se transmitan conjuntamente.",
+    "lat": null,
+    "lng": null,
+    "geocodeQuery": "General Hornos 6100, Francisco Alvarez, Moreno, Buenos Aires",
+    "geocodeMatch": "GENERAL HORNOS 6100",
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Georef debe devolver una única coincidencia inequívoca para General Hornos 6100.",
+    "verificationStatus": "Ficha individual de Argenprop accesible el 27/11/2026; precio, lotes y superficies publicados; disponibilidad no confirmada."
+  },
   {
     "id": "terreno-pueyrredon-2025-337",
     "recordType": "Terreno individual",
@@ -2719,33 +2719,86 @@ const nov27FollowupEntries = [
     "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio, superficie y estructura declarados; disponibilidad no confirmada."
   },
   {
-  "id": "desarrollo-polo-veinticinco-15ha-37-lotes",
-  "recordType": "Desarrollo industrial privado · parque industrial y logístico",
-  "name": "Polo Veinticinco · parque industrial · 15 ha · 37 lotes",
-  "locality": "Cuartel V",
-  "address": "Ruta Provincial 25 y Gral. Fructuoso Rivera, frente al Club de Campo San Diego, Cuartel V, Moreno",
-  "source": "https://www.polo25.com/",
-  "sourceAlternates": [
-    {
-      "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
-      "label": "Directorio oficial municipal de parques industriales"
-    }
-  ],
-  "agency": "Polo Veinticinco · Krak RE (agencia de ventas)",
-  "contact": "11 3888 2095 · info@krak.com.ar · Marcelo Alberto Napolitano, CMCPSI 6645 / CUCICBA 5456.",
-  "price": null,
-  "currency": null,
-  "landSurfaceM2": 150000,
-  "surfaceNote": "El sitio oficial declara 15 hectáreas (150.000 m²), 37 lotes y superficies individuales de 2.000 a 5.700 m². Admite industrias de categorías 1, 2 y 3; publica FOS 0,6 y FOT 1,0.",
-  "observations": "El sitio oficial informa seguridad 24 h, energía de media tensión, fibra óptica, gas industrial, calles de hormigón, calzada de 10 m, cerco perimetral y tránsito pesado. Publica financiación con anticipo del 35% y 24 cuotas, sin lista de precios ni stock por lote. Algunos avisos de portales describen 17 ha y 30 lotes, discrepancia que debe aclarar el operador. El Municipio lista Polo 25 en Ruta 25 y Fructuoso Rivera y PIR25 en Ruta 25 y Moctezuma por separado; no son el mismo registro. El sitio oficial publica financiación con anticipo del 35% y 24 cuotas; no muestra importes ni lista de precios por lote.",
-  "lat": null,
-  "lng": null,
-  "geocodeDisabled": true,
-  "lastCheckedAt": "2026-11-27",
-  "availabilityStatus": "No confirmada",
-  "geolocationStatus": "Pendiente: se publica ubicación del parque, pero no plano parcelario georreferenciado para un marcador de lote.",
-  "verificationStatus": "Sitio oficial de Polo Veinticinco accesible el 27/11/2026; el directorio municipal también lo identifica por separado de PIR25. No se verificaron avance físico, stock, precios ni escrituras de lotes."
-}
+    "id": "desarrollo-polo-veinticinco-15ha-37-lotes",
+    "recordType": "Desarrollo industrial privado · parque industrial y logístico",
+    "name": "Polo Veinticinco · parque industrial · 15 ha · 37 lotes",
+    "locality": "Cuartel V",
+    "address": "Ruta Provincial 25 y Gral. Fructuoso Rivera, frente al Club de Campo San Diego, Cuartel V, Moreno",
+    "source": "https://www.polo25.com/",
+    "sourceAlternates": [
+      {
+        "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
+        "label": "Directorio oficial municipal de parques industriales"
+      }
+    ],
+    "agency": "Polo Veinticinco · Krak RE (agencia de ventas)",
+    "contact": "11 3888 2095 · info@krak.com.ar · Marcelo Alberto Napolitano, CMCPSI 6645 / CUCICBA 5456.",
+    "price": null,
+    "currency": null,
+    "landSurfaceM2": 150000,
+    "surfaceNote": "El sitio oficial declara 15 hectáreas (150.000 m²), 37 lotes y superficies individuales de 2.000 a 5.700 m². Admite industrias de categorías 1, 2 y 3; publica FOS 0,6 y FOT 1,0.",
+    "observations": "El sitio oficial informa seguridad 24 h, energía de media tensión, fibra óptica, gas industrial, calles de hormigón, calzada de 10 m, cerco perimetral y tránsito pesado. Publica financiación con anticipo del 35% y 24 cuotas, sin lista de precios ni stock por lote. Algunos avisos de portales describen 17 ha y 30 lotes, discrepancia que debe aclarar el operador. El Municipio lista Polo 25 en Ruta 25 y Fructuoso Rivera y PIR25 en Ruta 25 y Moctezuma por separado; no son el mismo registro. El sitio oficial publica financiación con anticipo del 35% y 24 cuotas; no muestra importes ni lista de precios por lote.",
+    "lat": null,
+    "lng": null,
+    "geocodeDisabled": true,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se publica ubicación del parque, pero no plano parcelario georreferenciado para un marcador de lote.",
+    "verificationStatus": "Sitio oficial de Polo Veinticinco accesible el 27/11/2026; el directorio municipal también lo identifica por separado de PIR25. No se verificaron avance físico, stock, precios ni escrituras de lotes."
+  },
+  {
+    "id": "desarrollo-parque-industrial-reconquista-80ha",
+    "recordType": "Desarrollo industrial privado · parque industrial",
+    "name": "Parque Industrial Reconquista · 80 ha · Trujui",
+    "locality": "Trujui",
+    "address": "General Martín de Gainza 1900, Trujui, Moreno",
+    "source": "https://www.grupoposadas.com.ar/proyectos/industrial",
+    "sourceAlternates": [
+      {
+        "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
+        "label": "Directorio oficial municipal de parques industriales"
+      }
+    ],
+    "agency": "Grupo Posadas",
+    "contact": "+54 11 2153 1882 · info@grupoposadas.com.ar",
+    "landSurfaceM2": 800000,
+    "surfaceNote": "El desarrollador declara 80 hectáreas de superficie total, un galpón de 25.000 m² y lotes desde 2.400 a 15.000 m². No publica inventario individual, precio ni superficie cubierta de una unidad en venta.",
+    "observations": "La ficha oficial de Grupo Posadas incluye Parque Industrial Reconquista en su cartera industrial. El Municipio también lo lista en Martín de Gainza al 2.000, Trujui. No se publican precios, stock de lotes, fecha de entrega, plano de subdivisión, zonificación parcelaria ni estado de obras; solicitar documentación y disponibilidad directamente al desarrollador.",
+    "lat": null,
+    "lng": null,
+    "geocodeQuery": "General Martin de Gainza 1900, Trujui, Moreno, Buenos Aires",
+    "geocodeMatch": "GENERAL MARTIN DE GAINZA 1900",
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección del acceso; el punto sería de parque, no parcelario.",
+    "verificationStatus": "Sitio del desarrollador accesible el 27/11/2026 con superficie y tipología de lotes; directorio municipal confirma ubicación y contacto. Stock y precios no publicados."
+  },
+  {
+    "id": "desarrollo-parque-industrial-desarrollo-productivo-40ha",
+    "recordType": "Parque industrial · desarrollado / comercialización no publicada",
+    "name": "Parque Industrial Desarrollo Productivo · 40 ha · Cuartel V",
+    "locality": "Cuartel V",
+    "address": "Ruta Provincial 24 5801, Cuartel V, Moreno (a pocos metros de Ruta 25)",
+    "source": "https://www.parqueproductivo.com.ar/",
+    "sourceAlternates": [
+      {
+        "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
+        "label": "Directorio oficial municipal de parques industriales"
+      }
+    ],
+    "agency": "Parque Industrial Desarrollo Productivo; operador inmobiliario no identificado en la ficha pública",
+    "contact": "info@parqueproductivo.com.ar · contacto municipal publicado: desarrolloproductivopi@gmail.com",
+    "landSurfaceM2": 400000,
+    "surfaceNote": "El sitio oficial declara 40 hectáreas desarrolladas; menciona lago de 3 ha, calles internas de doble circuito, red eléctrica de media y baja tensión, y fibra óptica. No publica superficies de lotes individuales.",
+    "observations": "El sitio lo presenta como parque desarrollado para industria y logística, con acceso para camiones y cercanía a RP25. El Municipio lo lista en Ruta 24 5801, Cuartel V. No se publica precio, stock de parcelas, plano de subdivisión ni disponibilidad actual; registrar como desarrollo/activo industrial, no como oferta de lote confirmada.",
+    "lat": null,
+    "lng": null,
+    "geocodeDisabled": true,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se conserva ubicación textual; no se asigna punto sin plano o dirección de acceso inequívoca.",
+    "verificationStatus": "Sitio oficial accesible el 27/11/2026 declara 40 ha desarrolladas; el Municipio confirma dirección y correo de contacto. No hay precios ni inventario de parcelas publicados."
+  }
 ];
 publishedProperties.push(...nov27FollowupEntries);
 
