@@ -625,7 +625,7 @@ assert.ok(publishedProperties.every(item => /^\d{4}-\d{2}-\d{2}$/.test(item.last
 assert.ok(!source.includes('publishedProperties.forEach(item => {\n  item.lastCheckedAt ='), "la fecha de consulta no se asigna en bloque sin evidencia individual");
 assert.ok(source.includes("No hay constancia individual de consulta de la fuente"), "una ficha sin evidencia individual no recibe una afirmación automática de accesibilidad");
 assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
-assert.equal(filterReferences(all, { query: "Santa Teresa", category: "published" }).length, 1);
+assert.equal(filterReferences(all, { query: "Santa Teresa", category: "published" }).length, 2, "la búsqueda distingue las dos publicaciones de Santa Teresa con direcciones diferentes");
 assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");
 assert.equal(filterReferences(all, { evidence: "hypothesis" }).length, 1, "el filtro de hipótesis no mezcla localidades sin clasificar");
 assert.deepEqual(filterReferences(all, { kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque"], "el filtro productivo/logístico muestra las dos referencias industriales existentes");
