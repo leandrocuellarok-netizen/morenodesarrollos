@@ -1306,8 +1306,9 @@ function initMapPage(doc) {
     const markerLayer = doc.createElementNS(svgNamespace, "g");
     markerLayer.setAttribute("class", "map-static-markers");
 
-    const longitudes = all.map(item => Number(item.lng));
-    const latitudes = all.map(item => Number(item.lat));
+    const positioned = all.filter(hasCoordinates);
+    const longitudes = positioned.map(item => Number(item.lng));
+    const latitudes = positioned.map(item => Number(item.lat));
     const minLng = Math.min(...longitudes);
     const maxLng = Math.max(...longitudes);
     const minLat = Math.min(...latitudes);
@@ -1315,15 +1316,17 @@ function initMapPage(doc) {
     const lngRange = Math.max(maxLng - minLng, 0.0001);
     const latRange = Math.max(maxLat - minLat, 0.0001);
 
-    visible.forEach(item => {
+    visible.filter(hasCoordinates).forEach(item => {
       const x = 64 + ((Number(item.lng) - minLng) / lngRange) * 832;
       const y = 42 + ((maxLat - Number(item.lat)) / latRange) * 330;
       const group = doc.createElementNS(svgNamespace, "g");
       const markerClass = item.type === "locality"
         ? "map-static-marker map-static-marker-locality"
-        : (item.stage === "hypothesis"
-          ? "map-static-marker map-static-marker-hypothesis"
-          : "map-static-marker map-static-marker-documented");
+        : (item.type === "published"
+          ? "map-static-marker map-static-marker-published"
+          : (item.stage === "hypothesis"
+            ? "map-static-marker map-static-marker-hypothesis"
+            : "map-static-marker map-static-marker-documented"));
       group.setAttribute("class", markerClass);
       group.setAttribute("data-static-map-reference", item.id);
       group.classList.toggle("is-selected", selectedReferenceId === item.id);
@@ -1339,6 +1342,10 @@ function initMapPage(doc) {
         shape.setAttribute("cx", String(x));
         shape.setAttribute("cy", String(y));
         shape.setAttribute("r", "11");
+        group.append(shape);
+      } else if (item.type === "published") {
+        const shape = doc.createElementNS(svgNamespace, "path");
+        shape.setAttribute("d", "M " + x + " " + (y - 13) + " L " + (x + 12) + " " + (y - 6) + " L " + (x + 12) + " " + (y + 6) + " L " + x + " " + (y + 13) + " L " + (x - 12) + " " + (y + 6) + " L " + (x - 12) + " " + (y - 6) + " Z");
         group.append(shape);
       } else if (item.stage === "hypothesis") {
         const shape = doc.createElementNS(svgNamespace, "path");
@@ -1397,8 +1404,10 @@ function initMapPage(doc) {
       const meta = doc.createElement("small");
       meta.textContent = item.type === "locality"
         ? "Localidad · referencia territorial"
-        : ((item.stage === "hypothesis" ? "Hipótesis de prospección" : "Contexto con fuente pública") +
-          " · " + (kindLabel[item.kind] || "Tesis territorial"));
+        : (item.type === "published"
+          ? item.recordType + " · " + (hasCoordinates(item) ? "Georreferenciada por Georef" : "Geolocalización pendiente")
+          : ((item.stage === "hypothesis" ? "Hipótesis de prospección" : "Contexto con fuente pública") +
+            " · " + (kindLabel[item.kind] || "Tesis territorial")));
       button.append(number, name, meta);
       button.setAttribute("aria-label", "Seleccionar referencia " + item.name);
       button.addEventListener("click", () => setActiveReference(item, { reveal: true, scroll: true }));
@@ -1408,7 +1417,7 @@ function initMapPage(doc) {
 
     const note = doc.createElement("p");
     note.className = "map-static-note";
-    note.textContent = "Este esquema conserva la relación espacial aproximada de las fichas sin depender de teselas externas. No muestra calles ni límites administrativos, no tiene escala y no representa parcelas.";
+    note.textContent = "Este esquema conserva la relación espacial aproximada de las fichas sin depender de teselas externas. Las publicaciones sin coincidencia inequívoca en Georef quedan en el índice con ubicación textual y geolocalización pendiente; no se les asigna un punto.";
     container.append(heading, svg, indexHeading, index, note);
     mapElement.replaceChildren(container);
   }
