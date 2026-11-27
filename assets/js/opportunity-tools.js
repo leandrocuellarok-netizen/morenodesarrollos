@@ -137,7 +137,17 @@
     "moreno-lote-tres-de-febrero-7800": "Lote baldío · Tres de Febrero 7800 · 316 m²",
     "moreno-lote-industrial-gutenberg-5662": "Lote industrial · Gutenberg 5662 · 3.192 m²",
     "cuartel-v-lote-lamadrid-2737": "Lote 16 · Gral. Aráoz de Lamadrid 6702 · 2.737 m²",
-    "la-reja-casa-quinta-santa-teresa-2401": "Casa quinta con parque, pileta y tenis · Santa Teresa de Jesús 2401"
+    "la-reja-casa-quinta-santa-teresa-2401": "Casa quinta con parque, pileta y tenis · Santa Teresa de Jesús 2401",
+    "terreno-san-juan-bautista-1374": "Terreno en Altos del Monte · San Juan Bautista s/n · 1.374 m²",
+    "terreno-ricardo-rojas-4418-3830": "Lote en Moreno · Ricardo Rojas 4418 · 3.830 m²",
+    "terreno-general-alvarado-322-922": "Lote industrial · General Alvarado 322 · 922 m²",
+    "casa-bernardino-rivadavia-1000": "Casa en Centro de Moreno · Bernardino Rivadavia 1000",
+    "casa-naciones-unidas-1500": "Casa 3 ambientes con local y departamento a terminar · Naciones Unidas 1500",
+    "casa-country-san-diego-1500": "Casa 6 ambientes en Club de Campo San Diego",
+    "desarrollo-barrio-del-golf-atuel-2700": "Barrio Cerrado del Golf · Francisco Álvarez",
+    "desarrollo-colonos-ii-2300": "Complejo Comercial Colonos II",
+    "desarrollo-ibis-iv-273": "Edificio Ibis IV · Moreno Centro",
+    "desarrollo-140-camilli": "140 Camilli · Moreno Centro"
   });
 
   function readMapReference(search) {

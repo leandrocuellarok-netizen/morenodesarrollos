@@ -29,6 +29,19 @@ assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye l
 for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-documented-count", "atlas-hypotheses-count", "atlas-published-count", "atlas-total-count"]) {
   assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
 }
+const initialInventoryCounts = countInventory(all);
+function readStaticAtlasCount(id) {
+  const match = mapPage.match(new RegExp('id="' + id + '">([^<]+)<'));
+  assert.ok(match, "el HTML inicial conserva el contador " + id);
+  return match[1].trim();
+}
+assert.equal(readStaticAtlasCount("atlas-localities-count"), String(initialInventoryCounts.localities).padStart(2, "0"));
+assert.equal(readStaticAtlasCount("atlas-documented-count"), String(initialInventoryCounts.documented).padStart(2, "0"));
+assert.equal(readStaticAtlasCount("atlas-hypotheses-count"), String(initialInventoryCounts.hypotheses).padStart(2, "0"));
+assert.equal(readStaticAtlasCount("atlas-published-count"), String(initialInventoryCounts.published), "el HTML inicial coincide con los avisos y proyectos publicados");
+assert.equal(readStaticAtlasCount("atlas-total-count"), initialInventoryCounts.total + " / " + initialInventoryCounts.total, "el HTML inicial coincide con el total del inventario");
+assert.ok(mapPage.includes(initialInventoryCounts.total + " referencias · " + initialInventoryCounts.localities + " localidades · " + initialInventoryCounts.documented + " contextos con fuente · " + initialInventoryCounts.hypotheses + " hipótesis · " + initialInventoryCounts.published + " avisos y proyectos"), "el resumen estático coincide con el catálogo");
+assert.ok(mapPage.includes(initialInventoryCounts.total + " de " + initialInventoryCounts.total + " referencias visibles"), "el estado estático coincide con el catálogo");
 assert.ok(mapPage.includes("La forma distingue la clase"), "la leyenda explica la semántica de los símbolos sin depender del color");
 assert.ok(mapPage.includes('option value="published"'), "el filtro ofrece la capa de publicaciones inmobiliarias");
 assert.ok(mapPage.includes('id="published-list"'), "el mapa contiene una lista independiente de publicaciones");
@@ -311,8 +324,8 @@ assert.match(hypothesisFeature.properties.coordinate_scope, /no identifica una p
 assert.match(filteredGeoJson.disclaimer.toLocaleLowerCase("es-AR"), /ninguna coordenada identifica una parcela/);
 assert.equal(
   buildGeoJson(all).features.length,
-  29,
-  "la exportación completa conserva las veintinueve referencias actuales"
+  all.length,
+  "la exportación completa conserva todas las referencias actuales"
 );
 assert.ok(
   buildGeoJson(all).features.filter(feature => feature.properties.category !== "Propiedades y desarrollos publicados").every(feature => feature.geometry.type === "Point"),
@@ -328,8 +341,8 @@ assert.ok(
 );
 assert.equal(
   JSON.parse(JSON.stringify(buildGeoJson(all))).features.length,
-  29,
-  "GeoJSON puede serializarse como JSON válido"
+  all.length,
+  "GeoJSON puede serializarse como JSON válido con todo el inventario"
 );
 
 
@@ -544,10 +557,11 @@ assert.equal(industrialDossier.references[0].sourceUrl, opportunities.find(item 
 assert.match(industrialDossier.references[0].coordinates.scope, /no identifica una parcela/);
 assert.equal(buildTerritorialDossier([], {}, "2026-11-26T03:00:00.000Z"), null, "una vista vacía no produce un dossier");
 const completeDossier = buildTerritorialDossier(all, {}, "2026-11-26T03:00:00.000Z");
-assert.equal(completeDossier.references.length, 29);
+assert.equal(completeDossier.references.length, all.length, "el dossier completo incluye todas las referencias del inventario");
 assert.deepEqual(completeDossier.counts, { localities: 6, documented: 4, hypotheses: 1, published: 28, total: 39 });
 assert.equal(completeDossier.references.filter(reference => reference.type === "published").length, 28);
-assert.equal(completeDossier.references.filter(reference => reference.sourceUrl).length, 23, "las tesis y publicaciones conservan sus fuentes registradas");
+const expectedSourceCount = all.filter(item => /^https:\/\//.test(String(item.source || ""))).length;
+assert.equal(completeDossier.references.filter(reference => reference.sourceUrl).length, expectedSourceCount, "el dossier conserva todas las fuentes HTTPS registradas");
 const dossierDiagram = buildTerritorialDossierDiagram(industrialDossier.references);
 assert.match(dossierDiagram, /<svg/);
 assert.match(dossierDiagram, /Distribución relativa de referencias/);
