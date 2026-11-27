@@ -68,7 +68,7 @@ const escapedCalendar = dashboard.buildAgendaIcs({
     }
   ]
 });
-assert.ok(escapedCalendar.includes("SUMMARY:MORENO · M,04 · Revisar\\, coordinar\\; llamar\\nmañana"), "el texto iCalendar debe escapar comas, punto y coma y saltos de línea");
+assert.ok(escapedCalendar.includes("SUMMARY:MORENO · M\\,04 · Revisar\\, coordinar\\; llamar\\nmañana"), "el texto iCalendar debe escapar comas, punto y coma y saltos de línea");
 assert.ok(escapedCalendar.includes("LOCATION:Moreno\\, Buenos Aires"), "la localidad debe escapar comas");
 assert.equal((escapedCalendar.match(/BEGIN:VEVENT/g) || []).length, 1, "los registros sin fecha no deben crear eventos");
 const longCalendar = dashboard.buildAgendaIcs({
