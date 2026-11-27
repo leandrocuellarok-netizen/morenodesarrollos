@@ -1345,7 +1345,7 @@ publishedProperties.push(
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
   },
   {
-    "id": "desarrollo-villa-justina-independencia-2199",
+    "id": "desarrollo-villa-justina-2199",
     "recordType": "Desarrollo inmobiliario · condominio de 9 torres",
     "name": "Villa Justina · Independencia 2199 · Moreno",
     "locality": "Moreno Centro",
