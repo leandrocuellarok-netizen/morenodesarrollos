@@ -1189,7 +1189,7 @@ for (const id of turn11ExpectedIds) {
   assert.ok(item, "la revisión 11 incorpora " + id);
   assert.equal(item.lastCheckedAt, "2026-11-27");
   assert.ok(item.source && item.source.startsWith("https://"));
-  assert.equal(item.availabilityStatus, id === "casa-salvador-6300-300" ? "Pendiente de revalidación" : "No confirmada");
+  assert.equal(item.availabilityStatus, id === "casa-salvador-6300-300" || id === "terreno-san-carlos-4500-552" ? "Pendiente de revalidación" : "No confirmada");
 }
 const racineReactivated = publishedProperties.find(record => record.id === "casa-racine-800-no-vigente");
 assert.ok(racineReactivated);
