@@ -29,7 +29,7 @@
       "name": "¿Necesito tener toda la documentación?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Para iniciar alcanza con tu nombre, tu perfil, el motivo de la consulta y una localidad o zona. Los detalles del inmueble, la documentación y las verificaciones son opcionales. No envíes escrituras, DNI ni información bancaria en este primer contacto."
+        "text": "No. Para iniciar alcanza con tu nombre, tu perfil, el motivo de la consulta y una localidad o zona. Los detalles del inmueble, la documentación y los medios alternativos de contacto son opcionales. No envíes escrituras, DNI ni información bancaria en este primer contacto."
       }
     },
     {
@@ -45,7 +45,7 @@
       "name": "¿El formulario envía o guarda mis datos?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "El sitio prepara el borrador en tu navegador y no recibe ni almacena las respuestas. Si elegís abrir WhatsApp, el texto se entrega a ese servicio para mostrarte el borrador; vos decidís si lo enviás."
+        "text": "El sitio prepara el borrador en tu navegador y no recibe ni almacena las respuestas. Los datos opcionales de email o teléfono se incluyen en el borrador y en el expediente que descargues. Si elegís abrir WhatsApp, el texto se entrega a ese servicio para mostrarte el borrador; vos decidís si lo enviás."
       }
     },
     {
@@ -141,7 +141,7 @@
   <div class="opportunity-faq-list">
     <details class="opportunity-faq-item" id="faq-documentacion">
       <summary>¿Necesito tener toda la documentación?</summary>
-      <div class="opportunity-faq-answer"><p>No. Para iniciar alcanza con tu nombre, tu perfil, el motivo de la consulta y una localidad o zona. Los detalles del inmueble, la documentación y las verificaciones son opcionales. No envíes escrituras, DNI ni información bancaria en este primer contacto.</p></div>
+      <div class="opportunity-faq-answer"><p>No. Para iniciar alcanza con tu nombre, tu perfil, el motivo de la consulta y una localidad o zona. Los detalles del inmueble, la documentación y los medios alternativos de contacto son opcionales. No envíes escrituras, DNI ni información bancaria en este primer contacto.</p></div>
     </details>
     <details class="opportunity-faq-item" id="faq-indicadores">
       <summary>¿Qué pasa si no conozco el FOS o el FOT?</summary>
@@ -149,7 +149,7 @@
     </details>
     <details class="opportunity-faq-item" id="faq-privacidad">
       <summary>¿El formulario envía o guarda mis datos?</summary>
-      <div class="opportunity-faq-answer"><p>El sitio prepara el borrador en tu navegador y no recibe ni almacena las respuestas. Si elegís abrir WhatsApp, el texto se entrega a ese servicio para mostrarte el borrador; vos decidís si lo enviás.</p></div>
+      <div class="opportunity-faq-answer"><p>El sitio prepara el borrador en tu navegador y no recibe ni almacena las respuestas. Los datos opcionales de email o teléfono se incluyen en el borrador y en el expediente que descargues. Si elegís abrir WhatsApp, el texto se entrega a ese servicio para mostrarte el borrador; vos decidís si lo enviás.</p></div>
     </details>
     <details class="opportunity-faq-item" id="faq-mapa">
       <summary>¿Una referencia del Mapa IA significa que hay un terreno disponible?</summary>
@@ -177,7 +177,7 @@
 <h2>Presentá tu oportunidad</h2>
 <div class="map-reference-context" id="map-reference-context" hidden aria-live="polite"></div>
 <input type="hidden" id="map-reference-value" name="referencia_mapa" value="">
-<p class="form-intro">Completá los datos básicos para iniciar. La información del inmueble, la documentación y el contexto son opcionales: abrí solamente las secciones que quieras compartir.</p>
+<p class="form-intro">Completá los datos básicos para iniciar. El email y el teléfono alternativos, la información del inmueble, la documentación y el contexto son opcionales; compartí solo lo que quieras incluir en el borrador.</p>
 <details class="dossier-import form-disclosure" id="dossier-import-disclosure">
   <summary><span>Continuar un expediente guardado</span><small>Importar un JSON de MORENO · función opcional</small></summary>
   <div class="dossier-import-body">
@@ -220,6 +220,21 @@
     <input id="contact-zone" name="zona" required maxlength="120" placeholder="Ej.: Moreno Centro, La Reja o no lo sé todavía">
   </div>
 </div>
+
+<fieldset class="contact-method-fields">
+  <legend>¿Cómo podemos volver a contactarte?</legend>
+  <p>Opcional. Podés dejar un email, un teléfono o ambos. Solo se incluirán en el borrador y en el expediente que decidas guardar.</p>
+  <div class="form-grid">
+    <div class="form-field">
+      <label for="contact-email">Email de contacto</label>
+      <input id="contact-email" name="email_contacto" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="nombre@empresa.com">
+    </div>
+    <div class="form-field">
+      <label for="contact-phone">Teléfono de contacto</label>
+      <input id="contact-phone" name="telefono_contacto" type="tel" autocomplete="tel" inputmode="tel" maxlength="40" placeholder="+54 9 ...">
+    </div>
+  </div>
+</fieldset>
 
 <details class="form-disclosure" id="property-data-disclosure">
   <summary><span>Detalles del inmueble o proyecto</span><small>Tipo de oportunidad, ubicación, nomenclatura y superficie · opcional</small></summary>
@@ -311,7 +326,7 @@
   </div>
   <p class="dossier-local-note">La ficha se arma en este navegador. Podés imprimirla, guardarla como PDF o descargar un expediente JSON versionado para conservarlo y compartirlo bajo tu control. Ninguna de estas acciones envía datos al sitio.</p>
 </section>
-<p class="privacy-note">No adjuntes escrituras, DNI, datos bancarios ni documentación confidencial en el primer contacto. El borrador se prepara en tu navegador; vos decidís si lo copiás o lo compartís por WhatsApp.</p>
+<p class="privacy-note">No adjuntes escrituras, DNI, datos bancarios ni documentación confidencial en el primer contacto. El borrador se prepara en tu navegador; vos decidís si lo copiás o lo compartís por WhatsApp. Si completás email o teléfono, esos datos también quedarán en el PDF o JSON que decidas guardar.</p>
 <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
 <div class="opportunity-direct">¿Preferís escribir directamente? <a href="https://wa.me/5491141671674?text=Hola%20Erica%2C%20quiero%20conversar%20sobre%20una%20oportunidad%20en%20Moreno." target="_blank" rel="noopener noreferrer">Abrir WhatsApp sin completar el formulario ↗</a></div>
 </form>
@@ -612,7 +627,7 @@ function applyDossierFormData(data){
   const calculationInput=data.calculationInput||{};
   const controlIds={
     nombre:"contact-name",perfil:"contact-profile",interes:"contact-interest",
-    zona:"contact-zone",tipo:"contact-type",ubicacion:"contact-address",
+    zona:"contact-zone",email_contacto:"contact-email",telefono_contacto:"contact-phone",tipo:"contact-type",ubicacion:"contact-address",
     nomenclatura:"contact-cadastral",superficie:"contact-area",
     referencia_mapa:"map-reference-value",detalle:"contact-message"
   };
