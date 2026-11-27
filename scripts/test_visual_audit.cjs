@@ -30,6 +30,16 @@ function check(condition, message) {
   }
 }
 
+const publishedRecords = mapInventory.filter(record => record && record.type === "published");
+const publishedIds = publishedRecords.map(record => record.id);
+const publishedSources = publishedRecords.map(record => record.source);
+check(publishedRecords.length > 0, "mapa-ia: la capa de propiedades y desarrollos publicados no está vacía");
+check(new Set(publishedIds).size === publishedIds.length, "mapa-ia: los identificadores de publicaciones son únicos");
+check(new Set(publishedSources).size === publishedSources.length, "mapa-ia: los enlaces primarios de publicaciones son únicos");
+check(publishedRecords.every(record => record.id && record.recordType && record.name && record.address && record.source && record.availabilityStatus && record.verificationStatus && record.geolocationStatus), "mapa-ia: cada publicación conserva identificación, fuente y estados de verificación/geolocalización");
+check(publishedRecords.every(record => record.availabilityStatus !== "Confirmada"), "mapa-ia: ningún aviso publicado se presenta como disponibilidad comercial confirmada");
+check(publishedRecords.every(record => (record.lat == null) === (record.lng == null) && !(record.geocodeDisabled === true && (record.lat != null || record.lng != null))), "mapa-ia: las coordenadas no están incompletas ni asignadas a registros con geolocalización deshabilitada");
+
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
