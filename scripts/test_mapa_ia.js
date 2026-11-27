@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, collectPotentialDuplicatePairs, paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, publishedContactChannels, collectPotentialDuplicatePairs, paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -87,6 +87,32 @@ const portalContactDiligenceSample = publishedDiligenceSummary({
   contact: "Formulario Zonaprop; teléfono no visible", address: "Av. de prueba 100", locality: "Moreno"
 });
 assert.equal(portalContactDiligenceSample.missing.includes("Referencia de contacto"), false, "un formulario público sí es un canal de contacto aunque el teléfono no aparezca");
+
+const publicChannelsSample = publishedContactChannels({
+  contact: "Municipio: Impacto Inmobiliaria, +54 11 7600 4000. Torres Propiedades: +54 9 11 7187-7878 · inmobiliaria@torrespropiedades.info."
+});
+assert.deepEqual(publicChannelsSample, {
+  phones: [
+    { value: "+54 11 7600 4000", href: "tel:+541176004000" },
+    { value: "+54 9 11 7187-7878", href: "tel:+5491171877878" }
+  ],
+  emails: [
+    { value: "inmobiliaria@torrespropiedades.info", href: "mailto:inmobiliaria@torrespropiedades.info" }
+  ]
+}, "los teléfonos completos y emails del contacto público se convierten en enlaces directos");
+
+const deduplicatedChannelsSample = publishedContactChannels({
+  phone: "+54 9 11 5702-5130",
+  contact: "WhatsApp +54 9 11 5702-5130 · ventas@ramirezprop.com.ar"
+});
+assert.equal(deduplicatedChannelsSample.phones.length, 1, "el mismo teléfono en dos campos no crea enlaces duplicados");
+assert.equal(deduplicatedChannelsSample.emails.length, 1, "el email público se reconoce sin exigir un campo separado");
+
+const partialContactSample = publishedContactChannels({
+  contact: "Teléfono parcialmente visible 1139313; CPI 8928 / MGR 313."
+});
+assert.equal(partialContactSample.phones.length, 0, "un teléfono parcial y números de matrícula no se convierten en enlaces");
+
 const completeDiligenceItems = filterReferences(all, { diligence: "complete" });
 const pendingDiligenceItems = filterReferences(all, { diligence: "pending" });
 assert.ok(completeDiligenceItems.every(item => item.type === "published" && publishedDiligenceSummary(item).complete));
@@ -176,6 +202,8 @@ assert.ok(styles.includes(".map-filter-group"), "los filtros tienen una composic
 assert.ok(styles.includes("minmax(300px, 2fr)"), "la refinación dispone de ancho suficiente para sus dos selectores en escritorio");
 assert.ok(styles.includes(".map-filter-field"), "los controles muestran etiquetas y foco visible");
 assert.ok(styles.includes(".map-published-status"), "las fichas distinguen visualmente el estado comercial registrado");
+assert.ok(styles.includes(".map-public-contact-link"), "los teléfonos y emails públicos tienen accesos directos con estilo propio");
+assert.ok(mapPage.includes("números parciales y matrículas no se convierten en enlaces"), "la página explica el criterio conservador de enlaces de contacto");
 assert.ok(styles.includes(".map-published-review-date"), "las fichas muestran la fecha de consulta de la fuente");
 assert.ok(styles.includes(".map-toolbar-actions"), "las acciones del mapa se agrupan fuera de los filtros");
 assert.equal(getSharedReferenceId("?ref=rp25", all), "rp25", "se reconoce una referencia válida desde la URL");
