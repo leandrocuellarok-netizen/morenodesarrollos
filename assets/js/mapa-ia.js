@@ -371,6 +371,7 @@ publishedProperties.slice(-3).forEach(item => {
   item.lat = null;
   item.lng = null;
   item.lastCheckedAt = "2026-11-27";
+  item.verificationStatus = "Aviso directo de la inmobiliaria accesible el 27/11/2026; disponibilidad comercial no confirmada.";
   item.availabilityStatus = "No confirmada";
   item.geolocationStatus = "Pendiente: se consultará Georef para la dirección publicada.";
 });
