@@ -265,6 +265,10 @@ assert.ok(csv.startsWith("\uFEFF"), "CSV compatible con acentos en hojas de cál
 assert.ok(csv.includes('"Parcela ""A"", sector norte"'), "CSV escapa comillas y comas");
 assert.ok(csv.includes("alcance_de_coordenada"), "CSV informa el alcance de las coordenadas");
 assert.ok(csv.includes("no identifica una parcela"), "CSV conserva la advertencia parcelaria");
+const publishedCsv = buildCsv(publishedProperties.slice(0, 1));
+assert.ok(publishedCsv.includes("precio_publicado"), "CSV incluye el campo de precio de los avisos");
+assert.ok(publishedCsv.includes("Anticipo USD 12.000"), "CSV conserva el precio publicado sin reinterpretarlo");
+assert.ok(publishedCsv.includes("Geolocalización pendiente"), "CSV conserva el estado de geolocalización pendiente");
 const filteredGeoJson = buildGeoJson(filterReferences(all, {
   category: "opportunity",
   evidence: "hypothesis"
@@ -287,12 +291,16 @@ assert.match(hypothesisFeature.properties.coordinate_scope, /no identifica una p
 assert.match(filteredGeoJson.disclaimer.toLocaleLowerCase("es-AR"), /no identifican parcelas/);
 assert.equal(
   buildGeoJson(all).features.length,
-  11,
-  "la exportación completa conserva las once referencias actuales"
+  25,
+  "la exportación completa conserva las veinticinco referencias actuales"
 );
 assert.ok(
-  buildGeoJson(all).features.every(feature => feature.geometry.type === "Point"),
-  "ninguna referencia se convierte en geometría parcelaria"
+  buildGeoJson(all).features.filter(feature => feature.properties.category !== "Propiedades y desarrollos publicados").every(feature => feature.geometry.type === "Point"),
+  "las referencias territoriales conservan puntos de referencia"
+);
+assert.ok(
+  buildGeoJson(all).features.filter(feature => feature.properties.category === "Propiedades y desarrollos publicados").every(feature => feature.geometry === null),
+  "las publicaciones pendientes no reciben coordenadas inventadas en GeoJSON"
 );
 assert.ok(
   buildGeoJson(all).features.some(feature => feature.properties.source_url === "https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465"),
@@ -300,7 +308,7 @@ assert.ok(
 );
 assert.equal(
   JSON.parse(JSON.stringify(buildGeoJson(all))).features.length,
-  11,
+  25,
   "GeoJSON puede serializarse como JSON válido"
 );
 
