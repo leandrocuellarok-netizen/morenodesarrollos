@@ -45,7 +45,7 @@ La investigación inicial identifica cinco tesis territoriales preliminares: cor
 - Si MapLibre no carga o fallan de forma persistente las teselas de OpenStreetMap, el Mapa IA conserva una lámina esquemática local: mantiene la relación espacial aproximada, los filtros y la selección de fichas sin depender de la cartografía externa.
 - El esquema alternativo usa las coordenadas del inventario para ordenar referencias; no representa calles, límites administrativos ni parcelas, y no tiene escala.
 - Los marcadores de oportunidades son referencias aproximadas de áreas/corredores, no parcelas ni límites oficiales.
-- La capa independiente **Propiedades y desarrollos publicados** registra 110 fichas de terrenos, casas y proyectos consultadas el 27/11/2026. Los avisos no implican disponibilidad confirmada; antecedentes y publicaciones retiradas permanecen en el historial con su estado señalado.
+- La capa independiente **Propiedades y desarrollos publicados** registra 112 fichas de terrenos, casas y proyectos consultadas el 27/11/2026. Los avisos no implican disponibilidad confirmada; antecedentes y publicaciones retiradas permanecen en el historial con su estado señalado.
 - La georreferenciación de avisos se intenta por dirección mediante Georef. Si no existe una coincidencia inequívoca o falta una altura pública, se conserva la ubicación textual y no se asigna un marcador parcelario.
 
 
