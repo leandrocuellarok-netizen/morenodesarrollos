@@ -4191,14 +4191,49 @@ function formatSourceReviewDate(value) {
   return match ? match[3] + "/" + match[2] + "/" + match[1] : "No informada";
 }
 
+function normalizedDiligenceText(value) {
+  return String(value || "").trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es-AR");
+}
+
+function hasDiligenceText(value) {
+  const normalized = normalizedDiligenceText(value);
+  return Boolean(normalized) && !/^(?:no informad[oa]|sin datos?|no disponible|no visible(?: en .*)?|no publicad[oa]|a confirmar|pendiente|consultar|a consultar|a convenir)$/i.test(normalized);
+}
+
+function hasDiligencePrice(value) {
+  const normalized = normalizedDiligenceText(value);
+  if (!normalized) return false;
+  if (/(?:usd|ars|\$)\s*[\d.,]/i.test(normalized)) return true;
+  return hasDiligenceText(value) && !/(?:consultar|a convenir|no publicad|sin precio)/i.test(normalized);
+}
+
+function hasDiligenceSurface(item) {
+  if (Number(item.landSurfaceM2) > 0 || Number(item.coveredSurfaceM2) > 0) return true;
+  const note = String(item.surfaceNote || "").trim();
+  return hasDiligenceText(note) && /\d+(?:[.,]\d+)?\s*(?:m(?:²|2)|metros?|[×x])/i.test(note);
+}
+
+function hasDiligenceAdvertiser(value) {
+  const normalized = normalizedDiligenceText(value);
+  return hasDiligenceText(value) && !/(?:no visibles?|no identificad[oa]s?|no informad[oa]s?|sin identificar)/i.test(normalized);
+}
+
+function hasDiligenceContact(item) {
+  const value = String(item.phone || "").trim() || String(item.contact || "").trim();
+  const normalized = normalizedDiligenceText(value);
+  if (!hasDiligenceText(value)) return false;
+  const hasPublicChannel = /(?:formulario|portal|whatsapp|email|correo|telefono|contacto directo)/i.test(normalized);
+  return !/^(?:no visible|no informado|no disponible|no publicado|sin datos?)\b/i.test(normalized) || hasPublicChannel;
+}
+
 const PUBLISHED_DILIGENCE_FIELDS = [
   { label: "Fuente original", present: item => /^https:/i.test(String(item.source || "").trim()) },
   { label: "Fecha de revisión", present: item => isValidReviewDate(String(item.lastCheckedAt || "")) },
-  { label: "Referencia de precio", present: item => Boolean(String(item.price || "").trim()) },
-  { label: "Superficie", present: item => Number(item.landSurfaceM2) > 0 || Number(item.coveredSurfaceM2) > 0 || Boolean(String(item.surfaceNote || "").trim()) },
-  { label: "Anunciante", present: item => Boolean(String(item.agency || "").trim()) },
-  { label: "Referencia de contacto", present: item => Boolean(String(item.phone || "").trim() || String(item.contact || "").trim()) },
-  { label: "Ubicación textual", present: item => Boolean(String(item.address || "").trim() && String(item.locality || "").trim()) }
+  { label: "Referencia de precio", present: item => hasDiligencePrice(item.price) },
+  { label: "Superficie", present: item => hasDiligenceSurface(item) },
+  { label: "Anunciante", present: item => hasDiligenceAdvertiser(item.agency) },
+  { label: "Referencia de contacto", present: item => hasDiligenceContact(item) },
+  { label: "Ubicación textual", present: item => hasDiligenceText(item.address) && hasDiligenceText(item.locality) }
 ];
 
 function publishedDiligenceSummary(item) {
