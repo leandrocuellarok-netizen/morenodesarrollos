@@ -805,7 +805,7 @@ def main() -> None:
             errors.append("Oportunidades debe mostrar exactamente cinco preguntas frecuentes")
         if 'href="#opportunity-form"' not in opportunity_html or 'id="opportunity-faq"' not in opportunity_html:
             errors.append("Oportunidades debe conectar las preguntas frecuentes con el formulario")
-        faq_schema_match = re.search(r'<script type="application/ld\\+json" id="opportunity-faq-schema">(.*?)</script>', opportunity_html, re.S)
+        faq_schema_match = re.search(r'<script type="application/ld\+json" id="opportunity-faq-schema">(.*?)</script>', opportunity_html, re.S)
         if not faq_schema_match:
             errors.append("Oportunidades debe incluir datos estructurados FAQPage")
         else:
