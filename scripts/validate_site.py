@@ -1057,7 +1057,7 @@ def main() -> None:
         readme_source = readme_path.read_text(encoding="utf-8")
         if re.search(r"Propiedades y desarrollos publicados.*?registra\s+\d+\s+fichas", readme_source, re.IGNORECASE | re.DOTALL):
             errors.append("README.md: no fijar una cantidad de publicaciones que puede quedar desactualizada")
-        if "la cantidad exacta se calcula desde el inventario vigente del Mapa IA" not in readme_source.lower():
+        if "la cantidad exacta se calcula desde el inventario vigente del mapa ia" not in readme_source.lower():
             errors.append("README.md: falta remitir al índice dinámico del Mapa IA para la cantidad vigente")
 
     if errors:
