@@ -335,6 +335,45 @@ const publishedProperties = [
   }
 ];
 
+publishedProperties.push(
+  {
+    id:"moreno-lote-tres-de-febrero-7800",recordType:"Terreno individual",name:"Lote baldío · Tres de Febrero 7800 · 316 m²",
+    locality:"Moreno",address:"Tres de Febrero 7800, entre Montevideo y Río de la Plata",
+    geocodeQuery:"Tres de Febrero 7800",geocodeMatch:"TRES DE FEBRERO 7800",
+    source:"https://pabloaquinoinmobiliaria.com.ar/propiedades/venta-lotemoreno/",
+    agency:"Pablo Aquino Inmobiliaria",contact:"Tel. +54 9 11 7001-7411 / 02320-423003",phone:"+54 9 11 7001-7411",
+    price:"USD 16.000 contado; financiación: anticipo USD 10.000 + 30 cuotas de USD 260",currency:"USD",
+    landSurfaceM2:316,coveredSurfaceM2:null,surfaceNote:"13,40 × 22,40 m. La ficha tiene un campo técnico que muestra 'superficie cubierta 316 m²', pero la descripción lo identifica como lote baldío y superficie total.",
+    observations:"La inmobiliaria informa escritura lista para transferir. No tiene servicios instalados; el aviso indica posibilidad de solicitar energía prepaga. Precio contado y plan de cuotas publicados en la descripción."
+  },
+  {
+    id:"moreno-lote-industrial-gutenberg-5662",recordType:"Terreno industrial",name:"Lote industrial · Gutenberg 5662 · 3.192 m²",
+    locality:"Moreno",address:"Gutenberg 5662, a tres cuadras de Ruta 24",
+    geocodeQuery:"Gutenberg 5662",geocodeMatch:"GUTENBERG 5662",
+    source:"https://pabloaquinoinmobiliaria.com.ar/propiedades/venta-loteindustrial-moreno/",
+    agency:"Pablo Aquino Inmobiliaria",contact:"Tel. +54 9 11 7001-7411 / 02320-423003",phone:"+54 9 11 7001-7411",
+    price:"USD 65.000 contado",currency:"USD",landSurfaceM2:3192,coveredSurfaceM2:null,
+    surfaceNote:"40 m de frente × 79,81 m de fondo; pequeño ambiente de guardado existente",
+    observations:"El aviso publica Zona Industrial 2, FOS 0,5 y FOT 0,8, y afirma escritura. Verificar certificado urbanístico parcelario, afectaciones, uso admitido y estado del ambiente de guardado."
+  },
+  {
+    id:"cuartel-v-lote-lamadrid-2737",recordType:"Terreno individual",name:"Lote 16 · Gral. Aráoz de Lamadrid 6702 · 2.737 m²",
+    locality:"Cuartel V",address:"Gral. Aráoz de Lamadrid 6702, entre Av. San Fernando y Curapaligüe",
+    geocodeQuery:"General Araoz de Lamadrid 6702",geocodeMatch:"ARAOZ DE LAMADRID 6702",
+    source:"https://pabloaquinoinmobiliaria.com.ar/propiedades/lote-de-3750-x-73-m-moreno-financiacion/",
+    agency:"Pablo Aquino Inmobiliaria",contact:"Tel. +54 9 11 7001-7411 / 02320-423003",phone:"+54 9 11 7001-7411",
+    price:"USD 28.000 contado; financiación: anticipo USD 15.000 + 25 cuotas de USD 600",currency:"USD",
+    landSurfaceM2:2737,coveredSurfaceM2:null,surfaceNote:"37,50 × 73 m · lote 16",
+    observations:"La inmobiliaria informa escritura e impuestos al día y entrega inmediata. La página de listado muestra anticipo USD 15.000; la descripción especifica USD 28.000 contado o 15.000 + 25 cuotas de 600."
+  }
+).forEach(item => {
+  item.lat = null;
+  item.lng = null;
+  item.lastCheckedAt = "2026-11-27";
+  item.availabilityStatus = "No confirmada";
+  item.geolocationStatus = "Pendiente: se consultará Georef para la dirección publicada.";
+});
+
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
   ...opportunities.map(item => ({ ...item, type: "opportunity" })),
