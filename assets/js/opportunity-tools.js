@@ -177,6 +177,10 @@
     "terreno-ruta24-10ha-100000": "Fracción de 10 ha · Ruta 24 · entorno Ruta 24/Ruta 25",
     "terreno-larrea-2419-220": "Lote · Larrea 2419 · 220 m² · Moreno Sur",
 
+    "terreno-general-hornos-sn-939": "Lote con proyecto declarado · General Hornos S/N · Prados del Oeste II",
+    "terreno-salto-600-595": "Lote en esquina · Salto 600 · 595 m²",
+    "terreno-juan-diaz-solis-1800-595": "Lote en esquina · Juan Díaz de Solís 1800 y Funes · Paso del Rey · 595 m²",
+
   });
 
   function readMapReference(search) {
