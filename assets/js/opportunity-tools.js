@@ -282,6 +282,24 @@
     "desarrollo-copa-entre-rios-2501": "COPA · Entre Ríos 2501",
     "terreno-carola-lorenzini-aymaraes-2175": "Carola Lorenzini / Aymaraes · lote 6 · 2.175 m²",
     "predio-industrial-ruta24-66763": "Predio industrial Ruta Provincial 24 · 66.763 m²"
+    "terreno-polo24-2432": "Parque Industrial Polo 24 · lote de 2.432 m²",
+    "terreno-r25-lote21-2741": "Parque Industrial R25 · lote 21 · 2.741 m²",
+    "terreno-r24-r25-5500": "Fracción industrial · intersección RP24/RP25 · 5.500 m²",
+    "terreno-rp25-45280": "Fracción sobre RP25 · 45.280 m² · frente a C.C. San Diego",
+    "terreno-rp24-7600-4541": "Terreno en parque industrial · Ruta 24 al 7600 · 4.541 m²",
+    "casa-alberdi-1100-739": "Juan Bautista Alberdi 1100 · casa a refaccionar sobre dos parcelas",
+    "casa-martin-fierro-5400-200": "Martín Fierro al 5400 · casa de 6 ambientes · La Perlita",
+    "casa-alberti-2346-240": "Alberti 2346 · casa de 3 ambientes con escritura",
+    "casa-colombia-300-550": "Colombia al 300 · casa con parque y pileta",
+    "casa-ambrosetti-300-348": "Ambrosetti al 300 · casa de 3 dormitorios · La Reja Sur",
+    "quinta-sarratea-200-1350": "Manuel de Sarratea 200 · quinta con potencial de desarrollo",
+    "desarrollo-madiba-xiv-asseff-286": "Madiba XIV · Asseff 286 esquina Alem",
+    "terreno-julian-aguirre-17000": "Julián Aguirre 100 · fracción de 17.000 m²",
+    "casa-independencia-2400-1462": "Independencia 2400 · casa sobre lote de 1.462,41 m²",
+    "casa-los-abedules-4100-485": "Casa 5 ambientes · Los Abedules 4100 · Álvarez del Bosque",
+    "casa-acceso-oeste-km34-1200": "Chalet quinta · Acceso Oeste km 34 · 1.200 m²",
+    "casa-cornelio-saavedra-100-375": "Cornelio Saavedra 100 · casa de 4 ambientes con quincho",
+    "desarrollo-haras-maria-elena-unidades": "Haras María Elena · unidades desde USD 199.000",
   });
 
   function readMapReference(search) {
