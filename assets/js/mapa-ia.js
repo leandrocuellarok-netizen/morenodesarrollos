@@ -427,7 +427,7 @@ publishedProperties.push({
     "availabilityStatus": "No confirmada",
     "verificationStatus": "El enlace histórico de Zonaprop devolvió 410 Gone; una publicación alternativa de PlataStar estaba accesible el 27/11/2026 con USD 425.000 y 9.966 m². Probable mismo activo por dirección y descripción; disponibilidad comercial no confirmada.",
     "lastCheckedAt": "2026-11-27",
-    "geolocationStatus": "Pendiente: aviso retirado; se conserva la ubicación textual sin asignar una coordenada nueva."
+    "geolocationStatus": "Pendiente: las fichas publican 2400/2401; no asignar coordenada parcelaria hasta resolver la numeración exacta."
   });
 publishedProperties.slice(-1).forEach(item => {
   item.lat = null;
