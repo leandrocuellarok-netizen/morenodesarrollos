@@ -324,6 +324,21 @@
     "casa-quinta-juan-bautista-alberdi-1400-2000": "Juan Bautista Alberdi 1400 · casa quinta sobre 2.000 m²",
     "casa-prados-oeste-general-hornos-2900-850": "General Hornos 2900 · casa en construcción · Prados del Oeste II",
     "casa-quinta-infanta-isabel-4200-1527": "Infanta Isabel 4200 · quinta Parque Gorriti",
+    "terreno-juan-jose-castelli-2500-8435": "Juan José Castelli 2500 · fracción de 8.435 m² · Villa Salas",
+    "terreno-general-hornos-1800-prados-oeste2-800": "Prados del Oeste II · lote central de 800 m² · General Hornos 1800",
+    "terreno-don-bosco-8700-san-francisco-325": "Barrio San Francisco · Don Bosco 8599/8700 · 325 m²",
+    "terrenos-mariano-moreno-la-reja-lotes-5-11-925": "Loteo Mariano Moreno · lotes 5 y 11 · 925 m² cada uno",
+    "terreno-de-la-vega-200-dos-lotes-970": "De la Vega al 200 · dos lotes · 970 m²",
+    "terreno-leandro-alem-2365-600": "Leandro N. Alem 2365 · lote de 600 m²",
+    "terreno-marconi-1700-2200": "Marconi 1700 · lote de 2.200 m² · próximo a Acceso Oeste",
+    "terreno-solares-zapiola-lote22-450": "Solares de Zapiola · lote 22 · 450 m²",
+    "casa-piovano-3322-234": "Av. Francisco Piovano 3322 · chalet de 5 ambientes",
+    "casa-damicis-1485-270": "Damicis 1485 · casa y dos departamentos independientes",
+    "casa-ecuador-2300-241-no-vigente": "Ecuador 2300 · dos viviendas independientes · publicación no vigente",
+    "terreno-espana-700-928-casa-galpon": "España 700/747 · lote de 928 m² con casa, galpón y pileta",
+    "fraccion-monsegur-3100-6150-la-reja": "Avenida Monsegur 3100 · fracción de 6.150 m² · La Reja",
+    "activo-mixto-bartolome-mitre-1400-4000": "Av. Bartolomé Mitre 1400 · 4.000 m² · triple acceso",
+    "inmueble-comercial-libertador-500-368": "Avenida del Libertador al 500 · galpón y vivienda · 368 m²",
   });
 
   function readMapReference(search) {
