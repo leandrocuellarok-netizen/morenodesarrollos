@@ -559,6 +559,8 @@ async function auditOpportunityFaq(browser) {
     const schema = JSON.parse(schemaText);
     check(schema["@type"] === "FAQPage" && schema.mainEntity.length === 5, "FAQ oportunidades: el esquema estructurado contiene cinco respuestas");
     check(JSON.stringify(summaries.map(value => value.trim())) === JSON.stringify(schema.mainEntity.map(item => item.name)), "FAQ oportunidades: el texto visible coincide con las preguntas del esquema");
+    const answers = await page.locator(".opportunity-faq-answer p").allInnerTexts();
+    check(JSON.stringify(answers.map(value => value.trim())) === JSON.stringify(schema.mainEntity.map(item => item.acceptedAnswer.text)), "FAQ oportunidades: las respuestas visibles coinciden exactamente con el contenido estructurado");
     for (let index = 0; index < await items.count(); index += 1) {
       const item = items.nth(index);
       check(!(await item.evaluate(element => element.open)), "FAQ oportunidades: la respuesta " + (index + 1) + " inicia contraída");
