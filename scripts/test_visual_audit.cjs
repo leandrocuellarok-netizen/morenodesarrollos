@@ -327,23 +327,31 @@ async function auditRoute(browser, route) {
 
       await searchFor("Derqui 5890", "published");
       await page.locator('#published-list [data-map-item="sumio-lote-338"]').waitFor({ state: "attached", timeout: 5000 });
-      check((await page.locator('#published-list [data-map-item="sumio-lote-338"]').innerText()).includes("Av. Derqui 5890"), "mapa-ia: la búsqueda encuentra una calle y dirección publicadas");
+      const streetCard = page.locator('#published-list [data-map-item="sumio-lote-338"]');
+      if (!(await streetCard.evaluate(element => element.open))) await streetCard.locator("summary").click();
+      check((await streetCard.innerText()).includes("Av. Derqui 5890"), "mapa-ia: la búsqueda encuentra una calle y dirección publicadas");
 
       await searchFor("338 m²", "published");
       await page.locator('#published-list [data-map-item="sumio-lote-338"]').waitFor({ state: "attached", timeout: 5000 });
-      check((await page.locator("#search-results-status").innerText()).includes("coincidencias"), "mapa-ia: la búsqueda reconoce superficies expresadas en m²");
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: la búsqueda reconoce superficies expresadas en m² y cuenta el resultado");
 
       await searchFor("IDUAR 400.000 m²", "opportunity");
       await page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]').waitFor({ state: "attached", timeout: 5000 });
-      check((await page.locator("#opportunity-list [data-map-item='base-aerea-moreno-norte']").innerText()).includes("400.000 m²"), "mapa-ia: la búsqueda compuesta cruza fuente pública y superficie documentada");
+      const sourceSurfaceCard = page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]');
+      if (!(await sourceSurfaceCard.evaluate(element => element.open))) await sourceSurfaceCard.locator("summary").click();
+      check((await sourceSurfaceCard.innerText()).includes("400.000 m²"), "mapa-ia: la búsqueda compuesta cruza fuente pública y superficie documentada");
 
       await searchFor("solicitar planos", "opportunity");
       await page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]').waitFor({ state: "attached", timeout: 5000 });
-      check((await page.locator("#opportunity-list [data-map-item='base-aerea-moreno-norte']").innerText()).includes("Próximo paso"), "mapa-ia: la búsqueda indexa el próximo paso registrado");
+      const nextStepCard = page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]');
+      if (!(await nextStepCard.evaluate(element => element.open))) await nextStepCard.locator("summary").click();
+      check((await nextStepCard.innerText()).includes("Próximo paso"), "mapa-ia: la búsqueda indexa el próximo paso registrado");
 
       await searchFor("SIBOM 7443/25", "opportunity");
       await page.locator('#opportunity-list [data-map-item="rp25"]').waitFor({ state: "attached", timeout: 5000 });
-      check((await page.locator("#opportunity-list [data-map-item='rp25']").innerText()).includes("Ordenanza 7443/25"), "mapa-ia: la búsqueda encuentra evidencia normativa y su referencia SIBOM");
+      const ordinanceCard = page.locator('#opportunity-list [data-map-item="rp25"]');
+      if (!(await ordinanceCard.evaluate(element => element.open))) await ordinanceCard.locator("summary").click();
+      check((await ordinanceCard.innerText()).includes("Ordenanza 7443/25"), "mapa-ia: la búsqueda encuentra evidencia normativa y su referencia SIBOM");
 
       await searchFor("Cuartel V PROMEBA veredas", "opportunity");
       await page.locator('#opportunity-list [data-map-item="promeba-cuartel-v"]').waitFor({ state: "attached", timeout: 5000 });
@@ -365,6 +373,7 @@ async function auditRoute(browser, route) {
       check(combinedIds.length === 1 && combinedIds[0] === "base-aerea-moreno-norte", "mapa-ia: localidad, actividad, próximo paso, evidencia y texto se combinan correctamente");
       check((await page.locator("#atlas-total-count").innerText()).startsWith("1 /"), "mapa-ia: el índice actualiza la cantidad de coincidencias filtradas");
       const unlocatedCard = page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]');
+      if (!(await unlocatedCard.evaluate(element => element.open))) await unlocatedCard.locator("summary").click();
       check(await unlocatedCard.locator(".map-published-pending").isVisible(), "mapa-ia: una ficha sin coordenadas sigue accesible en el índice y declara que no tiene marcador");
 
       await page.locator("#search").fill("zzzxqv 918273");
@@ -480,7 +489,7 @@ async function auditOpportunityFlow(browser) {
     await page.locator("main#main-content").waitFor({ state: "visible", timeout: 5000 });
     check(await page.locator("h1").count() === 1, "INFO PYME: conserva un único H1");
     check((await page.locator("h1").innerText()).toLowerCase().includes("info pyme"), "INFO PYME: el título identifica el portal vigente");
-    check((await page.locator("#pyme-total-count").innerText()).includes("30 noticias"), "INFO PYME: informa el total editorial");
+    check((await page.locator("#pyme-total-count").innerText()).toLocaleLowerCase("es-AR").includes("30 noticias"), "INFO PYME: informa el total editorial");
     check(await page.locator("#pyme-featured .pyme-card").count() === 4, "INFO PYME: presenta cuatro noticias destacadas");
     check(await page.locator("#pyme-news-grid .pyme-card").count() === 26, "INFO PYME: conserva las otras 26 noticias en el índice");
     check(await page.locator(".pyme-card").count() === 30, "INFO PYME: el inventario visible contiene las 30 noticias");
