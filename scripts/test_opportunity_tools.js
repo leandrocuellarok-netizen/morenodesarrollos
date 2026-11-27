@@ -261,6 +261,13 @@ const importedDossier = tools.parseOpportunityDossierImport(JSON.stringify(dossi
 assert.equal(importedDossier.ok, true);
 assert.equal(importedDossier.version, 3);
 assert.equal(importedDossier.fields.nombre, "Contacto de exportación");
+const developerDossier = JSON.parse(JSON.stringify(dossierExport));
+developerDossier.sourceData.fields.perfil = "Desarrollador/a";
+developerDossier.sourceData.fields.interes = "Evaluar una oportunidad de desarrollo";
+const importedDeveloperDossier = tools.parseOpportunityDossierImport(developerDossier);
+assert.equal(importedDeveloperDossier.ok, true);
+assert.equal(importedDeveloperDossier.fields.perfil, "Desarrollador/a");
+assert.equal(importedDeveloperDossier.fields.interes, "Evaluar una oportunidad de desarrollo");
 assert.equal(importedDossier.fields.email_contacto, "propietario@example.com");
 assert.equal(importedDossier.fields.telefono_contacto, "+54 11 4444-2222");
 assert.deepEqual(importedDossier.fields.documentacion, ["Plano o mensura"]);

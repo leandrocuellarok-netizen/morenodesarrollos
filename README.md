@@ -56,7 +56,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 - El índice editorial del Mapa IA cuenta dinámicamente las localidades, los contextos con fuente pública, las hipótesis y el total visible tras cada filtro. Es un recuento de fichas, no de inmuebles disponibles.
 - La cartografía usa símbolos monocromáticos por forma (círculo, cuadrado y rombo) para distinguir clases sin depender del color; las coordenadas siguen siendo referencias territoriales aproximadas.
 - /erica-acosta/ — Sobre Erica: perfil personal y enfoque de trabajo, con énfasis en residencia local, iniciativa emprendedora y alianzas.
-- /oportunidades/ — Captación inicial: formulario opcional para propietarios, inversores y aliados, con ubicación y nomenclatura catastral cuando estén disponibles.
+- /oportunidades/ — Captación inicial con recorridos diferenciados para propietarios, inversores y desarrolladores; el formulario conserva zona, datos opcionales y referencias declaradas.
 - El formulario prioriza nombre, perfil, interés y zona; ofrece email y teléfono alternativos opcionales, que se incluyen únicamente en el borrador revisable y en el PDF/JSON descargado si la persona decide guardarlo. No hay envío automático ni almacenamiento en el sitio. La calculadora FOS/FOT, los datos del inmueble, la documentación, las verificaciones y el contexto permanecen opcionales.
 - Al importar un expediente, se abren automáticamente las secciones opcionales que contienen datos recuperados (inmueble, documentación, contexto o cálculo) y se cierra el panel de importación. Así se evita que la información cargada quede oculta para quien continúa el formulario.
 - El encabezado de `/oportunidades/` ofrece un acceso directo al formulario, con desplazamiento compensado por la navegación fija y foco trasladado al formulario; la calculadora FOS/FOT queda como recorrido secundario.
@@ -155,7 +155,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 ## Captación de oportunidades y primer contacto
 
 - [Presentar un terreno, proyecto o interés de inversión](https://leandrocuellarok-netizen.github.io/morenodesarrollos/oportunidades/)
-- La página separa el recorrido de propietarios del de inversores y profesionales, y solicita únicamente información inicial: nombre, perfil, interés, zona y datos opcionales.
+- La página presenta tres recorridos explícitos —propietarios, inversores y desarrolladores— y preselecciona perfil e intención en el formulario sin enviar datos automáticamente.
 - El formulario muestra primero una vista previa de solo lectura del borrador de WhatsApp. La persona puede copiarlo o abrir WhatsApp desde un botón explícito; para corregir datos, vuelve al formulario y genera una nueva vista previa. No hay backend, envío automático ni almacenamiento de datos en el sitio.
 - No se solicitan escrituras, DNI, datos bancarios ni documentación confidencial en el primer contacto.
 - Las consultas no constituyen tasaciones, ofertas, compromisos de inversión ni confirmaciones de disponibilidad.
@@ -311,7 +311,7 @@ El tablero local de `/oportunidades/` permite descargar una agenda CSV separada 
 
 La página `erica-acosta/` presenta el perfil de Erica M. Acosta con una jerarquía editorial, el retrato existente y una lámina SVG monocromática de cinco etapas del desarrollo inmobiliario. La lámina es conceptual: no representa un inmueble, parcela, obra, factibilidad ni oportunidad identificada.
 
-Los accesos para propietarios e inversores enlazan a `/oportunidades/?perfil=propietario` y `/oportunidades/?perfil=inversor`. El formulario reconoce esos parámetros y preselecciona el perfil correspondiente; la persona revisa sus datos y decide si abre WhatsApp. No se envía información automáticamente.
+Los accesos para propietarios, inversores y desarrolladores enlazan a `/oportunidades/?perfil=propietario&interes=terreno`, `/oportunidades/?perfil=inversor&interes=inversion` y `/oportunidades/?perfil=desarrollador&interes=desarrollo`. El formulario reconoce los parámetros, preselecciona perfil e intención y deja la decisión de abrir WhatsApp en manos de la persona.
 
 El validador del sitio comprueba la presencia de la lámina accesible, las cinco etapas, los estilos del perfil y los dos recorridos de contacto.
 
@@ -320,7 +320,8 @@ El validador del sitio comprueba la presencia de la lámina accesible, las cinco
 
 La portada prioriza dos entradas para iniciar una conversación:
 - **Propietarios:** `/oportunidades/?perfil=propietario`, con el perfil correspondiente preseleccionado.
-- **Inversores y desarrolladores:** `/oportunidades/?perfil=inversor`, con el perfil correspondiente preseleccionado.
+- **Inversores:** `/oportunidades/?perfil=inversor&interes=inversion`, con perfil e intención preseleccionados.
+- **Desarrolladores:** `/oportunidades/?perfil=desarrollador&interes=desarrollo`, con perfil e intención preseleccionados.
 
 El acceso al Mapa IA queda como recorrido de investigación complementario. El primer contacto es exploratorio: no constituye tasación, oferta, confirmación de disponibilidad ni compromiso de inversión. El contenido no afirma operaciones cerradas ni resultados comerciales que no estén documentados.
 

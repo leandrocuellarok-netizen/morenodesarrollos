@@ -163,11 +163,13 @@ body{background:var(--paper);color:var(--ink)}
 .opportunity-hero-note{font:11px/1.7 var(--sans);color:#77796f;margin:12px 0 0}
 #opportunity-form{scroll-margin-top:112px}
 #opportunity-form:target{outline:1px solid var(--rust);outline-offset:4px}
-.opportunity-paths{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:8px 0 48px}
+.opportunity-paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:8px 0 48px}
 .opportunity-path{padding:24px 24px 22px;border:1px solid var(--line);background:#eeeae0}
 .opportunity-path span{font:italic 12px var(--serif);color:var(--rust)}
 .opportunity-path h2{font:400 27px/1.1 var(--serif);margin:13px 0 9px}
 .opportunity-path p{font:13px/1.8 var(--sans);color:#66675e;margin:0}
+.opportunity-path-link{display:inline-block;margin-top:20px;padding-bottom:4px;border-bottom:1px solid #a95d3c;color:#79523d;font:600 9px/1.5 var(--sans);letter-spacing:.12em;text-decoration:none;text-transform:uppercase;text-underline-offset:4px}
+.opportunity-path-link:focus-visible{outline:2px solid var(--rust);outline-offset:4px}
 .opportunity-form-shell{display:grid;grid-template-columns:.72fr 1.28fr;gap:6vw;align-items:start;padding:48px 0 100px;border-top:1px solid var(--line)}
 .opportunity-form-aside h2{font:400 clamp(34px,4vw,50px)/1 var(--serif);letter-spacing:-.04em;margin:15px 0}
 .opportunity-form-aside p{font:13px/1.85 var(--sans);color:#66675e}
@@ -190,7 +192,7 @@ body{background:var(--paper);color:var(--ink)}
 .form-status{min-height:1.5em;font:12px/1.6 var(--sans);color:#5b6b5d;margin:12px 0 0}
 .opportunity-direct{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);font:12px/1.8 var(--sans);color:#66675e}
 .opportunity-direct a{color:#80533a;text-underline-offset:3px}
-@media(max-width:900px){.opportunity-form-shell{grid-template-columns:1fr;gap:25px}.opportunity-form-aside{max-width:760px}}
+@media(max-width:900px){.opportunity-paths{grid-template-columns:repeat(2,minmax(0,1fr))}.opportunity-form-shell{grid-template-columns:1fr;gap:25px}.opportunity-form-aside{max-width:760px}}
 @media(max-width:760px){.opportunity-hero-actions{align-items:stretch;flex-direction:column}.opportunity-hero-actions .button{justify-content:center;width:100%}.opportunity-hero-secondary{text-align:center}.opportunity-paths{grid-template-columns:1fr}.opportunity-form{padding:20px 16px}.form-grid{grid-template-columns:1fr}.form-field.full{grid-column:auto}.lead-bridge-actions{flex-direction:column;align-items:stretch}.lead-bridge-actions .button{justify-content:space-between}.opportunity-form-shell{padding:35px 0 70px}}
 
 
@@ -693,7 +695,7 @@ body{background:var(--paper);color:var(--ink)}
 .about-contact-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(30px,6vw,84px);align-items:start}
 .about-contact-copy h2{max-width:550px;margin:17px 0;color:var(--ink);font:400 clamp(36px,4.5vw,58px)/1.02 var(--serif);letter-spacing:-.045em}
 .about-contact-copy p{max-width:490px;color:#65675e;font:13px/1.8 var(--sans)}
-.about-contact-paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.about-contact-paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .about-contact-path{display:flex;min-height:230px;flex-direction:column;align-items:flex-start;padding:20px;border:1px solid #bdb8ac;background:#f4f1e8;color:var(--ink);text-decoration:none;transition:background .18s,border-color .18s,transform .18s}
 .about-contact-path:hover{background:#faf8f2;border-color:#8d8a7e;transform:translateY(-2px)}
 .about-contact-path:focus-visible{outline:2px solid var(--rust);outline-offset:3px}
@@ -701,7 +703,7 @@ body{background:var(--paper);color:var(--ink)}
 .about-contact-path strong{margin:22px 0 9px;font:400 23px/1.1 var(--serif)}
 .about-contact-path small{color:#686a61;font:10px/1.7 var(--sans)}
 .about-contact-path b{margin-top:auto;padding-top:20px;color:#79523d;font:600 9px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase}
-@media(max-width:980px){.about-pillars{grid-template-columns:repeat(2,minmax(0,1fr))}.about-contact-grid{grid-template-columns:1fr}}
+@media(max-width:980px){.about-pillars{grid-template-columns:repeat(2,minmax(0,1fr))}.about-contact-grid{grid-template-columns:1fr}.about-contact-paths{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){
   .about-hero{grid-template-columns:1fr;gap:30px;padding:54px 0 60px}
   .about-hero h1{font-size:clamp(45px,12vw,66px)}

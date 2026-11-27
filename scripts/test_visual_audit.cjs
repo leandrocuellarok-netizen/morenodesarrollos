@@ -131,11 +131,19 @@ async function auditRoute(browser, route) {
     if (route.slug === "inicio") {
       const ownerLinks = await page.locator("a[href*='perfil=propietario']").evaluateAll(links => links.map(link => link.href));
       const investorLinks = await page.locator("a[href*='perfil=inversor']").evaluateAll(links => links.map(link => link.href));
+      const developerLinks = await page.locator("a[href*='perfil=desarrollador']").evaluateAll(links => links.map(link => link.href));
       check(ownerLinks.length >= 2, "inicio: se esperan accesos de propietario en portada y cierre comercial");
       check(investorLinks.length >= 2, "inicio: se esperan accesos de inversor en portada y cierre comercial");
+      check(developerLinks.length >= 2, "inicio: se esperan accesos explícitos de desarrollador en portada y cierre comercial");
       check(ownerLinks.every(href => new URL(href).searchParams.get("interes") === "terreno"), "inicio: los accesos de propietario transmiten la intención correcta");
       check(investorLinks.every(href => new URL(href).searchParams.get("interes") === "inversion"), "inicio: los accesos de inversor transmiten la intención correcta");
+      check(developerLinks.every(href => new URL(href).searchParams.get("interes") === "desarrollo"), "inicio: los accesos de desarrollador transmiten la intención correcta");
       await auditHomeCartography(page);
+    }
+    if (route.slug === "erica-acosta") {
+      const developerLinks = await page.locator(".about-contact-path[href*='perfil=desarrollador'], .about-hero a[href*='perfil=desarrollador']").count();
+      check(developerLinks >= 2, "perfil: el recorrido de desarrollador aparece en la presentación y en el cierre comercial");
+      check(await page.locator(".about-contact-path").count() === 3, "perfil: se presentan tres recorridos comerciales diferenciados");
     }
     check(await page.locator(".skip-link[href='#main-content']").count() === 1, `${route.slug}: falta el enlace único para saltar al contenido`);
     check(await page.locator("main#main-content[tabindex='-1']").count() === 1, `${route.slug}: falta el destino de foco del enlace de salto`);
@@ -378,11 +386,20 @@ async function auditOpportunityFlow(browser) {
     check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: el recorrido de propietario abre los datos del inmueble");
     check(await page.locator("#contact-type").isVisible(), "oportunidades: el tipo de oportunidad aparece dentro de los detalles al abrirlos");
 
+    check(await page.locator(".opportunity-path").count() === 3, "oportunidades: existen tres recorridos comerciales diferenciados");
+    const pathColumns = await page.locator(".opportunity-path").evaluateAll(cards => new Set(cards.map(card => Math.round(card.getBoundingClientRect().x))).size);
+    check(pathColumns === 3, "oportunidades: las tres tarjetas se presentan en columnas independientes en escritorio");
     const investorResponse = await page.goto(BASE_URL + "/oportunidades/?perfil=inversor&interes=inversion", { waitUntil: "domcontentloaded" });
     check(Boolean(investorResponse && investorResponse.ok()), "oportunidades: el enlace de inversor responde");
     check(await page.locator("#contact-profile").inputValue() === "Inversor/a", "oportunidades: el enlace de inversor preselecciona el perfil");
     check(await page.locator("#contact-interest").inputValue() === "Explorar una inversión", "oportunidades: el enlace de inversor preselecciona la intención");
     check(!(await page.locator("#property-data-disclosure").evaluate(element => element.open)), "oportunidades: el recorrido de inversor no abre campos de inmueble que no necesita");
+
+    const developerResponse = await page.goto(BASE_URL + "/oportunidades/?perfil=desarrollador&interes=desarrollo", { waitUntil: "domcontentloaded" });
+    check(Boolean(developerResponse && developerResponse.ok()), "oportunidades: el enlace de desarrollador responde");
+    check(await page.locator("#contact-profile").inputValue() === "Desarrollador/a", "oportunidades: el enlace de desarrollador preselecciona el perfil");
+    check(await page.locator("#contact-interest").inputValue() === "Evaluar una oportunidad de desarrollo", "oportunidades: el enlace de desarrollador preselecciona la intención");
+    check(!(await page.locator("#property-data-disclosure").evaluate(element => element.open)), "oportunidades: el recorrido de desarrollador no abre datos de inmueble que todavía no necesita");
 
     await page.goto(BASE_URL + "/oportunidades/", { waitUntil: "domcontentloaded" });
     const quickStart = page.locator(".opportunity-hero-actions a[href='#opportunity-form']");
