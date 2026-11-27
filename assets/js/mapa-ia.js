@@ -5909,7 +5909,7 @@ const nov27_1032NewEntries = [
     "landSurfaceM2": 4200,
     "coveredSurfaceM2": 130,
         "surfaceNote": "Dos fracciones de 70 × 30 m (2.100 m² cada una), unidas en 4.200 m² de terreno; la ficha directa declara 130 m² cubiertos y 4.100 m² no cubiertos, pero su mismo cuadro técnico también muestra 153 m² totales, dato incompatible. Prevalecen mensura y título.",
-    "observations": "Casa quinta en esquina Samaniego y Pedro de Angelis, con vivienda principal, dependencia para casero, galpón, parque arbolado y pileta tipo tanque australiano. El aviso ofrece el conjunto de dos parcelas; no asumir subdivisión o venta separada. La ficha técnica es inconsistente entre superficie total y cubierta/no cubierta. Verificar títulos, agua de pozo, instalaciones, planos y disponibilidad.");
+    "observations": "Casa quinta en esquina Samaniego y Pedro de Angelis, con vivienda principal, dependencia para casero, galpón, parque arbolado y pileta tipo tanque australiano. El aviso ofrece el conjunto de dos parcelas; no asumir subdivisión o venta separada. La ficha técnica es inconsistente entre superficie total y cubierta/no cubierta. Verificar títulos, agua de pozo, instalaciones, planos y disponibilidad.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
