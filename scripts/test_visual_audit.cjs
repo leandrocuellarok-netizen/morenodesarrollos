@@ -574,6 +574,9 @@ async function auditOpportunityFaq(browser) {
     await page.keyboard.press("Enter");
     check(!(await items.first().evaluate(element => element.open)), "FAQ oportunidades: Enter vuelve a contraer la respuesta");
     check(await page.locator(".opportunity-faq-cta").getAttribute("href") === "#opportunity-form", "FAQ oportunidades: el CTA conduce al formulario");
+    const faqTop = await page.locator(".opportunity-faq").evaluate(element => element.getBoundingClientRect().top + window.scrollY);
+    const formTop = await page.locator("#opportunity-form").evaluate(element => element.getBoundingClientRect().top + window.scrollY);
+    check(faqTop < formTop, "FAQ oportunidades: las respuestas aparecen antes del formulario");
     for (const width of [320, 360, 390, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       await delay(50);
