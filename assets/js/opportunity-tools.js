@@ -206,7 +206,7 @@
     "terreno-derqui-7660-384": "Lote · Avenida Derqui 7660 · 384 m²",
     "terreno-abdon-calderon-1000-250": "Lote comercial · Abdón Calderón 1000 · 250 m²",
     "terreno-conscripto-bernardi-1800-3888": "Conscripto Bernardi al 1800 · 3.888 m²",
-    "terreno-lamadrid-el-vergel-2161": "Gral. Aráoz de Lamadrid 100 · El Vergel · 2.161 m²",
+    "terreno-lamadrid-el-vergel-2161": "Gral. Aráoz de Lamadrid 100 · barrio El Vergel · 2.161 m²",
     "terreno-camilli-60-1000": "Teniente Oscar Camilli al 60 · 1.000 m²",
     "terreno-justo-daract-2000-630": "Justo Daract al 2000 · 630 m²",
     "terreno-vidt-1700-420": "Loteo Las Casuarinas · Vidt al 1700 · 420 m²",
