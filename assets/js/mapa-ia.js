@@ -16,9 +16,329 @@ const opportunities=[
 {id:"norte",stage:"hypothesis",name:"Cuartel V · Trujui · La Reja",lat:-34.61,lng:-58.815,kind:"land",business:"Prospección de parcelas grandes, ensamble de tierra, asociaciones con propietarios y desarrollos por etapas.",evidence:"Los avisos inmobiliarios son pistas de prospección, no prueba de dominio, zonificación ni disponibilidad.",status:"Hipótesis de prospección; sin parcelas individualizadas verificadas.",next:"Construir inventario con nomenclatura catastral, superficie, precio pedido y contacto verificable.",source:"https://www.zonaprop.com.ar/terrenos-venta-moreno-mas-9000-m2.html"}
 ];
 
+const publishedProperties = [
+  {
+    "id": "sumio-lote-338",
+    "recordType": "Terreno individual",
+    "name": "Lote 01 · Loteo Sumio · 338 m²",
+    "locality": "Moreno",
+    "address": "Av. Derqui 5890",
+    "geocodeQuery": "Av. Derqui 5890",
+    "geocodeMatch": "DERQUI 5890",
+    "source": "https://pabloaquinoinmobiliaria.com.ar/propiedades/lote-sumio-anticipo-y-cuotas/",
+    "agency": "Pablo Aquino Inmobiliaria",
+    "contact": "Tel. +54 9 11 7001-7411 / 02320-423003",
+    "phone": "+54 9 11 7001-7411",
+    "price": "Anticipo USD 12.000 + 60 cuotas de USD 250",
+    "currency": "USD",
+    "landSurfaceM2": 338,
+    "surfaceNote": "12,50 × 27,40 m · lote 01, manzana 4",
+    "observations": "La inmobiliaria informa visación municipal y subdivisión por Geodesia en trámite ante Catastro PBA. El importe corresponde al anticipo, no al precio total.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "sumio-lote-450",
+    "recordType": "Terreno individual",
+    "name": "Lote 02 · Loteo Sumio · 450 m²",
+    "locality": "Moreno",
+    "address": "Av. Derqui 5890",
+    "geocodeQuery": "Av. Derqui 5890",
+    "geocodeMatch": "DERQUI 5890",
+    "source": "https://pabloaquinoinmobiliaria.com.ar/propiedades/venta-lote-450m2-sumio/",
+    "agency": "Pablo Aquino Inmobiliaria",
+    "contact": "Tel. +54 9 11 7001-7411 / 02320-423003",
+    "phone": "+54 9 11 7001-7411",
+    "price": "Anticipo USD 14.000 + 60 cuotas de USD 250",
+    "currency": "USD",
+    "landSurfaceM2": 450,
+    "surfaceNote": "12 × 37,50 m · lote 02, manzana 4",
+    "observations": "La inmobiliaria informa visación municipal y subdivisión por Geodesia en trámite ante Catastro PBA. El importe corresponde al anticipo, no al precio total.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "sumio-proyecto",
+    "recordType": "Desarrollo inmobiliario",
+    "name": "Loteo Sumio · Proyecto N.º 41",
+    "locality": "Moreno",
+    "address": "Av. Derqui casi esquina Av. San Fernando",
+    "geocodeQuery": "Av. Derqui 5890",
+    "geocodeMatch": "DERQUI 5890",
+    "source": "https://pabloaquinoinmobiliaria.com.ar/loteo-sumio/",
+    "agency": "Pablo Aquino Inmobiliaria",
+    "contact": "Tel. +54 9 11 7001-7411 / 02320-423003",
+    "phone": "+54 9 11 7001-7411",
+    "price": "Anticipos publicados USD 12.000–14.000 + 60 cuotas de USD 250",
+    "currency": "USD",
+    "surfaceNote": "26 parcelas; lotes publicados de 300 a 600 m²",
+    "publicationDate": "2026-03-19",
+    "observations": "La inmobiliaria anuncia avances de obra. Publicación del 19/03/2026; ejecución física no verificada independientemente.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "parque-francisco-lote-300",
+    "recordType": "Terreno individual",
+    "name": "Parque Francisco · lote de 300 m² · anticipo",
+    "locality": "Francisco Álvarez",
+    "address": "Lapacho y Schubert",
+    "geocodeQuery": "Lapacho y Schubert",
+    "geocodeMatch": "LAPACHO SCHUBERT",
+    "source": "https://www.puglieseinmobiliaria.com.ar/p/7727829-Terreno-en-Venta-en-Francisco-Alvarez-Lapacho-y-Schubert",
+    "agency": "Pugliese Inmobiliaria",
+    "contact": "Nicolás Di Puglia Pugliese, CMCPDJMGR 225 · tel. (011) 15 5015-3003",
+    "phone": "+54 11 50153003",
+    "price": "Anticipo USD 3.000 + hasta 60 cuotas desde USD 360; contado desde USD 14.000",
+    "currency": "USD",
+    "landSurfaceM2": 300,
+    "surfaceNote": "12 × 25 m · terreno descubierto",
+    "observations": "El valor de publicación corresponde al anticipo. La ficha individual informa 93 parcelas; la ficha del emprendimiento, 95. Subdivisión en trámite según la inmobiliaria.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "parque-francisco-proyecto",
+    "recordType": "Desarrollo inmobiliario",
+    "name": "Parque Francisco · barrio abierto",
+    "locality": "Francisco Álvarez",
+    "address": "Calle Lapacho, intersección Schubert",
+    "geocodeQuery": "Lapacho y Schubert",
+    "geocodeMatch": "LAPACHO SCHUBERT",
+    "source": "https://www.puglieseinmobiliaria.com.ar/d/69884-Parque-Francisco-en-Francisco-Alvarez",
+    "agency": "Pugliese Inmobiliaria",
+    "contact": "Nicolás Di Puglia Pugliese, CMCPDJMGR 225 · tel. (011) 15 5015-3003",
+    "phone": "+54 11 50153003",
+    "price": "Contado desde USD 14.000; anticipos desde USD 3.000 y hasta 60 cuotas fijas",
+    "currency": "USD",
+    "surfaceNote": "La ficha de emprendimiento informa 95 terrenos desde 300 m²; la ficha individual menciona 93.",
+    "observations": "La ficha anuncia obra iniciada en noviembre de 2025 y entrega en enero de 2027. Discrepancia de cantidad: 95 terrenos en emprendimiento y 93 parcelas en aviso individual; verificar avance, permisos y masterplan.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "parques-morenito-lote-594",
+    "recordType": "Terreno individual",
+    "name": "Parques del Morenito · lote publicado de 594 m²",
+    "locality": "Moreno · Tierras del Morenito",
+    "address": "Enrique Larreta al 8300",
+    "geocodeQuery": "Enrique Larreta 8300",
+    "geocodeMatch": "ENRIQUE LARRETA 8300",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-lote-terreno-en-venta-594-m-sup2--moreno-norte-52034721.html",
+    "agency": "Aviso en Zonaprop; desarrollo comercializado por Ramirez Mandatos y Negocios Inmobiliarios",
+    "contact": "Formulario Zonaprop; matrículas COMARCOMGR 71/183 y CUCICBA 8496; teléfono no visible.",
+    "price": "USD 20.000",
+    "currency": "USD",
+    "landSurfaceM2": 594,
+    "surfaceNote": "Lote publicado de 594 m²",
+    "observations": "El aviso afirma escritura inmediata y ofrece anticipo más cuotas, pero no publica el plan exacto para este lote. Confirmar título, plano, precio y stock.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "parques-morenito-proyecto",
+    "recordType": "Desarrollo inmobiliario · antecedente",
+    "name": "Parques del Morenito · barrio abierto",
+    "locality": "Moreno · Tierras del Morenito",
+    "address": "Enrique Larreta 8300",
+    "geocodeQuery": "Enrique Larreta 8300",
+    "geocodeMatch": "ENRIQUE LARRETA 8300",
+    "source": "https://ramirezmandatos.tuinmobiliaria.com.ar/d/40279-Parques-del-Morenito-en-Moreno",
+    "agency": "Ramirez Mandatos y Negocios Inmobiliarios",
+    "contact": "Formulario público del desarrollador; teléfono no visible.",
+    "surfaceNote": "3 hectáreas; 56 lotes publicados de 300 a 1.200 m²",
+    "observations": "La ficha publica entrega en julio de 2022; se registra como antecedente de desarrollo finalizado, no como obra vigente. No inferir stock actual.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "trujui-lote-isabel-catolica-400",
+    "recordType": "Terreno individual",
+    "name": "Lote en Trujui · Isabel la Católica al 3300",
+    "locality": "Trujui",
+    "address": "Isabel la Católica al 3300",
+    "geocodeQuery": "Isabel la Catolica 3300",
+    "geocodeMatch": "ISABEL CATOLICA 3300",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-lote-trujui-moreno-51698308.html",
+    "agency": "Aviso en Zonaprop; oficina asociada Keller Williams",
+    "contact": "Julian Aguilar Amat, CMCPSI 6737 / CUCICBA 7839; formulario Zonaprop; teléfono no expuesto.",
+    "price": "USD 28.000 en encabezado; descripción: USD 18.000 + cuotas",
+    "currency": "USD",
+    "landSurfaceM2": 400,
+    "surfaceNote": "400 m² totales",
+    "observations": "Discrepancia material de precio dentro del aviso: USD 28.000 en encabezado y USD 18.000 más cuotas en descripción. Confirmar antes de evaluar.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "la-reja-lote-general-hornos-471",
+    "recordType": "Terreno individual",
+    "name": "Lote en barrio Azteca · La Reja · 471 m²",
+    "locality": "La Reja",
+    "address": "General Hornos 1850, entre Los Olmos y Azteca 1800",
+    "geocodeQuery": "General Hornos 1850",
+    "geocodeMatch": "HORNOS 1850",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-lote-en-venta-en-la-reja-grande-la-reja-59211698.html",
+    "agency": "Campal Propiedades",
+    "contact": "Fabián Diego Campal, matrícula 221; teléfono no expuesto.",
+    "price": "USD 35.000",
+    "currency": "USD",
+    "landSurfaceM2": 471,
+    "surfaceNote": "Descripción: aprox. 470 m²; medidas 15 × 31 m",
+    "observations": "Barrio Azteca semi-cerrado según aviso. El aviso publica 471 m² y describe aproximadamente 470 m²; medidas sujetas a título y mensura.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "cuartel-v-fraccion-san-fernando-galicia",
+    "recordType": "Fracción de terreno",
+    "name": "Fracción comercial/productiva · 4.431 m²",
+    "locality": "Cuartel V",
+    "address": "Av. San Fernando y Galicia",
+    "geocodeQuery": "Av. San Fernando y Galicia",
+    "geocodeMatch": "SAN FERNANDO GALICIA",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-en-venta-cuartel-v-moreno-47191040.html",
+    "agency": "Aviso en Zonaprop",
+    "contact": "Martín Dambolena, CMCPDJMGR 205 / CUCICBA 7176; teléfono no expuesto.",
+    "price": "USD 85.000",
+    "currency": "USD",
+    "landSurfaceM2": 4431,
+    "surfaceNote": "Frente 60,70 m sobre Galicia y 73 m sobre Av. San Fernando; salida a dos calles",
+    "observations": "El aviso publica referencias a Alineamiento Comercial C y Producción Extensiva con indicadores distintos. Exigir certificado urbanístico parcelario y mensura.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "moreno-casa-martin-fierro-5000",
+    "recordType": "Casa individual",
+    "name": "Casa en venta · Martín Fierro al 5000",
+    "locality": "Moreno",
+    "address": "Martín Fierro al 5000",
+    "geocodeQuery": "Martin Fierro 5000",
+    "geocodeMatch": "MARTIN FIERRO 5000",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-en-venta-en-moreno-59397081.html",
+    "agency": "Pugliese Inmobiliaria",
+    "contact": "Nicolás Di Puglia Pugliese, CMCPDJMGR 225 · tel. (011) 15 5015-3003",
+    "phone": "+54 11 50153003",
+    "price": "USD 76.000",
+    "currency": "USD",
+    "landSurfaceM2": 291,
+    "coveredSurfaceM2": 90,
+    "surfaceNote": "5 ambientes · 2 dormitorios · 1 baño · 2 cocheras",
+    "observations": "La descripción informa escritura inmediata, acepta vehículo en parte de pago y escucha ofertas de contado. Verificar medidas en título y plano.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "moreno-casa-martin-fierro-4900",
+    "recordType": "Casa individual",
+    "name": "Casa apta crédito · Martín Fierro al 4900",
+    "locality": "Moreno",
+    "address": "Martín Fierro al 4900",
+    "geocodeQuery": "Martin Fierro 4900",
+    "geocodeMatch": "MARTIN FIERRO 4900",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-en-moreno-apto-credito-59287060.html",
+    "agency": "Pugliese Inmobiliaria",
+    "contact": "Nicolás Di Puglia Pugliese, CMCPDJMGR 225 · tel. (011) 15 5015-3003",
+    "phone": "+54 11 50153003",
+    "price": "USD 80.000",
+    "currency": "USD",
+    "landSurfaceM2": 291,
+    "coveredSurfaceM2": 85,
+    "surfaceNote": "4 ambientes · 2 dormitorios · 1 baño · 2 cocheras",
+    "observations": "El aviso declara aptitud crediticia, planos y escritura; verificar la documentación con banco, escribano y corredor.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "la-reja-casa-belisario-roldan-1800",
+    "recordType": "Casa individual · a refaccionar",
+    "name": "Casa para refacción · Belisario Roldán al 1800",
+    "locality": "Moreno · descripción indica La Reja; portal clasifica Moreno",
+    "address": "Belisario Roldán al 1800",
+    "geocodeQuery": "Belisario Roldan 1800",
+    "geocodeMatch": "BELISARIO ROLDAN 1800",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-oportunidad-de-invertir-casa-en-venta-refaccion-53543201.html",
+    "agency": "Pugliese Inmobiliaria",
+    "contact": "Nicolás Di Puglia Pugliese, CMCPDJMGR 225 · tel. (011) 15 5015-3003",
+    "phone": "+54 11 50153003",
+    "price": "USD 50.000",
+    "currency": "USD",
+    "landSurfaceM2": 300,
+    "coveredSurfaceM2": 54,
+    "surfaceNote": "Lote 10 × 30 m · 3 ambientes · 2 dormitorios",
+    "observations": "El encabezado ubica el inmueble en Moreno y la descripción lo presenta como La Reja. Se conserva la discrepancia y no se asigna localidad definitiva.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  },
+  {
+    "id": "paso-del-rey-casa-lebensohn-300",
+    "recordType": "Casa individual",
+    "name": "Casa de 6 ambientes · Lebensohn 300",
+    "locality": "Paso del Rey",
+    "address": "Lebensohn 300",
+    "geocodeQuery": "Lebensohn 300",
+    "geocodeMatch": "LEBENSOHN 300",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-impecable-casa-en-venta.-centro-de-paso-del-rey-lado-58214296.html",
+    "agency": "Mateo Propiedades",
+    "contact": "Matrícula 36; teléfono no expuesto.",
+    "price": "USD 180.000",
+    "currency": "USD",
+    "landSurfaceM2": 450,
+    "coveredSurfaceM2": 1,
+    "surfaceNote": "El portal muestra 1 m² cubierto; descripción relata casa de dos plantas y quincho 10 × 7 m",
+    "observations": "La ficha informa lote aproximado 10 × 45 m y vivienda en dos plantas. El dato de 1 m² cubierto es inconsistente con la descripción; solicitar plano y superficie real.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  }
+];
+
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
-  ...opportunities.map(item => ({ ...item, type: "opportunity" }))
+  ...opportunities.map(item => ({ ...item, type: "opportunity" })),
+  ...publishedProperties.map(item => ({ ...item, type: "published" }))
 ];
 const kindLabel = {
   industrial: "Productivo / logístico",
@@ -270,7 +590,7 @@ function mergeReviewStates(localState, importedState, items) {
 }
 
 const MAP_VIEW_QUERY_KEYS = ["q", "tipo", "sector", "evidencia", "ref"];
-const MAP_VIEW_CATEGORIES = ["all", "locality", "opportunity"];
+const MAP_VIEW_CATEGORIES = ["all", "locality", "opportunity", "published"];
 const MAP_VIEW_KINDS = ["all", "industrial", "commercial", "tourism", "land"];
 const MAP_VIEW_EVIDENCE = ["all", "documented", "hypothesis"];
 
@@ -328,9 +648,9 @@ function buildOpportunityContactUrl(baseUrl, item) {
 }
 
 function referenceContactLabel(item) {
-  return item && item.type === "opportunity"
-    ? "Conversar sobre esta tesis ↗"
-    : "Consultar sobre esta localidad ↗";
+  if (item && item.type === "opportunity") return "Conversar sobre esta tesis ↗";
+  if (item && item.type === "published") return "Abrir publicación original ↗";
+  return "Consultar sobre esta localidad ↗";
 }
 
 function shouldFitMunicipalBounds(selectedReferenceId, userHasNavigated) {
@@ -355,16 +675,14 @@ function filterReferences(items, options) {
     const categoryMatches =
       category === "all" ||
       (category === "locality" && item.type === "locality") ||
-      (category === "opportunity" && item.type === "opportunity");
-    const kindMatches =
-      kind === "all" ||
-      (item.type === "opportunity" && item.kind === kind);
-    const evidenceMatches =
-      evidence === "all" ||
-      (item.type === "opportunity" && evidence === item.stage);
+      (category === "opportunity" && item.type === "opportunity") ||
+      (category === "published" && item.type === "published");
+    const kindMatches = kind === "all" || (item.type === "opportunity" && item.kind === kind);
+    const evidenceMatches = evidence === "all" || (item.type === "opportunity" && evidence === item.stage);
     const searchable = [
       item.name, item.info, item.business, item.status, item.evidence, item.next,
-      item.kind, kindLabel[item.kind]
+      item.kind, kindLabel[item.kind], item.recordType, item.locality, item.address,
+      item.agency, item.contact, item.price, item.verificationStatus, item.observations
     ].filter(Boolean).join(" ").toLocaleLowerCase("es-AR");
     return categoryMatches && kindMatches && evidenceMatches && searchable.includes(query);
   });
@@ -376,82 +694,103 @@ function countInventory(items) {
     if (item.type === "locality") counts.localities += 1;
     else if (item.type === "opportunity" && item.stage === "documented") counts.documented += 1;
     else if (item.type === "opportunity" && item.stage === "hypothesis") counts.hypotheses += 1;
+    else if (item.type === "published") counts.published += 1;
     counts.total += 1;
     return counts;
-  }, { localities: 0, documented: 0, hypotheses: 0, total: 0 });
+  }, { localities: 0, documented: 0, hypotheses: 0, published: 0, total: 0 });
 }
 
 function csvCell(value) {
   return '"' + String(value == null ? "" : value).replace(/"/g, '""') + '"';
 }
 
+function hasCoordinates(item) {
+  return Boolean(item && item.lat != null && item.lng != null && Number.isFinite(Number(item.lat)) && Number.isFinite(Number(item.lng)));
+}
+
+function normalizeAddressText(value) {
+  return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, " ").trim();
+}
+
+function georefAddressMatches(item, entry) {
+  const expected = normalizeAddressText(item && (item.geocodeMatch || item.address));
+  const actual = normalizeAddressText(entry && entry.nomenclatura);
+  const tokens = expected.split(/\s+/).filter(token => token.length > 2 || /\d/.test(token));
+  return Boolean(tokens.length && actual && tokens.every(token => actual.includes(token)));
+}
+
 function buildCsv(items) {
   const headers = [
-    "tipo", "nombre", "latitud_referencia", "longitud_referencia", "categoria",
-    "nivel_evidencia", "linea_a_investigar", "evidencia_publica",
-    "estado_de_verificacion", "proximo_paso", "fuente", "alcance_de_coordenada"
+    "tipo", "nombre", "latitud_referencia", "longitud_referencia", "categoria", "nivel_evidencia",
+    "linea_a_investigar", "evidencia_publica", "estado_de_verificacion", "proximo_paso", "fuente",
+    "alcance_de_coordenada", "localidad", "ubicacion_publicada", "direccion_publicada", "anunciante",
+    "contacto_publico", "precio_publicado", "moneda", "superficie_terreno_m2", "superficie_cubierta_m2",
+    "nota_de_superficie", "fecha_aviso", "fecha_revision", "geolocalizacion", "disponibilidad"
   ];
-  const rows = items.map(item => [
-    item.type === "locality" ? "localidad" : "tesis",
-    item.name,
-    item.lat,
-    item.lng,
-    item.type === "locality" ? "localidad" : (kindLabel[item.kind] || item.kind),
-    item.type === "locality" ? "referencia territorial" :
-      (item.stage === "hypothesis" ? "hipotesis de prospeccion" : "contexto con fuente publica"),
-    item.type === "locality" ? item.info : item.business,
-    item.type === "locality" ? "Localidad de referencia; no es una evaluacion parcelaria." : item.evidence,
-    item.type === "locality" ? "Centro aproximado de localidad; no parcelario." : item.status,
-    item.type === "locality" ? "Definir zona y recopilar informacion catastral y normativa." : item.next,
-    item.source || "",
-    item.type === "locality"
+  const rows = items.map(item => {
+    const isLocality = item.type === "locality";
+    const isPublished = item.type === "published";
+    const coordinatesAvailable = hasCoordinates(item);
+    const coordinateScope = isLocality
       ? "Coordenada de referencia de localidad; no identifica una parcela."
-      : "Centro aproximado de corredor o area; no identifica una parcela."
-  ]);
+      : (isPublished ? (coordinatesAvailable ? "Georreferencia aproximada de dirección por Georef; no parcelaria." : "Geolocalización pendiente; ubicación textual conservada.") : "Centro aproximado de corredor o área; no identifica una parcela.");
+    const base = [
+      isLocality ? "localidad" : (isPublished ? item.recordType : "tesis"), item.name,
+      coordinatesAvailable ? item.lat : "", coordinatesAvailable ? item.lng : "",
+      isLocality ? "localidad" : (isPublished ? "Propiedades y desarrollos publicados" : (kindLabel[item.kind] || item.kind)),
+      isLocality ? "referencia territorial" : (isPublished ? "publicación comercial" : (item.stage === "hypothesis" ? "hipotesis de prospeccion" : "contexto con fuente publica")),
+      isLocality ? item.info : (isPublished ? [item.recordType, item.locality, item.address].filter(Boolean).join(" · ") : item.business),
+      isLocality ? "Localidad de referencia; no es una evaluación parcelaria." : (isPublished ? item.observations : item.evidence),
+      isLocality ? "Centro aproximado de localidad; no parcelario." : (isPublished ? item.verificationStatus : item.status),
+      isLocality ? "Definir zona y recopilar información catastral y normativa." : (isPublished ? "Confirmar vigencia, precio, stock y documentación con el anunciante." : item.next),
+      item.source || "", coordinateScope
+    ];
+    const details = isPublished ? [
+      item.locality, item.location || item.address, item.address, item.agency, item.contact,
+      item.price, item.currency, item.landSurfaceM2, item.coveredSurfaceM2, item.surfaceNote,
+      item.publicationDate, item.lastCheckedAt, item.geolocationStatus, item.availabilityStatus
+    ] : ["","","","","","","","","","","","","",""];
+    return base.concat(details);
+  });
   return "\uFEFF" + [headers, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n");
 }
 
 function buildGeoJson(items) {
   const features = items.map(item => {
     const isLocality = item.type === "locality";
-    const evidenceLevel = isLocality
-      ? "referencia territorial"
-      : (item.stage === "hypothesis" ? "hipotesis de prospeccion" : "contexto con fuente publica");
+    const isPublished = item.type === "published";
+    const evidenceLevel = isLocality ? "referencia territorial" : (isPublished ? "publicación comercial" : (item.stage === "hypothesis" ? "hipotesis de prospeccion" : "contexto con fuente publica"));
     const coordinateScope = isLocality
       ? "Centro aproximado de localidad; no identifica una parcela."
-      : "Centro aproximado de corredor o area; no identifica una parcela.";
+      : (isPublished ? (hasCoordinates(item) ? "Georreferencia aproximada de dirección por Georef; no representa parcela." : "Geolocalización pendiente; no se asignó coordenada.") : "Centro aproximado de corredor o area; no identifica una parcela.");
+    const geometry = hasCoordinates(item) ? { type: "Point", coordinates: [Number(item.lng), Number(item.lat)] } : null;
     return {
       type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [Number(item.lng), Number(item.lat)]
-      },
+      geometry,
       properties: {
-        id: item.id,
-        reference_type: isLocality ? "localidad" : "tesis territorial",
-        name: item.name,
-        category: isLocality ? "Localidad" : (kindLabel[item.kind] || item.kind),
+        id: item.id, reference_type: isLocality ? "localidad" : (isPublished ? item.recordType : "tesis territorial"),
+        name: item.name, category: isLocality ? "Localidad" : (isPublished ? "Propiedades y desarrollos publicados" : (kindLabel[item.kind] || item.kind)),
         evidence_level: evidenceLevel,
-        line_to_investigate: isLocality ? item.info : item.business,
-        public_evidence: isLocality ? null : item.evidence,
-        verification_status: isLocality
-          ? "Referencia geográfica de localidad; no es una evaluación parcelaria."
-          : item.status,
-        next_step: isLocality
-          ? "Definir zona y recopilar información catastral y normativa."
-          : item.next,
-        source_url: item.source || null,
-        coordinate_scope: coordinateScope,
-        parcel_identified: false,
-        availability_verified: false
+        line_to_investigate: isLocality ? item.info : (isPublished ? [item.recordType, item.locality, item.address].filter(Boolean).join(" · ") : item.business),
+        public_evidence: isLocality ? null : (isPublished ? item.observations : item.evidence),
+        verification_status: isLocality ? "Referencia geográfica de localidad; no es una evaluación parcelaria." : (isPublished ? item.verificationStatus : item.status),
+        next_step: isLocality ? "Definir zona y recopilar información catastral y normativa." : (isPublished ? "Confirmar vigencia, precio, disponibilidad, dominio y documentación." : item.next),
+        source_url: item.source || null, coordinate_scope: coordinateScope,
+        locality: isPublished ? item.locality : null, published_address: isPublished ? item.address : null,
+        agency: isPublished ? item.agency : null, public_contact: isPublished ? item.contact : null,
+        published_price: isPublished ? item.price : null, currency: isPublished ? item.currency : null,
+        land_surface_m2: isPublished ? item.landSurfaceM2 : null, covered_surface_m2: isPublished ? item.coveredSurfaceM2 : null,
+        publication_date: isPublished ? item.publicationDate : null, checked_at: isPublished ? item.lastCheckedAt : null,
+        geolocation_status: isPublished ? item.geolocationStatus : null, availability_status: isPublished ? item.availabilityStatus : null,
+        parcel_identified: false, availability_verified: false
       }
     };
   });
   return {
     type: "FeatureCollection",
-    name: "Mapa IA de Moreno — referencias territoriales",
+    name: "Mapa IA de Moreno — referencias territoriales y publicaciones inmobiliarias",
     description: "Exportación de las referencias visibles del inventario exploratorio de MORENO.",
-    disclaimer: "Las coordenadas son referencias aproximadas de localidades o corredores. No identifican parcelas ni acreditan titularidad, disponibilidad, zonificación, factibilidad o rentabilidad. Verificar cada dato con fuentes oficiales y trabajo de campo.",
+    disclaimer: "Las coordenadas de localidades y tesis son aproximadas. Las publicaciones comerciales conservan geometry:null hasta obtener una georreferencia inequívoca de la dirección mediante Georef. Ninguna coordenada identifica una parcela ni acredita titularidad, disponibilidad, zonificación, factibilidad o rentabilidad.",
     features
   };
 }
@@ -620,7 +959,7 @@ function buildTerritorialDossier(items, filters, generatedAt) {
   if (!selected.length) return null;
 
   const state = normalizeMapViewState(filters, all);
-  const categoryLabels = { all: "Todas las capas", locality: "Localidades", opportunity: "Tesis de oportunidad" };
+  const categoryLabels = { all: "Todas las capas", locality: "Localidades", opportunity: "Tesis de oportunidad", published: "Propiedades y desarrollos publicados" };
   const evidenceLabels = { all: "Todos los niveles", documented: "Contextos con fuente pública", hypothesis: "Hipótesis de prospección" };
   const filterLabels = [];
   if (state.query) filterLabels.push("Búsqueda: " + state.query);
@@ -635,37 +974,28 @@ function buildTerritorialDossier(items, filters, generatedAt) {
 
   const references = selected.map((item, index) => {
     const isLocality = item.type === "locality";
-    const latitude = Number(item.lat);
-    const longitude = Number(item.lng);
+    const isPublished = item.type === "published";
+    const latitude = item.lat == null ? NaN : Number(item.lat);
+    const longitude = item.lng == null ? NaN : Number(item.lng);
     return {
-      index: index + 1,
-      id: item.id,
-      name: item.name,
-      type: item.type,
+      index: index + 1, id: item.id, name: item.name, type: item.type,
       classification: isLocality
         ? { value: "locality", label: "Localidad · referencia territorial" }
-        : {
+        : (isPublished ? { value: "published", label: "Publicación inmobiliaria · vigencia no confirmada" } : {
             value: item.stage,
             label: item.stage === "hypothesis" ? "Hipótesis de prospección" : "Contexto con fuente pública"
-          },
-      category: isLocality ? "Localidad" : (kindLabel[item.kind] || "Tesis territorial"),
+          }),
+      category: isLocality ? "Localidad" : (isPublished ? "Propiedades y desarrollos publicados" : (kindLabel[item.kind] || "Tesis territorial")),
       coordinates: {
         latitude: Number.isFinite(latitude) ? latitude : null,
         longitude: Number.isFinite(longitude) ? longitude : null,
-        scope: isLocality
-          ? "Centro aproximado de localidad; no identifica una parcela."
-          : "Centro aproximado de corredor o área; no identifica una parcela."
+        scope: isLocality ? "Centro aproximado de localidad; no identifica una parcela." :
+          (isPublished ? (hasCoordinates(item) ? "Georreferencia aproximada de dirección por Georef; no identifica una parcela." : "Geolocalización pendiente; se conserva la ubicación textual y no se asigna coordenada.") : "Centro aproximado de corredor o área; no identifica una parcela.")
       },
-      lineToInvestigate: isLocality ? String(item.info || "") : String(item.business || ""),
-      evidence: isLocality
-        ? "Referencia geográfica de localidad; no es una evaluación parcelaria."
-        : String(item.evidence || ""),
-      verificationStatus: isLocality
-        ? "No identifica un inmueble ni acredita titularidad o disponibilidad."
-        : String(item.status || ""),
-      nextStep: isLocality
-        ? "Definir un área concreta y reunir información catastral, urbanística y de servicios."
-        : String(item.next || ""),
+      lineToInvestigate: isLocality ? String(item.info || "") : (isPublished ? [item.recordType,item.locality,item.address,item.price].filter(Boolean).join(" · ") : String(item.business || "")),
+      evidence: isLocality ? "Referencia geográfica de localidad; no es una evaluación parcelaria." : (isPublished ? String(item.observations || "") : String(item.evidence || "")),
+      verificationStatus: isLocality ? "No identifica un inmueble ni acredita titularidad o disponibilidad." : (isPublished ? String(item.verificationStatus || "") : String(item.status || "")),
+      nextStep: isLocality ? "Definir un área concreta y reunir información catastral, urbanística y de servicios." : (isPublished ? "Confirmar vigencia, precio, stock, contacto, dominio, mensura y documentación antes de negociar." : String(item.next || "")),
       sourceUrl: safeTerritorialSource(item.source)
     };
   });
@@ -723,6 +1053,8 @@ function buildTerritorialDossierDiagram(references) {
     let shape = "";
     if (reference.type === "locality") {
       shape = '<circle cx="' + cx + '" cy="' + cy + '" r="12" class="schematic-locality"/>';
+    } else if (reference.type === "published") {
+      shape = '<path d="M ' + cx + " " + (cy - 13) + " L " + (cx + 12) + " " + (cy - 6) + " L " + (cx + 12) + " " + (cy + 6) + " L " + cx + " " + (cy + 13) + " L " + (cx - 12) + " " + (cy + 6) + " L " + (cx - 12) + " " + (cy - 6) + ' Z" class="schematic-published"/>';
     } else if (reference.classification.value === "hypothesis") {
       shape = '<path d="M ' + cx + " " + (cy - 14) + " L " + (cx + 14) + " " + cy + " L " + cx + " " + (cy + 14) + " L " + (cx - 14) + " " + cy + ' Z" class="schematic-hypothesis"/>';
     } else {
@@ -1855,7 +2187,7 @@ function initMapPage(doc) {
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
-    localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson,
+    localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches,
     getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl,
     buildReferenceUrl, buildOpportunityContactUrl, referenceContactLabel,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
