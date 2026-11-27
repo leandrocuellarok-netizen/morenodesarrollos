@@ -317,10 +317,79 @@ const hourlyExpectedIds = [
   "terreno-salto-600-595",
   "terreno-juan-diaz-solis-1800-595",
   "terreno-los-abedules-lote121-600",
+  "terreno-esteban-de-luca-2200-415",
+  "terreno-paysandu-900-380",
+  "terreno-agrelo-5300-1500",
+  "terreno-jacinto-verdaguer-juan-maciel-1500",
+  "terreno-jose-marti-1000-2164",
+  "terreno-lorenzo-lopez-300-1123",
+  "terreno-puccini-1600-366",
+  "terreno-juan-diaz-de-solis-3400-350",
+  "terreno-ruta5-cadiz-320",
+  "quinta-racine-300-678",
+  "terreno-dr-vera-1200-374",
+  "terreno-salta-nemesio-alvarez-600",
+  "terreno-felix-mendelsohn-1400-325",
+  "terreno-la-tradicion-700-719",
+  "terreno-joaquin-v-gonzalez-600-612",
+  "terreno-las-tres-marias-lote-6-411",
+  "terreno-prados-del-oeste-2-lote-central-839",
+  "terreno-prados-del-oeste-2-lote-esquina-814",
+  "terreno-general-hornos-200-prados-del-oeste-2-786",
+  "terreno-domingo-martinez-de-irala-1600-1107",
+  "terreno-vicente-lopez-y-planes-1300-240",
+  "casa-emilio-mitre-2200-782",
+  "casa-zeballos-600-382",
+  "casa-posadas-1100-390",
+  "casa-doctor-marcelo-alvear-2800-1125",
+  "casa-primero-de-mayo-125-311",
+  "inmueble-mixto-saenz-pena-2200",
+  "casa-alcorta-2400-potencial-desarrollo",
+  "desarrollo-maria-eugenia-residences-village",
 ];
 for (const id of hourlyExpectedIds) {
   assert.ok(publishedProperties.some(item => item.id === id), "la revisión horaria incorpora " + id);
 }
+const nov27CurrentReviewIds = [
+  "terreno-esteban-de-luca-2200-415",
+  "terreno-paysandu-900-380",
+  "terreno-agrelo-5300-1500",
+  "terreno-jacinto-verdaguer-juan-maciel-1500",
+  "terreno-jose-marti-1000-2164",
+  "terreno-lorenzo-lopez-300-1123",
+  "terreno-puccini-1600-366",
+  "terreno-juan-diaz-de-solis-3400-350",
+  "terreno-ruta5-cadiz-320",
+  "quinta-racine-300-678",
+  "terreno-dr-vera-1200-374",
+  "terreno-salta-nemesio-alvarez-600",
+  "terreno-felix-mendelsohn-1400-325",
+  "terreno-la-tradicion-700-719",
+  "terreno-joaquin-v-gonzalez-600-612",
+  "terreno-las-tres-marias-lote-6-411",
+  "terreno-prados-del-oeste-2-lote-central-839",
+  "terreno-prados-del-oeste-2-lote-esquina-814",
+  "terreno-general-hornos-200-prados-del-oeste-2-786",
+  "terreno-domingo-martinez-de-irala-1600-1107",
+  "terreno-vicente-lopez-y-planes-1300-240",
+  "casa-emilio-mitre-2200-782",
+  "casa-zeballos-600-382",
+  "casa-posadas-1100-390",
+  "casa-doctor-marcelo-alvear-2800-1125",
+  "casa-primero-de-mayo-125-311",
+  "inmueble-mixto-saenz-pena-2200",
+  "casa-alcorta-2400-potencial-desarrollo",
+  "desarrollo-maria-eugenia-residences-village"
+];
+for (const id of nov27CurrentReviewIds) {
+  const item = publishedProperties.find(record => record.id === id);
+  assert.ok(item, "la revisión incorpora " + id);
+  assert.equal(item.availabilityStatus, "No confirmada", "no se presume disponibilidad para " + id);
+  assert.equal(item.lastCheckedAt, "2026-11-27", "fecha de revisión registrada para " + id);
+  assert.equal(item.lat, null, "no se inventa latitud para " + id);
+  assert.equal(item.lng, null, "no se inventa longitud para " + id);
+}
+
 assert.equal(publishedProperties.find(item => item.id === "la-reja-casa-quinta-santa-teresa-2401").availabilityStatus, "No vigente");
 assert.equal(publishedProperties.find(item => item.id === "parques-morenito-proyecto").availabilityStatus, "No confirmada");
 assert.equal(publishedProperties.find(item => item.id === "sumio-lote-450").availabilityStatus, "No vigente");
