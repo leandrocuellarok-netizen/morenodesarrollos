@@ -1947,38 +1947,38 @@ publishedProperties.push(
 
 const nov27FollowupEntries = [
   {
-    "id": "casa-patricias-argentinas-2300-2762",
-    "recordType": "Casa quinta individual",
-    "name": "Casa quinta · Patricias Argentinas 2300/2301 · 2.762 m²",
-    "locality": "Moreno",
-    "address": "Patricias Argentinas 2300 (la descripción menciona 2301), Moreno",
-    "source": "https://www.argenprop.com/quinta-en-venta-en-cuartel-v--20907347",
-    "sourceAlternates": [
-      {
-        "url": "https://www.inmuebles.clarin.com/quinta-en-venta-en-cuartel-v--20907347",
-        "label": "Copia en Inmuebles Clarín"
-      },
-      {
-        "url": "https://proppies.app/propiedad/buenos-aires/cuartel-v/casa-3-amb-en-venta-en-cuartel-v-41711819",
-        "label": "Registro histórico Proppies: inactivo, último precio USD 87.000"
-      }
-    ],
-    "agency": "RE/MAX Grammar; publicación en Zonaprop e Inmuebles Clarín",
-    "contact": "María Laura Torralba; corredor responsable Juan Alberto Crescimone, CMCPSM 2821 / CPI 9670. Teléfono completo no visible en la ficha.",
-    "price": "USD 82.000",
-    "currency": "USD",
-    "landSurfaceM2": 2762,
-    "coveredSurfaceM2": 102,
-    "surfaceNote": "La publicación desglosa vivienda principal de 46 m², vivienda de huéspedes de 23,5 m² y quincho de 32,8 m². Superficie total cubierta declarada: 102 m².",
-    "observations": "La ficha individual de Argenprop publica USD 82.000 y la copia de Inmuebles Clarín coincide. Proppies conserva un registro anterior de la misma propiedad marcado inactivo con último precio USD 87.000 el 24/09/2026. El título indica altura 2300 y la descripción 2301. Confirmar precio, altura, mensura, estado de las construcciones y servicios.",
-    "lat": null,
-    "lng": null,
-    "geocodeDisabled": true,
-    "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
-    "geolocationStatus": "Pendiente: la dirección presenta discrepancia entre 2300 y 2301; no se asigna coordenada.",
-    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio y superficies publicados, pero disponibilidad comercial no confirmada."
-  },
+  "id": "casa-patricias-argentinas-2300-2762",
+  "recordType": "Casa quinta individual",
+  "name": "Casa quinta · Patricias Argentinas 2300/2301 · 2.762 m²",
+  "locality": "Cuartel V",
+  "address": "Patricias Argentinas 2300 (la descripción menciona 2301), Cuartel V, Moreno",
+  "source": "https://www.argenprop.com/quinta-en-venta-en-cuartel-v--20907347",
+  "sourceAlternates": [
+    {
+      "url": "https://www.inmuebles.clarin.com/quinta-en-venta-en-cuartel-v--20907347",
+      "label": "Copia en Inmuebles Clarín"
+    },
+    {
+      "url": "https://proppies.app/propiedad/buenos-aires/cuartel-v/casa-3-amb-en-venta-en-cuartel-v-41711819",
+      "label": "Registro histórico Proppies: inactivo, último precio USD 87.000"
+    }
+  ],
+  "agency": "RE/MAX Grammar; publicación en Zonaprop e Inmuebles Clarín",
+  "contact": "María Laura Torralba; corredor responsable Juan Alberto Crescimone, CMCPSM 2821 / CPI 9670. Teléfono completo no visible en la ficha.",
+  "price": "USD 82.000",
+  "currency": "USD",
+  "landSurfaceM2": 2762,
+  "coveredSurfaceM2": 102,
+  "surfaceNote": "La publicación desglosa vivienda principal de 46 m², vivienda de huéspedes de 23,5 m² y quincho de 32,8 m². Superficie total cubierta declarada: 102 m².",
+  "observations": "La ficha individual de Argenprop publica USD 82.000 y la copia de Inmuebles Clarín coincide. Proppies conserva un registro anterior de la misma propiedad marcado inactivo con último precio USD 87.000 el 24/09/2026. El título indica altura 2300 y la descripción 2301. Confirmar precio, altura, mensura, estado de las construcciones y servicios.",
+  "lat": null,
+  "lng": null,
+  "geocodeDisabled": true,
+  "lastCheckedAt": "2026-11-27",
+  "availabilityStatus": "No confirmada",
+  "geolocationStatus": "Pendiente: la dirección presenta discrepancia entre 2300 y 2301; no se asigna coordenada.",
+  "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio y superficies publicados, pero disponibilidad comercial no confirmada."
+},
   {
     "id": "casa-chiclana-100-1988",
     "recordType": "Casa individual",
