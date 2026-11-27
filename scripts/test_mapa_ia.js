@@ -1160,7 +1160,47 @@ async function testGeorefCache() {
 
 testGeorefRequestQueue()
   .then(() => testGeorefCache())
-  .then(() => console.log("OK: Georef con concurrencia limitada, deduplicación, caché local temporal y rechazo de coordenadas inválidas."))
+  .then(() => 
+const turn11ExpectedIds = [
+  "terreno-riccheri-638",
+  "terreno-gervasio-mendez-300-umbrales",
+  "terreno-ricardo-gutierrez-8900-312",
+  "terreno-los-molinos-lotes-800-850",
+  "terreno-prados-oeste2-lote15-928",
+  "terreno-prados-oeste1b-lote295-745",
+  "terreno-potosi-sin-altura-345-posible-reactivacion",
+  "casa-general-hornos-2800-prados-oeste1-819",
+  "casa-prados-oeste1a-lote62-801",
+  "casa-prados-oeste1b-lote169-819",
+  "casa-prados-oeste1b-lote275-800",
+  "casa-prados-oeste1b-lote234-810",
+  "casa-el-carpintero-100",
+  "casa-de-la-quintana-moreno",
+  "casa-claudio-maria-joly-1900-252",
+  "casa-graham-bell-2800-840",
+  "casa-rafael-arcos-1800-860",
+  "casa-esteban-bongiovanni-1200-1000",
+  "casa-gervasio-mendez-4900-70",
+  "casa-gervasio-mendez-5000-154",
+  "terreno-fincas-san-jose-etapa2-800",
+  "casa-prados-oeste1b-lote212-813",
+  "terreno-coronel-suarez-neuquen-lote31-500"
+];
+for (const id of turn11ExpectedIds) {
+  const item = publishedProperties.find(record => record.id === id);
+  assert.ok(item, "la revisión 11 incorpora " + id);
+  assert.equal(item.lastCheckedAt, "2026-11-27");
+  assert.ok(item.source && item.source.startsWith("https://"));
+  assert.ok(item.availabilityStatus === "No confirmada" || item.availabilityStatus === "No vigente");
+}
+const racineReactivated = publishedProperties.find(record => record.id === "casa-racine-800-no-vigente");
+assert.ok(racineReactivated);
+assert.equal(racineReactivated.availabilityStatus, "No confirmada");
+assert.ok(racineReactivated.source.includes("20962051"));
+assert.equal(publishedProperties.length, 313, "el catálogo incorpora 23 altas netas sin duplicados");
+assert.equal(all.length, 324, "el inventario completo refleja 313 publicaciones y 11 referencias territoriales");
+
+console.log("OK: Georef con concurrencia limitada, deduplicación, caché local temporal y rechazo de coordenadas inválidas."))
   .catch(error => {
     console.error(error);
     process.exitCode = 1;
