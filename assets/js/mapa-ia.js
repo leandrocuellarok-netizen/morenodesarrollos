@@ -750,24 +750,31 @@ const nov27HourlyEntries = [
   {
     "id": "casa-centenario-600-360",
     "recordType": "Casa individual",
-    "name": "Casa · Centenario al 600",
+    "name": "Casa · Centenario al 600 · Moreno",
     "locality": "Moreno",
     "address": "Centenario al 600, entre Ameghino y Esteban de Luca, Moreno",
     "geocodeQuery": "Centenario 600, Moreno",
     "geocodeMatch": "CENTENARIO 600",
     "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-moreno-vendo-60301810.html",
-    "agency": "Anunciante no identificado en la ficha individual de Zonaprop",
-    "contact": "Formulario de contacto de Zonaprop; no se publica teléfono ni nombre de inmobiliaria en la ficha abierta",
+    "sourceAlternates": [
+      {
+        "url": "https://www.argenprop.com/casa-en-venta-en-moreno-7-ambientes--20589067",
+        "label": "Publicación paralela de Argenprop; identifica a Mosca Propiedades"
+      }
+    ],
+    "agency": "Aviso principal en Zonaprop; publicación paralela de Argenprop identifica a Mosca Propiedades",
+    "contact": "Formulario de Zonaprop; Argenprop muestra teléfono parcialmente oculto, sin número completo verificable.",
     "price": "USD 149.800",
     "currency": "USD",
     "landSurfaceM2": 360,
     "coveredSurfaceM2": 110,
-    "surfaceNote": "7 ambientes; el aviso describe cochera, patio, pérgola y galpón al fondo.",
-    "observations": "La ficha individual mantiene USD 149.800; la publicación no muestra fecha de alta o actualización. Confirmar identidad del anunciante, título y medidas con documentación.",
+    "surfaceNote": "7 ambientes; 4 dormitorios; el aviso describe cochera, patio, pérgola y galpón al fondo.",
+    "observations": "Ficha directa de Zonaprop y publicación paralela de Argenprop accesibles el 27/11/2026. Ambas coinciden en precio USD 149.800, terreno 360 m² y cubierta 110 m². La disponibilidad sigue sin confirmación y las superficies deben cotejarse con título y planos.",
     "lat": null,
     "lng": null,
+    "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
-    "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio y superficies publicados. No se identifica la inmobiliaria en la página consultada.",
+    "verificationStatus": "Zonaprop y Argenprop accesibles el 27/11/2026; precio y superficies publicados coincidentes. No se confirma disponibilidad ni identidad registral.",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
   },
   {
@@ -894,18 +901,25 @@ const nov27HourlyEntries = [
     "geocodeQuery": "Yapeyu y Rafael Arcos, Moreno",
     "geocodeMatch": "YAPEYU RAFAEL ARCOS",
     "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--20925842",
-    "agency": "Girgola",
-    "contact": "Girgola · martillera responsable Agustina Scalese, CPI 8928 / MGR 313; teléfono completo no visible",
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-en-venta-en-moreno-2.850-m-sup2--venta-60753032.html",
+        "label": "Ficha paralela de Zonaprop accesible el 27/11/2026"
+      }
+    ],
+    "agency": "Girgola Propiedades; martillera responsable Agustina Scalese, CPI 8928 / MGR 313",
+    "contact": "Formulario de Argenprop/Zonaprop; teléfono completo no visible.",
     "price": "USD 189.000",
     "currency": "USD",
     "landSurfaceM2": 2850,
     "surfaceNote": "Aprox. 51 m de frente × 56 m de fondo; se ofrece en conjunto o por lotes.",
-    "observations": "El aviso informa zonificación R4b, FOS 0,60 y FOT 1,00, sujetos a verificación municipal y a la parcela resultante. Calle de tierra con mejorado; factibilidad de servicios por lote a consultar.",
+    "observations": "Argenprop y Zonaprop muestran la fracción en la zona de Yapeyú y Rafael Arcos, con precio USD 189.000 y 2.850 m². El aviso informa R4b, FOS 0,60 y FOT 1,00, sujetos a verificación municipal y a la parcela resultante. Servicios disponibles en la zona, pero factibilidad por lote a consultar. No se confirmó subdivisión ni stock.",
     "lat": null,
     "lng": null,
+    "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
-    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y ubicación aproximada publicados. No se confirma subdivisión ni disponibilidad.",
-    "geolocationStatus": "Pendiente: Georef debe resolver inequívocamente la intersección; no representa parcela."
+    "verificationStatus": "Fichas de Argenprop y Zonaprop accesibles el 27/11/2026; precio, superficie y ubicación aproximada coincidentes. Disponibilidad comercial y subdivisión no confirmadas.",
+    "geolocationStatus": "Pendiente: Georef puede ubicar la intersección, pero no representa una parcela individual."
   },
   {
     "id": "terreno-prados-del-oeste-lote-230-800",
@@ -2007,24 +2021,30 @@ const nov27FollowupEntries = [
   {
     "id": "desarrollo-chacras-teofilo-galileo-7300",
     "recordType": "Desarrollo inmobiliario · barrio de lotes con lote individual publicado",
-    "name": "Chacras de Teófilo · lote de 326 m² · Trujui",
+    "name": "Chacras de Teófilo · lote publicado de 326 m² · Trujui",
     "locality": "Trujui",
     "address": "Galileo Galilei al 7300, Trujui, Moreno",
     "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terrenos-en-trujui-58930130.html",
-    "agency": "Publicación en Zonaprop; corredor responsable Micaela Pérez, CSI 6671 / Lucas Federico Delgado, CUCICBA 6339",
-    "contact": "Sebastián García; consultas mediante formulario de Zonaprop. Teléfono no publicado en la ficha.",
-    "price": "USD 23.000 contado; financiación publicada: anticipo USD 5.000 y cuotas hasta 36 meses, total indicado USD 30.000",
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-de-lote-en-moreno-59977491.html",
+        "label": "Aviso anterior de 324 m² y USD 25.000; enlace directo devolvió 410 el 27/11/2026"
+      }
+    ],
+    "agency": "Aviso en Zonaprop; responsable matriculado Natalio Carames, CMCPSI 7110 / CUCICBA 9320",
+    "contact": "Natalio Carames; formulario de Zonaprop. Teléfono no publicado en la ficha.",
+    "price": "USD 23.000 contado; financiación: anticipo USD 5.000 y cuotas mensuales en dólares hasta 36 meses, total publicado USD 30.000",
     "currency": "USD",
     "landSurfaceM2": 326,
-    "surfaceNote": "El aviso describe un proyecto de 35 lotes sobre 18.000 m²; el lote individual publicado tiene 326 m². No se informa superficie cubierta.",
-    "observations": "Ficha de Zonaprop accesible el 27/11/2026: proyecto de 35 lotes sobre 18.000 m²; lote individual publicado de 326 m² a USD 23.000 contado o financiación con anticipo de USD 5.000 y cuotas hasta 36 meses, total USD 30.000 según aviso. Entrega estimada mayo de 2027. No se verificaron obra, subdivisión, servicios ni stock. No confundir con el aviso anterior de 324 m² que ya no abre.",
+    "surfaceNote": "El aviso describe un proyecto de 35 lotes sobre 18.000 m²; lote individual publicado de 326 m². No se informa superficie cubierta.",
+    "observations": "Ficha directa de Zonaprop accesible el 27/11/2026: lote publicado de 326 m², USD 23.000 contado o financiación con anticipo USD 5.000 y cuotas hasta 36 meses, total indicado USD 30.000; entrega aproximada anunciada para mayo de 2027. El aviso informa 35 lotes sobre 18.000 m² y servicio de electricidad. No se verificaron subdivisión, permisos, avance físico ni stock. Un aviso anterior de 324 m², USD 25.000 y entrega octubre de 2026 devolvió 410 y permanece como antecedente separado.",
     "lat": null,
     "lng": null,
     "geocodeDisabled": true,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
-    "geolocationStatus": "Pendiente: la ficha publica altura aproximada 'al 7300', sin parcela o puerta exacta.",
-    "verificationStatus": "Ficha directa accesible el 27/11/2026; lote, precio y cronograma son datos del anunciante, disponibilidad y avance físico no confirmados."
+    "geolocationStatus": "Pendiente: altura aproximada al 7300 y sin lote identificado.",
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio, superficie y condiciones son datos del anunciante. Disponibilidad y ejecución no confirmadas."
   },
   {
     "id": "terreno-derqui-7660-384",
@@ -2447,25 +2467,36 @@ const nov27FollowupEntries = [
   },
   {
     "id": "casa-cervino-100-350-historico",
-    "recordType": "Casa individual · antecedente no vigente",
-    "name": "Casa · Cervino 100 · Moreno · 350 m²",
+    "recordType": "Casa individual · aviso reactivado con fuentes cruzadas",
+    "name": "Casa 5 ambientes con pileta · Cervino 100 · Moreno",
     "locality": "Moreno",
     "address": "Cervino 100, Moreno",
-    "source": "https://www.argenprop.com/casa-en-venta-en-moreno-4-ambientes--20631722",
-    "agency": "Publicación de Argenprop; responsable mencionado en resultado indexado: Sebastián Campos Ugarte",
-    "contact": "Formulario del portal; teléfono completo no disponible.",
-    "price": "USD 130.000 (último precio indexado)",
+    "geocodeQuery": "Cervino 100, Moreno",
+    "geocodeMatch": "CERVINO 100",
+    "source": "https://www.argenprop.com/casa-en-venta-en-moreno-5-ambientes--20792419",
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-venta-5-ambientes-pileta-moreno-apta-credito-60768201.html",
+        "label": "Ficha de Zonaprop accesible el 27/11/2026"
+      },
+      {
+        "url": "https://www.inmuebles.clarin.com/casa-en-venta-en-moreno-5-ambientes--20792419",
+        "label": "Publicación sindicada en Inmuebles Clarín"
+      }
+    ],
+    "agency": "RE/MAX Leven (pie de ficha de Argenprop); corredor responsable Silvana Inés Palini, CPI 8862 / CMCPM 2955",
+    "contact": "Sebastián Campos Ugarte; formulario de Argenprop/Zonaprop. Teléfono completo no visible.",
+    "price": "USD 130.000",
     "currency": "USD",
     "landSurfaceM2": 350,
-    "surfaceNote": "La ficha indexada presenta 135 m² cubiertos en el encabezado y 91 m² en la descripción; no se adopta una superficie cubierta cierta.",
-    "observations": "El enlace directo devolvió 410 el 27/11/2026. Se conserva como antecedente histórico y no como oportunidad vigente. La superficie cubierta tiene una contradicción que requeriría el plano.",
+    "surfaceNote": "Superficie cubierta contradictoria: cabecera técnica 135 m²; descripción 91 m². No se adopta una superficie cubierta cierta hasta ver planos.",
+    "observations": "Aviso reactivado con nueva ficha accesible en Argenprop y Zonaprop. Cuatro dormitorios, dos baños, pileta y dos cocheras según anuncio. La superficie cubierta figura como 135 m² en la cabecera y 91 m² en la descripción; no valorar ni calcular precio por m² cubierto hasta cotejar plano y estado parcelario. Apto crédito es una afirmación del anunciante.",
     "lat": null,
     "lng": null,
-    "geocodeDisabled": true,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No vigente",
-    "geolocationStatus": "Pendiente: registro histórico no georreferenciado.",
-    "verificationStatus": "Resultado indexado de Argenprop; la ficha directa devolvió 410 el 27/11/2026."
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: dirección exacta publicada; marcador sujeto a coincidencia inequívoca de Georef.",
+    "verificationStatus": "Ficha directa de Argenprop y ficha paralela de Zonaprop accesibles el 27/11/2026; precio USD 130.000 y terreno 350 m² coincidentes. Disponibilidad comercial no confirmada; superficie cubierta contradictoria."
   },
   {
     "id": "casa-leandro-alem-2100-562-historico",
@@ -6007,6 +6038,198 @@ const nov27_1032NewEntries = [
   }
 ];
 publishedProperties.push(...nov27_1032NewEntries);
+
+const nov27_1058NewEntries = [
+  {
+    "id": "casa-doctor-asseff-400-361",
+    "recordType": "Casa individual con departamento independiente",
+    "name": "Casa con jardín y departamento independiente · Dr. Asseff 400",
+    "locality": "Moreno Centro",
+    "address": "Doctor Asseff 400, Moreno",
+    "geocodeQuery": "Doctor Asseff 400, Moreno",
+    "geocodeMatch": "DOCTOR ASSEFF 400",
+    "source": "https://www.argenprop.com/casa-en-venta-en-moreno-3-ambientes--20947531",
+    "agency": "RE/MAX Caminos (identificación del pie de ficha); corredor responsable Damián Perrone, CUCICBA 2787, y Patricia Alejandra Córdoba, CMCPDJMGR 246",
+    "contact": "Marcelo Heguille; formulario de Argenprop. Teléfono parcialmente oculto, no verificable completo.",
+    "price": "USD 110.000",
+    "currency": "USD",
+    "landSurfaceM2": 361,
+    "coveredSurfaceM2": 114,
+    "surfaceNote": "La ficha técnica informa además 381 m² totales, cifra que no reconcilia con 361 m² de terreno y 114 m² cubiertos. La descripción menciona un departamento independiente de dos ambientes.",
+    "observations": "Dos dormitorios, dos baños, toilette y una cochera según ficha; la descripción agrega departamento independiente de dos ambientes. Verificar si los 114 m² cubiertos incluyen ambas construcciones, planos, estado de conservación, título y disponibilidad.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: dirección exacta publicada; marcador sujeto a coincidencia inequívoca de Georef.",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio USD 110.000, terreno 361 m² y cubierta 114 m² publicados. La superficie total declarada presenta inconsistencia; disponibilidad no confirmada."
+  },
+  {
+    "id": "desarrollo-fincas-san-jose-87ha-650",
+    "recordType": "Desarrollo inmobiliario privado · barrio cerrado en ejecución por etapas",
+    "name": "Fincas San José · 87 ha · 650 lotes de 800 m²",
+    "locality": "Francisco Álvarez",
+    "address": "Ruta Provincial 24, Francisco Álvarez; acceso principal sobre RP24 y acceso secundario por calle Hornos; a 1 km de RP25",
+    "source": "https://www.fincassanjose.com.ar/",
+    "sourceAlternates": [
+      {
+        "url": "https://tremsalgrunewaldprop.ar/como-es-fincas-san-jose/",
+        "label": "Informe del comercializador publicado el 02/11/2026 sobre el estado de la etapa 1 y las obras comunes"
+      },
+      {
+        "url": "https://www.argenprop.com/terreno-en-venta-en-san-jose--20674535",
+        "label": "Oferta de lote genérico de 800 m² en etapa 3"
+      }
+    ],
+    "agency": "Desarrolladora anunciada en publicaciones comerciales: Grandes Emprendimientos Inmobiliarios II. Comercializador y oficina de ventas: Tremsal Grünewald Propiedades.",
+    "contact": "WhatsApp del sitio oficial: +54 9 11 7393-1111. Tremsal Grünewald: +54 9 11 4992-1296; info@tremsalgrunewaldprop.ar.",
+    "landSurfaceM2": 870000,
+    "surfaceNote": "Sitio oficial y comercializador informan 870.000 m² (87 ha) y 650 lotes de 800 m². Un aviso de portal informa 87.000 m² y 658 lotes; se conserva como discrepancia del material comercial de terceros.",
+    "publicationDate": "2026-11-02 (informe de avance del comercializador; fecha de alta del proyecto no informada)",
+    "observations": "El sitio oficial ubica el desarrollo sobre RP24, a 1 km de RP25 y 5 km de Acceso Oeste. El informe de Tremsal Grünewald del 02/11/2026 describe la etapa 1 loteada, pilares de luz y gas, cloacas instaladas, conexiones de gas y electricidad casi terminadas, ingreso principal en obra y SUM en obra; también indica que todavía no hay viviendas construidas, que etapa 1 está prácticamente vendida y que la comercialización continúa en etapas 2 y 3. Son datos del desarrollador/comercializador, no una certificación municipal o de inspección independiente. El masterplan y amenities futuros no deben confundirse con obras terminadas.",
+    "lat": null,
+    "lng": null,
+    "geocodeDisabled": true,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: ubicación sobre RP24 sin dirección parcelaria o coordenada de acceso verificada; no se asigna marcador de parcela.",
+    "verificationStatus": "Sitio oficial accesible el 27/11/2026 y reporte del comercializador fechado 02/11/2026 accesible; documentan el proyecto y avances reportados. Permisos, aprobación de subdivisión, avance físico y disponibilidad de lotes no verificados de forma independiente."
+  },
+  {
+    "id": "fincas-san-jose-lote-800-etapa3-30600",
+    "recordType": "Terreno individual · oferta genérica de etapa 3",
+    "name": "Fincas San José · lote publicado de 800 m² · etapa 3",
+    "locality": "Francisco Álvarez",
+    "address": "Ruta Provincial 24 s/n · Fincas San José, Francisco Álvarez",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-san-jose--20674535",
+    "sourceAlternates": [
+      {
+        "url": "https://www.fincassanjose.com.ar/",
+        "label": "Sitio oficial del desarrollo"
+      },
+      {
+        "url": "https://tremsalgrunewaldprop.ar/como-es-fincas-san-jose/",
+        "label": "Informe de avance del comercializador del 02/11/2026"
+      }
+    ],
+    "agency": "C21 Lamoisse Lorré; comercialización a cargo de Gisela Natalia Lorré y Verónica Lamoisse, CMCPM 3001 / CUCICBA 8846. Desarrollo atribuido comercialmente a Grandes Emprendimientos Inmobiliarios II.",
+    "contact": "Gisela Natalia Lorré y Verónica Lamoisse; teléfono parcialmente visible en Argenprop (0113227). Para visita al proyecto: Tremsal Grünewald +54 9 11 4992-1296; info@tremsalgrunewaldprop.ar.",
+    "price": "USD 30.600 en la cabecera del aviso; la descripción mezcla condiciones de etapa 2 (USD 43.900 contado o anticipo USD 20.000 + 30 cuotas de USD 1.000). Confirmar etapa, precio y plan del lote concreto.",
+    "currency": "USD",
+    "landSurfaceM2": 800,
+    "surfaceNote": "Lote genérico sin número de manzana o parcela publicado. La ficha lo identifica como etapa 3 y anuncia entrega diciembre de 2029.",
+    "observations": "El anuncio directo muestra USD 30.600 y 800 m², pero la descripción contiene precios y condiciones de otra etapa. No hay número de lote que permita individualizar la parcela. El proyecto oficial informa 650 lotes y 870.000 m², mientras el aviso comercial de portal informa 658 lotes y 87.000 m². No tomar el precio ni la entrega como compromiso contractual sin propuesta escrita, plano de etapa y documentación de subdivisión.",
+    "lat": null,
+    "lng": null,
+    "geocodeDisabled": true,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Ruta 24 s/n y lote sin identificación parcelaria; no se coloca marcador de parcela.",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; superficie 800 m² y precio de cabecera publicados. Condiciones económicas y etapa no reconciliadas; stock y disponibilidad no confirmados."
+  },
+  {
+    "id": "terreno-boulevard-evita-100-111-pendiente",
+    "recordType": "Terreno individual · ficha con datos urbanísticos contradictorios",
+    "name": "Terreno sobre Boulevard Evita 100 · Moreno Centro · ficha a corregir",
+    "locality": "Moreno Centro",
+    "address": "Boulevard Evita 100, Moreno",
+    "geocodeQuery": "Boulevard Evita 100, Moreno",
+    "geocodeMatch": "BOULEVARD EVITA 100",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--14577403",
+    "agency": "Calderón Inmobiliaria (identificación del pie de ficha)",
+    "contact": "Formulario de Argenprop; teléfono parcialmente visible como 1125935; persona de contacto no identificada.",
+    "price": "USD 725.000",
+    "currency": "USD",
+    "landSurfaceM2": 111,
+    "surfaceNote": "Argenprop muestra 111 m² de superficie total; el aviso también declara FOS 715,680 m², FOT 1.669,92 m² y altura máxima 150 m, datos que no se pueden reconciliar con la superficie publicada.",
+    "observations": "La ficha está accesible, pero presenta una contradicción crítica entre los 111 m² del terreno y los indicadores/altura declarados. No usar FOS, FOT, altura ni precio unitario para evaluar un desarrollo. Requiere confirmación de parcela, título, mensura y certificado urbanístico municipal antes de considerarlo una oportunidad.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "Pendiente de revalidación",
+    "geolocationStatus": "Pendiente: dirección publicada; no asignar marcador parcelario hasta resolver la identidad del lote.",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio y 111 m² aparecen en cabecera. Datos urbanísticos incompatibles con la superficie publicada; no se considera una oportunidad validada."
+  },
+  {
+    "id": "casa-emilio-mitre-2300-1100-historico",
+    "recordType": "Casa y activo mixto · antecedente no vigente",
+    "name": "Block de viviendas y monoambientes · Emilio Mitre 2300",
+    "locality": "Moreno",
+    "address": "Emilio Mitre 2300, Moreno",
+    "source": "https://www.argenprop.com/casa-en-venta-en-moreno-5-ambientes--20855460",
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-venta-block-casa-oportunidad-moreno-lote-1100-m-60451554.html",
+        "label": "Publicación paralela de Zonaprop; enlace directo devolvió 410"
+      },
+      {
+        "url": "https://www.inmuebles.clarin.com/casa-en-venta-en-moreno-5-ambientes--20592411",
+        "label": "Publicación sindicada en Inmuebles Clarín; enlace directo devolvió 410"
+      }
+    ],
+    "agency": "Avisos en Argenprop, Zonaprop e Inmuebles Clarín; corredor responsable publicado: Leonardo Misuraca, CMCPSM 2568 / CUCICBA 7970. Inmobiliaria no identificada en la ficha consultada.",
+    "contact": "Gonzalo Ponce Ferro; formulario de contacto del portal. Teléfono no publicado en los resultados consultados.",
+    "price": "USD 79.999 (último precio indexado)",
+    "currency": "USD",
+    "landSurfaceM2": 1100,
+    "coveredSurfaceM2": 250,
+    "surfaceNote": "El anuncio describe tres monoambientes, una casa tipo alpina y una segunda vivienda en el fondo; 250 m² cubiertos aproximados según cabecera.",
+    "observations": "Las tres URLs directas consultadas devolvieron 410 Gone el 27/11/2026. Se conserva como antecedente histórico, sin afirmar que haya sido vendido. La publicación describía un activo mixto con potencial de renta; superficies y estado de las construcciones no pudieron revalidarse.",
+    "lat": null,
+    "lng": null,
+    "geocodeDisabled": true,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No vigente",
+    "geolocationStatus": "Pendiente: dirección aproximada; registro histórico sin georreferenciar.",
+    "verificationStatus": "Resultados indexados con precio y superficies; enlaces directos de Argenprop, Zonaprop e Inmuebles Clarín devolvieron 410 el 27/11/2026."
+  },
+  {
+    "id": "terreno-colectora-norte-fray-cayetano-1348-historico",
+    "recordType": "Fracción de terreno · antecedente no vigente",
+    "name": "Colectora Norte Acceso Oeste km 0 · esquina Fray Cayetano Rodríguez · 1.348 m²",
+    "locality": "La Reja",
+    "address": "Colectora Norte del Acceso Oeste km 0, esquina Fray Cayetano Rodríguez, La Reja, Moreno",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-fraccion-en-venta-sobre-colectora-norte-acceso-53878076.html",
+    "agency": "No identificada en el resultado indexado disponible.",
+    "contact": "No se encontró contacto público verificable en la ficha indexada.",
+    "price": "USD 320.000 (último precio indexado)",
+    "currency": "USD",
+    "landSurfaceM2": 1348,
+    "surfaceNote": "La ficha indexada publicaba zonificación Residencial 5, FOS 0,40 y FOT 0,50; parámetros no verificados municipalmente.",
+    "observations": "El enlace directo de Zonaprop devolvió 410 Gone el 27/11/2026. Se conserva como antecedente no vigente, sin afirmar que se haya vendido. Ubicación y datos proceden del resultado indexado; no se obtuvo nomenclatura catastral ni documentación parcelaria.",
+    "lat": null,
+    "lng": null,
+    "geocodeDisabled": true,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No vigente",
+    "geolocationStatus": "Pendiente: ubicación aproximada sobre colectora; registro histórico sin coordenada parcelaria.",
+    "verificationStatus": "Resultado indexado con USD 320.000 y 1.348 m²; ficha directa de Zonaprop devolvió 410 el 27/11/2026."
+  },
+  {
+    "id": "casa-antartida-argentina-600-342-historico",
+    "recordType": "Casa y activo mixto · antecedente no vigente",
+    "name": "Casa, local y depósito · Antártida Argentina 600",
+    "locality": "Moreno Sur",
+    "address": "Antártida Argentina 600, Moreno Sur",
+    "source": "https://www.argenprop.com/casa-en-venta-en-moreno-5-ambientes--16969027",
+    "agency": "Guillermo Díaz Propiedades; corredor responsable Guillermo Díaz, CMCPM 277.",
+    "contact": "Formulario de Argenprop; no se recuperó un teléfono completo del anunciante.",
+    "price": "USD 120.000 (último precio indexado)",
+    "currency": "USD",
+    "landSurfaceM2": 342,
+    "coveredSurfaceM2": 300,
+    "surfaceNote": "El anuncio describía casa, local de 40 m² y depósito/galpón de 100 m²; el desglose de superficie cubierta requiere documentación.",
+    "observations": "El enlace directo de Argenprop devolvió 410 Gone el 27/11/2026. Se conserva como antecedente histórico, sin afirmar que se haya vendido. La ficha indexada describía tres dormitorios, cochera para dos vehículos, local comercial en esquina y depósito con losa; las superficies y habilitaciones no pudieron revalidarse.",
+    "lat": null,
+    "lng": null,
+    "geocodeDisabled": true,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No vigente",
+    "geolocationStatus": "Pendiente: registro histórico sin georreferenciar.",
+    "verificationStatus": "Resultado indexado de Argenprop con precio y superficies; ficha directa devolvió 410 el 27/11/2026."
+  }
+];
+publishedProperties.push(...nov27_1058NewEntries);
 
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
