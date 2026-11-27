@@ -640,7 +640,7 @@ const nov27HourlyEntries = [
     "geocodeQuery": "Bouchard 300, Moreno",
     "geocodeMatch": "BOUCHARD 300",
     "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--20950413",
-    "agency": "RE/MAX · oficina independiente (publicación en Argenprop)",
+    "agency": "RE/MAX Vita",
     "contact": "Nicolás Kardahi · corredora responsable Silvana Inés Palini, CPI 8862 / CMCPM 2955; teléfono completo no visible",
     "price": "USD 120.000",
     "currency": "USD",
