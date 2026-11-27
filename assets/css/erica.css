@@ -1040,3 +1040,79 @@ main#main-content:focus {
   .home-page .hero h1{font-size:clamp(49px,12vw,58px)}
   .map-plate-head{font-size:8px}
 }
+
+
+/* Preguntas frecuentes: resolver objeciones antes del primer contacto. */
+.opportunity-faq{
+  display:grid;
+  grid-template-columns:minmax(230px,.78fr) minmax(0,1.22fr);
+  gap:clamp(34px,7vw,104px);
+  padding-block:clamp(58px,8vw,112px);
+  border-top:1px solid #d2cec2;
+}
+.opportunity-faq-intro h2{
+  max-width:12ch;
+  margin:14px 0 18px;
+  color:#30352f;
+  font:400 clamp(34px,4vw,52px)/1.04 var(--serif);
+  letter-spacing:-.035em;
+}
+.opportunity-faq-intro p{
+  max-width:42ch;
+  color:#62665d;
+  font-size:14px;
+  line-height:1.8;
+}
+.opportunity-faq-cta{
+  display:inline-block;
+  margin-top:16px;
+  padding-bottom:5px;
+  border-bottom:1px solid #a95d3c;
+  color:#8e4e34;
+  font-size:12px;
+  letter-spacing:.06em;
+  text-decoration:none;
+}
+.opportunity-faq-cta:focus-visible,
+.opportunity-faq-item summary:focus-visible{
+  outline:2px solid #a95d3c;
+  outline-offset:5px;
+}
+.opportunity-faq-list{border-top:1px solid #c9c5b9}
+.opportunity-faq-item{border-bottom:1px solid #c9c5b9}
+.opportunity-faq-item summary{
+  position:relative;
+  display:block;
+  padding:21px 44px 21px 2px;
+  color:#353a33;
+  cursor:pointer;
+  font:400 clamp(17px,1.65vw,21px)/1.35 var(--serif);
+  list-style:none;
+}
+.opportunity-faq-item summary::-webkit-details-marker{display:none}
+.opportunity-faq-item summary:after{
+  position:absolute;
+  top:50%;
+  right:8px;
+  color:#a95d3c;
+  content:"+";
+  font:300 24px/1 var(--sans);
+  transform:translateY(-50%);
+}
+.opportunity-faq-item[open] summary:after{content:"−"}
+.opportunity-faq-answer{max-width:68ch;padding:0 36px 20px 2px}
+.opportunity-faq-answer p{
+  margin:0;
+  color:#62665d;
+  font-size:14px;
+  line-height:1.85;
+}
+@media(max-width:760px){
+  .opportunity-faq{display:block;padding-block:52px 64px}
+  .opportunity-faq-intro h2{max-width:15ch;font-size:clamp(34px,9vw,44px)}
+  .opportunity-faq-intro p{font-size:14px}
+  .opportunity-faq-list{margin-top:30px}
+  .opportunity-faq-item summary{padding:19px 40px 19px 1px;font-size:19px}
+  .opportunity-faq-answer{padding:0 28px 19px 1px}
+  .opportunity-faq-answer p{font-size:14px}
+}
