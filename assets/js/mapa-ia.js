@@ -9712,9 +9712,19 @@ function prefersReducedMotion(view) {
   );
 }
 
+function normalizeReferenceSearchText(value) {
+  return String(value == null ? "" : value)
+    .normalize("NFD")
+    .replace(/[\\u0300-\\u036f]/g, "")
+    .toLocaleLowerCase("es-AR")
+    .replace(/[^\\p{L}\\p{N}]+/gu, " ")
+    .trim();
+}
+
 function filterReferences(items, options) {
   const settings = options || {};
-  const query = String(settings.query || "").toLocaleLowerCase("es-AR").trim();
+  const query = normalizeReferenceSearchText(settings.query || "");
+  const queryTerms = query ? query.split(/\\s+/).filter(Boolean) : [];
   const category = settings.category || "all";
   const kind = settings.kind || "all";
   const evidence = settings.evidence || "all";
@@ -9733,13 +9743,18 @@ function filterReferences(items, options) {
     const diligenceSummary = item.type === "published" ? publishedDiligenceSummary(item) : null;
     const diligenceMatches = diligence === "all" ||
       (item.type === "published" && diligenceSummary && (diligenceSummary.complete ? "complete" : "pending") === diligence);
-    const searchable = [
+    const alternateSources = Array.isArray(item.sourceAlternates)
+      ? item.sourceAlternates.flatMap(source => [source && source.label, source && source.url])
+      : [];
+    const searchable = normalizeReferenceSearchText([
       item.name, item.info, item.business, item.status, item.evidence, item.next,
       item.kind, kindLabel[item.kind], item.recordType, item.locality, item.address,
       item.agency, item.contact, item.price, item.verificationStatus, item.availabilityStatus,
-      item.lastCheckedAt, item.observations
-    ].filter(Boolean).join(" ").toLocaleLowerCase("es-AR");
-    return categoryMatches && kindMatches && evidenceMatches && availabilityMatches && diligenceMatches && searchable.includes(query);
+      item.lastCheckedAt, item.observations, item.surfaceNote, item.publicationDate,
+      item.geolocationStatus, item.source, ...alternateSources
+    ].filter(Boolean).join(" "));
+    const queryMatches = queryTerms.every(term => searchable.includes(term));
+    return categoryMatches && kindMatches && evidenceMatches && availabilityMatches && diligenceMatches && queryMatches;
   });
 }
 
@@ -10476,6 +10491,7 @@ function initMapPage(doc) {
   const statusElement = doc.getElementById("map-status");
   const boundaryElement = doc.getElementById("boundary-status");
   const searchInput = doc.getElementById("search");
+  const searchResultsStatus = doc.getElementById("search-results-status");
   const categoryInput = doc.getElementById("category");
   const kindInput = doc.getElementById("kind-filter");
   const evidenceInput = doc.getElementById("evidence-filter");
@@ -11447,6 +11463,18 @@ function initMapPage(doc) {
       diligence: diligenceInput.value
     });
     visibleItems = shown;
+    if (searchResultsStatus) {
+      if (!searchInput.value.trim()) {
+        searchResultsStatus.textContent = all.length + " referencias cargadas. Escribí una localidad, calle, actividad, fuente o próximo paso para buscar.";
+      } else if (shown.length) {
+        const publishedCount = shown.filter(item => item.type === "published").length;
+        const opportunityCount = shown.filter(item => item.type === "opportunity").length;
+        const localityCount = shown.filter(item => item.type === "locality").length;
+        searchResultsStatus.textContent = shown.length + " coincidencias: " + publishedCount + " publicaciones, " + opportunityCount + " tesis y " + localityCount + " localidades. Las fichas aparecen en el índice lateral; algunos avisos no tienen coordenadas verificadas.";
+      } else {
+        searchResultsStatus.textContent = "No encontramos coincidencias. Probá con menos palabras, sin abreviaturas o restablecé los filtros.";
+      }
+    }
     updateAtlasIndex(shown);
     exportButton.disabled = shown.length === 0;
     geoJsonExportButton.disabled = shown.length === 0;
