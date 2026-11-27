@@ -39,6 +39,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "sumio-lote-450",
@@ -62,6 +64,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "sumio-proyecto",
@@ -85,6 +89,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "parque-francisco-lote-300",
@@ -108,6 +114,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "parque-francisco-proyecto",
@@ -130,6 +138,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "parques-morenito-lote-594",
@@ -152,6 +162,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "parques-morenito-proyecto",
@@ -169,8 +181,10 @@ const publishedProperties = [
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
+    "availabilityStatus": "No vigente",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "La ficha de desarrollo informa entrega en julio de 2022; se conserva como antecedente histórico y no se considera un proyecto nuevo en ejecución."
   },
   {
     "id": "trujui-lote-isabel-catolica-400",
@@ -193,6 +207,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "la-reja-lote-general-hornos-471",
@@ -215,6 +231,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "cuartel-v-fraccion-san-fernando-galicia",
@@ -237,6 +255,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "moreno-casa-martin-fierro-5000",
@@ -261,6 +281,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "moreno-casa-martin-fierro-4900",
@@ -285,6 +307,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "la-reja-casa-belisario-roldan-1800",
@@ -309,6 +333,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   },
   {
     "id": "paso-del-rey-casa-lebensohn-300",
@@ -332,6 +358,8 @@ const publishedProperties = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
+  ,
+    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
   }
 ];
 
@@ -345,6 +373,11 @@ publishedProperties.push(
     price:"USD 16.000 contado; financiación: anticipo USD 10.000 + 30 cuotas de USD 260",currency:"USD",
     landSurfaceM2:316,coveredSurfaceM2:null,surfaceNote:"13,40 × 22,40 m. La ficha tiene un campo técnico que muestra 'superficie cubierta 316 m²', pero la descripción lo identifica como lote baldío y superficie total.",
     observations:"La inmobiliaria informa escritura lista para transferir. No tiene servicios instalados; el aviso indica posibilidad de solicitar energía prepaga. Precio contado y plan de cuotas publicados en la descripción."
+  ,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Pablo Aquino accesible el 27/11/2026; publica USD 16.000 contado o anticipo USD 10.000 + 30 cuotas de USD 260. Disponibilidad no confirmada.",
+    "lastCheckedAt": "2026-11-27",
+    "geolocationStatus": "Pendiente: dirección publicada sin coordenada parcelaria verificada."
   },
   {
     id:"moreno-lote-industrial-gutenberg-5662",recordType:"Terreno industrial",name:"Lote industrial · Gutenberg 5662 · 3.192 m²",
@@ -355,6 +388,11 @@ publishedProperties.push(
     price:"USD 65.000 contado",currency:"USD",landSurfaceM2:3192,coveredSurfaceM2:null,
     surfaceNote:"40 m de frente × 79,81 m de fondo; pequeño ambiente de guardado existente",
     observations:"El aviso publica Zona Industrial 2, FOS 0,5 y FOT 0,8, y afirma escritura. Verificar certificado urbanístico parcelario, afectaciones, uso admitido y estado del ambiente de guardado."
+  ,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Pablo Aquino accesible el 27/11/2026; publica USD 65.000 y 3.192 m². Disponibilidad no confirmada.",
+    "lastCheckedAt": "2026-11-27",
+    "geolocationStatus": "Pendiente: dirección publicada sin coordenada parcelaria verificada."
   },
   {
     id:"cuartel-v-lote-lamadrid-2737",recordType:"Terreno individual",name:"Lote 16 · Gral. Aráoz de Lamadrid 6702 · 2.737 m²",
@@ -365,6 +403,11 @@ publishedProperties.push(
     price:"USD 28.000 contado; financiación: anticipo USD 15.000 + 25 cuotas de USD 600",currency:"USD",
     landSurfaceM2:2737,coveredSurfaceM2:null,surfaceNote:"37,50 × 73 m · lote 16",
     observations:"La inmobiliaria informa escritura e impuestos al día y entrega inmediata. La página de listado muestra anticipo USD 15.000; la descripción especifica USD 28.000 contado o 15.000 + 25 cuotas de 600."
+  ,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Pablo Aquino accesible el 27/11/2026; publica USD 28.000 contado o anticipo USD 15.000 + 25 cuotas de USD 600. Disponibilidad no confirmada.",
+    "lastCheckedAt": "2026-11-27",
+    "geolocationStatus": "Pendiente: dirección publicada sin coordenada parcelaria verificada."
   }
 );
 publishedProperties.push({
@@ -378,7 +421,12 @@ publishedProperties.push({
   price:"USD 425.000",currency:"USD",landSurfaceM2:9966,coveredSurfaceM2:300,
   surfaceNote:"El título del aviso indica 9.962 m²; la descripción informa aproximadamente 9.966 m². Vivienda de 7 ambientes, quincho, pileta y cancha de tenis.",
   observations:"La publicación describe seis lotes integrados y una casa quinta. Verificar si se vende como una sola unidad o por parcelas, títulos, plano de subdivisión, superficies exactas, estado de la vivienda y permisos de uso."
-});
+,
+    "availabilityStatus": "No vigente",
+    "verificationStatus": "El enlace original de Zonaprop devolvió 410 Gone el 27/11/2026; se conserva el registro histórico y no se presenta como disponible.",
+    "lastCheckedAt": "2026-11-27",
+    "geolocationStatus": "Pendiente: aviso retirado; se conserva la ubicación textual sin asignar una coordenada nueva."
+  });
 publishedProperties.slice(-1).forEach(item => {
   item.lat = null;
   item.lng = null;
