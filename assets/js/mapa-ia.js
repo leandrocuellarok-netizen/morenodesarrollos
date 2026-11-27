@@ -62,10 +62,10 @@ const publishedProperties = [
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
+    "availabilityStatus": "No vigente",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
   ,
-    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
+    "verificationStatus": "La ficha directa de Pablo Aquino marca VENDIDO en el título y la descripción; se conserva el registro histórico como no vigente."
   },
   {
     "id": "sumio-proyecto",
