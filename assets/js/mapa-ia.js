@@ -10035,7 +10035,9 @@ function buildGeoJson(items) {
     const evidenceLevel = isLocality ? "referencia territorial" : (isPublished ? "publicación comercial" : (item.stage === "hypothesis" ? "hipotesis de prospeccion" : "contexto con fuente publica"));
     const coordinateScope = isLocality
       ? "Centro aproximado de localidad; no identifica una parcela."
-      : (isPublished ? (hasCoordinates(item) ? "Georreferencia aproximada de dirección por Georef; no representa parcela." : "Geolocalización pendiente; no se asignó coordenada.") : "Centro aproximado de corredor o area; no identifica una parcela.");
+      : (isPublished
+        ? (hasCoordinates(item) ? "Georreferencia aproximada de dirección por Georef; no representa parcela." : "Geolocalización pendiente; no se asignó coordenada.")
+        : (hasCoordinates(item) ? "Centro aproximado de corredor o área; no identifica una parcela." : "Sin coordenada precisa; la fuente no permite ubicar un punto ni identifica una parcela."));
     const geometry = hasCoordinates(item) ? { type: "Point", coordinates: [Number(item.lng), Number(item.lat)] } : null;
     return {
       type: "Feature",
@@ -10066,7 +10068,7 @@ function buildGeoJson(items) {
     type: "FeatureCollection",
     name: "Mapa IA de Moreno — referencias territoriales y publicaciones inmobiliarias",
     description: "Exportación de las referencias visibles del inventario exploratorio de MORENO.",
-    disclaimer: "Las coordenadas de localidades y tesis son aproximadas. Las publicaciones comerciales conservan geometry:null hasta obtener una georreferencia inequívoca de la dirección mediante Georef. Ninguna coordenada identifica una parcela ni acredita titularidad, disponibilidad, zonificación, factibilidad o rentabilidad.",
+    disclaimer: "Las coordenadas de localidades y de tesis que sí tienen punto son aproximadas. Las referencias sin ubicación precisa y las publicaciones comerciales conservan geometry:null hasta obtener evidencia suficiente. Ninguna coordenada identifica una parcela ni acredita titularidad, disponibilidad, zonificación, factibilidad o rentabilidad.",
     features
   };
 }
@@ -10093,12 +10095,15 @@ function safeTerritorialSource(value) {
 function buildTerritorialBrief(item, generatedAt) {
   if (!item || item.type !== "opportunity" ||
       !["documented", "hypothesis"].includes(item.stage)) return null;
-  const latitude = Number(item.lat);
-  const longitude = Number(item.lng);
+  const coordinatesAvailable = hasCoordinates(item);
+  const latitude = coordinatesAvailable ? Number(item.lat) : null;
+  const longitude = coordinatesAvailable ? Number(item.lng) : null;
   const timestamp = typeof generatedAt === "string" && Number.isFinite(Date.parse(generatedAt))
     ? new Date(generatedAt).toISOString()
     : new Date().toISOString();
-  const localityScope = "Centro aproximado de corredor o área; no identifica una parcela.";
+  const localityScope = coordinatesAvailable
+    ? "Centro aproximado de corredor o área; no identifica una parcela."
+    : "Sin coordenada precisa; la fuente no permite ubicar un punto ni identifica una parcela.";
   const stageLabel = item.stage === "hypothesis"
     ? "Hipótesis de prospección"
     : "Contexto con fuente pública";
