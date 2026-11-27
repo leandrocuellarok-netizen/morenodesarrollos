@@ -4215,6 +4215,8 @@ const nov27FreshEntries = [
     "availabilityStatus": "No confirmada",
     "geocodeDisabled": true,
     "geolocationStatus": "Pendiente: fracción extensa con ubicación por frente y entrecalles; no se asigna coordenada parcelaria."
+  ,
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie, frente, fondo y anteproyecto declarados visibles. Zonificación y anteproyecto no verificados independientemente; disponibilidad no confirmada."
   },
   {
     "id": "casa-independencia-2400-1462",
@@ -4237,6 +4239,8 @@ const nov27FreshEntries = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: dirección pública con lote extenso; geocodificar solo si Georef devuelve coincidencia inequívoca."
+  ,
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, dirección y superficies visibles. Los derechos constructivos y planos aprobados son declaraciones del aviso, no verificados documentalmente."
   },
   {
     "id": "casa-los-abedules-4100-485",
@@ -4259,6 +4263,8 @@ const nov27FreshEntries = [
     "availabilityStatus": "No confirmada",
     "geocodeDisabled": true,
     "geolocationStatus": "Pendiente: barrio cerrado sin lote interno identificado; no asignar punto parcelario."
+  ,
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficies, responsable y expensas publicados. Disponibilidad y expensas actuales no confirmadas."
   },
   {
     "id": "casa-acceso-oeste-km34-1200",
@@ -4281,6 +4287,8 @@ const nov27FreshEntries = [
     "availabilityStatus": "No confirmada",
     "geocodeDisabled": true,
     "geolocationStatus": "Pendiente: referencia por kilómetro de autopista sin identificación parcelaria."
+  ,
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficies y anunciante publicados. Disponibilidad no confirmada; la referencia km 34 no identifica la parcela."
   },
   {
     "id": "casa-cornelio-saavedra-100-375",
@@ -4303,6 +4311,8 @@ const nov27FreshEntries = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: dirección publicada; se requiere coincidencia inequívoca de Georef para colocar marcador."
+  ,
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, dirección, superficies, corredor y anunciante publicados. Disponibilidad no confirmada."
   },
   {
     "id": "desarrollo-haras-maria-elena-unidades",
@@ -4332,6 +4342,8 @@ const nov27FreshEntries = [
     "availabilityStatus": "No confirmada",
     "geocodeDisabled": true,
     "geolocationStatus": "Pendiente: barrio privado y unidad interna no identificada; no asignar coordenadas de parcela."
+  ,
+    "verificationStatus": "Ficha del emprendimiento en Zonaprop accesible en la revisión; precio y rangos de superficie publicados. Grupo Vaccaro confirma en su sitio institucional los contactos; stock y etapa de cada unidad no confirmados."
   }
 ];
 publishedProperties.push(...nov27FreshEntries);
