@@ -2346,35 +2346,35 @@ const nov27FollowupEntries = [
     "verificationStatus": "Resultado de Argenprop indexado aproximadamente un mes antes de la revisión; ficha individual devolvió 410 Gone el 27/11/2026. Se conserva el precio histórico de USD 4.000.000 y el proyecto declarado de 338 parcelas, pero no se trata como oportunidad vigente. La aprobación de planos y el estado del proyecto no se verificaron independientemente."
   },
   {
-    "id": "desarrollo-ampliacion-sip2-cuarter-v-52ha",
-    "recordType": "Desarrollo industrial público · ampliación del Sector Industrial Planificado II",
-    "name": "Ampliación del Sector Industrial Planificado II · Cuartel V",
-    "locality": "Cuartel V",
-    "address": "Circunscripción V, parcelas 1371 y 1372; entorno de calle Máximo Paz entre Bernardi y Juan B. Molière, Cuartel V (ubicación aproximada)",
-    "source": "https://sibom.slyt.gba.gob.ar/bulletins/13860/contents/2308258",
-    "sourceAlternates": [
-      {
-        "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
-        "label": "Listado municipal de parques industriales y contacto"
-      },
-      {
-        "url": "https://www.perspectivasureste.org/2026/08/20/moreno-ampliara-el-parque-industrial-municipal-ii-con-52-hectareas/",
-        "label": "Nota local del 20/08/2026 sobre la ampliación de 52 ha"
-      }
-    ],
-    "agency": "Municipalidad de Moreno / Fideicomiso Parques Industriales Moreno (FIDEPIM)",
-    "contact": "promociondeindustria@moreno.gov.ar; consultas por el formulario municipal de Parque Industrial Moreno II.",
-    "surfaceNote": "La Ordenanza 7371/25 identifica las parcelas catastrales Circunscripción V, parcelas 1371 y 1372, pero no publica superficie total. La referencia a 52 hectáreas procede de una nota local del 20/08/2026 y no está cuantificada en la ordenanza.",
-    "publicationDate": "Ordenanza sancionada el 31/07/2025; publicación en SIBOM el 28/11/2025; nota sobre ampliación publicada el 20/08/2026.",
-    "observations": "La Ordenanza 7371/25 autoriza aportar las parcelas 1371 y 1372 a FIDEPIM para ampliar el SIP II. El artículo 3 fija USD 1.128.000 como valor de adquisición de los inmuebles aportados; el artículo 4 establece un reintegro municipal del 50% del valor de venta de cada parcela hasta completar ese importe. Esa cifra no es un precio de venta al público. No se verificó avance físico, subdivisión, cronograma ni disponibilidad comercial. No es una oferta individual de tierra.",
-    "lat": null,
-    "lng": null,
-    "geocodeDisabled": true,
-    "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
-    "geolocationStatus": "Pendiente: se trata de un polígono industrial y un tramo vial; no se asigna punto parcelario.",
-    "verificationStatus": "Respaldo jurídico oficial en Ordenanza 7371/25; la superficie de 52 ha procede de una nota periodística. Avance físico y comercialización no verificados."
-  },
+  "id": "desarrollo-ampliacion-sip2-cuarter-v-52ha",
+  "recordType": "Desarrollo industrial público · ampliación del Sector Industrial Planificado II",
+  "name": "Ampliación del Sector Industrial Planificado II · Cuartel V",
+  "locality": "Cuartel V",
+  "address": "Circunscripción V, parcelas 1371 y 1372; entorno de calle Máximo Paz entre Bernardi y Juan B. Molière, Cuartel V (ubicación aproximada)",
+  "source": "https://sibom.slyt.gba.gob.ar/bulletins/13860/contents/2308258",
+  "sourceAlternates": [
+    {
+      "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
+      "label": "Listado municipal de parques industriales y contacto"
+    },
+    {
+      "url": "https://www.perspectivasureste.org/2026/08/20/moreno-ampliara-el-parque-industrial-municipal-ii-con-52-hectareas/",
+      "label": "Nota local del 20/08/2026 sobre la ampliación de 52 ha"
+    }
+  ],
+  "agency": "Municipalidad de Moreno / Fideicomiso Parques Industriales Moreno (FIDEPIM)",
+  "contact": "contacto@pimoreno.com.ar (Parque Industrial Moreno II) · promociondeindustria@moreno.gov.ar (Secretaría municipal de Industria y Comercio) · formulario municipal de consulta de PIM II.",
+  "surfaceNote": "La Ordenanza 7371/25 identifica las parcelas catastrales Circunscripción V, parcelas 1371 y 1372, pero no publica superficie total. La referencia a 52 hectáreas procede de una nota local del 20/08/2026 y no está cuantificada en la ordenanza.",
+  "publicationDate": "Ordenanza sancionada el 31/07/2025; publicación en SIBOM el 28/11/2025; nota sobre ampliación publicada el 20/08/2026.",
+  "observations": "La Ordenanza 7371/25 autoriza aportar las parcelas 1371 y 1372 a FIDEPIM para ampliar el SIP II. El artículo 3 fija USD 1.128.000 como valor de adquisición de los inmuebles aportados; el artículo 4 establece un reintegro municipal del 50% del valor de venta de cada parcela hasta completar ese importe. Esa cifra no es un precio de venta al público. No se verificó avance físico, subdivisión, cronograma ni disponibilidad comercial. No es una oferta individual de tierra.",
+  "lat": null,
+  "lng": null,
+  "geocodeDisabled": true,
+  "lastCheckedAt": "2026-11-27",
+  "availabilityStatus": "No confirmada",
+  "geolocationStatus": "Pendiente: se trata de un polígono industrial y un tramo vial; no se asigna punto parcelario.",
+  "verificationStatus": "Respaldo jurídico oficial en Ordenanza 7371/25; la superficie de 52 ha procede de una nota periodística. Avance físico y comercialización no verificados."
+},
   {
     "id": "chacras-teofilo-lote-324-historico",
     "recordType": "Terreno individual · antecedente no vigente",
@@ -2719,33 +2719,33 @@ const nov27FollowupEntries = [
     "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio, superficie y estructura declarados; disponibilidad no confirmada."
   },
   {
-    "id": "desarrollo-polo-veinticinco-15ha-37-lotes",
-    "recordType": "Desarrollo industrial privado · parque industrial y logístico",
-    "name": "Polo Veinticinco · parque industrial · 15 ha · 37 lotes",
-    "locality": "Cuartel V",
-    "address": "Ruta Provincial 25 y Gral. Fructuoso Rivera, frente al Club de Campo San Diego, Cuartel V, Moreno",
-    "source": "https://www.polo25.com/",
-    "sourceAlternates": [
-      {
-        "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
-        "label": "Directorio oficial municipal de parques industriales"
-      }
-    ],
-    "agency": "Polo Veinticinco · Krak RE (agencia de ventas)",
-    "contact": "11 3888 2095 · info@krak.com.ar · Marcelo Alberto Napolitano, CMCPSI 6645 / CUCICBA 5456.",
-    "price": null,
-    "currency": null,
-    "landSurfaceM2": 150000,
-    "surfaceNote": "El sitio oficial declara 15 hectáreas (150.000 m²), 37 lotes y superficies individuales de 2.000 a 5.700 m². Admite industrias de categorías 1, 2 y 3; publica FOS 0,6 y FOT 1,0.",
-    "observations": "El sitio oficial informa seguridad 24 h, energía de media tensión, fibra óptica, gas industrial, calles de hormigón, calzada de 10 m, cerco perimetral y tránsito pesado. Publica financiación con anticipo del 35% y 24 cuotas, sin lista de precios ni stock por lote. Algunos avisos de portales describen 17 ha y 30 lotes, discrepancia que debe aclarar el operador. El Municipio lista Polo 25 en Ruta 25 y Fructuoso Rivera y PIR25 en Ruta 25 y Moctezuma por separado; no son el mismo registro.",
-    "lat": null,
-    "lng": null,
-    "geocodeDisabled": true,
-    "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
-    "geolocationStatus": "Pendiente: se publica ubicación del parque, pero no plano parcelario georreferenciado para un marcador de lote.",
-    "verificationStatus": "Sitio oficial de Polo Veinticinco accesible el 27/11/2026; el directorio municipal también lo identifica por separado de PIR25. No se verificaron avance físico, stock, precios ni escrituras de lotes."
-  }
+  "id": "desarrollo-polo-veinticinco-15ha-37-lotes",
+  "recordType": "Desarrollo industrial privado · parque industrial y logístico",
+  "name": "Polo Veinticinco · parque industrial · 15 ha · 37 lotes",
+  "locality": "Cuartel V",
+  "address": "Ruta Provincial 25 y Gral. Fructuoso Rivera, frente al Club de Campo San Diego, Cuartel V, Moreno",
+  "source": "https://www.polo25.com/",
+  "sourceAlternates": [
+    {
+      "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
+      "label": "Directorio oficial municipal de parques industriales"
+    }
+  ],
+  "agency": "Polo Veinticinco · Krak RE (agencia de ventas)",
+  "contact": "11 3888 2095 · info@krak.com.ar · Marcelo Alberto Napolitano, CMCPSI 6645 / CUCICBA 5456.",
+  "price": null,
+  "currency": null,
+  "landSurfaceM2": 150000,
+  "surfaceNote": "El sitio oficial declara 15 hectáreas (150.000 m²), 37 lotes y superficies individuales de 2.000 a 5.700 m². Admite industrias de categorías 1, 2 y 3; publica FOS 0,6 y FOT 1,0.",
+  "observations": "El sitio oficial informa seguridad 24 h, energía de media tensión, fibra óptica, gas industrial, calles de hormigón, calzada de 10 m, cerco perimetral y tránsito pesado. Publica financiación con anticipo del 35% y 24 cuotas, sin lista de precios ni stock por lote. Algunos avisos de portales describen 17 ha y 30 lotes, discrepancia que debe aclarar el operador. El Municipio lista Polo 25 en Ruta 25 y Fructuoso Rivera y PIR25 en Ruta 25 y Moctezuma por separado; no son el mismo registro. El sitio oficial publica financiación con anticipo del 35% y 24 cuotas; no muestra importes ni lista de precios por lote.",
+  "lat": null,
+  "lng": null,
+  "geocodeDisabled": true,
+  "lastCheckedAt": "2026-11-27",
+  "availabilityStatus": "No confirmada",
+  "geolocationStatus": "Pendiente: se publica ubicación del parque, pero no plano parcelario georreferenciado para un marcador de lote.",
+  "verificationStatus": "Sitio oficial de Polo Veinticinco accesible el 27/11/2026; el directorio municipal también lo identifica por separado de PIR25. No se verificaron avance físico, stock, precios ni escrituras de lotes."
+}
 ];
 publishedProperties.push(...nov27FollowupEntries);
 
