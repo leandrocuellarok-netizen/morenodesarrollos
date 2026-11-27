@@ -477,9 +477,9 @@
     "terreno-san-diego-1687": "Terreno · San Diego Club de Campo · 1.687 m²",
     "terreno-san-diego-2175-historico": "Lote forestado · San Diego Club de Campo · 2.175 m² · antecedente",
     "base-aerea-moreno-norte": "Base Aérea Moreno Norte · Cuartel V",
-    "promeba-trujui": "PROMEBA IV · Haras Trujui y Santa Brígida",
-    "promeba-cuartel-v": "PROMEBA · Cuartel V",
-    "mui-mo-monitoreo-urbano-inmobiliario": "MUI-MO · Monitoreo Urbano Inmobiliario de Moreno",
+    "promeba-trujui": "PRO.ME.BA IV · Haras Trujui y Santa Brígida",
+    "promeba-cuartel-v": "PRO.ME.BA · Cuartel V · ocho barrios",
+    "mui-mo-monitoreo-urbano-inmobiliario": "MUI-MO · Monitoreo Urbano Inmobiliario",
     "utopia-bonaerense-moreno": "Utopía Bonaerense · Parque urbano e infraestructura"
   });
 
