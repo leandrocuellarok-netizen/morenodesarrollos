@@ -6673,7 +6673,7 @@ publishedProperties.push(...[
     "name": "Zeballos 1900 · casa en La Reja · dos avisos con datos incompatibles",
     "locality": "La Reja",
     "address": "Zeballos 1900, La Reja, Moreno",
-    "geocodeQuery": "Zeballos 1900, La Reja, Moreno, Buenos Aires",
+    "geocodeDisabled": true,
     "source": "https://plataplace.com/propiedad/casa-de-5-ambientes-en-venta-en-moreno-1d157764",
   sourceAlternates: [{url:"https://plataplace.com/propiedad/casa-de-3-ambientes-en-venta-en-moreno-e30e0a67",label:"Aviso anterior retirado el 05/11/2026: USD 49.000, 400 m² totales y 120 m² cubiertos; podría ser otra parcela en la misma altura."}],
     "agency": "Sonia Lo Bruno Propiedades (aviso actual en PlataPlace); aviso anterior atribuido a RE/MAX Argentina.",
