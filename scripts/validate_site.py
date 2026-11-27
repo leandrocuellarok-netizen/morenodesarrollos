@@ -788,7 +788,7 @@ def main() -> None:
             errors.append("Oportunidades debe cargar las herramientas de contacto y expediente público")
         if "dossier-import-note" not in opportunity_html:
             errors.append("Oportunidades debe aclarar que el formulario no recupera datos internos")
-        for required_control in ("dossier-import-file", "validate-dossier-import", "apply-dossier-merge", "apply-dossier-replace"):
+        for required_control in ("dossier-import-file", "validate-dossier-import", "apply-dossier-merge", "apply-dossier-replace", "contact-email", "contact-phone"):
             if f'id="{required_control}"' not in opportunity_html:
                 errors.append(f"oportunidades/index.html: falta control de importación: {required_control}")
         for forbidden_marker in ("pipeline-template-title", "pipeline-csv-file", "originacion-workbench", "originacion-print-dossier", "originacion-download-dossier"):
@@ -797,6 +797,14 @@ def main() -> None:
         for script_src in ("../assets/js/originacion-workbench.js", "../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-agenda.js", "../assets/js/pipeline-dashboard-ui.js", "../assets/js/originacion-export.js"):
             if script_src in opportunity_html:
                 errors.append(f"oportunidades/index.html: no debe cargar el módulo interno {script_src}")
+        email_field = re.search(r'<input\b(?=[^>]*id="contact-email")(?=[^>]*type="email")[^>]*>', opportunity_html)
+        phone_field = re.search(r'<input\b(?=[^>]*id="contact-phone")(?=[^>]*type="tel")[^>]*>', opportunity_html)
+        if not email_field or "required" in email_field.group(0):
+            errors.append("Oportunidades debe ofrecer un email alternativo visible y opcional")
+        if not phone_field or "required" in phone_field.group(0):
+            errors.append("Oportunidades debe ofrecer un teléfono alternativo visible y opcional")
+        if "email_contacto" not in opportunity_html or "telefono_contacto" not in opportunity_html:
+            errors.append("Oportunidades debe conectar los medios alternativos de contacto con el formulario")
         faq_ids = ("faq-documentacion", "faq-indicadores", "faq-privacidad", "faq-mapa", "faq-inversores")
         for faq_id in faq_ids:
             if f'id="{faq_id}"' not in opportunity_html:
@@ -894,7 +902,7 @@ def main() -> None:
         errors.append("Falta assets/js/opportunity-tools.js")
     else:
         opportunity_source = opportunity_module.read_text(encoding="utf-8")
-        for required_logic in ("parseOpportunityDossierImport", "mergeImportedOpportunityData", "validateInternalDossier", "internalCheckLabels", "schemaVersion: 3"):
+        for required_logic in ("parseOpportunityDossierImport", "mergeImportedOpportunityData", "validateInternalDossier", "internalCheckLabels", "schemaVersion: 3", "email_contacto", "telefono_contacto", "El email de contacto no tiene un formato válido"):
             if required_logic not in opportunity_source:
                 errors.append(f"assets/js/opportunity-tools.js: falta lógica de expediente: {required_logic}")
 

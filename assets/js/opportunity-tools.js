@@ -141,6 +141,8 @@
       ["Perfil", "perfil"],
       ["Interés", "interes"],
       ["Zona", "zona"],
+      ["Email de contacto", "email_contacto"],
+      ["Teléfono de contacto", "telefono_contacto"],
       ["Tipo de oportunidad", "tipo"],
       ["Ubicación o referencia", "ubicacion"],
       ["Partida o nomenclatura catastral", "nomenclatura"],
@@ -186,6 +188,8 @@
       sections.push(
         makeSection("Origen y contacto", [
           ["Nombre", fields.nombre],
+          ["Email de contacto", fields.email_contacto],
+          ["Teléfono de contacto", fields.telefono_contacto],
           ["Perfil declarado", fields.perfil],
           ["Interés declarado", fields.interes],
           ["Referencia territorial de origen (no parcelaria)", fields.referencia_mapa]
@@ -330,12 +334,14 @@
   }
 
 const dossierFieldLimits = Object.freeze({
-    nombre: 90, perfil: 60, interes: 90, zona: 120, tipo: 60,
+    nombre: 90, perfil: 60, interes: 90, zona: 120,
+    email_contacto: 254, telefono_contacto: 40, tipo: 60,
     ubicacion: 180, nomenclatura: 120, superficie: 60,
     referencia_mapa: 180, detalle: 1200
   });
   const dossierFieldLabels = Object.freeze({
     nombre: "nombre", perfil: "perfil", interes: "interés", zona: "zona",
+    email_contacto: "email de contacto", telefono_contacto: "teléfono de contacto",
     tipo: "tipo de oportunidad", ubicacion: "ubicación",
     nomenclatura: "nomenclatura catastral", superficie: "superficie",
     referencia_mapa: "referencia territorial", detalle: "contexto"
@@ -513,6 +519,9 @@ const dossierFieldLimits = Object.freeze({
       if (typeof source[key] !== "string") throw new Error("El campo " + dossierFieldLabels[key] + " debe ser texto.");
       const value = source[key].trim();
       if (value.length > dossierFieldLimits[key]) throw new Error("El campo " + dossierFieldLabels[key] + " supera el largo permitido.");
+      if (key === "email_contacto" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        throw new Error("El email de contacto no tiene un formato válido.");
+      }
       if (dossierSelectOptions[key] && value && !dossierSelectOptions[key].includes(value)) {
         warnings.push("Se omitió un valor no reconocido en " + dossierFieldLabels[key] + ".");
         return;

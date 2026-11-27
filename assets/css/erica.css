@@ -1116,3 +1116,28 @@ main#main-content:focus {
   .opportunity-faq-answer{padding:0 28px 19px 1px}
   .opportunity-faq-answer p{font-size:14px}
 }
+
+/* Canales alternativos de contacto: opcionales y explícitos en el primer contacto. */
+.contact-method-fields{
+  min-width:0;
+  margin:20px 0 24px;
+  padding:17px 18px 19px;
+  border:1px solid var(--line);
+}
+.contact-method-fields legend{
+  padding:0 8px;
+  color:var(--ink);
+  font:400 20px/1.25 var(--serif);
+}
+.contact-method-fields>p{
+  max-width:68ch;
+  margin:0 0 15px;
+  color:#66675e;
+  font:12px/1.7 var(--sans);
+}
+.contact-method-fields .form-grid{margin:0}
+@media(max-width:760px){
+  .contact-method-fields{padding:15px 13px 16px}
+  .contact-method-fields legend{font-size:19px}
+  .contact-method-fields>p{font-size:12px}
+}

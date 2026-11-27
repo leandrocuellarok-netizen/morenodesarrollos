@@ -78,6 +78,8 @@ for (const item of mapCatalogue.all) {
 const contactMessage = tools.buildContactMessage({
   fields: {
     nombre: "Contacto de prueba",
+    email_contacto: "inversor@example.com",
+    telefono_contacto: "+54 9 11 5555-0101",
     referencia_mapa: "RP25 · Darwin Passaponti (rp25)",
     perfil: "Propietario/a",
     interes: "Presentar un terreno o inmueble",
@@ -92,6 +94,8 @@ const contactMessage = tools.buildContactMessage({
   calculationInput: { areaRaw: "1200", referenceRaw: "Dato aportado" }
 });
 assert.match(contactMessage, /Referencia del Mapa IA: RP25 · Darwin Passaponti \(rp25\)/);
+assert.match(contactMessage, /Email de contacto: inversor@example\.com/);
+assert.match(contactMessage, /Teléfono de contacto: \+54 9 11 5555-0101/);
 assert.match(contactMessage, /Ubicación o referencia: Cerca de la estación/);
 assert.match(contactMessage, /Partida o nomenclatura catastral: Circ\. II, Secc\. B, Quinta 14/);
 assert.match(contactMessage, /Superficie declarada en calculadora: 1200 m²/);
@@ -199,6 +203,8 @@ assert.match(JSON.stringify(dossierWithoutIndicators), /Sin datos internos regis
 const dossierExport = tools.buildOpportunityDossierExport({
   fields: {
     nombre: "Contacto de exportación",
+    email_contacto: "propietario@example.com",
+    telefono_contacto: "+54 11 4444-2222",
     perfil: "Propietario/a",
     interes: "Presentar un terreno o inmueble",
     zona: "La Reja",
@@ -247,12 +253,16 @@ assert.equal(dossierExport.dossier.title, "Ficha preliminar de oportunidad");
 assert.equal(dossierExport.dossier.status, "BORRADOR · DATOS APORTADOS, NO VERIFICADOS");
 assert.equal(JSON.parse(JSON.stringify(dossierExport)).schemaVersion, 3);
 assert.deepEqual(dossierExport.sourceData.fields.documentacion, ["Plano o mensura"]);
+assert.equal(dossierExport.sourceData.fields.email_contacto, "propietario@example.com");
+assert.equal(dossierExport.sourceData.fields.telefono_contacto, "+54 11 4444-2222");
 assert.equal(dossierExport.sourceData.calculationInput.fosRaw, "0,60");
 
 const importedDossier = tools.parseOpportunityDossierImport(JSON.stringify(dossierExport));
 assert.equal(importedDossier.ok, true);
 assert.equal(importedDossier.version, 3);
 assert.equal(importedDossier.fields.nombre, "Contacto de exportación");
+assert.equal(importedDossier.fields.email_contacto, "propietario@example.com");
+assert.equal(importedDossier.fields.telefono_contacto, "+54 11 4444-2222");
 assert.deepEqual(importedDossier.fields.documentacion, ["Plano o mensura"]);
 assert.equal(importedDossier.calculationInput.areaRaw, "1200");
 assert.equal(importedDossier.calculationInput.fosRaw, "0,60");
@@ -260,6 +270,12 @@ assert.equal(importedDossier.internalData.reference, "MOR-2026-001");
 assert.equal(importedDossier.internalData.evidence.length, 2);
 assert.equal(importedDossier.internalData.checks.cadastral.status, "in_progress");
 assert.equal(importedDossier.internalData.fees.proposed, "1200000");
+
+const invalidContactEmail = JSON.parse(JSON.stringify(dossierExport));
+invalidContactEmail.sourceData.fields.email_contacto = "no-es-un-email";
+const rejectedContactEmail = tools.parseOpportunityDossierImport(invalidContactEmail);
+assert.equal(rejectedContactEmail.ok, false);
+assert.match(rejectedContactEmail.error, /email de contacto/);
 
 const mergedDossier = tools.mergeImportedOpportunityData({
   fields: { nombre: "Nombre local", zona: "Moreno", documentacion: [], verificaciones: [] },
@@ -275,6 +291,8 @@ const mergedDossier = tools.mergeImportedOpportunityData({
 assert.equal(mergedDossier.fields.nombre, "Nombre local", "la combinación conserva el dato local en conflicto");
 assert.equal(mergedDossier.fields.zona, "Moreno", "la combinación no sobrescribe una zona local distinta");
 assert.equal(mergedDossier.fields.perfil, "Propietario/a", "la combinación completa campos vacíos");
+assert.equal(mergedDossier.fields.email_contacto, "propietario@example.com");
+assert.equal(mergedDossier.fields.telefono_contacto, "+54 11 4444-2222");
 assert.deepEqual(mergedDossier.fields.documentacion, ["Plano o mensura"]);
 assert.equal(mergedDossier.calculationInput.areaRaw, "900");
 assert.equal(mergedDossier.calculationInput.fosRaw, "0,60");

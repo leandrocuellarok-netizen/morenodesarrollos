@@ -426,6 +426,11 @@ async function auditOpportunityFlow(browser) {
     await page.locator("#contact-profile").selectOption("Propietario/a");
     await page.locator("#contact-interest").selectOption("Presentar un terreno o inmueble");
     await page.locator("#contact-zone").fill("La Reja");
+    check(await page.locator("#contact-email").getAttribute("type") === "email", "oportunidades: el email alternativo usa validación nativa");
+    check(await page.locator("#contact-email").isVisible() && !(await page.locator("#contact-email").evaluate(element => element.required)), "oportunidades: el email alternativo es visible y opcional");
+    check(await page.locator("#contact-phone").isVisible() && !(await page.locator("#contact-phone").evaluate(element => element.required)), "oportunidades: el teléfono alternativo es visible y opcional");
+    await page.locator("#contact-email").fill("contacto@example.com");
+    await page.locator("#contact-phone").fill("+54 9 11 5555-0101");
     check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: elegir una consulta de inmueble revela sus campos opcionales");
 
     await page.locator("#contact-type").selectOption("Terreno");
@@ -450,6 +455,8 @@ async function auditOpportunityFlow(browser) {
     const message = await page.locator("#contact-message-preview").inputValue();
     for (const expected of [
       "Terreno",
+      "Email de contacto: contacto@example.com",
+      "Teléfono de contacto: +54 9 11 5555-0101",
       "Calle de prueba 123",
       "Circ. II, Secc. B, Quinta 14",
       "1200",
@@ -493,6 +500,8 @@ async function auditOpportunityFlow(browser) {
           perfil: "Inversor/a",
           interes: "Explorar una inversión",
           zona: "Moreno",
+          email_contacto: "importado@example.com",
+          telefono_contacto: "+54 11 4000-1234",
           tipo: "Terreno",
           ubicacion: "Referencia de prueba",
           nomenclatura: "Circ. II, Secc. B, Quinta 14",
@@ -522,6 +531,8 @@ async function auditOpportunityFlow(browser) {
     await page.locator("#dossier-import-actions").waitFor({ state: "visible", timeout: 3000 });
     check(await page.locator("#dossier-import-actions").isVisible(), "oportunidades: el expediente JSON válido ofrece las acciones de aplicación");
     await page.locator("#apply-dossier-replace").click();
+    check(await page.locator("#contact-email").inputValue() === "importado@example.com", "oportunidades: el email alternativo se recupera del expediente JSON");
+    check(await page.locator("#contact-phone").inputValue() === "+54 11 4000-1234", "oportunidades: el teléfono alternativo se recupera del expediente JSON");
     check(await page.locator("#contact-preview").isHidden(), "oportunidades: importar un expediente oculta el borrador anterior");
     check(await page.locator("#contact-message-preview").inputValue() === "", "oportunidades: la importación limpia el texto del borrador anterior");
     check(await page.locator("#open-whatsapp").getAttribute("href") === null, "oportunidades: la importación no deja disponible un enlace de WhatsApp con datos anteriores");
