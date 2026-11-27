@@ -576,7 +576,7 @@ assert.ok(publishedProperties.find(item => item.id === "casa-bernardino-rivadavi
 
 assert.equal(new Set(publishedProperties.map(item => item.id)).size, publishedProperties.length, "no hay IDs duplicados en publicaciones");
 
-const expectedInventoryCounts = { localities: 6, documented: 9, hypotheses: 1, published: publishedProperties.length, total: all.length };
+const expectedInventoryCounts = { localities: 6, documented: 12, hypotheses: 1, published: publishedProperties.length, total: all.length };
 assert.deepEqual(countInventory(all), expectedInventoryCounts);
 
 const allPublishedForPaging = filterReferences(all, { category: "published" });
