@@ -781,6 +781,14 @@ async function auditMapFallback(browser) {
     check((await page.locator('[data-fallback-reference="terreno-san-juan-bautista-1374"]').innerText()).includes("Geolocalización pendiente"), "mapa-ia fallback: las publicaciones sin coincidencia no reciben un punto ficticio");
     check((await page.locator(".map-review-privacy").innerText()).includes("sin cifrado"), "mapa-ia: la bitácora advierte que el almacenamiento local no está cifrado");
     check(await page.locator("#clear-review").isVisible(), "mapa-ia: el control para borrar la bitácora está disponible");
+    check(await page.locator("#duplicate-review-disclosure").evaluate(element => element.open), "mapa-ia: la bandeja de coincidencias se abre por defecto en escritorio");
+    const duplicatePairCount = await page.locator("#duplicate-review-list .map-duplicate-pair").count();
+    check(duplicatePairCount >= 2, "mapa-ia: la bandeja muestra las relaciones de posible duplicación declaradas");
+    const duplicateReviewText = await page.locator("#duplicate-review-list").innerText();
+    check(duplicateReviewText.includes("PIR25") && duplicateReviewText.includes("Polo 24"), "mapa-ia: las dos relaciones territoriales conocidas quedan identificadas");
+    const duplicateReferenceHrefs = await page.locator("#duplicate-review-list [data-duplicate-reference]").evaluateAll(links => links.map(link => link.href));
+    check(duplicateReferenceHrefs.length >= 4 && duplicateReferenceHrefs.every(href => Boolean(new URL(href).searchParams.get("ref"))), "mapa-ia: cada relación ofrece enlaces directos a ambas fichas");
+    check((await page.locator(".map-duplicate-review-note").innerText()).includes("no se fusiona"), "mapa-ia: la interfaz advierte que las coincidencias no fusionan publicaciones");
     check(await page.evaluate(() => Boolean(localStorage.getItem("moreno-map-review-v2"))), "mapa-ia: la auditoría cargó una bitácora sintética en el navegador");
     await page.evaluate(() => { window.confirm = () => true; });
     await page.locator("#clear-review").click();
@@ -788,6 +796,11 @@ async function auditMapFallback(browser) {
     check((await page.locator("#review-status").innerText()).includes("Bitácora local borrada"), "mapa-ia: la interfaz confirma el borrado realizado");
 
     await page.setViewportSize({ width: 390, height: 844 });
+    const duplicateDisclosure = page.locator("#duplicate-review-disclosure");
+    check(!(await duplicateDisclosure.evaluate(element => element.open)), "mapa-ia: la bandeja se pliega por defecto en móvil");
+    await duplicateDisclosure.locator("> summary").click();
+    check(await duplicateDisclosure.evaluate(element => element.open), "mapa-ia: la bandeja se abre con un toque en móvil");
+    check(await page.locator(".map-duplicate-review-note").isVisible(), "mapa-ia: la advertencia de revisión humana queda visible al abrir la bandeja");
     const fallbackLayoutIsNatural = await page.locator(".map-canvas.is-static-fallback").evaluate(element => {
       const panel = element.querySelector(".map-static-fallback");
       const diagram = panel && panel.querySelector(".map-static-diagram");

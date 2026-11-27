@@ -6088,6 +6088,100 @@ function publishedDiligenceSummary(item) {
   };
 }
 
+
+function normalizeDuplicateSourceUrl(value) {
+  try {
+    const url = new URL(String(value || "").trim());
+    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+    url.hash = "";
+    Array.from(url.searchParams.keys()).forEach(key => {
+      if (/^(?:utm_.+|fbclid|gclid|mc_cid|mc_eid)$/i.test(key)) url.searchParams.delete(key);
+    });
+    url.searchParams.sort();
+    url.pathname = url.pathname.replace(/\/{2,}/g, "/").replace(/\/+$/, "") || "/";
+    return url.toString();
+  } catch (error) {
+    return null;
+  }
+}
+
+function collectPotentialDuplicatePairs(items) {
+  const records = (Array.isArray(items) ? items : []).filter(item =>
+    item && item.id && (item.type === "published" || (!item.type && item.recordType))
+  );
+  const byId = new Map(records.map(item => [item.id, item]));
+  const pairsByKey = new Map();
+  const unresolved = [];
+  const unresolvedKeys = new Set();
+
+  function addPair(left, right, reason, sharedUrl) {
+    if (!left || !right || left.id === right.id) return;
+    const ordered = [left, right].sort((a, b) => String(a.id).localeCompare(String(b.id)));
+    const key = ordered[0].id + "::" + ordered[1].id;
+    let pair = pairsByKey.get(key);
+    if (!pair) {
+      pair = {
+        id: key,
+        left: ordered[0],
+        right: ordered[1],
+        reasons: new Set(),
+        sharedSourceUrls: new Set()
+      };
+      pairsByKey.set(key, pair);
+    }
+    if (reason) pair.reasons.add(reason);
+    if (sharedUrl) pair.sharedSourceUrls.add(sharedUrl);
+  }
+
+  records.forEach(item => {
+    const targetId = String(item.potentialDuplicateOf || "").trim();
+    if (!targetId) return;
+    const target = byId.get(targetId);
+    if (target) {
+      addPair(item, target, "Una ficha declara a la otra como posible duplicado.");
+    } else {
+      const unresolvedKey = item.id + "::" + targetId;
+      if (!unresolvedKeys.has(unresolvedKey)) {
+        unresolvedKeys.add(unresolvedKey);
+        unresolved.push({ source: item, targetId });
+      }
+    }
+  });
+
+  const sourceIndex = new Map();
+  records.forEach(item => {
+    const urls = new Set([
+      item.source,
+      ...(Array.isArray(item.sourceAlternates) ? item.sourceAlternates.map(entry => entry && entry.url) : [])
+    ].map(normalizeDuplicateSourceUrl).filter(Boolean));
+    urls.forEach(url => {
+      if (!sourceIndex.has(url)) sourceIndex.set(url, []);
+      sourceIndex.get(url).push(item);
+    });
+  });
+
+  sourceIndex.forEach((linkedRecords, url) => {
+    if (linkedRecords.length < 2) return;
+    for (let leftIndex = 0; leftIndex < linkedRecords.length; leftIndex += 1) {
+      for (let rightIndex = leftIndex + 1; rightIndex < linkedRecords.length; rightIndex += 1) {
+        addPair(linkedRecords[leftIndex], linkedRecords[rightIndex], "Ambas fichas comparten una URL de origen.", url);
+      }
+    }
+  });
+
+  const pairs = Array.from(pairsByKey.values())
+    .map(pair => ({
+      id: pair.id,
+      left: pair.left,
+      right: pair.right,
+      reasons: Array.from(pair.reasons),
+      sharedSourceUrls: Array.from(pair.sharedSourceUrls)
+    }))
+    .sort((a, b) => a.left.name.localeCompare(b.left.name, "es"));
+
+  return { pairs, unresolved };
+}
+
 const PUBLISHED_CARD_PAGE_SIZE = 24;
 
 function paginatePublishedCards(items, limit, selectedId) {
@@ -6947,6 +7041,9 @@ function initMapPage(doc) {
   const evidenceInput = doc.getElementById("evidence-filter");
   const availabilityInput = doc.getElementById("availability-filter");
   const diligenceInput = doc.getElementById("diligence-filter");
+  const duplicateReviewDisclosure = doc.getElementById("duplicate-review-disclosure");
+  const duplicateReviewSummary = doc.getElementById("duplicate-review-summary");
+  const duplicateReviewList = doc.getElementById("duplicate-review-list");
   const shareViewButton = doc.getElementById("share-map-view");
   const shareViewStatus = doc.getElementById("map-share-status");
   const shareFallbackWrap = doc.getElementById("map-share-fallback-wrap");
@@ -7813,6 +7910,62 @@ function initMapPage(doc) {
     }
     target.append(pagination);
   }
+
+  function renderPotentialDuplicateReview() {
+    if (!duplicateReviewDisclosure || !duplicateReviewSummary || !duplicateReviewList) return;
+    const review = collectPotentialDuplicatePairs(all);
+    duplicateReviewDisclosure.hidden = review.pairs.length === 0 && review.unresolved.length === 0;
+    duplicateReviewSummary.textContent =
+      review.pairs.length + " relaciones para revisar · " +
+      review.unresolved.length + " referencias sin destino";
+    duplicateReviewList.replaceChildren();
+
+    review.pairs.forEach(pair => {
+      const article = doc.createElement("article");
+      article.className = "map-duplicate-pair";
+      article.dataset.duplicatePair = pair.id;
+
+      const heading = doc.createElement("h3");
+      heading.textContent = pair.left.name + " ↔ " + pair.right.name;
+
+      const evidence = doc.createElement("p");
+      evidence.className = "map-duplicate-evidence";
+      evidence.textContent = pair.reasons.join(" ");
+
+      const links = doc.createElement("div");
+      links.className = "map-duplicate-pair-links";
+      [pair.left, pair.right].forEach((record, index) => {
+        const link = doc.createElement("a");
+        link.className = "map-duplicate-reference-link";
+        link.dataset.duplicateReference = record.id;
+        link.href = buildReferenceUrl(doc.defaultView.location.href, record.id);
+        link.textContent = "Ficha " + (index === 0 ? "A" : "B") + ": " + record.name + " ↗";
+        links.append(link);
+      });
+
+      pair.sharedSourceUrls.forEach(url => {
+        const sourceLink = doc.createElement("a");
+        sourceLink.className = "map-duplicate-source-link";
+        sourceLink.href = url;
+        sourceLink.target = "_blank";
+        sourceLink.rel = "noopener noreferrer";
+        sourceLink.textContent = "Abrir fuente compartida ↗";
+        links.append(sourceLink);
+      });
+
+      article.append(heading, evidence, links);
+      duplicateReviewList.append(article);
+    });
+
+    review.unresolved.forEach(entry => {
+      const warning = doc.createElement("p");
+      warning.className = "map-duplicate-unresolved";
+      warning.textContent = "Vínculo pendiente: " + entry.source.name +
+        " apunta a la referencia inexistente " + entry.targetId + ".";
+      duplicateReviewList.append(warning);
+    });
+  }
+
   function updateAtlasIndex(items) {
     const counts = countInventory(items);
     if (atlasCounts.localities) atlasCounts.localities.textContent = String(counts.localities).padStart(2, "0");
@@ -8190,13 +8343,14 @@ function initMapPage(doc) {
       else map.flyTo({ ...home, essential: true });
     }
   });
+  renderPotentialDuplicateReview();
   render();
 }
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches,
-    availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary,
+    availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, collectPotentialDuplicatePairs,
     paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE,
     resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached,
     readGeorefCache, writeGeorefCache, GEOREF_MAX_CONCURRENCY,

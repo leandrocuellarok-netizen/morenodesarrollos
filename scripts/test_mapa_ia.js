@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, collectPotentialDuplicatePairs, paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -18,6 +18,8 @@ assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan 
 assert.ok(mapPage.includes('id="kind-filter"'), "el atlas permite filtrar por sector o línea de desarrollo");
 assert.ok(mapPage.includes('id="availability-filter"'), "el atlas permite filtrar el estado registrado de las publicaciones");
 assert.ok(mapPage.includes('id="diligence-filter"'), "el atlas permite filtrar la presencia de datos de prospección");
+assert.ok(mapPage.includes('id="duplicate-review-disclosure"') && mapPage.includes('id="duplicate-review-summary"') && mapPage.includes('id="duplicate-review-list"'), "el atlas ofrece una bandeja accesible para revisar posibles duplicados");
+assert.ok(mapPage.includes("no duplicados confirmados") && mapPage.includes("no se fusiona ni elimina ninguna publicación"), "la bandeja explica que las coincidencias requieren revisión humana y no fusiona fichas");
 assert.ok(mapPage.includes("El recuento mide la presencia de siete campos"), "el filtro aclara que la integridad no equivale a verificación");
 for (const state of ["no-confirmada", "pendiente-revalidacion", "no-vigente"]) {
   assert.ok(mapPage.includes('option value="' + state + '"'), "el filtro ofrece el estado " + state);
@@ -36,6 +38,30 @@ for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-do
   assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
 }
 const initialInventoryCounts = countInventory(all);
+
+const duplicateReview = collectPotentialDuplicatePairs(all);
+const pairHasIds = (pairs, first, second) => pairs.some(pair =>
+  [pair.left.id, pair.right.id].sort().join("::") === [first, second].sort().join("::")
+);
+assert.ok(pairHasIds(duplicateReview.pairs, "terreno-pir25-2709", "terreno-r25-lote21-2741"), "la relación declarada del parque industrial aparece en la bandeja de revisión");
+assert.ok(pairHasIds(duplicateReview.pairs, "terreno-polo24-rp24-rp25-2914", "terreno-polo24-2432"), "la relación declarada de Polo 24 aparece en la bandeja de revisión");
+assert.equal(duplicateReview.unresolved.length, 0, "todas las relaciones declaradas apuntan a una ficha existente");
+assert.ok(duplicateReview.pairs.every(pair => pair.left.id !== pair.right.id), "la revisión nunca compara una ficha consigo misma");
+
+const duplicateReviewSample = collectPotentialDuplicatePairs([
+  { type: "published", id: "source-a", recordType: "Terreno", name: "Fuente A", source: "https://example.org/aviso/1?utm_source=mail" },
+  { type: "published", id: "source-b", recordType: "Terreno", name: "Fuente B", source: "https://portal.example/otro", sourceAlternates: [{ url: "https://example.org/aviso/1" }] },
+  { type: "published", id: "declared-a", recordType: "Terreno", name: "Declarada A", source: "https://example.org/aviso/2", potentialDuplicateOf: "source-a" },
+  { type: "published", id: "missing-target", recordType: "Terreno", name: "Destino ausente", source: "https://example.org/aviso/3", potentialDuplicateOf: "not-in-inventory" },
+  { type: "published", id: "lot-10", recordType: "Terreno", name: "Lote 10", source: "https://example.org/lote-10", address: "Valparaíso 100", landSurfaceM2: 300 },
+  { type: "published", id: "lot-11", recordType: "Terreno", name: "Lote 11", source: "https://example.org/lote-11", address: "Valparaíso 100", landSurfaceM2: 300 }
+]);
+assert.ok(pairHasIds(duplicateReviewSample.pairs, "source-a", "source-b"), "una URL compartida se reconoce aunque aparezca como fuente complementaria y tenga parámetros de seguimiento");
+assert.ok(pairHasIds(duplicateReviewSample.pairs, "source-a", "declared-a"), "se conserva una relación declarada aunque las fuentes sean distintas");
+assert.equal(duplicateReviewSample.unresolved.length, 1, "un destino inexistente se informa sin crear una ficha ficticia");
+assert.equal(pairHasIds(duplicateReviewSample.pairs, "lot-10", "lot-11"), false, "dirección y superficie iguales no bastan para declarar un duplicado: lotes distintos permanecen separados");
+assert.equal(publishedProperties.length, initialInventoryCounts.published, "la bandeja de revisión no fusiona ni elimina publicaciones");
+
 const completeDiligenceSample = publishedDiligenceSummary({
   type: "published", source: "https://example.org/aviso", lastCheckedAt: "2026-11-27",
   price: "USD 85.000", landSurfaceM2: 320, agency: "Inmobiliaria de prueba",

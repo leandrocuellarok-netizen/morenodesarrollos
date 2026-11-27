@@ -252,6 +252,9 @@ def main() -> None:
                 'id="availability-filter"',
                 "Estado registrado de publicación",
                 'id="diligence-filter"',
+                'id="duplicate-review-disclosure"',
+                'id="duplicate-review-summary"',
+                'id="duplicate-review-list"',
                 "Datos de prospección",
                 'option value="no-confirmada"',
                 'option value="pendiente-revalidacion"',
@@ -263,6 +266,8 @@ def main() -> None:
             ):
                 if required_atlas_markup not in page_source:
                     errors.append(f"mapa-ia/index.html: falta el índice cartográfico: {required_atlas_markup}")
+            if "no duplicados confirmados" not in page_source or "no se fusiona ni elimina ninguna publicación" not in page_source:
+                errors.append("mapa-ia/index.html: la bandeja de coincidencias debe aclarar que requiere revisión humana y no fusiona publicaciones")
             if "documento imprimible" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar el dossier imprimible de la vista filtrada")
             if "ficha editorial descargable" not in page_source:
@@ -332,8 +337,8 @@ def main() -> None:
                 for required_style in (".map-dossier-export", ".map-dossier-status"):
                     if required_style not in map_css_source:
                         errors.append(f"assets/css/mapa-ia.css: falta el estilo del dossier: {required_style}")
-            if len(re.findall(r'<details\b[^>]*data-mobile-collapsible', page_source)) != 5:
-                errors.append("mapa-ia/index.html: se esperaban cinco disclosures progresivos para móvil")
+            if len(re.findall(r'<details\b[^>]*data-mobile-collapsible', page_source)) != 6:
+                errors.append("mapa-ia/index.html: se esperaban seis disclosures progresivos para móvil")
             if len(re.findall(r'<article class="verification-source"', page_source)) != 4:
                 errors.append("mapa-ia/index.html: la mesa de verificación debe presentar cuatro rutas institucionales")
 
