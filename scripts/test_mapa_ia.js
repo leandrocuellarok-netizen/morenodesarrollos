@@ -334,7 +334,7 @@ assert.ok(source.includes('link.download = "moreno-mapa-ia-referencias.geojson"'
 
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
-assert.equal(opportunities.length, 9, "se conservan cinco tesis previas y se agregan cuatro contextos públicos documentados");
+assert.equal(opportunities.length, 10, "se conservan cinco tesis previas y se agregan cinco contextos públicos documentados");
 assert.ok(publishedProperties.length >= 28, "la capa publicada conserva el inventario histórico y las incorporaciones verificadas");
 assert.equal(all.length, localities.length + opportunities.length + publishedProperties.length, "el total coincide con localidades, tesis y publicaciones");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
@@ -557,7 +557,7 @@ assert.ok(publishedProperties.find(item => item.id === "casa-bernardino-rivadavi
 
 assert.equal(new Set(publishedProperties.map(item => item.id)).size, publishedProperties.length, "no hay IDs duplicados en publicaciones");
 
-const expectedInventoryCounts = { localities: 6, documented: 8, hypotheses: 1, published: publishedProperties.length, total: all.length };
+const expectedInventoryCounts = { localities: 6, documented: 9, hypotheses: 1, published: publishedProperties.length, total: all.length };
 assert.deepEqual(countInventory(all), expectedInventoryCounts);
 
 const allPublishedForPaging = filterReferences(all, { category: "published" });
@@ -590,7 +590,7 @@ assert.ok(styles.includes(".map-published-pagination"));
 assert.ok(styles.includes(".map-published-more:focus-visible"));
 assert.deepEqual(
   countInventory(filterReferences(all, { evidence: "documented" })),
-  { localities: 0, documented: 8, hypotheses: 0, published: 0, total: 8 },
+  { localities: 0, documented: 9, hypotheses: 0, published: 0, total: 9 },
   "el índice refleja el filtro de contextos con fuente"
 );
 assert.deepEqual(
@@ -623,7 +623,7 @@ for (const item of opportunities) {
 }
 
 assert.equal(filterReferences(all, { category: "locality" }).length, 6);
-assert.equal(filterReferences(all, { category: "opportunity" }).length, 9);
+assert.equal(filterReferences(all, { category: "opportunity" }).length, 10);
 assert.equal(filterReferences(all, { category: "published" }).length, publishedProperties.length);
 for (const [status, key] of [
   ["No confirmada", "no-confirmada"],
@@ -650,13 +650,14 @@ assert.ok(!source.includes('publishedProperties.forEach(item => {\n  item.lastCh
 assert.ok(source.includes("No hay constancia individual de consulta de la fuente"), "una ficha sin evidencia individual no recibe una afirmación automática de accesibilidad");
 assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { query: "Santa Teresa", category: "published" }).length, 2, "la búsqueda distingue las dos publicaciones de Santa Teresa con direcciones diferentes");
-assert.equal(filterReferences(all, { evidence: "documented" }).length, 8, "el filtro documentado solo muestra tesis con fuente");
+assert.equal(filterReferences(all, { evidence: "documented" }).length, 9, "el filtro documentado solo muestra tesis con fuente");
 assert.equal(filterReferences(all, { evidence: "published-source" }).length, publishedProperties.length, "el nivel de evidencia separa avisos de terceros de contextos institucionales");
 assert.equal(filterReferences(all, { evidence: "hypothesis" }).length, 1, "el filtro de hipótesis no mezcla localidades sin clasificar");
 assert.deepEqual(filterReferences(all, { kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque", "base-aerea-moreno-norte"], "el filtro productivo/logístico incluye el antecedente de Base Aérea");
 assert.deepEqual(filterReferences(all, { kind: "commercial" }).map(item => item.id), ["ribera"], "el filtro comercial muestra la referencia existente");
 assert.deepEqual(filterReferences(all, { kind: "tourism" }).map(item => item.id), ["roggero"], "el filtro de turismo muestra la referencia existente");
-assert.deepEqual(filterReferences(all, { kind: "land" }).map(item => item.id), ["norte"], "el filtro de prospección de suelo muestra la hipótesis existente");
+assert.deepEqual(filterReferences(all, { kind: "land" }).map(item => item.id), ["norte", "mui-mo-monitoreo-urbano-inmobiliario"], "el filtro de suelo incluye la hipótesis y el sistema municipal de control de loteos");
+assert.ok(filterReferences(all, { query: "loteos autorizados", category: "opportunity" }).some(item => item.id === "mui-mo-monitoreo-urbano-inmobiliario"), "el buscador indexa el sistema municipal de loteos autorizados");
 assert.deepEqual(filterReferences(all, { kind: "industrial", evidence: "documented" }).map(item => item.id), ["rp25", "ecoparque", "base-aerea-moreno-norte"], "el filtro sectorial se combina con el nivel de evidencia");
 assert.deepEqual(filterReferences(all, { kind: "infrastructure" }).map(item => item.id), ["promeba-trujui", "promeba-cuartel-v", "utopia-bonaerense-moreno"], "la infraestructura pública tiene una línea sectorial propia");
 assert.ok(filterReferences(all, { locality: "paso", category: "opportunity" }).some(item => item.id === "ribera"), "la localidad filtra referencias territoriales");
@@ -840,7 +841,7 @@ assert.equal(clearReviewState({ removeItem: () => { throw new Error("storage blo
 const reviewExport = buildReviewExport(firstReviewState, all, "2026-11-25T06:00:00.000Z");
 assert.equal(reviewExport.schema_version, 2);
 assert.equal(reviewExport.generated_at, "2026-11-25T06:00:00.000Z");
-assert.equal(reviewExport.references.length, 9, "la exportación excluye localidades y conserva las nueve tesis visibles");
+assert.equal(reviewExport.references.length, 10, "la exportación excluye localidades y conserva las diez tesis visibles");
 const exportedRp25 = reviewExport.references.find(reference => reference.id === "rp25");
 assert.equal(exportedRp25.completed_tasks, 1);
 assert.equal(exportedRp25.total_tasks, 5);
@@ -1353,7 +1354,7 @@ assert.ok(laProvidencia.observations.includes("no cuentan con planos aprobados")
 const sourceUrls = publishedProperties.map(record => record.source).filter(Boolean);
 assert.equal(new Set(sourceUrls).size, sourceUrls.length, "no se duplican enlaces primarios");
 assert.equal(publishedProperties.length, 356, "el catálogo incorpora 29 altas netas sin duplicados");
-assert.equal(all.length, 371, "el inventario completo refleja 356 publicaciones y 15 referencias territoriales");
+assert.equal(all.length, 372, "el inventario completo refleja 356 publicaciones y 16 referencias territoriales");
 
 
 testGeorefRequestQueue()
