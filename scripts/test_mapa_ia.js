@@ -14,25 +14,19 @@ assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la
 assert.ok(source.includes("attributionControl: { compact: false }"), "la atribución OSM permanece visible también en móvil");
 assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece el enlace para reportar problemas cartográficos");
 const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
-assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
-assert.ok(mapPage.includes('id="kind-filter"'), "el atlas permite filtrar por sector o línea de desarrollo");
-assert.ok(mapPage.includes('id="availability-filter"'), "el atlas permite filtrar el estado registrado de las publicaciones");
-assert.ok(mapPage.includes('id="diligence-filter"'), "el atlas permite filtrar la presencia de datos de prospección");
+assert.ok(!mapPage.includes('<div class="map-toolbar">'), "el panel de búsqueda y filtros no se muestra en el mapa");
+assert.ok(!mapPage.includes('id="map-data-export-disclosure"'), "el bloque de exportaciones no se muestra en el mapa");
+assert.ok(mapPage.includes('id="map-internal-controls" hidden'), "los controles técnicos quedan ocultos para conservar la inicialización");
+assert.ok(mapPage.includes('id="kind-filter"') && mapPage.includes('id="availability-filter"') && mapPage.includes('id="diligence-filter"'), "los controles internos conservan los identificadores que requiere el motor");
 assert.ok(mapPage.includes('id="duplicate-review-disclosure"') && mapPage.includes('id="duplicate-review-summary"') && mapPage.includes('id="duplicate-review-list"'), "el atlas ofrece una bandeja accesible para revisar posibles duplicados");
 assert.ok(mapPage.includes("no duplicados confirmados") && mapPage.includes("no se fusiona ni elimina ninguna publicación"), "la bandeja explica que las coincidencias requieren revisión humana y no fusiona fichas");
-assert.ok(mapPage.includes("El recuento mide la presencia de siete campos"), "el filtro aclara que la integridad no equivale a verificación");
-for (const state of ["no-confirmada", "pendiente-revalidacion", "no-vigente"]) {
-  assert.ok(mapPage.includes('option value="' + state + '"'), "el filtro ofrece el estado " + state);
-}
-for (const kind of ["industrial", "commercial", "tourism", "land"]) {
-  assert.ok(mapPage.includes('option value="' + kind + '"'), "el filtro ofrece el sector " + kind);
-}
-assert.ok(mapPage.includes('label class="map-filter-field'), "cada filtro tiene una etiqueta visible y asociada");
-assert.ok(mapPage.includes("Sector / línea de desarrollo"), "la función del filtro sectorial se explica en pantalla");
-assert.ok(source.includes('getElementById("kind-filter")'), "el motor conecta el control sectorial");
-assert.ok(source.includes('kind: doc.getElementById("kind-filter").value'), "la renderización utiliza el sector seleccionado");
-assert.ok(source.includes('kindInput.addEventListener("change", resetPublishedPaginationAndRender)'), "el cambio de sector reinicia la página visible y vuelve a renderizar el inventario");
-assert.ok(source.includes('kindInput.value = "all"'), "restablecer limpia también el filtro sectorial");
+
+
+
+
+
+assert.ok(source.includes('kind: doc.getElementById("kind-filter").value'), "el motor conserva el filtro interno sectorial");
+assert.ok(source.includes('query: "",') && source.includes('ref: null'), "el mapa inicia sin filtros ni referencias seleccionadas heredadas de la URL");
 assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye la mesa de verificación documental");
 for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-documented-count", "atlas-hypotheses-count", "atlas-published-count", "atlas-total-count"]) {
   assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
