@@ -106,7 +106,7 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 
 ### Resiliencia y accesibilidad del Mapa IA
 
-- Las fichas de localidades y tesis se renderizan aunque MapLibre GL JS o la cartografía base no estén disponibles.
+- Las fichas de localidades y referencias territoriales se renderizan aunque MapLibre GL JS o la cartografía base no estén disponibles.
 - Los filtros de texto, tipo, sector/línea de desarrollo y nivel de evidencia funcionan también en modo de consulta sin mapa.
 - Se incluye una alternativa HTML mediante `noscript` para lectores sin JavaScript, con enlaces directos a las fuentes.
 - Los controles de las fichas muestran foco visible para navegación por teclado.
@@ -337,7 +337,7 @@ El acceso al Mapa IA queda como recorrido de investigación complementario. El p
 
 Cada referencia territorial del inventario del Mapa IA incorpora la descarga local de una ficha HTML autónoma, preparada para revisión interna o para imprimir/guardar como PDF antes de una conversación con desarrolladores.
 
-- La ficha distingue **contexto con fuente pública** de **hipótesis de prospección** y conserva la línea a investigar, la evidencia registrada, el estado, el próximo paso, la coordenada aproximada y el enlace de origen.
+- La ficha distingue **contexto con fuente pública** de **hipótesis de prospección** y conserva la línea a investigar, la evidencia registrada, el estado, el próximo paso, la coordenada solo cuando existe una fuente cartográfica verificable y el enlace de origen.
 - Incluye una bitácora imprimible de diligencia y una lista de datos que deben reunirse antes de evaluar un inmueble concreto: nomenclatura, mensura, normativa vigente, dominio, restricciones, servicios, condiciones ambientales, disponibilidad y condiciones económicas.
 - No agrega parcelas, titulares, superficies, precios, disponibilidad ni factibilidad que no estén documentados en la referencia original.
 - La clasificación “contexto con fuente pública” no equivale a verificación independiente, vigencia normativa ni disponibilidad. La fuente debe abrirse y revisarse en origen.
@@ -357,11 +357,11 @@ La barra del Mapa IA permite compartir una vista del inventario con su búsqueda
 - Si el portapapeles está bloqueado, el enlace queda seleccionado en un campo para copiar manualmente.
 - La vista compartida no incluye la bitácora local de diligencia, datos de navegador ni expedientes internos. Los parámetros desconocidos de la URL se conservan.
 - Los enlaces de ficha individual mantienen los filtros activos para que una contraparte reciba el mismo contexto territorial.
-- Cada tarjeta muestra sus acciones principales antes de la bitácora extensa: consulta comercial contextual, ficha editorial descargable para tesis y enlace compartible. La consulta abre `/oportunidades/?map_ref=<id>`; el formulario recupera el nombre de la referencia en un bloque visible y en el borrador revisable de WhatsApp.
-- Las etiquetas comerciales distinguen tesis territoriales de localidades. No implican que exista una parcela, disponibilidad ni un proyecto confirmado.
+- Cada tarjeta muestra sus acciones principales antes de la bitácora extensa: consulta comercial contextual, ficha editorial descargable para la referencia y enlace compartible. La consulta abre `/oportunidades/?map_ref=<id>`; el formulario recupera el nombre de la referencia en un bloque visible y en el borrador revisable de WhatsApp.
+- Las etiquetas comerciales distinguen referencias territoriales de localidades. No implican que exista una parcela, disponibilidad ni un proyecto confirmado.
 - Las exportaciones CSV y GeoJSON se agrupan en un acceso secundario. En móvil el panel inicia cerrado; al abrirlo explica que CSV sirve para hojas de cálculo y GeoJSON para QGIS/GIS. Ambos archivos incluyen solo las referencias visibles y mantienen las advertencias sobre coordenadas aproximadas.
 - `scripts/test_mapa_ia.js` verifica restauración, validación de parámetros, longitud máxima, conservación de UTM y fragmentos, limpieza de filtros, etiquetas comerciales, agrupación de exportaciones y exclusión de la bitácora.
-- La auditoría Chromium abre el panel de exportaciones en móvil, comprueba que las acciones de la tesis precedan a la bitácora y sigue el enlace `map_ref` hasta el contexto visible del formulario público.
+- La auditoría Chromium abre el panel de exportaciones en móvil, comprueba que las acciones de la referencia precedan a la bitácora y sigue el enlace `map_ref` hasta el contexto visible del formulario público.
 
 
 ### Mesa Operativa local
