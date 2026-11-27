@@ -9791,7 +9791,32 @@ function hasCoordinates(item) {
     Number.isFinite(Number(item.lat)) &&
     Number.isFinite(Number(item.lng))
   );
-});
+}
+
+function normalizeAddressText(value) {
+  return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, " ").trim();
+}
+
+function georefAddressMatches(item, entry) {
+  const expected = normalizeAddressText(item && (item.geocodeMatch || item.address));
+  const actual = normalizeAddressText(entry && entry.nomenclatura);
+  const tokens = expected.split(/\s+/).filter(token => token.length > 2 || /\d/.test(token));
+  return Boolean(tokens.length && actual && tokens.every(token => actual.includes(token)));
+}
+
+const GEOREF_MAX_CONCURRENCY = 3;
+
+async function resolvePublishedGeoreferences(items, fetcher, context, concurrency) {
+  const list = Array.isArray(items) ? items : [];
+  const resolved = new Map();
+  if (typeof fetcher !== "function") return resolved;
+
+  const uniqueQueries = new Map();
+  list.forEach(item => {
+    if (item && item.geocodeDisabled === true) return;
+    const query = String(item && (item.geocodeQuery || item.address) || "").trim();
+    if (query && !uniqueQueries.has(query)) uniqueQueries.set(query, item);
+  });
 
   const entries = Array.from(uniqueQueries.entries());
   if (!entries.length) return resolved;
