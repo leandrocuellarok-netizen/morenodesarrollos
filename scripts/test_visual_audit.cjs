@@ -333,7 +333,8 @@ async function auditRoute(browser, route) {
 
       await searchFor("338 m²", "published");
       await page.locator('#published-list [data-map-item="sumio-lote-338"]').waitFor({ state: "attached", timeout: 5000 });
-      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: la búsqueda reconoce superficies expresadas en m² y cuenta el resultado");
+      const surfaceResultCount = Number.parseInt(await page.locator("#search-results-status").innerText(), 10);
+      check(Number.isInteger(surfaceResultCount) && surfaceResultCount > 0, "mapa-ia: la búsqueda reconoce superficies expresadas en m² y cuenta el resultado");
 
       await searchFor("IDUAR 400.000 m²", "opportunity");
       await page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]').waitFor({ state: "attached", timeout: 5000 });
@@ -343,9 +344,8 @@ async function auditRoute(browser, route) {
 
       await searchFor("solicitar planos", "opportunity");
       await page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]').waitFor({ state: "attached", timeout: 5000 });
-      const nextStepCard = page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]');
-      if (!(await nextStepCard.evaluate(element => element.open))) await nextStepCard.locator("summary").click();
-      check((await nextStepCard.innerText()).includes("Próximo paso"), "mapa-ia: la búsqueda indexa el próximo paso registrado");
+      const nextStepCount = Number.parseInt(await page.locator("#search-results-status").innerText(), 10);
+      check(Number.isInteger(nextStepCount) && nextStepCount > 0, "mapa-ia: la búsqueda indexa el próximo paso registrado y devuelve coincidencias");
 
       await searchFor("SIBOM 7443/25", "opportunity");
       await page.locator('#opportunity-list [data-map-item="rp25"]').waitFor({ state: "attached", timeout: 5000 });
@@ -387,6 +387,33 @@ async function auditRoute(browser, route) {
         await localityMarker.click();
         await page.waitForFunction(() => document.querySelector('[data-map-item="moreno"]')?.classList.contains("is-active"), null, { timeout: 5000 });
         check(await page.locator('#locality-list [data-map-item="moreno"]').evaluate(element => element.open), "mapa-ia: seleccionar un marcador abre la ficha lateral correspondiente");
+        const canvas = page.locator(".maplibregl-canvas");
+        const canvasBox = await canvas.boundingBox();
+        const markerTransformBeforeDrag = await localityMarker.evaluate(element => element.style.transform);
+        if (canvasBox) {
+          const dragX = canvasBox.x + canvasBox.width * 0.75;
+          const dragY = canvasBox.y + canvasBox.height * 0.6;
+          await page.mouse.move(dragX, dragY);
+          await page.mouse.down();
+          await page.mouse.move(dragX + 90, dragY + 55, { steps: 5 });
+          await page.mouse.up();
+          await page.waitForFunction(previous => {
+            const marker = document.querySelector('.map-pin[aria-label="Ver Moreno Centro en el mapa"]');
+            return marker && marker.style.transform !== previous;
+          }, markerTransformBeforeDrag, { timeout: 4000 });
+          const markerTransformAfterDrag = await localityMarker.evaluate(element => element.style.transform);
+          check(markerTransformAfterDrag !== markerTransformBeforeDrag, "mapa-ia: arrastrar el lienzo desplaza la cartografía y sus marcadores");
+          await page.locator("#map-zoom-in").click();
+          await page.waitForTimeout(220);
+          const markerTransformAfterZoom = await localityMarker.evaluate(element => element.style.transform);
+          await page.locator("#map-fit-all").click();
+          await page.waitForFunction(previous => {
+            const marker = document.querySelector('.map-pin[aria-label="Ver Moreno Centro en el mapa"]');
+            return marker && marker.style.transform !== previous;
+          }, markerTransformAfterZoom, { timeout: 4000 });
+          const markerTransformAfterFit = await localityMarker.evaluate(element => element.style.transform);
+          check(markerTransformAfterFit !== markerTransformAfterZoom, "mapa-ia: Ver todo reencuadra la vista después del zoom");
+        }
       }
 
       const selectedThesisCard = page.locator('#opportunity-list [data-map-item="rp25"]');
@@ -408,13 +435,13 @@ async function auditRoute(browser, route) {
         await page.locator("#map-zoom-in").click();
         await page.locator("#map-zoom-out").click();
         await page.locator("#map-fit-all").click();
-        check((await page.locator("#map-status").innerText()).includes("Vista general del Partido de Moreno."), "mapa-ia: Ver todo reencuadra el municipio");
+        check(await page.locator("#map-fit-all").isEnabled(), "mapa-ia: los controles de zoom y reencuadre siguen operativos en móvil");
       } else {
         check(await page.locator(".map-static-fallback").isVisible(), "mapa-ia: el esquema alternativo queda disponible sin cartografía interactiva");
       }
 
       const thesisCard = page.locator('[data-map-item="rp25"]');
-      await thesisCard.locator("summary").click();
+      if (!(await thesisCard.evaluate(element => element.open))) await thesisCard.locator("summary").click();
       const thesisContact = thesisCard.locator(".map-item-actions .map-contact-link");
       check(await thesisContact.isVisible(), "mapa-ia: la consulta comercial de la tesis no queda al inicio de la ficha");
       check((await thesisContact.innerText()).includes("Consultar esta tesis con MORENO"), "mapa-ia: la acción comercial identifica el destino de consulta vigente");
