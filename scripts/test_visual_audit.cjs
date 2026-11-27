@@ -63,25 +63,39 @@ async function auditHomeCartography(page) {
       const lat = entry.match(/lat:([-0-9.]+)/);
       const lng = entry.match(/lng:([-0-9.]+)/);
       const stage = entry.match(/stage:"([^"]+)"/);
+      const coordinateSource = entry.match(/coordinateSource:"([^"]+)"/);
+      const coordinateCheckedAt = entry.match(/coordinateCheckedAt:"([^"]+)"/);
       return {
         id: id ? id[1] : null,
         lat: lat ? Number(lat[1]) : NaN,
         lng: lng ? Number(lng[1]) : NaN,
+        sourceUrl: coordinateSource ? coordinateSource[1] : null,
+        checkedAt: coordinateCheckedAt ? coordinateCheckedAt[1] : null,
         kind: defaultKind === "locality" ? "locality" : (stage ? stage[1] : null)
       };
     });
   }
 
-  const expected = [
+  const allRecords = [
     ...readRecords("localities", "locality"),
     ...readRecords("opportunities", "reference")
   ];
+  const expected = allRecords.filter(record =>
+    Number.isFinite(record.lat) &&
+    Number.isFinite(record.lng) &&
+    /^https:\/\//.test(record.sourceUrl || "") &&
+    /^\d{4}-\d{2}-\d{2}$/.test(record.checkedAt || "")
+  );
+  const expectedCounts = expected.reduce((counts, record) => {
+    counts[record.kind] = (counts[record.kind] || 0) + 1;
+    return counts;
+  }, {});
   const expectedById = new Map(expected.map(record => [record.id, record]));
-  check(markers.length === 11, "inicio: el plano contiene seis localidades y cinco referencias territoriales");
+  check(markers.length === expected.length, "inicio: el plano solo muestra referencias con coordenadas, fuente y fecha verificables");
+  check(expectedCounts.locality === 6 && markers.filter(marker => marker.kind === "locality").length === 6, "inicio: el plano conserva las seis localidades con fuente trazable");
+  check(expectedCounts.documented === 1 && markers.filter(marker => marker.kind === "documented").length === 1, "inicio: el plano muestra únicamente el contexto documentado con coordenada trazable");
+  check((expectedCounts.hypothesis || 0) === 0 && markers.filter(marker => marker.kind === "hypothesis").length === 0, "inicio: las hipótesis sin coordenada trazable permanecen sin marcador");
   check(new Set(markers.map(marker => marker.id)).size === markers.length, "inicio: los identificadores del plano no están duplicados");
-  check(markers.filter(marker => marker.kind === "locality").length === 6, "inicio: el plano distingue las seis localidades");
-  check(markers.filter(marker => marker.kind === "documented").length === 4, "inicio: el plano distingue las cuatro referencias documentadas");
-  check(markers.filter(marker => marker.kind === "hypothesis").length === 1, "inicio: el plano distingue la hipótesis de prospección");
 
   for (const marker of markers) {
     const record = expectedById.get(marker.id);
@@ -304,6 +318,7 @@ async function auditRoute(browser, route) {
       check(await page.locator(".map-panel-home").isVisible(), "mapa-ia: existe una salida clara hacia el sitio principal");
       check(await page.locator(".map-navigation-help").isVisible(), "mapa-ia: las instrucciones de arrastre, zoom, selección y reencuadre están visibles");
       check(await page.locator(".map-legend").isVisible(), "mapa-ia: la leyenda de símbolos y evidencia está visible");
+      check((await page.locator(".map-note").innerText()).includes("Solo se dibujan puntos con fuente cartográfica y fecha de verificación"), "mapa-ia: el alcance de coordenadas trazables está explicado");
       check(await page.locator("#search").isVisible(), "mapa-ia: el buscador principal está visible");
       for (const id of ["locality-filter", "activity-filter", "next-step-filter", "category", "evidence-filter", "availability-filter", "diligence-filter"]) {
         check(await page.locator("#" + id).isVisible(), "mapa-ia: el filtro " + id + " está disponible sin desplegables");
@@ -352,6 +367,16 @@ async function auditRoute(browser, route) {
       const ordinanceCard = page.locator('#opportunity-list [data-map-item="rp25"]');
       if (!(await ordinanceCard.evaluate(element => element.open))) await ordinanceCard.locator("summary").click();
       check((await ordinanceCard.innerText()).includes("Ordenanza 7443/25"), "mapa-ia: la búsqueda encuentra evidencia normativa y su referencia SIBOM");
+      check(await ordinanceCard.locator(".map-published-pending").isVisible(), "mapa-ia: RP25 permanece en el índice sin coordenada trazable");
+      check(await page.locator('.map-pin[data-map-reference="rp25"]').count() === 0, "mapa-ia: RP25 no recibe un marcador sin coordenada fuente");
+
+      await searchFor("Ecoparque Industrial", "opportunity");
+      await page.locator('#opportunity-list [data-map-item="ecoparque"]').waitFor({ state: "attached", timeout: 5000 });
+      const ecoparqueCard = page.locator('#opportunity-list [data-map-item="ecoparque"]');
+      if (!(await ecoparqueCard.evaluate(element => element.open))) await ecoparqueCard.locator("summary").click();
+      const ecoparqueCoordinateLink = ecoparqueCard.locator(".map-coordinate-source-link");
+      check(await ecoparqueCoordinateLink.isVisible() && await ecoparqueCoordinateLink.getAttribute("href") === "https://www.google.com/maps/search/?api=1&query=-34.5776245,-58.8709859", "mapa-ia: el Ecoparque muestra el pin publicado por su operador y su fuente");
+      check(await page.locator('.map-pin[data-map-reference="ecoparque"]').count() === 1, "mapa-ia: el Ecoparque solo se dibuja con coordenada y fuente verificables");
 
       await searchFor("Cuartel V PROMEBA veredas", "opportunity");
       await page.locator('#opportunity-list [data-map-item="promeba-cuartel-v"]').waitFor({ state: "attached", timeout: 5000 });
@@ -387,6 +412,8 @@ async function auditRoute(browser, route) {
         await localityMarker.click();
         await page.waitForFunction(() => document.querySelector('[data-map-item="moreno"]')?.classList.contains("is-active"), null, { timeout: 5000 });
         check(await page.locator('#locality-list [data-map-item="moreno"]').evaluate(element => element.open), "mapa-ia: seleccionar un marcador abre la ficha lateral correspondiente");
+        const morenoCoordinateLink = page.locator('#locality-list [data-map-item="moreno"] .map-coordinate-source-link');
+        check(await morenoCoordinateLink.isVisible() && await morenoCoordinateLink.getAttribute("href") === "https://www.openstreetmap.org/node/1215663604", "mapa-ia: la ficha de localidad expone la fuente OSM de su coordenada");
         const canvas = page.locator(".maplibregl-canvas");
         const canvasBox = await canvas.boundingBox();
         const markerTransformBeforeDrag = await localityMarker.evaluate(element => element.style.transform);
@@ -587,6 +614,7 @@ async function auditMapFallback(browser) {
     check(await page.locator("[data-fallback-reference]").count() === fallbackReferenceCount, "mapa-ia fallback: el esquema conserva todas las referencias del índice");
     check((await page.locator(".map-static-note").innerText()).includes("no tiene escala"), "mapa-ia fallback: el alcance no parcelario queda explicado");
     check(await page.locator('[data-fallback-reference="base-aerea-moreno-norte"]').count() === 1, "mapa-ia fallback: una referencia sin coordenadas sigue accesible en el índice alternativo");
+    check(await page.locator('[data-fallback-reference="rp25"]').count() === 1, "mapa-ia fallback: RP25 sin coordenada sigue en el índice alternativo");
     check(await page.locator('.map-pin[aria-label*="Base Aérea"]').count() === 0, "mapa-ia fallback: una referencia sin coordenadas no recibe un marcador ficticio");
     check(await page.locator("#search").isVisible(), "mapa-ia fallback: el buscador sigue disponible");
     await page.locator("#search").fill("Base Aérea");

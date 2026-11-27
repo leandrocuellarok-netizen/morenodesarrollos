@@ -45,10 +45,18 @@ assert.ok(source.includes('kindInput.addEventListener("change", resetPublishedPa
 assert.ok(source.includes('kindInput.value = "all"'), "restablecer limpia también el filtro sectorial");
 assert.ok(source.includes('localityInput.value = "all"') && source.includes('activityInput.value = "all"') && source.includes('nextStepInput.value = "all"'), "restablecer limpia los filtros nuevos");
 assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye la mesa de verificación documental");
+assert.ok(mapPage.includes("Solo se dibujan puntos con fuente cartográfica y fecha de verificación") && mapPage.includes("sin marcador"), "la página explica que no se dibujan coordenadas sin trazabilidad");
 for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-documented-count", "atlas-hypotheses-count", "atlas-published-count", "atlas-total-count"]) {
   assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
 }
 const initialInventoryCounts = countInventory(all);
+const staticGeolocatedReferences = [...localities, ...opportunities].filter(hasCoordinates);
+assert.equal(staticGeolocatedReferences.length, localities.length + 1, "solo las seis localidades y el Ecoparque tienen puntos estáticos con coordenadas trazables");
+assert.deepEqual(opportunities.filter(hasCoordinates).map(item => item.id), ["ecoparque"], "el único contexto con punto tiene una fuente cartográfica publicada por su operador");
+assert.ok(localities.every(item => /^https:\/\/www\.openstreetmap\.org\/node\//.test(item.coordinateSource || "") && item.coordinateCheckedAt === "2026-11-27" && /no identifica una parcela/.test(item.coordinatePrecision || "")), "cada localidad conserva nodo OSM, fecha y alcance no parcelario");
+assert.ok(["rp25", "ribera", "roggero", "norte"].every(id => !hasCoordinates(opportunities.find(item => item.id === id))), "los corredores y la hipótesis sin punto cartográfico permanecen sin coordenadas");
+assert.ok(opportunities.find(item => item.id === "norte").stage === "hypothesis" && !hasCoordinates(opportunities.find(item => item.id === "norte")), "la hipótesis agregada no recibe un marcador geográfico ficticio");
+assert.ok(source.includes("geolocationSource") && source.includes("geolocationCheckedAt") && source.includes("coordinateSourceLink"), "la georreferencia dinámica también conserva fuente y fecha");
 
 const duplicateReview = collectPotentialDuplicatePairs(all);
 const pairHasIds = (pairs, first, second) => pairs.some(pair =>
@@ -709,7 +717,7 @@ assert.deepEqual(
 const combinedFilters = filterReferences(all, { query: "cuartel v", locality: "cuartel", activity: "industrial", nextStep: "contact", evidence: "documented" });
 assert.deepEqual(combinedFilters.map(item => item.id), ["base-aerea-moreno-norte"], "la búsqueda y los filtros de localidad, actividad, próximo paso y evidencia se combinan");
 const unlocatedOpportunityIds = opportunities.filter(item => !hasCoordinates(item)).map(item => item.id).sort();
-assert.deepEqual(unlocatedOpportunityIds, ["base-aerea-moreno-norte", "mui-mo-monitoreo-urbano-inmobiliario", "promeba-cuartel-v", "promeba-trujui", "utopia-bonaerense-moreno"].sort(), "las cinco referencias sin geolocalización no reciben coordenadas inventadas");
+assert.deepEqual(unlocatedOpportunityIds, ["base-aerea-moreno-norte", "mui-mo-monitoreo-urbano-inmobiliario", "norte", "promeba-cuartel-v", "promeba-trujui", "ribera", "roggero", "rp25", "utopia-bonaerense-moreno"].sort(), "las nueve referencias sin geolocalización no reciben coordenadas inventadas");
 const utopiaReference = opportunities.find(item => item.id === "utopia-bonaerense-moreno");
 assert.ok(utopiaReference.sourceAlternates.some(source => source.url === "https://nube.minfra.gba.gob.ar/index.php/s/TrMYQtYjHf4tSrJ/download"), "la ficha Utopía conserva el acta oficial de apertura como fuente directa");
 const baseAereaReference = opportunities.find(item => item.id === "base-aerea-moreno-norte");
@@ -740,11 +748,14 @@ const csv = buildCsv([{
   evidence: "Sin datos",
   status: "Por verificar",
   next: "Revisar",
-  source: "https://example.com"
+  source: "https://example.com",
+  coordinateSource: "https://www.openstreetmap.org/node/1",
+  coordinateCheckedAt: "2026-11-27",
+  coordinatePrecision: "Punto de referencia con fuente cartográfica identificada; no identifica una parcela."
 }]);
 assert.ok(csv.startsWith("\uFEFF"), "CSV compatible con acentos en hojas de cálculo");
 assert.ok(csv.includes('"Parcela ""A"", sector norte"'), "CSV escapa comillas y comas");
-assert.ok(csv.includes("alcance_de_coordenada"), "CSV informa el alcance de las coordenadas");
+assert.ok(csv.includes("alcance_de_coordenada") && csv.includes("fuente_de_coordenada") && csv.includes("fecha_de_georreferenciacion"), "CSV informa alcance, fuente y fecha de coordenadas");
 assert.ok(csv.includes("tipo_de_evidencia") && csv.includes("nivel_de_confianza") && csv.includes("fecha_de_fuente") && csv.includes("fecha_de_consulta"), "CSV exporta la trazabilidad de la evidencia");
 assert.ok(csv.includes("no identifica una parcela"), "CSV conserva la advertencia parcelaria");
 const publishedCsv = buildCsv(all.filter(item => item.type === "published").slice(0, 1));
@@ -763,6 +774,8 @@ const spreadsheetSafetyCsv = buildCsv([{
   observations: "@SUM(1,1)",
   lat: -34.6,
   lng: -58.8,
+  geolocationSource: "https://apis.datos.gob.ar/georef/api/v2.0/direcciones?direccion=Moreno",
+  geolocationCheckedAt: "2026-11-27",
   source: "https://example.invalid",
   price: "-1+1",
   surfaceNote: "\r=1+1",
@@ -786,18 +799,14 @@ assert.equal(filteredGeoJson.type, "FeatureCollection", "la exportación cumple 
 assert.equal(filteredGeoJson.features.length, 1, "GeoJSON respeta los filtros activos");
 const hypothesisFeature = filteredGeoJson.features[0];
 assert.equal(hypothesisFeature.type, "Feature");
-assert.equal(hypothesisFeature.geometry.type, "Point", "las referencias se exportan como puntos, no como parcelas");
-assert.deepEqual(
-  hypothesisFeature.geometry.coordinates,
-  [-58.815, -34.61],
-  "GeoJSON usa el orden longitud, latitud de RFC 7946"
-);
+assert.equal(hypothesisFeature.geometry, null, "la hipótesis sin coordenada trazable no recibe una geometría inventada");
 assert.equal(hypothesisFeature.properties.name, "Cuartel V · Trujui · La Reja");
 assert.equal(hypothesisFeature.properties.line_to_investigate, "Prospección de parcelas grandes, ensamble de tierra, asociaciones con propietarios y desarrollos por etapas.");
 assert.equal(hypothesisFeature.properties.parcel_identified, false);
 assert.equal(hypothesisFeature.properties.availability_verified, false);
-assert.match(hypothesisFeature.properties.coordinate_scope, /no identifica una parcela/);
+assert.match(hypothesisFeature.properties.coordinate_scope, /Sin coordenada trazable/);
 assert.match(filteredGeoJson.disclaimer.toLocaleLowerCase("es-AR"), /ninguna coordenada identifica una parcela/);
+assert.match(filteredGeoJson.disclaimer.toLocaleLowerCase("es-AR"), /fuente cartográfica y fecha de verificación/);
 assert.equal(
   buildGeoJson(all).features.length,
   all.length,
@@ -808,12 +817,12 @@ assert.ok(
   "las referencias territoriales con coordenadas conservan puntos de referencia"
 );
 assert.ok(
-  buildGeoJson(all).features.filter(feature => feature.properties.category !== "Propiedades y desarrollos publicados" && feature.geometry === null).every(feature => /Sin coordenada precisa/.test(feature.properties.coordinate_scope)),
+  buildGeoJson(all).features.filter(feature => feature.properties.category !== "Propiedades y desarrollos publicados" && feature.geometry === null).every(feature => /Sin coordenada trazable/.test(feature.properties.coordinate_scope)),
   "las referencias sin coordenadas no se dibujan ni se exportan como puntos"
 );
 const muiFeature = buildGeoJson(all).features.find(feature => feature.properties.id === "mui-mo-monitoreo-urbano-inmobiliario");
 assert.equal(muiFeature.geometry, null, "MUI-MO no recibe una coordenada que la fuente no publica");
-assert.match(muiFeature.properties.coordinate_scope, /Sin coordenada precisa/);
+assert.match(muiFeature.properties.coordinate_scope, /Sin coordenada trazable/);
 assert.ok(
   buildGeoJson(all).features.filter(feature => feature.properties.category === "Propiedades y desarrollos publicados").every(feature => feature.geometry === null),
   "las publicaciones pendientes no reciben coordenadas inventadas en GeoJSON"
@@ -979,13 +988,15 @@ assert.equal(territorialBrief.generatedAt, "2026-11-25T21:00:00.000Z");
 assert.equal(territorialBrief.classification.label, "Contexto con fuente pública");
 assert.equal(territorialBrief.reference.name, "RP25 · Darwin Passaponti · Av. San Fernando");
 assert.equal(territorialBrief.reference.sourceUrl, opportunities.find(item => item.id === "rp25").source);
-assert.equal(territorialBrief.reference.coordinates.scope, "Centro aproximado de corredor o área; no identifica una parcela.");
-assert.equal(territorialBrief.reference.coordinates.latitude, -34.5705);
+assert.equal(territorialBrief.reference.coordinates.scope, "Sin coordenada trazable; la ficha se conserva para investigación documental y no identifica una parcela.");
+assert.equal(territorialBrief.reference.coordinates.latitude, null);
+assert.equal(territorialBrief.reference.coordinates.longitude, null);
+assert.equal(territorialBrief.reference.coordinates.sourceUrl, null);
 assert.equal(territorialBrief.diligence.length, reviewTasks.length);
 const unlocatedBrief = buildTerritorialBrief(all.find(item => item.id === "mui-mo-monitoreo-urbano-inmobiliario"), "2026-11-25T21:00:00.000Z");
 assert.equal(unlocatedBrief.reference.coordinates.latitude, null, "las referencias sin coordenadas no se convierten en latitud cero");
 assert.equal(unlocatedBrief.reference.coordinates.longitude, null, "las referencias sin coordenadas no se convierten en longitud cero");
-assert.match(unlocatedBrief.reference.coordinates.scope, /Sin coordenada precisa/);
+assert.match(unlocatedBrief.reference.coordinates.scope, /Sin coordenada trazable/);
 assert.equal(territorialBrief.diligence.every(task => task.recorded === false), true);
 assert.equal(territorialBrief.dataToComplete.length, 6);
 assert.equal(buildTerritorialBrief(localities[0]), null, "las localidades no se presentan como tesis inmobiliarias");
@@ -999,6 +1010,8 @@ assert.match(territorialHtml, /Bitácora para diligencia documental/);
 assert.match(territorialHtml, /Imprimir \/ guardar como PDF/);
 assert.match(territorialHtml, /@page\{size:A4/);
 assert.match(territorialHtml, /no identifica una parcela/);
+assert.match(territorialHtml, /Sin fuente cartográfica; no se representa un punto/);
+assert.match(territorialHtml, /Sin coordenada trazable/);
 assert.match(territorialHtml, /https:\/\/sibom\.slyt\.gba\.gob\.ar/);
 assert.ok(!/<script\b/i.test(territorialHtml), "la ficha no necesita scripts ni recursos externos");
 const hostileTerritorialBrief = buildTerritorialBrief({
@@ -1067,7 +1080,7 @@ assert.match(dossierHtml, /Consultar fuente original/);
 assert.match(dossierHtml, /Imprimir \/ guardar como PDF/);
 assert.match(dossierHtml, /no identifica una parcela/);
 assert.match(buildTerritorialDossierHtml(completeDossier), /Avisos \/ proyectos/);
-const geolocatedPublished = { ...completeDossier.references.find(reference => reference.type === "published"), coordinates: { latitude: -34.62, longitude: -58.82, scope: "Georreferencia aproximada de dirección; no parcelaria." } };
+const geolocatedPublished = { ...completeDossier.references.find(reference => reference.type === "published"), coordinates: { latitude: -34.62, longitude: -58.82, scope: "Coincidencia inequívoca de dirección; no parcelaria.", sourceUrl: "https://apis.datos.gob.ar/georef/api/v2.0/direcciones?direccion=Moreno", checkedAt: "2026-11-27" } };
 assert.match(buildTerritorialDossierDiagram([geolocatedPublished]), /schematic-published/);
 assert.match(dossierHtml, /no se incorporan/);
 assert.match(dossierHtml, /@page\{size:A4/);
@@ -1229,6 +1242,7 @@ async function testGeorefCache() {
   assert.equal(first.cacheHits, 0, "la primera visita no informa aciertos de caché");
   assert.equal(calls, 1);
   assert.equal(first.results.get(item.geocodeQuery).lat, -34.6508);
+  assert.equal(first.results.get(item.geocodeQuery).checkedAt, 1000, "la primera georreferencia conserva su fecha de consulta");
   assert.ok(storage.value && storage.value.includes("DERQUI 5890, MORENO, BUENOS AIRES"), "la coordenada inequívoca se conserva en caché local");
 
   const second = await resolvePublishedGeoreferencesCached([item], fakeFetch, null, storage, 2000, 2);
@@ -1236,6 +1250,7 @@ async function testGeorefCache() {
   assert.equal(second.requested, 0, "una dirección cacheada no vuelve a consultar Georef");
   assert.equal(calls, 1, "la caché evita la solicitud repetida");
   assert.equal(second.results.get(item.geocodeQuery).lng, -58.7914);
+  assert.equal(second.results.get(item.geocodeQuery).checkedAt, 1000, "la caché conserva la fecha original de georreferencia");
 
   const expired = await resolvePublishedGeoreferencesCached(
     [item], fakeFetch, null, storage, 1000 + GEOREF_CACHE_TTL_MS + 1, 2

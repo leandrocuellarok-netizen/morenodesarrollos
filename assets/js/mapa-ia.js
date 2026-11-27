@@ -1,19 +1,19 @@
 "use strict";
 
 const localities=[
-{id:"moreno",name:"Moreno Centro",lat:-34.6508,lng:-58.7914,info:"Cabecera administrativa y nodo urbano del partido."},
-{id:"paso",name:"Paso del Rey",lat:-34.6569,lng:-58.7611,info:"Sector este. Observar conectividad, comercio, servicios y relación con Camino de la Ribera."},
-{id:"lareja",name:"La Reja",lat:-34.6433,lng:-58.8286,info:"Sector oeste. Referencia para estudiar entorno recreativo, residencial y accesos."},
-{id:"alvarez",name:"Francisco Álvarez",lat:-34.6186,lng:-58.8758,info:"Localidad del corredor oeste."},
-{id:"trujui",name:"Trujui",lat:-34.5881,lng:-58.7583,info:"Sector norte. Área de prospección territorial."},
-{id:"cuartel",name:"Cuartel V",lat:-34.5583,lng:-58.8139,info:"Sector norte. Prospección productiva y de parcelas de mayor escala."}
+{id:"moreno",name:"Moreno Centro",lat:-34.6397,lng:-58.7898,coordinateSource:"https://www.openstreetmap.org/node/1215663604",coordinateSourceLabel:"OpenStreetMap · nodo de localidad",coordinateCheckedAt:"2026-11-27",coordinatePrecision:"Nodo OSM de localidad; no identifica una parcela ni una dirección particular.",info:"Cabecera administrativa y nodo urbano del partido."},
+{id:"paso",name:"Paso del Rey",lat:-34.64333,lng:-58.75219,coordinateSource:"https://www.openstreetmap.org/node/198409601",coordinateSourceLabel:"OpenStreetMap · nodo de localidad",coordinateCheckedAt:"2026-11-27",coordinatePrecision:"Nodo OSM de localidad; no identifica una parcela ni una dirección particular.",info:"Sector este. Observar conectividad, comercio, servicios y relación con Camino de la Ribera."},
+{id:"lareja",name:"La Reja",lat:-34.6461,lng:-58.83003,coordinateSource:"https://www.openstreetmap.org/node/1216947756",coordinateSourceLabel:"OpenStreetMap · nodo de localidad",coordinateCheckedAt:"2026-11-27",coordinatePrecision:"Nodo OSM de localidad; no identifica una parcela ni una dirección particular.",info:"Sector oeste. Referencia para estudiar entorno recreativo, residencial y accesos."},
+{id:"alvarez",name:"Francisco Álvarez",lat:-34.62373,lng:-58.86038,coordinateSource:"https://www.openstreetmap.org/node/198450676",coordinateSourceLabel:"OpenStreetMap · nodo de localidad",coordinateCheckedAt:"2026-11-27",coordinatePrecision:"Nodo OSM de localidad; no identifica una parcela ni una dirección particular.",info:"Localidad del corredor oeste."},
+{id:"trujui",name:"Trujui",lat:-34.5986,lng:-58.75161,coordinateSource:"https://www.openstreetmap.org/node/1216961535",coordinateSourceLabel:"OpenStreetMap · nodo de localidad",coordinateCheckedAt:"2026-11-27",coordinatePrecision:"Nodo OSM de localidad; no identifica una parcela ni una dirección particular.",info:"Sector norte. Área de prospección territorial."},
+{id:"cuartel",name:"Cuartel V",lat:-34.54437,lng:-58.80661,coordinateSource:"https://www.openstreetmap.org/node/1216953479",coordinateSourceLabel:"OpenStreetMap · nodo de localidad",coordinateCheckedAt:"2026-11-27",coordinatePrecision:"Nodo OSM de localidad; no identifica una parcela ni una dirección particular.",info:"Sector norte. Prospección productiva y de parcelas de mayor escala."}
 ];
 const opportunities=[
-{id:"rp25",stage:"documented",name:"RP25 · Darwin Passaponti · Av. San Fernando",lat:-34.5705,lng:-58.7955,kind:"industrial",locality:"",activity:"Productivo y logístico",evidenceType:"Ordenanza municipal publicada en SIBOM",confidence:"Alta para las parcelas expresamente individualizadas; no extrapolable a predios vecinos.",sourceDate:"Sancionada 11/12/2025 · promulgada 16/12/2025",lastCheckedAt:"2026-11-27",business:"Suelo industrial/logístico, depósitos, patios operativos, agrupamientos PyME y proveedores industriales.",evidence:"La Ordenanza 7443/25 desafecta y afecta a I2 las parcelas de Circunscripción V 1380 AB, 1399 C, H, M, N y 1399 B; y a I1 parcelas de Circunscripción II, Sección B, Quinta 14, Manzana 14a, 1C, 1D, 7, 8, 9 y 14, Fracción 1 parcelas 2, 3, 4A y 4B; además de Circunscripción V parcelas 1341 F y 1341 G. El artículo 5 limita el cambio a los polígonos y linderos expresamente descriptos; el artículo 6 prevé CVI. No se extiende a predios vecinos.",status:"Normativa publicada y promulgada; la aplicación parcelaria, la CVI y la disponibilidad de inmuebles concretos requieren verificación individual.",next:"Superponer los polígonos y nomenclaturas de los artículos 1 a 5 con Catastro; obtener constancia urbanística vigente; revisar CVI, dominio, servicios, accesos y restricciones antes de evaluar un inmueble.",source:"https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465"},
-{id:"ecoparque",stage:"documented",name:"Nodo RP24/RP25 · Ecoparque Industrial",lat:-34.57755,lng:-58.87202,kind:"industrial",locality:"",activity:"Industria, logística y servicios a empresas",evidenceType:"Sitio oficial del operador",confidence:"Media: la información es declarada por el operador y requiere corroboración documental independiente.",sourceDate:"No informada en la página consultada",lastCheckedAt:"2026-11-27",business:"Servicios a empresas, depósitos complementarios, oficinas operativas, gastronomía de ruta y mantenimiento de flotas.",evidence:"El sitio del operador describe un fraccionamiento industrial de 78 parcelas de 2.000 a 10.000 m², infraestructura para tránsito pesado y parámetros publicados FOS 0,6/FOT 1,2. Son características declaradas por el operador; no acreditan parcelas disponibles, precios ni factibilidad individual.",status:"Existencia y características generales publicadas por el operador; disponibilidad, precios, reglamento y factibilidad actual por parcela sin confirmar.",next:"Solicitar plano de subdivisión, reglamento, estado de cada parcela y condiciones económicas; contrastar indicadores con el Municipio y revisar dominio, servicios y accesos.",source:"https://ecoparque.com.ar/"},
-{id:"ribera",stage:"documented",name:"Paso del Rey · Camino de la Ribera",lat:-34.6575,lng:-58.744,kind:"commercial",locality:"Paso del Rey",activity:"Comercio, servicios y conectividad urbana",evidenceType:"Nota oficial del Ministerio de Infraestructura de la Provincia",confidence:"Alta para el contenido de la publicación oficial; el estado actual de obra y sus efectos sobre inmuebles debe revalidarse.",sourceDate:"31/10/2025",lastCheckedAt:"2026-11-27",business:"Comercio, gastronomía, servicios, estacionamiento y reconversión de inmuebles.",evidence:"La Provincia informó el 31/10/2025 trabajos sobre más de 6 km del Camino de la Ribera en Paso del Rey, un nuevo puente sobre el Río Reconquista, pavimentación, cañerías, sumideros, cámaras, drenaje e iluminación. La nota es un antecedente de obra publicado en 2025, no una certificación de su estado actual.",status:"Infraestructura documentada en una publicación provincial de 2025; avance actual, cotas y activos inmobiliarios concretos por verificar.",next:"Confirmar el estado y recepción de las obras; identificar frentes y parcelas; revisar cotas, drenaje, riesgo hídrico, accesos, normativa y usos.",source:"https://www.gba.gob.ar/node/51424"},
-{id:"roggero",stage:"documented",name:"Distrito Ecológico Roggero",lat:-34.675,lng:-58.875,kind:"tourism",locality:"",activity:"Turismo de naturaleza, recreación y servicios compatibles",evidenceType:"Fuente institucional municipal · IDUAR",confidence:"Alta para el contexto y las obras descriptas por el Municipio; baja para cualquier conclusión sobre usos o disponibilidad de una parcela concreta.",sourceDate:"12/08/2025",lastCheckedAt:"2026-11-27",business:"Turismo de naturaleza, recreación, gastronomía y servicios compatibles con la protección ambiental.",evidence:"IDUAR presenta el Distrito Ecológico Roggero como política pública de desarrollo urbano, ambiental y turístico. La nota informa la ampliación del Área Natural Protegida de 250 a 550 hectáreas y obras financiadas por FonDER. El contexto no autoriza desarrollos en cualquier parcela ni reemplaza la revisión de límites, normativa y restricciones.",status:"Contexto institucional documentado; predios concretos, límites del área protegida y usos permitidos requieren verificación parcelaria y ambiental.",next:"Obtener cartografía oficial del área protegida; verificar Ordenanza 7164/24, zonificación vigente, restricciones ambientales e hidráulicas, servicios y titularidad.",source:"https://iduar.moreno.gob.ar/2025/08/12/distrito-ecologico-roggero-un-espacio-natural-para-descubrir/"},
-{id:"norte",stage:"hypothesis",name:"Cuartel V · Trujui · La Reja",lat:-34.61,lng:-58.815,kind:"land",locality:"",activity:"Prospección de suelo y ensamble de parcelas",evidenceType:"Búsqueda agregada en portal inmobiliario",confidence:"Baja: la página es dinámica y no individualiza activos, titularidad, zonificación ni disponibilidad.",sourceDate:"Listado dinámico; fecha individual de publicación no consolidada",lastCheckedAt:"2026-11-27",business:"Prospección de parcelas grandes, ensamble de tierra, asociaciones con propietarios y desarrollos por etapas.",evidence:"La búsqueda agregada de Zonaprop muestra oferta de terrenos de gran superficie en el Partido de Moreno y filtros por distintas localidades. Es una pista para localizar avisos individuales; no prueba dominio, zonificación ni disponibilidad de un activo específico.",status:"Hipótesis de prospección multizona; sin parcelas individualizadas verificadas.",next:"Seleccionar avisos individuales, registrar URL y fecha por ficha, y construir inventario con nomenclatura catastral, superficie, precio pedido y contacto verificable.",source:"https://www.zonaprop.com.ar/terrenos-venta-moreno-mas-9000-m2.html"},
+{id:"rp25",stage:"documented",name:"RP25 · Darwin Passaponti · Av. San Fernando",lat:null,lng:null,kind:"industrial",locality:"",activity:"Productivo y logístico",evidenceType:"Ordenanza municipal publicada en SIBOM",confidence:"Alta para las parcelas expresamente individualizadas; no extrapolable a predios vecinos.",sourceDate:"Sancionada 11/12/2025 · promulgada 16/12/2025",lastCheckedAt:"2026-11-27",business:"Suelo industrial/logístico, depósitos, patios operativos, agrupamientos PyME y proveedores industriales.",evidence:"La Ordenanza 7443/25 desafecta y afecta a I2 las parcelas de Circunscripción V 1380 AB, 1399 C, H, M, N y 1399 B; y a I1 parcelas de Circunscripción II, Sección B, Quinta 14, Manzana 14a, 1C, 1D, 7, 8, 9 y 14, Fracción 1 parcelas 2, 3, 4A y 4B; además de Circunscripción V parcelas 1341 F y 1341 G. El artículo 5 limita el cambio a los polígonos y linderos expresamente descriptos; el artículo 6 prevé CVI. No se extiende a predios vecinos.",status:"Normativa publicada y promulgada; la aplicación parcelaria, la CVI y la disponibilidad de inmuebles concretos requieren verificación individual.",next:"Superponer los polígonos y nomenclaturas de los artículos 1 a 5 con Catastro; obtener constancia urbanística vigente; revisar CVI, dominio, servicios, accesos y restricciones antes de evaluar un inmueble.",source:"https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465"},
+{id:"ecoparque",stage:"documented",name:"Nodo RP24/RP25 · Ecoparque Industrial",lat:-34.5776245,lng:-58.8709859,coordinateSource:"https://www.google.com/maps/search/?api=1&query=-34.5776245,-58.8709859",coordinateSourceLabel:"Google Maps · pin enlazado desde el sitio oficial del operador",coordinateCheckedAt:"2026-11-27",coordinatePrecision:"Pin de referencia publicado por el operador; no identifica una parcela individual.",kind:"industrial",locality:"",activity:"Industria, logística y servicios a empresas",evidenceType:"Sitio oficial del operador",confidence:"Media: la información es declarada por el operador y requiere corroboración documental independiente.",sourceDate:"No informada en la página consultada",lastCheckedAt:"2026-11-27",business:"Servicios a empresas, depósitos complementarios, oficinas operativas, gastronomía de ruta y mantenimiento de flotas.",evidence:"El sitio del operador describe un fraccionamiento industrial de 78 parcelas de 2.000 a 10.000 m², infraestructura para tránsito pesado y parámetros publicados FOS 0,6/FOT 1,2. Son características declaradas por el operador; no acreditan parcelas disponibles, precios ni factibilidad individual.",status:"Existencia y características generales publicadas por el operador; disponibilidad, precios, reglamento y factibilidad actual por parcela sin confirmar.",next:"Solicitar plano de subdivisión, reglamento, estado de cada parcela y condiciones económicas; contrastar indicadores con el Municipio y revisar dominio, servicios y accesos.",source:"https://ecoparque.com.ar/"},
+{id:"ribera",stage:"documented",name:"Paso del Rey · Camino de la Ribera",lat:null,lng:null,kind:"commercial",locality:"Paso del Rey",activity:"Comercio, servicios y conectividad urbana",evidenceType:"Nota oficial del Ministerio de Infraestructura de la Provincia",confidence:"Alta para el contenido de la publicación oficial; el estado actual de obra y sus efectos sobre inmuebles debe revalidarse.",sourceDate:"31/10/2025",lastCheckedAt:"2026-11-27",business:"Comercio, gastronomía, servicios, estacionamiento y reconversión de inmuebles.",evidence:"La Provincia informó el 31/10/2025 trabajos sobre más de 6 km del Camino de la Ribera en Paso del Rey, un nuevo puente sobre el Río Reconquista, pavimentación, cañerías, sumideros, cámaras, drenaje e iluminación. La nota es un antecedente de obra publicado en 2025, no una certificación de su estado actual.",status:"Infraestructura documentada en una publicación provincial de 2025; avance actual, cotas y activos inmobiliarios concretos por verificar.",next:"Confirmar el estado y recepción de las obras; identificar frentes y parcelas; revisar cotas, drenaje, riesgo hídrico, accesos, normativa y usos.",source:"https://www.gba.gob.ar/node/51424"},
+{id:"roggero",stage:"documented",name:"Distrito Ecológico Roggero",lat:null,lng:null,kind:"tourism",locality:"",activity:"Turismo de naturaleza, recreación y servicios compatibles",evidenceType:"Fuente institucional municipal · IDUAR",confidence:"Alta para el contexto y las obras descriptas por el Municipio; baja para cualquier conclusión sobre usos o disponibilidad de una parcela concreta.",sourceDate:"12/08/2025",lastCheckedAt:"2026-11-27",business:"Turismo de naturaleza, recreación, gastronomía y servicios compatibles con la protección ambiental.",evidence:"IDUAR presenta el Distrito Ecológico Roggero como política pública de desarrollo urbano, ambiental y turístico. La nota informa la ampliación del Área Natural Protegida de 250 a 550 hectáreas y obras financiadas por FonDER. El contexto no autoriza desarrollos en cualquier parcela ni reemplaza la revisión de límites, normativa y restricciones.",status:"Contexto institucional documentado; predios concretos, límites del área protegida y usos permitidos requieren verificación parcelaria y ambiental.",next:"Obtener cartografía oficial del área protegida; verificar Ordenanza 7164/24, zonificación vigente, restricciones ambientales e hidráulicas, servicios y titularidad.",source:"https://iduar.moreno.gob.ar/2025/08/12/distrito-ecologico-roggero-un-espacio-natural-para-descubrir/"},
+{id:"norte",stage:"hypothesis",name:"Cuartel V · Trujui · La Reja",lat:null,lng:null,kind:"land",locality:"",activity:"Prospección de suelo y ensamble de parcelas",evidenceType:"Búsqueda agregada en portal inmobiliario",confidence:"Baja: la página es dinámica y no individualiza activos, titularidad, zonificación ni disponibilidad.",sourceDate:"Listado dinámico; fecha individual de publicación no consolidada",lastCheckedAt:"2026-11-27",business:"Prospección de parcelas grandes, ensamble de tierra, asociaciones con propietarios y desarrollos por etapas.",evidence:"La búsqueda agregada de Zonaprop muestra oferta de terrenos de gran superficie en el Partido de Moreno y filtros por distintas localidades. Es una pista para localizar avisos individuales; no prueba dominio, zonificación ni disponibilidad de un activo específico.",status:"Hipótesis de prospección multizona; sin parcelas individualizadas verificadas.",next:"Seleccionar avisos individuales, registrar URL y fecha por ficha, y construir inventario con nomenclatura catastral, superficie, precio pedido y contacto verificable.",source:"https://www.zonaprop.com.ar/terrenos-venta-moreno-mas-9000-m2.html"},
 {id:"base-aerea-moreno-norte",stage:"documented",name:"Base Aérea Moreno Norte · Cuartel V",lat:null,lng:null,kind:"industrial",locality:"Cuartel V",activity:"Logística, desarrollo PyME y planificación urbana",evidenceType:"Nota institucional municipal · IDUAR",confidence:"Alta para el plan y las cifras comunicadas por IDUAR; no identifica parcelas privadas disponibles ni acredita factibilidad individual.",sourceDate:"12/08/2025",lastCheckedAt:"2026-11-27",business:"Planificación urbana, infraestructura vial, transporte de carga y pasajeros, logística aeroportuaria y desarrollo productivo PyME.",evidence:"IDUAR describe un Plan Integral para Cuartel V con actualización normativa, nuevo trazado urbano, infraestructura vial y planificación de transporte. La publicación informa procesos de recuperación de suelo —400.000 m² por vacancia, 30.000 m² por prescripción adquisitiva y 20.000 m² correspondientes a 16 inmuebles— y avances de diseño del loteo San Joaquín y continuidad urbana de La Gloria. Estas cifras describen actuaciones públicas, no suelo ofrecido ni disponible.",status:"Antecedente de planificación y gestión de suelo pública; no se asigna punto cartográfico porque la fuente no identifica una parcela o coordenada única.",next:"Solicitar a IDUAR planos, polígonos y estado administrativo de cada actuación; distinguir tierra pública de activos privados y verificar dominio, régimen de uso, zonificación, servidumbres, accesos y factibilidad.",source:"https://iduar.moreno.gob.ar/2025/08/12/urbanizacion-participacion-y-desarrollo-en-la-base-aerea-moreno-norte/"},
 {id:"promeba-trujui",stage:"documented",name:"PRO.ME.BA IV · Haras Trujui y Santa Brígida",lat:null,lng:null,kind:"infrastructure",locality:"Trujui",activity:"Infraestructura urbana y equipamiento comunitario",evidenceType:"Ficha institucional municipal · IDUAR",confidence:"Alta para las obras que IDUAR describe como ejecutadas; no acredita estado actual de conservación ni disponibilidad de suelo.",sourceDate:"Fecha de publicación no informada en la página consultada",lastCheckedAt:"2026-11-27",business:"Equipamiento comunitario, salud, educación, red vial, iluminación y espacio público.",evidence:"La ficha de IDUAR sobre PROMEBA IV en Trujui informa obras en Haras Trujui y Santa Brígida: salón vecinal, espacios deportivos y recreativos, equipamiento educativo de 600 m², centro de salud de 548 m², pavimentación perimetral, extensión eléctrica, luminarias LED y señalética. La publicación describe obras realizadas; no constituye una oferta inmobiliaria.",status:"Obras descritas por IDUAR como ejecutadas; estado actual, mantenimiento, nuevas etapas y polígono exacto requieren consulta.",next:"Verificar con IDUAR el estado de conservación y si existen nuevas etapas; ubicar el polígono del PEI y separar equipamiento público de posibles activos privados sin vinculación demostrada.",source:"https://iduar.moreno.gob.ar/promeba-en-trujui/"},
 {id:"promeba-cuartel-v",stage:"documented",name:"PRO.ME.BA · Cuartel V · ocho barrios",lat:null,lng:null,kind:"infrastructure",locality:"Cuartel V",activity:"Infraestructura urbana, espacio público y equipamiento comunitario",evidenceType:"Ficha institucional municipal · IDUAR/PROMEBA",confidence:"Alta para los barrios y ejes de intervención descritos; la ejecución por módulo y el estado actual requieren el PEI y actas de obra.",sourceDate:"Fecha de publicación no informada en la página consultada",lastCheckedAt:"2026-11-27",business:"Veredas, plazas, mobiliario urbano, equipamiento comunitario y mejora del espacio público.",evidence:"IDUAR identifica ocho barrios de Cuartel V: 6 de Enero, San Norberto, San Norberto II, Complejo Alem, El Milenio, Namuncurá, Don Sancho y Papa Francisco. La ficha describe el proyecto “Potenciar el Hábitat”: Módulo I de veredas como primera etapa realizada; Módulo II de veredas y juegos en las plazas Alem y 6 de Enero como etapa planificada; y Módulo III de puesta en valor de plazas y equipamiento comunitario, que la página informa como ejecutado, con dos plazas públicas, veredas y taller de nomencladores urbanos. No identifica parcelas privadas disponibles.",status:"Intervención PROMEBA documentada para ocho barrios; el estado de cada módulo y de conservación actual debe revalidarse.",next:"Descargar y revisar el PEI de Cuartel V; confirmar con IDUAR la ejecución del Módulo II, polígonos, obras posteriores y estado actual de plazas y veredas. No inferir disponibilidad de suelo privado.",source:"https://iduar.moreno.gob.ar/promeba-en-cuartel-v/"},
@@ -9778,7 +9778,19 @@ function csvCell(value) {
 }
 
 function hasCoordinates(item) {
-  return Boolean(item && item.lat != null && item.lng != null && Number.isFinite(Number(item.lat)) && Number.isFinite(Number(item.lng)));
+  const source = item && (item.coordinateSource || item.geolocationSource);
+  const checkedAt = item && (item.coordinateCheckedAt || item.geolocationCheckedAt);
+  return Boolean(
+    item &&
+    typeof source === "string" &&
+    /^https:\/\//.test(source) &&
+    typeof checkedAt === "string" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(checkedAt) &&
+    item.lat != null &&
+    item.lng != null &&
+    Number.isFinite(Number(item.lat)) &&
+    Number.isFinite(Number(item.lng))
+  );
 }
 
 function normalizeAddressText(value) {
@@ -9952,7 +9964,8 @@ async function resolvePublishedGeoreferencesCached(items, fetcher, context, stor
       resolved.set(query, {
         lat: cached.lat,
         lng: cached.lng,
-        nomenclatura: cached.nomenclatura
+        nomenclatura: cached.nomenclatura,
+        checkedAt: cached.checkedAt
       });
       cacheHits += 1;
     } else {
@@ -9973,15 +9986,18 @@ async function resolvePublishedGeoreferencesCached(items, fetcher, context, stor
     );
     pending.forEach(entry => {
       const point = fetched.get(entry.query) || null;
-      resolved.set(entry.query, point);
-      if (point && Number.isFinite(Number(point.lat)) &&
-          Number(point.lat) >= -90 && Number(point.lat) <= 90 &&
-          Number.isFinite(Number(point.lng)) &&
-          Number(point.lng) >= -180 && Number(point.lng) <= 180 && point.nomenclatura) {
+      const checkedPoint = point && Number.isFinite(Number(point.lat)) &&
+        Number(point.lat) >= -90 && Number(point.lat) <= 90 &&
+        Number.isFinite(Number(point.lng)) &&
+        Number(point.lng) >= -180 && Number(point.lng) <= 180 && point.nomenclatura
+        ? { ...point, checkedAt: timestamp }
+        : null;
+      resolved.set(entry.query, checkedPoint);
+      if (checkedPoint) {
         cache.set(entry.key, {
-          lat: Number(point.lat),
-          lng: Number(point.lng),
-          nomenclatura: String(point.nomenclatura),
+          lat: Number(checkedPoint.lat),
+          lng: Number(checkedPoint.lng),
+          nomenclatura: String(checkedPoint.nomenclatura),
           checkedAt: timestamp
         });
         cacheChanged = true;
@@ -10002,7 +10018,7 @@ function buildCsv(items) {
   const headers = [
     "tipo", "nombre", "latitud_referencia", "longitud_referencia", "categoria", "nivel_evidencia",
     "linea_a_investigar", "evidencia_publica", "estado_de_verificacion", "proximo_paso", "fuente",
-    "alcance_de_coordenada", "localidad", "ubicacion_publicada", "direccion_publicada", "anunciante",
+    "alcance_de_coordenada", "fuente_de_coordenada", "fecha_de_georreferenciacion", "localidad", "ubicacion_publicada", "direccion_publicada", "anunciante",
     "contacto_publico", "precio_publicado", "moneda", "superficie_terreno_m2", "superficie_cubierta_m2",
     "nota_de_superficie", "fecha_aviso", "fecha_revision", "geolocalizacion", "disponibilidad",
     "actividad", "tipo_de_evidencia", "nivel_de_confianza", "fecha_de_fuente", "fecha_de_consulta"
@@ -10011,9 +10027,11 @@ function buildCsv(items) {
     const isLocality = item.type === "locality";
     const isPublished = item.type === "published";
     const coordinatesAvailable = hasCoordinates(item);
-    const coordinateScope = isLocality
-      ? "Coordenada de referencia de localidad; no identifica una parcela."
-      : (isPublished ? (coordinatesAvailable ? "Georreferencia aproximada de dirección por Georef; no parcelaria." : "Geolocalización pendiente; ubicación textual conservada.") : "Centro aproximado de corredor o área; no identifica una parcela.");
+    const coordinateScope = !coordinatesAvailable
+      ? (isPublished ? "Geolocalización pendiente; ubicación textual conservada." : "Sin coordenada trazable; la ficha permanece en el índice.")
+      : (item.coordinatePrecision || (isPublished ? "Coincidencia inequívoca de dirección por Georef; no parcelaria." : "Punto de referencia con fuente cartográfica identificada; no parcelario."));
+    const coordinateSourceUrl = isLocality ? item.coordinateSource : (isPublished ? item.geolocationSource : item.coordinateSource);
+    const coordinateCheckedAt = isLocality ? item.coordinateCheckedAt : (isPublished ? item.geolocationCheckedAt : item.coordinateCheckedAt);
     const base = [
       isLocality ? "localidad" : (isPublished ? item.recordType : "tesis"), item.name,
       coordinatesAvailable ? item.lat : "", coordinatesAvailable ? item.lng : "",
@@ -10023,7 +10041,7 @@ function buildCsv(items) {
       isLocality ? "Localidad de referencia; no es una evaluación parcelaria." : (isPublished ? item.observations : item.evidence),
       isLocality ? "Centro aproximado de localidad; no parcelario." : (isPublished ? item.verificationStatus : item.status),
       isLocality ? "Definir zona y recopilar información catastral y normativa." : (isPublished ? "Confirmar vigencia, precio, stock y documentación con el anunciante." : item.next),
-      item.source || "", coordinateScope
+      item.source || "", coordinateScope, coordinateSourceUrl || "", coordinateCheckedAt || ""
     ];
     const details = isPublished ? [
       item.locality, item.location || item.address, item.address, item.agency, item.contact,
@@ -10042,11 +10060,12 @@ function buildGeoJson(items) {
     const isLocality = item.type === "locality";
     const isPublished = item.type === "published";
     const evidenceLevel = isLocality ? "referencia territorial" : (isPublished ? "publicación comercial" : (item.stage === "hypothesis" ? "hipotesis de prospeccion" : "contexto con fuente publica"));
-    const coordinateScope = isLocality
-      ? "Centro aproximado de localidad; no identifica una parcela."
-      : (isPublished
-        ? (hasCoordinates(item) ? "Georreferencia aproximada de dirección por Georef; no representa parcela." : "Geolocalización pendiente; no se asignó coordenada.")
-        : (hasCoordinates(item) ? "Centro aproximado de corredor o área; no identifica una parcela." : "Sin coordenada precisa; la fuente no permite ubicar un punto ni identifica una parcela."));
+    const coordinatesAvailable = hasCoordinates(item);
+    const coordinateScope = !coordinatesAvailable
+      ? (isPublished ? "Geolocalización pendiente; no se asignó coordenada." : "Sin coordenada trazable; la ficha permanece en el índice.")
+      : (item.coordinatePrecision || (isPublished ? "Coincidencia inequívoca de dirección por Georef; no representa parcela." : "Punto de referencia con fuente cartográfica identificada; no parcelario."));
+    const coordinateSourceUrl = isLocality ? item.coordinateSource : (isPublished ? item.geolocationSource : item.coordinateSource);
+    const coordinateCheckedAt = isLocality ? item.coordinateCheckedAt : (isPublished ? item.geolocationCheckedAt : item.coordinateCheckedAt);
     const geometry = hasCoordinates(item) ? { type: "Point", coordinates: [Number(item.lng), Number(item.lat)] } : null;
     return {
       type: "Feature",
@@ -10060,6 +10079,8 @@ function buildGeoJson(items) {
         verification_status: isLocality ? "Referencia geográfica de localidad; no es una evaluación parcelaria." : (isPublished ? item.verificationStatus : item.status),
         next_step: isLocality ? "Definir zona y recopilar información catastral y normativa." : (isPublished ? "Confirmar vigencia, precio, disponibilidad, dominio y documentación." : item.next),
         source_url: item.source || null, coordinate_scope: coordinateScope,
+        coordinate_source_url: coordinateSourceUrl || null, coordinate_checked_at: coordinateCheckedAt || null,
+        coordinate_precision: item.coordinatePrecision || (isPublished ? item.geolocationStatus : null),
         activity: item.activity || (isPublished ? "Actividad inmobiliaria publicada" : (kindLabel[item.kind] || null)),
         evidence_type: evidenceMetadata(item).evidenceType, confidence_level: evidenceMetadata(item).confidence,
         source_date: evidenceMetadata(item).sourceDate || null, source_consulted_at: evidenceMetadata(item).consultedAt || null,
@@ -10077,7 +10098,7 @@ function buildGeoJson(items) {
     type: "FeatureCollection",
     name: "Mapa IA de Moreno — referencias territoriales y publicaciones inmobiliarias",
     description: "Exportación de las referencias visibles del inventario exploratorio de MORENO.",
-    disclaimer: "Las coordenadas de localidades y de tesis que sí tienen punto son aproximadas. Las referencias sin ubicación precisa y las publicaciones comerciales conservan geometry:null hasta obtener evidencia suficiente. Ninguna coordenada identifica una parcela ni acredita titularidad, disponibilidad, zonificación, factibilidad o rentabilidad.",
+    disclaimer: "Solo se exportan puntos con fuente cartográfica y fecha de verificación registradas. Las referencias sin coordenada trazable y las publicaciones sin coincidencia inequívoca conservan geometry:null y siguen en el índice. Ninguna coordenada identifica una parcela ni acredita titularidad, disponibilidad, zonificación, factibilidad o rentabilidad.",
     features
   };
 }
@@ -10111,8 +10132,8 @@ function buildTerritorialBrief(item, generatedAt) {
     ? new Date(generatedAt).toISOString()
     : new Date().toISOString();
   const localityScope = coordinatesAvailable
-    ? "Centro aproximado de corredor o área; no identifica una parcela."
-    : "Sin coordenada precisa; la fuente no permite ubicar un punto ni identifica una parcela.";
+    ? (item.coordinatePrecision || "Punto de referencia con fuente cartográfica identificada; no parcelario.")
+    : "Sin coordenada trazable; la ficha se conserva para investigación documental y no identifica una parcela.";
   const stageLabel = item.stage === "hypothesis"
     ? "Hipótesis de prospección"
     : "Contexto con fuente pública";
@@ -10128,8 +10149,11 @@ function buildTerritorialBrief(item, generatedAt) {
       coordinates: {
         latitude: Number.isFinite(latitude) ? latitude : null,
         longitude: Number.isFinite(longitude) ? longitude : null,
-        scope: localityScope
+        scope: localityScope,
+        sourceUrl: coordinatesAvailable ? safeTerritorialSource(item.coordinateSource) : null,
+        checkedAt: coordinatesAvailable ? item.coordinateCheckedAt : null
       },
+      coordinateSourceLabel: item.coordinateSourceLabel || null,
       lineToInvestigate: String(item.business || "").trim().slice(0, 1200),
       evidence: String(item.evidence || "").trim().slice(0, 1600),
       evidenceType: evidenceMetadata(item).evidenceType, confidence: evidenceMetadata(item).confidence,
@@ -10167,6 +10191,12 @@ function buildTerritorialBriefHtml(brief) {
   const coordinateText = Number.isFinite(coordinates.latitude) && Number.isFinite(coordinates.longitude)
     ? coordinates.latitude.toFixed(5) + ", " + coordinates.longitude.toFixed(5)
     : "No informadas";
+  const safeCoordinateSource = safeTerritorialSource(coordinates.sourceUrl);
+  const coordinateSourceMarkup = safeCoordinateSource
+    ? '<a href="' + escapeTerritorialHtml(safeCoordinateSource) + '" target="_blank" rel="noopener noreferrer">' +
+      escapeTerritorialHtml(reference.coordinateSourceLabel || "Fuente cartográfica") + "</a>"
+    : "<span>Sin fuente cartográfica; no se representa un punto.</span>";
+  const coordinateCheckedAt = coordinates.checkedAt ? " · Verificada: " + escapeTerritorialHtml(coordinates.checkedAt) : "";
   const sourceMarkup = safeSource
     ? '<a href="' + escapeTerritorialHtml(safeSource) + '" target="_blank" rel="noopener noreferrer">' +
       escapeTerritorialHtml(safeSource) + "</a>"
@@ -10230,7 +10260,8 @@ function buildTerritorialBriefHtml(brief) {
     '</p><p class="muted">La disponibilidad y la identificación parcelaria no se presuponen.</p></section>' +
     "<section><h2>Próximo paso sugerido</h2><p>" + escapeTerritorialHtml(reference.nextStep) + "</p></section>" +
     '<section><h2>Referencia cartográfica</h2><p class="coordinate">' + escapeTerritorialHtml(coordinateText) +
-    "</p><p class=\"muted\">" + escapeTerritorialHtml(coordinates.scope || "Referencia aproximada; no parcelaria.") + "</p></section></div>" +
+    "</p><p class=\"muted\">" + escapeTerritorialHtml(coordinates.scope || "Sin coordenada trazable; ficha conservada en el índice.") + "</p>" +
+    '<p class="muted"><strong>Fuente de coordenada:</strong> ' + coordinateSourceMarkup + coordinateCheckedAt + "</p></section></div>" +
     '<section class="source"><h2>Fuente de origen</h2><p>' + sourceMarkup +
     '</p><p class="muted">Enlace consignado en el inventario MORENO. Consultar el documento original y su fecha antes de utilizarlo en una evaluación.</p></section>' +
     '<section><h2>Bitácora para diligencia documental</h2><table><thead><tr><th>Control</th><th>Documento / fuente</th><th>Fecha</th></tr></thead><tbody>' +
@@ -10746,6 +10777,7 @@ function initMapPage(doc) {
     const note = doc.createElement("p");
     note.className = "map-static-note";
     note.textContent = "Este esquema conserva la relación espacial aproximada de las fichas con coordenadas disponibles sin depender de teselas externas; no es cartografía oficial, no tiene escala y no representa calles, límites administrativos ni parcelas. Las publicaciones sin coincidencia inequívoca en Georef permanecen en el índice con su ubicación textual y geolocalización pendiente, sin punto asignado.";
+    note.textContent = "Este esquema conserva únicamente referencias con fuente cartográfica y fecha verificables, sin depender de teselas externas; no es cartografía oficial, no tiene escala y no representa calles, límites administrativos ni parcelas. Las oportunidades sin coordenada trazable y las publicaciones sin coincidencia inequívoca en Georef permanecen en el índice con su ubicación textual y sin punto asignado.";
     container.append(heading, svg, indexHeading, index, note);
     mapElement.replaceChildren(container);
   }
@@ -10787,7 +10819,7 @@ function initMapPage(doc) {
         duration: prefersReducedMotion(view) ? 0 : 450
       });
     } else {
-      const camera = { center: [-58.7914, -34.6508], zoom: 11 };
+      const camera = { center: [-58.7898, -34.6397], zoom: 11 };
       if (prefersReducedMotion(view)) map.jumpTo(camera);
       else map.flyTo({ ...camera, essential: true });
     }
@@ -10809,6 +10841,10 @@ function initMapPage(doc) {
     box.append(title);
     if (item.type === "locality") {
       addLine("Lectura:", item.info);
+      addLine("Precisión de ubicación:", item.coordinatePrecision);
+      addLine("Fecha de coordenada:", item.coordinateCheckedAt);
+      const coordinateLink = coordinateSourceLink(item.coordinateSource, item.coordinateSourceLabel);
+      if (coordinateLink) box.append(coordinateLink);
       box.append(contactLinkNode(item, "map-contact-link"));
       return box;
     }
@@ -10823,6 +10859,9 @@ function initMapPage(doc) {
       addLine("Contacto público:", item.contact);
       addLine("Verificación:", item.verificationStatus);
       addLine("Geolocalización:", item.geolocationStatus);
+      addLine("Fecha de georreferencia:", item.geolocationCheckedAt || "No informada");
+      const coordinateLink = coordinateSourceLink(item.geolocationSource, item.geolocationSourceLabel);
+      if (coordinateLink) box.append(coordinateLink);
       const sourceLink = doc.createElement("a");
       sourceLink.href = item.source;
       sourceLink.target = "_blank";
@@ -10850,6 +10889,10 @@ function initMapPage(doc) {
     addLine("Confianza:", traceability.confidence);
     addLine("Fecha de la fuente:", traceability.sourceDate);
     addLine("Última consulta registrada:", traceability.consultedAt);
+    addLine("Precisión de coordenada:", item.coordinatePrecision || "Sin coordenada trazable; la ficha permanece en el índice.");
+    addLine("Fecha de coordenada:", item.coordinateCheckedAt || "No informada");
+    const coordinateLink = coordinateSourceLink(item.coordinateSource, item.coordinateSourceLabel);
+    if (coordinateLink) box.append(coordinateLink);
     const link = doc.createElement("a");
     link.href = item.source;
     link.target = "_blank";
@@ -10857,7 +10900,7 @@ function initMapPage(doc) {
     link.textContent = "Consultar fuente pública ↗";
     box.append(link);
     const note = doc.createElement("p");
-    note.textContent = "Área/corredor aproximado. No representa una parcela ni acredita disponibilidad.";
+    note.textContent = item.coordinatePrecision || "Punto de referencia con fuente identificada; no representa una parcela ni acredita disponibilidad.";
     box.append(note);
     const shareLink = doc.createElement("a");
     shareLink.href = buildReferenceUrl(doc.defaultView.location.href, item.id);
@@ -10879,6 +10922,18 @@ function initMapPage(doc) {
     return link;
   }
 
+  function coordinateSourceLink(source, label) {
+    const href = safeTerritorialSource(source);
+    if (!href) return null;
+    const link = doc.createElement("a");
+    link.className = "map-source-link map-coordinate-source-link";
+    link.href = href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = (label || "Fuente de coordenada") + " ↗";
+    return link;
+  }
+
   function addMapMarker(item) {
     if (!map || !hasCoordinates(item) || markers.has(item.id)) return null;
     const element = doc.createElement("button");
@@ -10888,6 +10943,7 @@ function initMapPage(doc) {
       : (item.type === "published" ? "map-pin-published" :
         (item.stage === "hypothesis" ? "map-pin-hypothesis" : "map-pin-documented")));
     element.setAttribute("aria-label", "Ver " + item.name + " en el mapa");
+    element.dataset.mapReference = item.id;
     element.title = item.name;
     const popup = new maplibregl.Popup({ offset: 16, maxWidth: "340px" }).setDOMContent(popupNode(item));
     element.addEventListener("click", () => {
@@ -10918,15 +10974,28 @@ function initMapPage(doc) {
         if (item.geocodeDisabled === true) {
           item.lat = null;
           item.lng = null;
+          item.geolocationSource = null;
+          item.geolocationCheckedAt = null;
           item.geolocationStatus = item.geolocationStatus || "Pendiente: la publicación no aporta una dirección exacta verificable.";
-        } else if (point) {
+        } else if (point && point.checkedAt) {
           item.lat = point.lat;
           item.lng = point.lng;
           item.geocodeReference = point.nomenclatura;
-          item.geolocationStatus = "Georreferencia aproximada de dirección obtenida mediante Georef; no parcelaria.";
+          const georefParams = new URLSearchParams({
+            direccion: item.geocodeQuery || item.address,
+            provincia: "Buenos Aires",
+            departamento: "Moreno",
+            max: "5"
+          });
+          item.geolocationSource = "https://apis.datos.gob.ar/georef/api/v2.0/direcciones?" + georefParams.toString();
+          item.geolocationSourceLabel = "Georef · respuesta oficial de dirección";
+          item.geolocationCheckedAt = new Date(point.checkedAt).toISOString().slice(0, 10);
+          item.geolocationStatus = "Coincidencia inequívoca de dirección obtenida mediante Georef; no parcelaria.";
         } else {
           item.lat = null;
           item.lng = null;
+          item.geolocationSource = null;
+          item.geolocationCheckedAt = null;
           item.geolocationStatus = resolution.fetchAvailable
             ? "Pendiente: Georef no devolvió una coincidencia inequívoca para la dirección publicada."
             : "Pendiente: el navegador no habilitó la consulta de Georef en esta sesión.";
@@ -10949,6 +11018,10 @@ function initMapPage(doc) {
         " publicaciones georreferenciadas por dirección; " + cacheNote + requestNote;
     }).catch(() => {
       publishedProperties.forEach(item => {
+        item.lat = null;
+        item.lng = null;
+        item.geolocationSource = null;
+        item.geolocationCheckedAt = null;
         item.geolocationStatus = "Pendiente: no fue posible consultar Georef en esta sesión.";
       });
       render();
@@ -11262,6 +11335,12 @@ function initMapPage(doc) {
         paragraph.append(heading, doc.createTextNode(value));
         body.append(paragraph);
       };
+      addDetail("Precisión de coordenada", item.coordinatePrecision || (hasCoordinates(item)
+        ? "Punto de referencia con fuente cartográfica identificada; no parcelario."
+        : "Sin coordenada trazable; la ficha permanece en el índice."));
+      if (item.coordinateCheckedAt) addDetail("Fecha de verificación de coordenada", item.coordinateCheckedAt);
+      const coordinateLink = coordinateSourceLink(item.coordinateSource, item.coordinateSourceLabel);
+      if (coordinateLink) body.append(coordinateLink);
 
       if (item.type === "locality") {
         addDetail("Lectura territorial", item.info);
@@ -11427,6 +11506,9 @@ function initMapPage(doc) {
       addDetail("Estado de verificación:", item.verificationStatus);
       addDetail("Disponibilidad:", item.availabilityStatus);
       addDetail("Geolocalización:", item.geolocationStatus);
+      addDetail("Fecha de georreferencia:", item.geolocationCheckedAt);
+      const georefLink = coordinateSourceLink(item.geolocationSource, item.geolocationSourceLabel);
+      if (georefLink) body.append(georefLink);
       addDetail("Observaciones:", item.observations);
       const traceability = evidenceMetadata(item);
       addDetail("Clasificación de evidencia:", traceability.classification);
@@ -11762,7 +11844,7 @@ function initMapPage(doc) {
           },
           layers: [{ id: "osm-raster-layer", type: "raster", source: "osm-raster" }]
         },
-        center: [-58.7914, -34.6508],
+        center: [-58.7898, -34.6397],
         zoom: 12,
         maxZoom: 19,
         dragPan: true,
@@ -11929,7 +12011,7 @@ function initMapPage(doc) {
     updateShareUrl(null);
     render();
     if (map) {
-      const home = { center: [-58.7914, -34.6508], zoom: 12 };
+      const home = { center: [-58.7898, -34.6397], zoom: 12 };
       if (prefersReducedMotion(doc.defaultView)) map.jumpTo(home);
       else map.flyTo({ ...home, essential: true });
     }
