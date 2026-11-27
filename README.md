@@ -32,7 +32,7 @@ Esta referencia es un punto de partida. No reemplaza la verificación oficial de
 
 El inventario territorial reúne trece referencias: doce contextos documentados y una hipótesis de prospección. Incluye RP25/Darwin Passaponti/Av. San Fernando; Ecoparque Industrial; Camino de la Ribera; Distrito Ecológico Roggero; Base Aérea Moreno Norte; PRO.ME.BA. en Trujui y Cuartel V; MUI-MO; Utopía Bonaerense; Ordenanza 7497/26 (títulos imperfectos); Ordenanza 7542/26 (habilitaciones industriales y logísticas); Ordenanza 7572/26 (convenio urbanístico de Los Olivos); y la hipótesis de prospección de suelo en Cuartel V, Trujui y La Reja. Las normas y convenios son antecedentes de diligencia, no ofertas inmobiliarias ni prueba de disponibilidad.
 
-**Estado:** son tesis para investigación. No se presentan todavía veinte parcelas verificadas ni un ROI demostrado. Cada operación requiere comprobación dominial, catastral, urbanística, ambiental, hidráulica, de servicios y financiera.
+**Estado:** el inventario reúne antecedentes y líneas de investigación; no presenta veinte parcelas verificadas ni un ROI demostrado. Las ordenanzas y convenios documentan marcos y obligaciones, no disponibilidad ni factibilidad. Cada operación requiere comprobación dominial, catastral, urbanística, ambiental, hidráulica, de servicios y financiera.
 
 
 ## Mapa IA de originación
