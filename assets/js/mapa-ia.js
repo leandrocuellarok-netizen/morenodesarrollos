@@ -1961,7 +1961,7 @@ publishedProperties.push(
     "geolocationStatus": "Pendiente: unidad interna sin coordenada parcelaria pública verificada.",
     "verificationStatus": "Ficha directa de Torres Propiedades accesible en la revisión; precio y modalidad contradictorios, stock no confirmado."
   }
-];
+]);
 
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
