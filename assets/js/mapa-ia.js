@@ -1970,15 +1970,15 @@ const nov27FollowupEntries = [
     "name": "Casa quinta · Patricias Argentinas 2300/2301 · 2.762 m²",
     "locality": "Moreno",
     "address": "Patricias Argentinas 2300 (la descripción menciona 2301), Moreno",
-    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-quinta-en-venta-en-moreno-60801362.html",
+    "source": "https://www.argenprop.com/quinta-en-venta-en-cuartel-v--20907347",
     "sourceAlternates": [
       {
-        "url": "https://www.inmuebles.clarin.com/casa-quinta-en-venta-en-moreno--20907347",
+        "url": "https://www.inmuebles.clarin.com/quinta-en-venta-en-cuartel-v--20907347",
         "label": "Copia en Inmuebles Clarín"
       },
       {
-        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-quinta-en-venta-en-moreno-60530616.html",
-        "label": "Publicación anterior con precio de USD 87.000"
+        "url": "https://proppies.app/propiedad/buenos-aires/cuartel-v/casa-3-amb-en-venta-en-cuartel-v-41711819",
+        "label": "Registro histórico Proppies: inactivo, último precio USD 87.000"
       }
     ],
     "agency": "RE/MAX Grammar; publicación en Zonaprop e Inmuebles Clarín",
@@ -1988,7 +1988,7 @@ const nov27FollowupEntries = [
     "landSurfaceM2": 2762,
     "coveredSurfaceM2": 102,
     "surfaceNote": "La publicación desglosa vivienda principal de 46 m², vivienda de huéspedes de 23,5 m² y quincho de 32,8 m². Superficie total cubierta declarada: 102 m².",
-    "observations": "Una copia anterior del mismo aviso mostraba USD 87.000; la ficha abierta en esta revisión publica USD 82.000. El título indica altura 2300 y la descripción 2301. Confirmar precio, altura, mensura, estado de las construcciones y servicios.",
+    "observations": "La ficha individual de Argenprop publica USD 82.000 y la copia de Inmuebles Clarín coincide. Proppies conserva un registro anterior de la misma propiedad marcado inactivo con último precio USD 87.000 el 24/09/2026. El título indica altura 2300 y la descripción 2301. Confirmar precio, altura, mensura, estado de las construcciones y servicios.",
     "lat": null,
     "lng": null,
     "geocodeDisabled": true,
@@ -2027,7 +2027,7 @@ const nov27FollowupEntries = [
     "name": "Chacras de Teófilo · lote de 326 m² · Trujui",
     "locality": "Trujui",
     "address": "Galileo Galilei al 7300, Trujui, Moreno",
-    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-en-venta-en-chacras-de-teofilo-trujui-58930130.html",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terrenos-en-trujui-58930130.html",
     "agency": "Publicación en Zonaprop; corredor responsable Micaela Pérez, CSI 6671 / Lucas Federico Delgado, CUCICBA 6339",
     "contact": "Sebastián García; consultas mediante formulario de Zonaprop. Teléfono no publicado en la ficha.",
     "price": "USD 23.000 contado; financiación publicada: anticipo USD 5.000 y cuotas hasta 36 meses, total indicado USD 30.000",
@@ -2354,21 +2354,21 @@ const nov27FollowupEntries = [
     "landSurfaceM2": 460000,
     "surfaceNote": "El anuncio declara proyecto de 338 parcelas con planos municipales aprobados; FOS 0,6, FOT 1,0 y altura máxima 12 m según el aviso.",
     "publicationDate": "Fecha original no informada; resultado indexado aproximadamente un mes antes de la revisión.",
-    "observations": "La ficha directa de Argenprop devolvió 403 en esta revisión; los datos proceden del resultado indexado y del listado de Dambolena. No se pudo comprobar disponibilidad, aprobación de planos, zonificación ni alcance de las 338 parcelas. Estado pendiente de revalidación, no tratar como oferta confirmada.",
+    "observations": "La ficha individual de Argenprop devolvió 410 Gone el 27/11/2026; el resultado indexado describe un proyecto de 338 parcelas y planos municipales supuestamente aprobados. No se pudo comprobar disponibilidad ni documentación. Conservar como antecedente no vigente, no como oferta actual.",
     "lat": null,
     "lng": null,
     "geocodeDisabled": true,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "Pendiente de revalidación",
+    "availabilityStatus": "No vigente",
     "geolocationStatus": "Pendiente: esquina vial publicada sin nomenclatura catastral ni coordenada parcelaria.",
-    "verificationStatus": "Resultado de Argenprop indexado con precio y descripción; URL individual devolvió 403 el 27/11/2026. Requiere confirmación documental y comercial de Dambolena."
+    "verificationStatus": "Resultado de Argenprop indexado aproximadamente un mes antes de la revisión; ficha individual devolvió 410 Gone el 27/11/2026. Se conserva el precio histórico de USD 4.000.000 y el proyecto declarado de 338 parcelas, pero no se trata como oportunidad vigente. La aprobación de planos y el estado del proyecto no se verificaron independientemente."
   },
   {
     "id": "desarrollo-ampliacion-sip2-cuarter-v-52ha",
     "recordType": "Desarrollo industrial público · ampliación del Sector Industrial Planificado II",
     "name": "Ampliación del Sector Industrial Planificado II · Cuartel V",
     "locality": "Cuartel V",
-    "address": "Entorno de Ruta Provincial 24, entre Molière y Conscripto Bernardi, Cuartel V (ubicación aproximada publicada)",
+    "address": "Circunscripción V, parcelas 1371 y 1372; entorno de calle Máximo Paz entre Bernardi y Juan B. Molière, Cuartel V (ubicación aproximada)",
     "source": "https://sibom.slyt.gba.gob.ar/bulletins/13860/contents/2308258",
     "sourceAlternates": [
       {
@@ -2382,9 +2382,9 @@ const nov27FollowupEntries = [
     ],
     "agency": "Municipalidad de Moreno / Fideicomiso Parques Industriales Moreno (FIDEPIM)",
     "contact": "promociondeindustria@moreno.gov.ar; consultas por el formulario municipal de Parque Industrial Moreno II.",
-    "surfaceNote": "La Ordenanza 7371/25 identifica las parcelas catastrales Circunscripción V, parcelas 1371 y 1372, pero no publica superficie total. Una nota local del 20/08/2026 informa 52 hectáreas; ese metraje es periodístico, no surge de la ordenanza.",
+    "surfaceNote": "La Ordenanza 7371/25 identifica las parcelas catastrales Circunscripción V, parcelas 1371 y 1372, pero no publica superficie total. La referencia a 52 hectáreas procede de una nota local del 20/08/2026 y no está cuantificada en la ordenanza.",
     "publicationDate": "Ordenanza sancionada el 31/07/2025; publicación en SIBOM el 28/11/2025; nota sobre ampliación publicada el 20/08/2026.",
-    "observations": "La ordenanza autoriza aportar las parcelas 1371 y 1372 a FIDEPIM para ampliar el SIP II y regula el reintegro municipal mediante parte de las ventas. No se verificó avance físico, subdivisión, cronograma ni disponibilidad comercial de parcelas. No es una oferta individual de tierra.",
+    "observations": "La Ordenanza 7371/25 autoriza aportar las parcelas 1371 y 1372 a FIDEPIM para ampliar el SIP II. El artículo 3 fija USD 1.128.000 como valor de adquisición de los inmuebles aportados; el artículo 4 establece un reintegro municipal del 50% del valor de venta de cada parcela hasta completar ese importe. Esa cifra no es un precio de venta al público. No se verificó avance físico, subdivisión, cronograma ni disponibilidad comercial. No es una oferta individual de tierra.",
     "lat": null,
     "lng": null,
     "geocodeDisabled": true,
