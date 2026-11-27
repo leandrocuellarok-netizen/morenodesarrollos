@@ -231,9 +231,9 @@ def main() -> None:
                                 errors.append(f"Inicio: falta la localidad {locality_name} en el esquema territorial")
                         if 'id="map-preview-title"' not in svg_source or 'id="map-preview-description"' not in svg_source:
                             errors.append("Inicio: el esquema territorial necesita título y descripción accesibles")
-                if "no representa límites municipales, calles, parcelas ni disponibilidad inmobiliaria" not in page_source:
-                    errors.append("Inicio: falta aclarar que el esquema no es cartografía parcelaria ni acredita disponibilidad")
-                if "no una cartografía oficial ni un inventario de terrenos" not in page_source:
+                if "no identifica parcelas ni acredita disponibilidad inmobiliaria" not in page_source:
+                    errors.append("Inicio: falta aclarar que el esquema no identifica parcelas ni acredita disponibilidad")
+                if "no es cartografía oficial" not in page_source:
                     errors.append("Inicio: falta distinguir el esquema editorial de una cartografía oficial")
             if not css_path.is_file():
                 errors.append("Falta assets/css/erica.css para el esquema territorial")
