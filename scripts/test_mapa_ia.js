@@ -48,6 +48,19 @@ const incompleteDiligenceSample = publishedDiligenceSummary({
   address: "Av. de prueba 100", locality: "Moreno"
 });
 assert.deepEqual(incompleteDiligenceSample.missing, ["Referencia de precio", "Superficie", "Referencia de contacto"]);
+const placeholderDiligenceSample = publishedDiligenceSummary({
+  type: "published", source: "https://example.org/aviso", lastCheckedAt: "2026-11-27",
+  price: "A consultar", surfaceNote: "La ficha no informa superficie cubierta",
+  agency: "Publicación en Zonaprop; inmobiliaria y corredor no visibles en ficha consultada.",
+  contact: "No visible en la ficha indexada", address: "Av. de prueba 100", locality: "Moreno"
+});
+assert.deepEqual(placeholderDiligenceSample.missing, ["Referencia de precio", "Superficie", "Anunciante", "Referencia de contacto"]);
+const portalContactDiligenceSample = publishedDiligenceSummary({
+  type: "published", source: "https://example.org/aviso", lastCheckedAt: "2026-11-27",
+  price: "USD 33.000", landSurfaceM2: 325, agency: "Inmobiliaria de prueba",
+  contact: "Formulario Zonaprop; teléfono no visible", address: "Av. de prueba 100", locality: "Moreno"
+});
+assert.equal(portalContactDiligenceSample.missing.includes("Referencia de contacto"), false, "un formulario público sí es un canal de contacto aunque el teléfono no aparezca");
 const completeDiligenceItems = filterReferences(all, { diligence: "complete" });
 const pendingDiligenceItems = filterReferences(all, { diligence: "pending" });
 assert.ok(completeDiligenceItems.every(item => item.type === "published" && publishedDiligenceSummary(item).complete));
