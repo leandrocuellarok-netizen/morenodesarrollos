@@ -4260,7 +4260,7 @@ const nov27FreshEntries = [
     "locality": "Moreno Centro",
     "address": "Independencia 2400, Centro de Moreno",
     "geocodeQuery": "Independencia 2400, Moreno",
-    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--20793012",
+    "source": "https://platastar.com/propiedad/terreno-de-1462-m2-en-venta-en-moreno-e11a5176",
   sourceAlternates: [{url:"https://platastar.com/propiedad/terreno-de-1462-m2-en-venta-en-moreno-e11a5176",label:"PlataStar: mismo domicilio y superficie aproximada (1.462 m²), publicado a USD 350.000; posible mismo activo que la ficha Argenprop de USD 320.000."},
       {url:"https://www.argenprop.com/casa-en-venta-en-centro-moreno-6-ambientes--20956082",label:"Ficha anterior de Argenprop: USD 320.000, casa de seis ambientes; precio anterior y superficies contradictorias."}],
     "agency": "RE/MAX Fly · publicación en Argenprop / RAU S.R.L.",
@@ -4277,7 +4277,7 @@ const nov27FreshEntries = [
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: dirección pública con lote extenso; geocodificar solo si Georef devuelve coincidencia inequívoca."
   ,
-    "verificationStatus": "Argenprop actual accesible el 27/11/2026 a USD 350.000 y 1.462 m²; PlataStar publica el mismo domicilio/superficie a USD 350.000. Una ficha anterior de Argenprop lo ofrecía como casa a USD 320.000. Derechos constructivos, planos y factibilidades son declaraciones del anunciante, no verificados documentalmente; disponibilidad no confirmada."
+    "verificationStatus": "Ficha de PlataStar accesible el 27/11/2026, publicada el 30/06/2026, a USD 350.000 y 1.462 m². La ficha de terreno de Argenprop devolvió 410 Gone el 27/11/2026; una ficha anterior de casa de Argenprop publicaba USD 320.000 y superficies contradictorias. Los derechos constructivos, planos y factibilidades son declaraciones del anunciante, no verificados documentalmente; disponibilidad no confirmada."
   },
   {
     "id": "casa-los-abedules-4100-485",
