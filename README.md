@@ -110,13 +110,13 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 - Los filtros de texto, tipo, sector/línea de desarrollo y nivel de evidencia funcionan también en modo de consulta sin mapa.
 - Se incluye una alternativa HTML mediante `noscript` para lectores sin JavaScript, con enlaces directos a las fuentes.
 - Los controles de las fichas muestran foco visible para navegación por teclado.
-- El inventario de localidades y tesis usa fichas desplegables con línea a investigar, evidencia, estado, próximo paso y enlace directo a cada referencia externa; cuando la cartografía está disponible, cada ficha también permite centrar su marcador.
+- El inventario de localidades y referencias territoriales usa fichas desplegables con línea a investigar, evidencia, estado, próximo paso y enlace directo a cada fuente externa; cuando la cartografía está disponible, cada ficha también permite centrar su marcador.
 - Si falla el proveedor de teselas, se conserva el inventario de referencias y se informa el estado sin ocultar la investigación.
 
 
 ### Bitácora local de verificación del Mapa IA
 
-- Cada una de las cinco tareas por tesis conserva una fuente, documento o folio (hasta 240 caracteres), fecha de consulta y observación breve opcional (hasta 500 caracteres).
+- Cada una de las cinco tareas por referencia conserva una fuente, documento o folio (hasta 240 caracteres), fecha de consulta y observación breve opcional (hasta 500 caracteres).
 - Una tarea solo cuenta como **revisión documentada** cuando se completa una fuente/documento de al menos cuatro caracteres y una fecha ISO válida. La casilla permanece deshabilitada mientras falte alguno de esos dos datos.
 - La versión anterior guardaba casillas sin procedencia. Al actualizar, esas marcas se migran como pendientes de documentar; no se presentan como verificaciones completas ni se descartan silenciosamente.
 - El estado se conserva en `localStorage` del navegador actual. No se transmite al sitio, no sincroniza entre dispositivos y no debe utilizarse para guardar nombres de personas, datos personales, información dominial sensible ni documentación confidencial.
@@ -204,7 +204,7 @@ Las cuatro páginas públicas comparten un menú móvil desplegable, controlable
 
 ## Conversión comercial desde el Mapa IA
 
-Cada localidad o tesis territorial puede abrir el formulario de oportunidades con su identificador y nombre como contexto de origen. El formulario muestra esa referencia, incorpora una nota explícita sobre su alcance aproximado y la incluye en el borrador de WhatsApp para que la persona lo revise. La referencia no se transforma en identificación parcelaria ni acredita titularidad, disponibilidad, zonificación o factibilidad. El sitio no envía ni almacena el contacto automáticamente.
+Cada localidad o referencia territorial puede abrir el formulario de oportunidades con su identificador y nombre como contexto de origen. El formulario muestra esa referencia, incorpora una nota explícita sobre su alcance aproximado y la incluye en el borrador de WhatsApp para que la persona lo revise. La referencia no se transforma en identificación parcelaria ni acredita titularidad, disponibilidad, zonificación o factibilidad. El sitio no envía ni almacena el contacto automáticamente.
 
 
 ## Mesa de verificación parcelaria y urbanística
