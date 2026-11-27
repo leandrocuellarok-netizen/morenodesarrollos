@@ -9939,7 +9939,8 @@ async function resolvePublishedGeoreferencesCached(items, fetcher, context, stor
       resolved.set(query, {
         lat: cached.lat,
         lng: cached.lng,
-        nomenclatura: cached.nomenclatura
+        nomenclatura: cached.nomenclatura,
+        checkedAt: cached.checkedAt
       });
       cacheHits += 1;
     } else {
@@ -9960,15 +9961,18 @@ async function resolvePublishedGeoreferencesCached(items, fetcher, context, stor
     );
     pending.forEach(entry => {
       const point = fetched.get(entry.query) || null;
-      resolved.set(entry.query, point);
-      if (point && Number.isFinite(Number(point.lat)) &&
-          Number(point.lat) >= -90 && Number(point.lat) <= 90 &&
-          Number.isFinite(Number(point.lng)) &&
-          Number(point.lng) >= -180 && Number(point.lng) <= 180 && point.nomenclatura) {
+      const checkedPoint = point && Number.isFinite(Number(point.lat)) &&
+        Number(point.lat) >= -90 && Number(point.lat) <= 90 &&
+        Number.isFinite(Number(point.lng)) &&
+        Number(point.lng) >= -180 && Number(point.lng) <= 180 && point.nomenclatura
+        ? { ...point, checkedAt: timestamp }
+        : null;
+      resolved.set(entry.query, checkedPoint);
+      if (checkedPoint) {
         cache.set(entry.key, {
-          lat: Number(point.lat),
-          lng: Number(point.lng),
-          nomenclatura: String(point.nomenclatura),
+          lat: Number(checkedPoint.lat),
+          lng: Number(checkedPoint.lng),
+          nomenclatura: String(checkedPoint.nomenclatura),
           checkedAt: timestamp
         });
         cacheChanged = true;
@@ -10733,6 +10737,7 @@ function initMapPage(doc) {
     const note = doc.createElement("p");
     note.className = "map-static-note";
     note.textContent = "Este esquema conserva la relación espacial aproximada de las fichas con coordenadas disponibles sin depender de teselas externas; no es cartografía oficial, no tiene escala y no representa calles, límites administrativos ni parcelas. Las publicaciones sin coincidencia inequívoca en Georef permanecen en el índice con su ubicación textual y geolocalización pendiente, sin punto asignado.";
+    note.textContent = "Este esquema conserva únicamente referencias con fuente cartográfica y fecha verificables, sin depender de teselas externas; no es cartografía oficial, no tiene escala y no representa calles, límites administrativos ni parcelas. Las oportunidades sin coordenada trazable y las publicaciones sin coincidencia inequívoca en Georef permanecen en el índice con su ubicación textual y sin punto asignado.";
     container.append(heading, svg, indexHeading, index, note);
     mapElement.replaceChildren(container);
   }
@@ -10796,6 +10801,10 @@ function initMapPage(doc) {
     box.append(title);
     if (item.type === "locality") {
       addLine("Lectura:", item.info);
+      addLine("Precisión de ubicación:", item.coordinatePrecision);
+      addLine("Fecha de coordenada:", item.coordinateCheckedAt);
+      const coordinateLink = coordinateSourceLink(item.coordinateSource, item.coordinateSourceLabel);
+      if (coordinateLink) box.append(coordinateLink);
       box.append(contactLinkNode(item, "map-contact-link"));
       return box;
     }
@@ -10810,6 +10819,9 @@ function initMapPage(doc) {
       addLine("Contacto público:", item.contact);
       addLine("Verificación:", item.verificationStatus);
       addLine("Geolocalización:", item.geolocationStatus);
+      addLine("Fecha de georreferencia:", item.geolocationCheckedAt || "No informada");
+      const coordinateLink = coordinateSourceLink(item.geolocationSource, item.geolocationSourceLabel);
+      if (coordinateLink) box.append(coordinateLink);
       const sourceLink = doc.createElement("a");
       sourceLink.href = item.source;
       sourceLink.target = "_blank";
@@ -10837,6 +10849,10 @@ function initMapPage(doc) {
     addLine("Confianza:", traceability.confidence);
     addLine("Fecha de la fuente:", traceability.sourceDate);
     addLine("Última consulta registrada:", traceability.consultedAt);
+    addLine("Precisión de coordenada:", item.coordinatePrecision || "Sin coordenada trazable; la ficha permanece en el índice.");
+    addLine("Fecha de coordenada:", item.coordinateCheckedAt || "No informada");
+    const coordinateLink = coordinateSourceLink(item.coordinateSource, item.coordinateSourceLabel);
+    if (coordinateLink) box.append(coordinateLink);
     const link = doc.createElement("a");
     link.href = item.source;
     link.target = "_blank";
@@ -10844,7 +10860,7 @@ function initMapPage(doc) {
     link.textContent = "Consultar fuente pública ↗";
     box.append(link);
     const note = doc.createElement("p");
-    note.textContent = "Área/corredor aproximado. No representa una parcela ni acredita disponibilidad.";
+    note.textContent = item.coordinatePrecision || "Punto de referencia con fuente identificada; no representa una parcela ni acredita disponibilidad.";
     box.append(note);
     const shareLink = doc.createElement("a");
     shareLink.href = buildReferenceUrl(doc.defaultView.location.href, item.id);
@@ -10866,6 +10882,18 @@ function initMapPage(doc) {
     return link;
   }
 
+  function coordinateSourceLink(source, label) {
+    const href = safeTerritorialSource(source);
+    if (!href) return null;
+    const link = doc.createElement("a");
+    link.className = "map-source-link map-coordinate-source-link";
+    link.href = href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = (label || "Fuente de coordenada") + " ↗";
+    return link;
+  }
+
   function addMapMarker(item) {
     if (!map || !hasCoordinates(item) || markers.has(item.id)) return null;
     const element = doc.createElement("button");
@@ -10875,6 +10903,7 @@ function initMapPage(doc) {
       : (item.type === "published" ? "map-pin-published" :
         (item.stage === "hypothesis" ? "map-pin-hypothesis" : "map-pin-documented")));
     element.setAttribute("aria-label", "Ver " + item.name + " en el mapa");
+    element.dataset.mapReference = item.id;
     element.title = item.name;
     const popup = new maplibregl.Popup({ offset: 16, maxWidth: "340px" }).setDOMContent(popupNode(item));
     element.addEventListener("click", () => {
@@ -10905,15 +10934,28 @@ function initMapPage(doc) {
         if (item.geocodeDisabled === true) {
           item.lat = null;
           item.lng = null;
+          item.geolocationSource = null;
+          item.geolocationCheckedAt = null;
           item.geolocationStatus = item.geolocationStatus || "Pendiente: la publicación no aporta una dirección exacta verificable.";
-        } else if (point) {
+        } else if (point && point.checkedAt) {
           item.lat = point.lat;
           item.lng = point.lng;
           item.geocodeReference = point.nomenclatura;
-          item.geolocationStatus = "Georreferencia aproximada de dirección obtenida mediante Georef; no parcelaria.";
+          const georefParams = new URLSearchParams({
+            direccion: item.geocodeQuery || item.address,
+            provincia: "Buenos Aires",
+            departamento: "Moreno",
+            max: "5"
+          });
+          item.geolocationSource = "https://apis.datos.gob.ar/georef/api/v2.0/direcciones?" + georefParams.toString();
+          item.geolocationSourceLabel = "Georef · respuesta oficial de dirección";
+          item.geolocationCheckedAt = new Date(point.checkedAt).toISOString().slice(0, 10);
+          item.geolocationStatus = "Coincidencia inequívoca de dirección obtenida mediante Georef; no parcelaria.";
         } else {
           item.lat = null;
           item.lng = null;
+          item.geolocationSource = null;
+          item.geolocationCheckedAt = null;
           item.geolocationStatus = resolution.fetchAvailable
             ? "Pendiente: Georef no devolvió una coincidencia inequívoca para la dirección publicada."
             : "Pendiente: el navegador no habilitó la consulta de Georef en esta sesión.";
@@ -10936,6 +10978,10 @@ function initMapPage(doc) {
         " publicaciones georreferenciadas por dirección; " + cacheNote + requestNote;
     }).catch(() => {
       publishedProperties.forEach(item => {
+        item.lat = null;
+        item.lng = null;
+        item.geolocationSource = null;
+        item.geolocationCheckedAt = null;
         item.geolocationStatus = "Pendiente: no fue posible consultar Georef en esta sesión.";
       });
       render();
@@ -11249,6 +11295,12 @@ function initMapPage(doc) {
         paragraph.append(heading, doc.createTextNode(value));
         body.append(paragraph);
       };
+      addDetail("Precisión de coordenada", item.coordinatePrecision || (hasCoordinates(item)
+        ? "Punto de referencia con fuente cartográfica identificada; no parcelario."
+        : "Sin coordenada trazable; la ficha permanece en el índice."));
+      if (item.coordinateCheckedAt) addDetail("Fecha de verificación de coordenada", item.coordinateCheckedAt);
+      const coordinateLink = coordinateSourceLink(item.coordinateSource, item.coordinateSourceLabel);
+      if (coordinateLink) body.append(coordinateLink);
 
       if (item.type === "locality") {
         addDetail("Lectura territorial", item.info);
@@ -11414,6 +11466,9 @@ function initMapPage(doc) {
       addDetail("Estado de verificación:", item.verificationStatus);
       addDetail("Disponibilidad:", item.availabilityStatus);
       addDetail("Geolocalización:", item.geolocationStatus);
+      addDetail("Fecha de georreferencia:", item.geolocationCheckedAt);
+      const georefLink = coordinateSourceLink(item.geolocationSource, item.geolocationSourceLabel);
+      if (georefLink) body.append(georefLink);
       addDetail("Observaciones:", item.observations);
       const traceability = evidenceMetadata(item);
       addDetail("Clasificación de evidencia:", traceability.classification);
