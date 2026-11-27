@@ -939,7 +939,7 @@ const nov27_1032ExpectedIds = [
   "terreno-9-de-julio-46-487",
   "terreno-jose-marmol-rivadavia-1418",
   "terreno-guatemala-2500-valentin-alsina-590",
-  "terreno-tres-de-febrero-7800-316",
+  "moreno-lote-tres-de-febrero-7800",
   "terreno-justo-daract-2751-2163",
   "casa-quinta-samaniego-4900-4200",
   "casa-martinez-melo-300-161",
@@ -958,7 +958,7 @@ assert.equal(publishedProperties.find(item => item.id === "terreno-9-de-julio-46
 assert.equal(publishedProperties.find(item => item.id === "terreno-bartolome-mitre-3200-1260").availabilityStatus, "Pendiente de revalidación");
 assert.equal(publishedProperties.find(item => item.id === "casa-concordia-2545-311").availabilityStatus, "Pendiente de revalidación");
 
-function testGeorefRequestQueue() {
+async function testGeorefRequestQueue() {
   const items = [
     { id: "shared-a", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
     { id: "shared-b", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
