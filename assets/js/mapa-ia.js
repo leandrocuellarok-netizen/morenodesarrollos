@@ -5595,27 +5595,31 @@ const nov27_0923NewEntries = [
     "locality": "Moreno",
     "address": "Avenida Francisco Piovano al 3700, Moreno; descripción: Ruta 5 km 38,2",
     "geocodeDisabled": true,
-    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casaquinta-en-venta-en-la-mejor-zona-de-moreno-centro-60571481.html",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-en-moreno-60761167.html",
     "sourceAlternates": [
       {
         "url": "https://www.argenprop.com/casa-en-venta-en-moreno-7-ambientes--20931658",
-        "label": "Argenprop · publicación cruzada anterior; USD 220.000 y 2.960 m² declarados"
+        "label": "Argenprop · publicación cruzada, USD 220.000 y 2.960 m² de terreno"
+      },
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casaquinta-en-venta-en-la-mejor-zona-de-moreno-centro-60571481.html",
+        "label": "Basso Bienes Raíces · otra ficha del mismo activo, USD 240.000 y cabecera con superficie contradictoria"
       }
     ],
     "agency": "Basso Bienes Raíces",
     "contact": "Consultas mediante Zonaprop; teléfono y contacto personal no visibles en la ficha.",
-    "price": "USD 240.000 en Zonaprop; Argenprop había indexado USD 220.000",
+    "price": "USD 220.000 en Zonaprop y Argenprop; otra ficha de Basso Bienes Raíces publica USD 240.000",
     "currency": "USD",
-    "landSurfaceM2": null,
+    "landSurfaceM2": 2960,
     "coveredSurfaceM2": 250,
-    "surfaceNote": "La cabecera de Zonaprop informa 270 m² totales y 250 m² cubiertos; la descripción habla de casi 3.000 m² sobre tres lotes de aproximadamente 1.000 m². Argenprop había informado 2.960 m² de terreno. Superficie de terreno no resuelta por contradicción entre fuentes.",
-    "observations": "Casa quinta de cinco ambientes, cuatro dormitorios, tres baños, pileta y casa de caseros. El anunciante menciona posibilidad de subdividir en tres lotes y zonificación Residencial 4A, FOS 0,50 y FOT 0,80. No asumir subdivisión ni capacidad constructiva: solicitar nomenclatura, mensura, dominio y certificado urbanístico. Se incorpora como un solo activo, no como dos publicaciones independientes.",
+    "surfaceNote": "2.960 m² de terreno y 250 m² cubiertos en las fichas de Zonaprop 60761167 y Argenprop 20931658. Otra ficha de Basso/Zonaprop para el mismo inmueble indica USD 240.000 y 270 m² totales en cabecera, aunque su descripción habla de casi 3.000 m². Confirmar superficie y precio con título y mensura.",
+    "observations": "Casa quinta de cinco/siete ambientes, cuatro/cinco dormitorios según ficha, tres baños, pileta, quincho y departamento independiente. Dos publicaciones cruzadas (Zonaprop 60761167 y Argenprop 20931658) coinciden en USD 220.000, 2.960 m² de terreno y 250 m² cubiertos. Una tercera ficha de Basso Bienes Raíces (Zonaprop 60571481) pide USD 240.000 y presenta una cabecera contradictoria de 270 m² totales, aunque la descripción refiere a casi 3.000 m². Se conserva como un solo activo; no asumir subdivisión ni capacidad constructiva.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
-    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026. Precio y cubierta publicados, pero la superficie de terreno y el precio difieren respecto de una publicación cruzada de Argenprop; disponibilidad no confirmada.",
-    "geolocationStatus": "Pendiente: la publicación da altura aproximada y referencia de ruta, no una dirección parcelaria inequívoca."
+    "verificationStatus": "Ficha de Zonaprop 60761167 accesible el 27/11/2026 y ficha cruzada de Argenprop indexada 4 días antes: ambas publican USD 220.000, 2.960 m² de terreno y 250 m² cubiertos. Otra ficha de Basso/Zonaprop publica USD 240.000 y datos de superficie contradictorios. Disponibilidad no confirmada.",
+    "geolocationStatus": "Pendiente: altura aproximada y referencia Ruta 5 km 38,2; no se asigna coordenada parcelaria."
   },
   {
     "id": "casa-facundo-quiroga-1100-300-pendiente",
@@ -5666,105 +5670,73 @@ const nov27_0923NewEntries = [
     "geolocationStatus": "Pendiente: dirección exacta publicada, pero no se confirmó la ficha directa ni una coincidencia Georef."
   },
   {
-    "id": "terreno-valparaiso-100-300-historico",
-    "recordType": "Terreno individual · antecedente histórico",
-    "name": "Valparaíso 100 · lote de 300 m² · enlace retirado",
+    "id": "terreno-valparaiso-100-lote10-300",
+    "recordType": "Terreno individual · lote 10 · Barrio Güemes",
+    "name": "Valparaíso 100 · lote 10 · 300 m² · Barrio Güemes",
     "locality": "Moreno",
-    "address": "Valparaíso 100, Barrio Güemes, Moreno",
+    "address": "Valparaíso 100, Barrio Güemes, lote 10, Moreno",
     "geocodeQuery": "Valparaíso 100, Moreno, Buenos Aires",
     "geocodeMatch": "VALPARAISO 100",
-    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-terreno-10-x-30-buen-acceso-ruta-7-moreno-60060142.html",
-    "agency": "No identificada en la ficha indexada",
-    "contact": "Contacto indexado: Ricardo Castagnone. Corredores responsables publicados: Angélica Estefanía Berdun, S.I. 6575, y Marcela Bulnes, CPI 6915. Teléfono completo no visible.",
-    "price": "USD 10.000 (último valor indexado)",
+    "source": "https://inmoclick.com/72158-re-max-blue/inmuebles/3705/ficha/terreno-en-venta-en-valparaiso-100",
+    "agency": "RE/MAX Blue",
+    "contact": "RE/MAX Blue; consultas mediante Inmoclick. La ficha no expone un teléfono completo.",
+    "price": "USD 10.000",
     "currency": "USD",
     "landSurfaceM2": 300,
     "coveredSurfaceM2": null,
-    "surfaceNote": "300 m² (10 × 30 m), según resultado indexado.",
-    "observations": "La ficha indexada describía el lote 10 del Barrio Güemes, a 300 m de Ruta 7. El enlace directo devolvió 410 Gone el 27/11/2026. Se conserva como antecedente histórico; no hay evidencia suficiente para afirmar si fue vendido o retirado por el anunciante.",
+    "surfaceNote": "300 m² (10 × 30 m), lote 10 de la manzana, según Inmoclick.",
+    "observations": "La ficha de Inmoclick identifica expresamente lote 10, 10 m de frente por 30 m de fondo y publicación reciente. Otra URL de Zonaprop para el mismo aviso devuelve 410 Gone, pero la ficha de Inmoclick seguía accesible y publicada hace 5 días al 27/11/2026. Disponibilidad comercial no confirmada; no confundir con el lote 11 de la misma dirección.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No vigente",
-    "verificationStatus": "El enlace directo de Zonaprop devolvió 410 Gone el 27/11/2026; el último precio y superficie se conservan solo como datos históricos del índice. No se confirma el motivo del retiro.",
-    "geolocationStatus": "Pendiente: aunque el aviso publicaba Valparaíso 100, no se verificó la parcela ni su nomenclatura."
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Inmoclick accesible el 27/11/2026; publicada hace 5 días, precio USD 10.000, 300 m² y lote 10 identificados. La URL anterior de Zonaprop devuelve 410 Gone; la publicación actual de Inmoclick impide marcar el lote como retirado. Disponibilidad no confirmada.",
+    "geolocationStatus": "Pendiente: la dirección pública es común a lotes distintos; no asignar coordenadas de parcela sin plano o nomenclatura.",
+    "geocodeDisabled": true,
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-terreno-10-x-30-buen-acceso-ruta-7-moreno-60060142.html",
+        "label": "Zonaprop · enlace anterior; devolvió 410 Gone"
+      },
+      {
+        "url": "https://www.argenprop.com/terreno-en-venta-en-moreno--20628773",
+        "label": "Argenprop · publicación cruzada del lote 10, indexada en noviembre de 2026"
+      }
+    ],
+    "publicationDate": "Publicado hace 5 días al 27/11/2026"
+  },
+  {
+    "id": "terreno-valparaiso-100-lote11-300",
+    "recordType": "Terreno individual · lote 11 · Barrio Güemes",
+    "name": "Valparaíso 100 · lote 11 · 300 m² · Barrio Güemes",
+    "locality": "Moreno",
+    "address": "Valparaíso 100, Barrio Güemes, lote 11 de la manzana, Moreno",
+    "geocodeDisabled": true,
+    "source": "https://inmoclick.com/72158-re-max-blue/inmuebles/3842/ficha/terreno-en-venta-en-valparaiso-100",
+    "sourceAlternates": [
+      {
+        "url": "https://www.argenprop.com/terreno-en-venta-en-moreno--20382149",
+        "label": "Argenprop · publicación cruzada que identifica lote 11"
+      }
+    ],
+    "agency": "RE/MAX Blue",
+    "contact": "RE/MAX Blue; consultas mediante Inmoclick. La ficha no expone un teléfono completo.",
+    "price": "USD 10.000",
+    "currency": "USD",
+    "landSurfaceM2": 300,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "300 m² (10 × 30 m), lote 11 de la manzana, según Inmoclick.",
+    "publicationDate": "Publicado hace 15 días al 27/11/2026",
+    "observations": "Inmoclick identifica lote 11, 10 m de frente por 30 m de fondo, y muestra publicación de hace 15 días al 27/11/2026. Es distinto del lote 10, aunque ambas fichas usan la misma dirección Valparaíso 100. Verificar plano de subdivisión, nomenclatura y disponibilidad.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Inmoclick accesible el 27/11/2026; publicada hace 15 días, precio USD 10.000, 300 m² y lote 11 identificados. Disponibilidad comercial no confirmada.",
+    "geolocationStatus": "Pendiente: la dirección pública se repite para lotes distintos; no asignar coordenadas de parcela sin plano o nomenclatura."
   }
-];
+];;
 publishedProperties.push(...nov27_0923NewEntries);
-
-const nov27ValparaisoLot10 = publishedProperties.find(item => item.id === "terreno-valparaiso-100-300-historico");
-if (nov27ValparaisoLot10) {
-  Object.assign(nov27ValparaisoLot10, {
-    id: "terreno-valparaiso-100-300-historico",
-    recordType: "Terreno individual · lote 10 · Barrio Güemes",
-    name: "Valparaíso 100 · lote 10 · 300 m² · Barrio Güemes",
-    address: "Valparaíso 100, Barrio Güemes, lote 10, Moreno",
-    geocodeDisabled: true,
-    source: "https://inmoclick.com/72158-re-max-blue/inmuebles/3705/ficha/terreno-en-venta-en-valparaiso-100",
-    sourceAlternates: [
-      { url: "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-terreno-10-x-30-buen-acceso-ruta-7-moreno-60060142.html", label: "Zonaprop · enlace anterior; devolvió 410 Gone" },
-      { url: "https://www.argenprop.com/terreno-en-venta-en-moreno--20628773", label: "Argenprop · publicación cruzada del lote 10, indexada en noviembre de 2026" }
-    ],
-    agency: "RE/MAX Blue",
-    contact: "RE/MAX Blue; consultas mediante Inmoclick. La ficha no expone un teléfono completo.",
-    price: "USD 10.000",
-    currency: "USD",
-    landSurfaceM2: 300,
-    coveredSurfaceM2: null,
-    surfaceNote: "300 m² (10 × 30 m), lote 10 de la manzana, según Inmoclick.",
-    observations: "La ficha de Inmoclick identifica expresamente lote 10, 10 m de frente por 30 m de fondo y publicación reciente. Otra URL de Zonaprop para el mismo aviso devuelve 410 Gone, pero la ficha de Inmoclick seguía accesible y publicada hace 5 días al 27/11/2026. Disponibilidad comercial no confirmada; no confundir con el lote 11 de la misma dirección.",
-    lastCheckedAt: "2026-11-27",
-    availabilityStatus: "No confirmada",
-    verificationStatus: "Ficha directa de Inmoclick accesible el 27/11/2026; publicada hace 5 días, precio USD 10.000, 300 m² y lote 10 identificados. La URL anterior de Zonaprop devuelve 410 Gone; la publicación actual de Inmoclick impide marcar el lote como retirado. Disponibilidad no confirmada.",
-    geolocationStatus: "Pendiente: la dirección pública es común a lotes distintos; no asignar coordenadas de parcela sin plano o nomenclatura."
-  });
-}
-
-const nov27ValparaisoLot11 = {
-  id: "terreno-valparaiso-100-lote11-300",
-  recordType: "Terreno individual · lote 11 · Barrio Güemes",
-  name: "Valparaíso 100 · lote 11 · 300 m² · Barrio Güemes",
-  locality: "Moreno",
-  address: "Valparaíso 100, Barrio Güemes, lote 11 de la manzana, Moreno",
-  geocodeDisabled: true,
-  source: "https://inmoclick.com/72158-re-max-blue/inmuebles/3842/ficha/terreno-en-venta-en-valparaiso-100",
-  sourceAlternates: [
-    { url: "https://www.argenprop.com/terreno-en-venta-en-moreno--20382149", label: "Argenprop · publicación cruzada que identifica lote 11" }
-  ],
-  agency: "RE/MAX Blue",
-  contact: "RE/MAX Blue; consultas mediante Inmoclick. La ficha no expone un teléfono completo.",
-  price: "USD 10.000",
-  currency: "USD",
-  landSurfaceM2: 300,
-  coveredSurfaceM2: null,
-  surfaceNote: "300 m² (10 × 30 m), lote 11 de la manzana, según Inmoclick.",
-  observations: "Inmoclick identifica lote 11, 10 m de frente por 30 m de fondo, y muestra publicación de hace 15 días al 27/11/2026. Es distinto del lote 10, aunque ambas fichas usan la misma dirección Valparaíso 100. Verificar plano de subdivisión, nomenclatura y disponibilidad.",
-  lat: null,
-  lng: null,
-  lastCheckedAt: "2026-11-27",
-  availabilityStatus: "No confirmada",
-  verificationStatus: "Ficha directa de Inmoclick accesible el 27/11/2026; publicada hace 15 días, precio USD 10.000, 300 m² y lote 11 identificados. Disponibilidad comercial no confirmada.",
-  geolocationStatus: "Pendiente: la dirección pública se repite para lotes distintos; no asignar coordenadas de parcela sin plano o nomenclatura."
-};
-publishedProperties.push(nov27ValparaisoLot11);
-
-const nov27Piovano3700 = publishedProperties.find(item => item.id === "casa-piovano-3700-superficie-conflictiva");
-if (nov27Piovano3700) {
-  Object.assign(nov27Piovano3700, {
-    source: "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-en-moreno-60761167.html",
-    sourceAlternates: [
-      { url: "https://www.argenprop.com/casa-en-venta-en-moreno-7-ambientes--20931658", label: "Argenprop · publicación cruzada, USD 220.000 y 2.960 m² de terreno" },
-      { url: "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casaquinta-en-venta-en-la-mejor-zona-de-moreno-centro-60571481.html", label: "Basso Bienes Raíces · otra ficha del mismo activo, USD 240.000 y cabecera con superficie contradictoria" }
-    ],
-    price: "USD 220.000 en Zonaprop y Argenprop; otra ficha de Basso Bienes Raíces publica USD 240.000",
-    landSurfaceM2: 2960,
-    coveredSurfaceM2: 250,
-    surfaceNote: "2.960 m² de terreno y 250 m² cubiertos en las fichas de Zonaprop 60761167 y Argenprop 20931658. Otra ficha de Basso/Zonaprop para el mismo inmueble indica USD 240.000 y 270 m² totales en cabecera, aunque su descripción habla de casi 3.000 m². Confirmar superficie y precio con título y mensura.",
-    observations: "Casa quinta de cinco/siete ambientes, cuatro/cinco dormitorios según ficha, tres baños, pileta, quincho y departamento independiente. Dos publicaciones cruzadas (Zonaprop 60761167 y Argenprop 20931658) coinciden en USD 220.000, 2.960 m² de terreno y 250 m² cubiertos. Una tercera ficha de Basso Bienes Raíces (Zonaprop 60571481) pide USD 240.000 y presenta una cabecera contradictoria de 270 m² totales, aunque la descripción refiere a casi 3.000 m². Se conserva como un solo activo; no asumir subdivisión ni capacidad constructiva.",
-    verificationStatus: "Ficha de Zonaprop 60761167 accesible el 27/11/2026 y ficha cruzada de Argenprop indexada 4 días antes: ambas publican USD 220.000, 2.960 m² de terreno y 250 m² cubiertos. Otra ficha de Basso/Zonaprop publica USD 240.000 y datos de superficie contradictorios. Disponibilidad no confirmada.",
-    geolocationStatus: "Pendiente: altura aproximada y referencia Ruta 5 km 38,2; no se asigna coordenada parcelaria."
-  });
-}
 
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
