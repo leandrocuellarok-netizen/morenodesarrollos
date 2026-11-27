@@ -325,7 +325,7 @@
     "casa-prados-oeste-general-hornos-2900-850": "General Hornos 2900 · casa en construcción · Prados del Oeste II",
     "casa-quinta-infanta-isabel-4200-1527": "Infanta Isabel 4200 · quinta Parque Gorriti",
     "terreno-juan-jose-castelli-2500-8435": "Juan José Castelli 2500 · fracción de 8.435 m² · Villa Salas",
-    "terreno-general-hornos-1800-prados-oeste2-800": "Prados del Oeste II · lote central de 800 m² · General Hornos 1800",
+    "terreno-general-hornos-1800-prados-oeste2-800": "Prados del Oeste · lote central de 800 m² · General Hornos 1800",
     "terreno-don-bosco-8700-san-francisco-325": "Barrio San Francisco · Don Bosco 8599/8700 · 325 m²",
     "terrenos-mariano-moreno-la-reja-lotes-5-11-925": "Loteo Mariano Moreno · lotes 5 y 11 · 925 m² cada uno",
     "terreno-de-la-vega-200-dos-lotes-970": "De la Vega al 200 · dos lotes · 970 m²",
