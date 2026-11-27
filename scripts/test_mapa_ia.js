@@ -288,7 +288,7 @@ assert.equal(hypothesisFeature.properties.line_to_investigate, "Prospección de 
 assert.equal(hypothesisFeature.properties.parcel_identified, false);
 assert.equal(hypothesisFeature.properties.availability_verified, false);
 assert.match(hypothesisFeature.properties.coordinate_scope, /no identifica una parcela/);
-assert.match(filteredGeoJson.disclaimer.toLocaleLowerCase("es-AR"), /no identifican parcelas/);
+assert.match(filteredGeoJson.disclaimer.toLocaleLowerCase("es-AR"), /no identifica una parcela/);
 assert.equal(
   buildGeoJson(all).features.length,
   28,
