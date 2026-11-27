@@ -195,7 +195,7 @@
     "terreno-chiclana-600-359-historico": "Chiclana 600 · lote de 359 m² · antecedente retirado",
     "terreno-ensenada-6300-30000-historico": "Ensenada 6300 · 30.000 m² · tres viviendas · antecedente retirado",
     "terreno-lamadrid-6300-2737-historico": "General Aráoz de Lamadrid 6300 · cuatro lotes de 2.737 m² · antecedente retirado",
-    "terreno-jose-maria-paz-del-canon-594-historico": "José María Paz y Del Cañón · lote de 594 m² · antecedente retirado",
+    "terreno-paz-del-canon-594-historico": "José María Paz y Del Cañón · lote de 594 m² · antecedente retirado",
     "desarrollo-pir25-ruta25-donbosco": "PIR 25 · Parque Industrial · 27 ha · 60 unidades funcionales",
     "pir25-up30-2713": "PIR 25 · UP 30 · 2.713,73 m²",
     "pir25-up50-2895": "PIR 25 · UP 50 · 2.895,61 m²",
