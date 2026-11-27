@@ -630,6 +630,424 @@ const nov27NewPublishedEntries = [
 ];
 publishedProperties.push(...nov27NewPublishedEntries);
 
+const nov27HourlyEntries = [
+  {
+    "id": "terreno-bouchard-300-461",
+    "recordType": "Terreno con construcciones",
+    "name": "Bouchard 300 · 461 m²",
+    "locality": "Moreno Centro",
+    "address": "Bouchard 300, Moreno",
+    "geocodeQuery": "Bouchard 300, Moreno",
+    "geocodeMatch": "BOUCHARD 300",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--20950413",
+    "agency": "RE/MAX · oficina independiente (publicación en Argenprop)",
+    "contact": "Nicolás Kardahi · corredora responsable Silvana Inés Palini, CPI 8862 / CMCPM 2955; teléfono completo no visible",
+    "price": "USD 120.000",
+    "currency": "USD",
+    "landSurfaceM2": 461,
+    "surfaceNote": "Incluye galpón/deposito, piscina, quincho y baño/habitación; superficie cubierta no informada.",
+    "observations": "El aviso informa FOS 0,6 y FOT 1,0. Hay contradicción interna sobre cloacas: primero las incluye entre servicios y luego indica cloacas NO. Verificar factibilidad y normativa municipal antes de modelar.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio y superficie visibles. La publicación no confirma disponibilidad ni documentación parcelaria.",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "terreno-sarmiento-500-750",
+    "recordType": "Terreno con construcciones",
+    "name": "Sarmiento 500 · esquina con Guatemala · 750 m²",
+    "locality": "Moreno Centro",
+    "address": "Sarmiento 500 y Guatemala, Moreno",
+    "geocodeQuery": "Sarmiento 500 y Guatemala, Moreno",
+    "geocodeMatch": "SARMIENTO 500",
+    "source": "https://www.argenprop.com/23085396--terreno-en-venta-en-centro-moreno--19911511",
+    "agency": "C21 Gran Bahía S.A.",
+    "contact": "Gabriela Teresa Crespi y Mariano Canedo · matrículas CUCICBA 8503 / CSI 5981; teléfono no visible completo",
+    "price": "USD 79.000",
+    "currency": "USD",
+    "landSurfaceM2": 750,
+    "surfaceNote": "Casa principal a reciclar, galería aprox. 36 m², construcción independiente aprox. 40 m², quincho y parrilla; el aviso no informa superficie cubierta total.",
+    "observations": "La publicación presenta la oportunidad principalmente como lote con construcciones existentes; servicios y estado deben verificarse en visita y documentación.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y responsables visibles. No se confirma disponibilidad.",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "terreno-ecoparque-irlanda-2000",
+    "recordType": "Terreno industrial individual",
+    "name": "Ecoparque Industrial · Ruta 24 y calle Irlanda · 2.000 m²",
+    "locality": "Francisco Álvarez",
+    "address": "Ruta Provincial 24 y calle Irlanda, Francisco Álvarez, Moreno",
+    "geocodeQuery": "Ruta Provincial 24 y calle Irlanda, Francisco Alvarez, Moreno",
+    "geocodeMatch": "RUTA PROVINCIAL 24 IRLANDA",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--20572344",
+    "agency": "Francesco Tucci Negocios Inmobiliarios",
+    "contact": "Francesco Tucci Negocios Inmobiliarios · teléfono completo no visible; el operador del parque publica WhatsApp +54 9 11 5010-2564",
+    "price": "USD 240.000 (USD 120/m² contado; financiación publicada a USD 130/m²)",
+    "currency": "USD",
+    "landSurfaceM2": 2000,
+    "surfaceNote": "40 m de frente × 50 m de fondo; sin superficie cubierta publicada.",
+    "observations": "No se publica número de parcela. Otras fichas de Argenprop para lotes de 2.000 m² dentro del mismo parque muestran USD 248.000 y USD 260.000; sin identificación parcelaria no se puede confirmar si son lotes distintos o publicaciones alternativas. No duplicar hasta obtener lote/manzana.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; ubicación, superficie y precio publicados. Identificación de lote y stock pendientes.",
+    "geolocationStatus": "Pendiente: la intersección es una referencia de acceso al parque, no una parcela individual."
+  },
+  {
+    "id": "casa-centenario-600-360",
+    "recordType": "Casa individual",
+    "name": "Casa · Centenario al 600",
+    "locality": "Moreno Centro",
+    "address": "Centenario al 600, entre Ameghino y Esteban de Luca, Moreno",
+    "geocodeQuery": "Centenario 600, Moreno",
+    "geocodeMatch": "CENTENARIO 600",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-moreno-vendo-60301810.html",
+    "agency": "Anunciante no identificado en la ficha individual de Zonaprop",
+    "contact": "Formulario de contacto de Zonaprop; no se publica teléfono ni nombre de inmobiliaria en la ficha abierta",
+    "price": "USD 149.800",
+    "currency": "USD",
+    "landSurfaceM2": 360,
+    "coveredSurfaceM2": 110,
+    "surfaceNote": "7 ambientes; el aviso describe cochera, patio, pérgola y galpón al fondo.",
+    "observations": "La ficha individual mantiene USD 149.800; la publicación no muestra fecha de alta o actualización. Confirmar identidad del anunciante, título y medidas con documentación.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio y superficies publicados. No se identifica la inmobiliaria en la página consultada.",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "casa-venezuela-2400-456",
+    "recordType": "Casa individual",
+    "name": "Chalet · Venezuela al 2400 · Moreno Norte",
+    "locality": "Moreno Centro / Moreno Norte",
+    "address": "Venezuela al 2400, entre Güemes y Alsina, Moreno",
+    "geocodeQuery": "Venezuela 2400, Moreno",
+    "geocodeMatch": "VENEZUELA 2400",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-venta-chalet-5-ambientes-garage-parque-pileta-y-60208007.html",
+    "agency": "DI PASCUALE Propiedades",
+    "contact": "DI PASCUALE Propiedades · matrícula DJMGR 41 / 230; formulario/WhatsApp de Zonaprop, teléfono no visible en la ficha",
+    "price": "USD 80.000",
+    "currency": "USD",
+    "landSurfaceM2": 456,
+    "coveredSurfaceM2": 120,
+    "surfaceNote": "18 m² semicubiertos publicados; chalet en dos plantas, pileta y terraza.",
+    "observations": "El aviso indica que requiere reciclaje. No tomar las superficies como verificadas por plano; confirmar estado, servicios y alcance de obra.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio, superficie y anunciante publicados. Disponibilidad no confirmada.",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "casa-francisco-de-aguirre-6400",
+    "recordType": "Casa individual",
+    "name": "Casa en Francisco de Aguirre 6400",
+    "locality": "Francisco Álvarez",
+    "address": "Francisco de Aguirre 6400, entre La Pintura y Curapaligüe, Francisco Álvarez",
+    "geocodeQuery": "Francisco de Aguirre 6400, Francisco Alvarez, Moreno",
+    "geocodeMatch": "FRANCISCO DE AGUIRRE 6400",
+    "source": "https://www.argenprop.com/casa-en-venta-en-francisco-alvarez-4-ambientes--19948479",
+    "agency": "Rosana Gularte Propiedades",
+    "contact": "Rosana Gularte Propiedades · teléfono publicado parcialmente en Argenprop; solicitar número completo por el portal",
+    "price": "USD 35.000",
+    "currency": "USD",
+    "landSurfaceM2": 300,
+    "coveredSurfaceM2": 140,
+    "surfaceNote": "10 × 30 m; dos plantas, primer piso a terminar.",
+    "observations": "El aviso informa agua de pozo, gas envasado y pilar eléctrico instalado pero pendiente de solicitar servicio. Acepta vehículo como parte de pago según publicación.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficies, ubicación y anunciante visibles. No confirma stock ni estado documental.",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "casa-racine-800-no-vigente",
+    "recordType": "Casa individual · histórico",
+    "name": "Casa en Racine 800 · publicación retirada",
+    "locality": "Francisco Álvarez",
+    "address": "Racine 800, Francisco Álvarez, Moreno",
+    "geocodeQuery": "Racine 800, Francisco Alvarez, Moreno",
+    "geocodeMatch": "RACINE 800",
+    "source": "https://www.argenprop.com/casa-en-venta-en-francisco-alvarez-4-ambientes--20469282",
+    "agency": "RE/MAX Premium II",
+    "contact": "Contacto publicado originalmente: Daniel Rearte; el aviso ya no abre",
+    "price": "USD 75.000 (último precio visible en el resultado indexado)",
+    "currency": "USD",
+    "landSurfaceM2": 427,
+    "coveredSurfaceM2": 130,
+    "surfaceNote": "El aviso describía casa de 4 ambientes, pileta y construcción independiente de aprox. 30 m².",
+    "observations": "La URL directa devolvió 410 Gone el 27/11/2026. Existió otra publicación para Racine 800 a USD 76.500, también con URL directa 410 Gone. Se conserva una sola ficha histórica por dirección; no presentar como oportunidad vigente.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No vigente",
+    "verificationStatus": "No vigente: la URL primaria de Argenprop devolvió 410 Gone el 27/11/2026; la segunda publicación encontrada para la misma dirección también devolvió 410 Gone.",
+    "geolocationStatus": "Pendiente: registro histórico; no asignar coordenadas parcelarias."
+  },
+  {
+    "id": "desarrollo-prados-del-oeste-hornos-2800",
+    "recordType": "Desarrollo inmobiliario / loteo",
+    "name": "Prados del Oeste 1 y 2 · Gral. Hornos al 2800",
+    "locality": "Moreno / Cuartel V",
+    "address": "General Hornos al 2800, Moreno, Partido de Moreno",
+    "geocodeQuery": "General Hornos 2800, Moreno",
+    "geocodeMatch": "GENERAL HORNOS 2800",
+    "source": "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememhoin-barrio-cerrado-prados-del-oeste-country-lotes-en-53772476.html",
+    "agency": "Sarro Pucheta Propiedades · inmobiliaria anunciada como oficial del barrio",
+    "contact": "Formulario de Zonaprop / Sarro Pucheta Propiedades; teléfono no visible en la ficha consultada",
+    "price": "Desde USD 39.668 (ejemplo: lote 193 de 899 m², contado promocional; valor de lista USD 41.756)",
+    "currency": "USD",
+    "surfaceNote": "14 unidades publicadas de 784 a 899 m². Prados del Oeste 2 declara 256 lotes; Prados 1 etapas A y B figuran entregadas y escrituradas.",
+    "observations": "La ficha mezcla etiquetas de pozo, construcción y terminado, pero el texto informa posesión inmediata para Prados 2 y próxima escrituración. Verificar etapa, lote, expensas y disponibilidad real.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha de emprendimiento de Zonaprop accesible el 27/11/2026; el anunciante declara posesión inmediata de Prados 2 y etapas 1A/1B entregadas. Estado de obra no verificado independientemente.",
+    "geolocationStatus": "Pendiente: la altura publicada identifica el acceso/sector del desarrollo, no un lote individual."
+  },
+  {
+    "id": "terreno-teniente-camilli-240-975",
+    "recordType": "Terreno con construcción",
+    "name": "Teniente Camilli al 200/240 · 975 m²",
+    "locality": "Moreno",
+    "address": "Teniente Camilli al 200 (título) / 240 (descripción), Moreno",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--17335118",
+    "agency": "Guillermo Díaz Propiedades",
+    "contact": "Guillermo Díaz Propiedades · corredor responsable Guillermo Díaz, CMCPDJMGR 277; teléfono no visible completo",
+    "price": "USD 240.000",
+    "currency": "USD",
+    "landSurfaceM2": 975,
+    "coveredSurfaceM2": 237,
+    "surfaceNote": "17 m de frente × 56 m de fondo; la ficha denomina 237 m² como superficie construida.",
+    "observations": "La altura difiere entre título (al 200) y descripción (240); no georreferenciar hasta aclarar. El aviso informa zonificación R1A, FOS 0,6 y FOT 1,4; validar indicadores con Municipio y parcela.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, terreno y superficie construida publicados. Dirección exacta contradictoria dentro del aviso.",
+    "geolocationStatus": "Pendiente: dirección inconsistente entre título y descripción; no asignar punto hasta aclararla."
+  },
+  {
+    "id": "terreno-yapeyu-rafael-arcos-2850",
+    "recordType": "Fracción de terreno",
+    "name": "Yapeyú y Rafael Arcos · fracción de 2.850 m²",
+    "locality": "Moreno",
+    "address": "Intersección aproximada de Yapeyú y Rafael Arcos, Moreno",
+    "geocodeQuery": "Yapeyu y Rafael Arcos, Moreno",
+    "geocodeMatch": "YAPEYU RAFAEL ARCOS",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--20925842",
+    "agency": "Girgola",
+    "contact": "Girgola · martillera responsable Agustina Scalese, CPI 8928 / MGR 313; teléfono completo no visible",
+    "price": "USD 189.000",
+    "currency": "USD",
+    "landSurfaceM2": 2850,
+    "surfaceNote": "Aprox. 51 m de frente × 56 m de fondo; se ofrece en conjunto o por lotes.",
+    "observations": "El aviso informa zonificación R4b, FOS 0,60 y FOT 1,00, sujetos a verificación municipal y a la parcela resultante. Calle de tierra con mejorado; factibilidad de servicios por lote a consultar.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y ubicación aproximada publicados. No se confirma subdivisión ni disponibilidad.",
+    "geolocationStatus": "Pendiente: Georef debe resolver inequívocamente la intersección; no representa parcela."
+  },
+  {
+    "id": "terreno-prados-del-oeste-lote-230-800",
+    "recordType": "Terreno individual",
+    "name": "Prados del Oeste 1-B · Lote 230 · 800 m²",
+    "locality": "Moreno / Cuartel V",
+    "address": "Prados del Oeste 1-B, lote 230, Moreno",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--16808124",
+    "agency": "Valencia Viudes Bienes Raíces",
+    "contact": "Matías G. Valencia, col. 3034 CMCPM y Matías F. Viudes, col. 3047 CMCPM; teléfono no visible completo",
+    "price": "USD 67.000",
+    "currency": "USD",
+    "landSurfaceM2": 800,
+    "surfaceNote": "22 m de frente × 36 m de fondo; el aviso informa escritura y posesión inmediata.",
+    "observations": "La ficha identifica lote interno 1-B, orientación norte y servicios. No se publica calle interna ni nomenclatura catastral; no ubicar como parcela exacta.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie, lote y comercializadora visibles. Disponibilidad no confirmada.",
+    "geolocationStatus": "Pendiente: no se publica dirección interna suficiente para ubicar el lote."
+  },
+  {
+    "id": "terreno-general-savio-100-2050",
+    "recordType": "Terreno industrial / fracción",
+    "name": "General Savio 100 · 2.050 m² (superficie contradictoria)",
+    "locality": "La Reja / Moreno",
+    "address": "General Savio 100, Moreno (la descripción ubica en La Reja)",
+    "geocodeQuery": "General Savio 100, La Reja, Moreno",
+    "geocodeMatch": "GENERAL SAVIO 100",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--19316560",
+    "agency": "Konkolyi Propiedades",
+    "contact": "Konkolyi Propiedades · teléfono completo no visible en la ficha",
+    "price": "USD 124.000",
+    "currency": "USD",
+    "landSurfaceM2": 2050,
+    "surfaceNote": "El encabezado informa 2.050 m²; la descripción comercial dice “2 hectáreas”.",
+    "observations": "Contradicción crítica de superficie: 2.050 m² en los datos estructurados frente a 20.000 m² en el texto. No usar USD/m² ni evaluar factibilidad hasta recibir plano, título y nomenclatura. El aviso lo presenta como zona industrial a 250 m de Acceso Oeste.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio y superficie de encabezado visibles, pero el texto contradice la superficie en diez veces.",
+    "geolocationStatus": "Pendiente: la localidad y la altura deben confirmarse por la discrepancia entre título y descripción."
+  },
+  {
+    "id": "desarrollo-ecoparque-industrial-78-parcelas",
+    "recordType": "Desarrollo industrial",
+    "name": "Ecoparque Industrial Moreno · 78 parcelas",
+    "locality": "Francisco Álvarez / Cuartel V",
+    "address": "Corredor de Ruta Provincial 24, próximo al cruce con Ruta Provincial 25, Partido de Moreno",
+    "geocodeQuery": "Ruta Provincial 24 y Ruta Provincial 25, Moreno",
+    "geocodeMatch": "RUTA PROVINCIAL 24",
+    "source": "https://ecoparque.com.ar/",
+    "agency": "Ecoparque Industrial Moreno · sitio oficial del operador",
+    "contact": "WhatsApp oficial +54 9 11 5010-2564 · formulario del sitio",
+    "surfaceNote": "El sitio describe 78 parcelas de 2.000 a 10.000 m²; no identifica lotes concretos ni stock actual.",
+    "observations": "El sitio publica FOS 0,6 / FOT 1,2, infraestructura industrial y seguridad 24/7. El contador visible de parcelas aparece en cero, mientras el texto descriptivo declara 78 parcelas; la disponibilidad comercial debe confirmarse con el operador.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Sitio oficial accesible el 27/11/2026; descripción informa 78 parcelas y contacto oficial. El contador dinámico de parcelas aparece en cero y no permite confirmar stock.",
+    "geolocationStatus": "Pendiente: corredor vial aproximado; no se publicó dirección de parcela."
+  },
+  {
+    "id": "terreno-parques-morenito-300-300",
+    "recordType": "Terreno individual",
+    "name": "Parques del Morenito · lote 300 m²",
+    "locality": "Moreno Norte",
+    "address": "Enrique Larreta al 8300, Moreno Norte",
+    "geocodeQuery": "Enrique Larreta 8300, Moreno",
+    "geocodeMatch": "ENRIQUE LARRETA 8300",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--11643213",
+    "agency": "Ramírez Mandatos y Negocios Inmobiliarios",
+    "contact": "Ramírez Mandatos y Negocios Inmobiliarios · profesionales matriculados COMARCOMGR 71 / 183 y CUCICBA 8496; teléfono no visible completo",
+    "price": "USD 13.000",
+    "currency": "USD",
+    "landSurfaceM2": 300,
+    "observations": "La ficha ofrece lotes de 300, 594 y 1.200 m² con escritura inmediata y anticipo/cuotas. No publica número de lote ni confirma stock actual; no fusionar con la publicación independiente de 594 m².",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible en la revisión del 27/11/2026; precio y superficie publicados. Lote exacto y disponibilidad no confirmados.",
+    "geolocationStatus": "Pendiente: la dirección identifica el barrio, no el lote individual."
+  },
+  {
+    "id": "terreno-pim-i-parque-municipal-2493",
+    "recordType": "Terreno industrial individual",
+    "name": "Parque Municipal PIM I · 2.493 m²",
+    "locality": "Cuartel V",
+    "address": "Parque Municipal PIM I 100, Cuartel V, Moreno",
+    "geocodeQuery": "Parque Municipal PIM I, Cuartel V, Moreno",
+    "geocodeMatch": "PARQUE MUNICIPAL PIM 1",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-cuartel-v--20925111",
+    "agency": "Girgola",
+    "contact": "Girgola · martillera responsable Agustina Scalese, CPI 8928 / MGR 313; teléfono completo no visible",
+    "price": "USD 249.990",
+    "currency": "USD",
+    "landSurfaceM2": 2493,
+    "surfaceNote": "Expensas aproximadas publicadas: ARS 500.000; el aviso informa FOS 0,60 / FOT 1,20 y altura máxima 21 m.",
+    "observations": "El aviso lo ubica en parque operativo con calles pavimentadas, seguridad 24/7 y servicios. Categorías industriales I, II y III según publicación; verificar reglamento, expensas y admisibilidad municipal.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie, expensas e indicadores publicados. Stock no confirmado.",
+    "geolocationStatus": "Pendiente: no se publica número de parcela; la referencia corresponde al parque."
+  },
+  {
+    "id": "terreno-pim-ii-rp24-2677",
+    "recordType": "Terreno industrial individual",
+    "name": "Parque Industrial PIM II · 2.677 m²",
+    "locality": "Cuartel V",
+    "address": "Parque Industrial PIM II, sobre Ruta Provincial 24, Cuartel V, Moreno",
+    "geocodeQuery": "Parque Industrial PIM II Ruta Provincial 24, Cuartel V, Moreno",
+    "geocodeMatch": "PARQUE INDUSTRIAL PIM 2",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-cuartel-v--18518251",
+    "agency": "Marisol Espinosa Propiedades",
+    "contact": "Marisol Espinosa Propiedades · teléfono completo no visible en la ficha",
+    "price": "USD 250.000",
+    "currency": "USD",
+    "landSurfaceM2": 2677,
+    "surfaceNote": "51 m × 51 m; el aviso informa FOS 0,60 / FOT 1,20 y altura máxima 21 m.",
+    "observations": "La ficha no publica número de parcela. Ofrece financiación y/o inmueble en parte de pago. Confirmar identificación parcelaria y si es distinta de otras ofertas PIM II de la zona.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y parámetros publicados. No confirma disponibilidad.",
+    "geolocationStatus": "Pendiente: referencia de parque, no de parcela individual."
+  },
+  {
+    "id": "terreno-pim-ii-rp24-7700-2103",
+    "recordType": "Terreno industrial individual",
+    "name": "PIM II · parcela 67 · RP 24 al 7700 · 2.103 m²",
+    "locality": "Cuartel V",
+    "address": "Ruta Provincial 24 al 7700, Moreno, Cuartel V",
+    "geocodeQuery": "Ruta Provincial 24 7700, Moreno",
+    "geocodeMatch": "RUTA PROVINCIAL 24 7700",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--20706609",
+    "agency": "J.P. Stella Inversiones Inmobiliarias",
+    "contact": "J.P. Stella Inversiones Inmobiliarias · teléfono completo no visible en la ficha",
+    "price": "USD 220.000",
+    "currency": "USD",
+    "landSurfaceM2": 2103,
+    "surfaceNote": "2.103,58 m² informados en la descripción; 50 × 40 m; identificada como parcela 67.",
+    "observations": "El aviso informa frente a dos calles internas, gas industrial y zonificación industrial categorías 1, 2 y 3. Superficies aproximadas sujetas a escritura y plano.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; parcela, precio y superficie publicados. No confirma disponibilidad.",
+    "geolocationStatus": "Pendiente: verificar que la altura RP24 al 7700 corresponda al acceso del PIM II y no a una parcela."
+  },
+  {
+    "id": "casa-san-ramon-2700-251",
+    "recordType": "Casa individual / dos unidades",
+    "name": "Dos casas independientes · San Ramón al 2700",
+    "locality": "La Reja",
+    "address": "San Ramón al 2700, esquina Benavente, La Reja, Moreno",
+    "geocodeQuery": "San Ramon 2700 y Benavente, La Reja, Moreno",
+    "geocodeMatch": "SAN RAMON 2700",
+    "source": "https://www.argenprop.com/casa-en-venta-en-la-reja-4-ambientes--19658108",
+    "agency": "Blanes Estudio Inmobiliario",
+    "contact": "María Elena Blanes, CPMCLZ 4255 y Juan José Blanes, CUCICBA 2793; teléfono no visible completo",
+    "price": "USD 42.000",
+    "currency": "USD",
+    "landSurfaceM2": 251,
+    "coveredSurfaceM2": 87,
+    "surfaceNote": "La descripción indica 252 m² de terreno; el encabezado y datos estructurados muestran 251 m². Dos unidades independientes.",
+    "observations": "El aviso describe dos viviendas/departamentos sobre lote propio; confirmar si los 87 m² cubiertos corresponden a ambas unidades y revisar planos.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y comercializadora visibles. Hay diferencia menor de superficie entre encabezado y descripción.",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la esquina publicada."
+  },
+  {
+    "id": "casa-perito-moreno-3800-350",
+    "recordType": "Casa individual",
+    "name": "Casa · Perito Moreno 3800/3870 · La Reja",
+    "locality": "La Reja",
+    "address": "Perito Moreno 3800 (descripción: 3870), entre Mariano Moreno y Del Valle Inclán, La Reja",
+    "source": "https://www.argenprop.com/casa-en-venta-en-la-reja-4-ambientes--20903735",
+    "agency": "Broker Inmobiliario Claudia Mateoli",
+    "contact": "Broker Inmobiliario Claudia Mateoli · teléfono publicado parcialmente en Argenprop",
+    "price": "USD 50.000",
+    "currency": "USD",
+    "landSurfaceM2": 350,
+    "coveredSurfaceM2": 85,
+    "surfaceNote": "3 dormitorios, 2 baños y cochera techada para tres autos.",
+    "observations": "El título informa altura 3800 y la descripción 3870; conservar geolocalización pendiente hasta aclarar. Gas envasado según aviso.",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio y superficies publicados. Dirección con discrepancia interna.",
+    "geolocationStatus": "Pendiente: altura contradictoria entre título y descripción."
+  }
+];
+publishedProperties.push(...nov27HourlyEntries);
+
 publishedProperties.forEach(item => {
   item.lastCheckedAt = "2026-11-27";
   if (item.lat == null) item.lat = null;
@@ -667,6 +1085,109 @@ if (nov27SantaTeresa) {
   nov27SantaTeresa.availabilityStatus = "No vigente";
   nov27SantaTeresa.geolocationStatus = "Pendiente: publicación retirada o no accesible; conservar ubicación textual histórica.";
 }
+
+const hourlyById = id => publishedProperties.find(item => item.id === id);
+const hourlyAppendObservation = (item, note) => {
+  if (!item) return;
+  item.observations = [item.observations, note].filter(Boolean).join(" ");
+};
+const hourlySumio338 = hourlyById("sumio-lote-338");
+if (hourlySumio338) {
+  hourlySumio338.price = "Anticipo USD 12.000 + 60 cuotas de USD 250";
+  hourlySumio338.currency = "USD";
+  hourlySumio338.verificationStatus = "Ficha directa de Pablo Aquino Inmobiliaria accesible el 27/11/2026; indica lote 01, manzana 4, 338 m² y preventa con anticipo/cuotas.";
+  hourlySumio338.availabilityStatus = "No confirmada";
+  hourlyAppendObservation(hourlySumio338, "La inmobiliaria informa visación municipal y subdivisión por Geodesia en trámite ante Catastro PBA; no asumir parcela escriturable hasta verificar la subdivisión.");
+}
+const hourlySumio450 = hourlyById("sumio-lote-450");
+if (hourlySumio450) {
+  hourlySumio450.verificationStatus = "No vigente: la ficha de la inmobiliaria presenta el aviso como VENDIDO en la revisión del 27/11/2026; se conserva el historial.";
+  hourlySumio450.availabilityStatus = "No vigente";
+  hourlyAppendObservation(hourlySumio450, "La ficha original incluye el título VENDIDO para el lote de 450 m².");
+}
+const hourlySumioProject = hourlyById("loteo-sumio-proyecto");
+if (hourlySumioProject) {
+  hourlySumioProject.publicationDate = "19/03/2026";
+  hourlySumioProject.verificationStatus = "Ficha directa de Pablo Aquino Inmobiliaria accesible el 27/11/2026; publicación fechada 19/03/2026 declara que avanzan las obras y describe 26 parcelas.";
+  hourlySumioProject.availabilityStatus = "No confirmada";
+}
+const hourlyMorenitoProject = hourlyById("parques-morenito-proyecto");
+if (hourlyMorenitoProject) {
+  hourlyMorenitoProject.verificationStatus = "Ficha del desarrollo accesible el 27/11/2026; declara entrega en julio de 2022 y continúa anunciando lotes de 300 a 1.200 m². La disponibilidad comercial actual no está confirmada.";
+  hourlyMorenitoProject.availabilityStatus = "No confirmada";
+  hourlyAppendObservation(hourlyMorenitoProject, "La ficha del desarrollador informa 56 lotes; otra ficha de Argenprop describe 50 lotes. Se conserva la diferencia sin resolver.");
+}
+const hourlyMartin4900 = hourlyById("moreno-casa-martin-fierro-4900");
+if (hourlyMartin4900) {
+  hourlyMartin4900.verificationStatus = "Pendiente de revalidación: la URL primaria no fue accesible el 27/11/2026; no se obtuvo respuesta 410 ni una ficha primaria alternativa que confirme continuidad.";
+  hourlyMartin4900.availabilityStatus = "Pendiente de revalidación";
+}
+const hourlyRivadavia = hourlyById("casa-bernardino-rivadavia-1000");
+if (hourlyRivadavia) {
+  hourlyRivadavia.price = "USD 150.000 (ficha individual; el listado general había mostrado USD 170.000)";
+  hourlyRivadavia.currency = "USD";
+  hourlyRivadavia.landSurfaceM2 = 597;
+  hourlyRivadavia.coveredSurfaceM2 = 80;
+  hourlyRivadavia.agency = "Mateo Propiedades";
+  hourlyRivadavia.contact = "Mateo Propiedades · matrícula 36 Dpto. M-Gr.; teléfono no visible en la ficha consultada";
+  hourlyRivadavia.verificationStatus = "Ficha individual de Zonaprop accesible el 27/11/2026; precio USD 150.000, 597 m² totales y 80 m² cubiertos. Un listado general mostraba USD 170.000.";
+  hourlyRivadavia.availabilityStatus = "No confirmada";
+}
+const hourlyRicardoRojas = hourlyById("terreno-ricardo-rojas-4418-3830");
+if (hourlyRicardoRojas) {
+  hourlyRicardoRojas.verificationStatus = "Ficha de Argenprop accesible el 27/11/2026; publica 3.830 m² y USD 69.000. El aviso menciona contrato de antena Movistar hasta octubre de 2026, plazo ya transcurrido.";
+  hourlyRicardoRojas.availabilityStatus = "No confirmada";
+  hourlyAppendObservation(hourlyRicardoRojas, "Existen otras publicaciones para Ricardo Rojas 4418 con 9.435 m² o 13.265 m² agregados; no fusionar sin nomenclatura catastral. El contrato de antena mencionado vencía en octubre de 2026 y no debe modelarse como ingreso vigente sin renovación documentada.");
+}
+const hourlyTrujui = hourlyById("trujui-lote-isabel-catolica-400");
+if (hourlyTrujui) {
+  hourlyTrujui.price = "USD 28.000 (encabezado) / USD 18.000 + cuotas (descripción)";
+  hourlyTrujui.currency = "USD";
+  hourlyAppendObservation(hourlyTrujui, "El precio publicado difiere entre el encabezado y la descripción; solicitar propuesta comercial escrita antes de comparar.");
+}
+const hourlyBelisario = hourlyById("la-reja-casa-belisario-roldan-1800");
+if (hourlyBelisario) hourlyAppendObservation(hourlyBelisario, "La ficha presenta una inconsistencia de localidad: título/portal indica Moreno, mientras la descripción menciona La Reja. Confirmar domicilio exacto.");
+const hourlyLebensohn = hourlyById("paso-del-rey-casa-lebensohn-300");
+if (hourlyLebensohn) {
+  hourlyLebensohn.coveredSurfaceM2 = null;
+  hourlyLebensohn.surfaceNote = "El portal informa 1 m² cubierto, dato inconsistente con la descripción de una casa en dos plantas; superficie cubierta útil no confirmada.";
+  hourlyAppendObservation(hourlyLebensohn, "No utilizar el dato de 1 m² cubierto para cálculos: parece un error de carga y requiere plano o confirmación del anunciante.");
+}
+const hourlyNations = hourlyById("casa-naciones-unidas-1500");
+if (hourlyNations) {
+  hourlyNations.verificationStatus = "Ficha individual de Zonaprop accesible el 27/11/2026; mantiene USD 61.000, 194 m² totales y 95 m² cubiertos.";
+  hourlyNations.availabilityStatus = "No confirmada";
+}
+const hourlySanDiego = hourlyById("casa-country-san-diego-1500");
+if (hourlySanDiego) {
+  hourlySanDiego.verificationStatus = "Ficha individual de Zonaprop accesible el 27/11/2026; mantiene USD 549.999, 1.500 m² totales y 720 m² cubiertos. Ubicación interna sin lote publicado.";
+  hourlySanDiego.availabilityStatus = "No confirmada";
+}
+const hourlyGolf = hourlyById("desarrollo-barrio-del-golf-atuel-2700");
+if (hourlyGolf) {
+  hourlyGolf.verificationStatus = "Ficha de Zonaprop accesible el 27/11/2026; informa 6 unidades publicadas, lotes de 730 a 1.635 m², desde USD 47.961 y entrega inmediata.";
+  hourlyGolf.availabilityStatus = "No confirmada";
+  hourlyAppendObservation(hourlyGolf, "La ficha mezcla etiquetas de pozo, construcción y terminado; el texto indica entrega inmediata. Confirmar etapa y stock por lote.");
+}
+const hourlyColonos = hourlyById("desarrollo-colonos-ii-2300");
+if (hourlyColonos) {
+  hourlyColonos.verificationStatus = "Ficha de Zonaprop accesible el 27/11/2026; mantiene entrega anunciada para noviembre de 2028 y unidades de 52 a 235 m².";
+  hourlyColonos.availabilityStatus = "No confirmada";
+  hourlyAppendObservation(hourlyColonos, "El precio publicado desde USD 1.700 no aclara si corresponde a m², unidad, anticipo u otro concepto; no usarlo como precio total.");
+}
+const hourlyIbis = hourlyById("desarrollo-ibis-iv-273");
+if (hourlyIbis) {
+  hourlyIbis.verificationStatus = "Ficha de Zonaprop accesible el 27/11/2026; informa inicio de obra en febrero de 2025, entrega estimada noviembre de 2027 y tres unidades publicadas.";
+  hourlyIbis.availabilityStatus = "No confirmada";
+  hourlyAppendObservation(hourlyIbis, "La cantidad de unidades publicadas difiere entre fichas del mismo desarrollo; confirmar inventario y estado de obra con la desarrolladora.");
+}
+const hourlyCamilliProject = hourlyById("desarrollo-140-camilli");
+if (hourlyCamilliProject) {
+  hourlyCamilliProject.verificationStatus = "Ficha de Zonaprop accesible el 27/11/2026; informa 12 unidades, entrega diciembre de 2027 y precios en encabezado desde USD 49.300.";
+  hourlyCamilliProject.availabilityStatus = "No confirmada";
+  hourlyAppendObservation(hourlyCamilliProject, "La descripción usa importes con símbolo $ y cuotas en pesos indexadas por CAC, mientras el encabezado expresa USD. Solicitar lista comercial con moneda y unidad de precio.");
+}
+
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
   ...opportunities.map(item => ({ ...item, type: "opportunity" })),
