@@ -1396,3 +1396,93 @@
     transition: none;
   }
 }
+
+
+/* Revisión conservadora de relaciones entre publicaciones: sin fusión automática. */
+.map-duplicate-review {
+  margin: 12px 0 18px;
+  border: 1px solid #c9c8bc;
+  border-left: 3px solid #80533a;
+  background: rgba(232, 229, 217, .42);
+}
+.map-duplicate-review > summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 13px;
+  cursor: pointer;
+  list-style: none;
+}
+.map-duplicate-review > summary::-webkit-details-marker {
+  display: none;
+}
+.map-duplicate-review > summary span {
+  color: #343a33;
+  font: 600 11px/1.45 var(--sans);
+  letter-spacing: .04em;
+}
+.map-duplicate-review > summary small {
+  color: #76523f;
+  font: 10px/1.45 var(--sans);
+  text-align: right;
+}
+.map-duplicate-review-note {
+  margin: 0;
+  padding: 0 13px 12px;
+  color: #686b62;
+  font: 10px/1.6 var(--sans);
+}
+.map-duplicate-pair {
+  padding: 12px 13px;
+  border-top: 1px solid #d2cec2;
+}
+.map-duplicate-pair h3 {
+  margin: 0;
+  color: #343a33;
+  font: 600 12px/1.5 var(--serif);
+}
+.map-duplicate-evidence {
+  margin: 6px 0 9px;
+  color: #686b62;
+  font: 10px/1.55 var(--sans);
+}
+.map-duplicate-pair-links {
+  display: grid;
+  justify-items: start;
+  gap: 7px;
+}
+.map-duplicate-pair-links a {
+  max-width: 100%;
+  color: #76523f;
+  font: 600 10px/1.5 var(--sans);
+  overflow-wrap: anywhere;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.map-duplicate-pair-links a:hover {
+  color: #343a33;
+}
+.map-duplicate-unresolved {
+  margin: 0;
+  padding: 10px 13px;
+  border-top: 1px dashed #a9794e;
+  color: #704a30;
+  font: 10px/1.55 var(--sans);
+  overflow-wrap: anywhere;
+}
+.map-duplicate-review [data-duplicate-reference]:focus-visible,
+.map-duplicate-review a:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+@media (max-width: 760px) {
+  .map-duplicate-review > summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .map-duplicate-review > summary small {
+    text-align: left;
+  }
+}
