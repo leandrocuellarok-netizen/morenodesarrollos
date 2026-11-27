@@ -334,6 +334,11 @@ async function auditRoute(browser, route) {
       check(sharedStatus === "no-vigente", "mapa-ia: la vista compartible debe conservar el estado registrado");
       const reviewDate = await page.locator("#published-list .map-published-review-date").first().innerText();
       check(/^Revisión de fuente: \d{2}\/\d{2}\/\d{4}$/.test(reviewDate), "mapa-ia: la ficha debe mostrar la fecha de revisión de la fuente");
+      await page.locator("#availability-filter").selectOption("no-es-oferta");
+      const nonOfferStatuses = (await page.locator("#published-list .map-published-status").allTextContents()).map(value => value.trim());
+      check(nonOfferStatuses.length === 1 && nonOfferStatuses[0] === "No es una oferta de parcela", "mapa-ia: el proyecto público no se presenta como una oferta de parcela");
+      const sharedNonOfferStatus = await page.evaluate(() => new URL(window.location.href).searchParams.get("vigencia"));
+      check(sharedNonOfferStatus === "no-es-oferta", "mapa-ia: el enlace compartido conserva el tipo de ficha no comercial");
       await page.locator("#reset-map").click();
       await page.locator("#diligence-filter").selectOption("pending");
       const pendingDiligenceCount = await page.locator("#published-list .map-item-published").count();

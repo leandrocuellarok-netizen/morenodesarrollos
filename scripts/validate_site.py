@@ -411,6 +411,7 @@ def main() -> None:
                     "function buildReferenceUrl(baseUrl, referenceId)",
                     "function buildTerritorialDossier(items, filters, generatedAt)",
                     "function buildTerritorialDossierHtml(dossier)",
+                    "MAX_TERRITORIAL_DOSSIER_REFERENCES",
                     "function downloadTerritorialDossier()",
                     "buildTerritorialDossier(visibleItems",
                     "dossierExportButton.addEventListener(\"click\", downloadTerritorialDossier)",

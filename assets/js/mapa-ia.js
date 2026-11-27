@@ -726,6 +726,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y responsables visibles. No se confirma disponibilidad.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
   },
   {
@@ -748,6 +749,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; ubicación, superficie y precio publicados. Identificación de lote y stock pendientes.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: la intersección es una referencia de acceso al parque, no una parcela individual."
   },
   {
@@ -801,6 +803,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio, superficie y anunciante publicados. Disponibilidad no confirmada.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
   },
   {
@@ -824,6 +827,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficies, ubicación y anunciante visibles. No confirma stock ni estado documental.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
   },
   {
@@ -847,6 +851,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No vigente",
     "verificationStatus": "No vigente: la URL primaria de Argenprop devolvió 410 Gone el 27/11/2026; la segunda publicación encontrada para la misma dirección también devolvió 410 Gone.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: registro histórico; no asignar coordenadas parcelarias."
   },
   {
@@ -868,6 +873,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha del desarrollo y tres avisos individuales accesibles el 27/11/2026; infraestructura, plano y posesión son declaraciones de los anunciantes, no verificación municipal o registral.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: la altura publicada identifica el acceso/sector del desarrollo, no un lote individual."
   },
   {
@@ -942,6 +948,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie, lote y comercializadora visibles. Disponibilidad no confirmada.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: no se publica dirección interna suficiente para ubicar el lote."
   },
   {
@@ -964,6 +971,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio y superficie de encabezado visibles, pero el texto contradice la superficie en diez veces.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: la localidad y la altura deben confirmarse por la discrepancia entre título y descripción."
   },
   {
@@ -983,6 +991,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Sitio oficial accesible el 27/11/2026; descripción informa 78 parcelas y contacto oficial. El contador dinámico de parcelas aparece en cero y no permite confirmar stock.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: corredor vial aproximado; no se publicó dirección de parcela."
   },
   {
@@ -1027,6 +1036,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie, expensas e indicadores publicados. Stock no confirmado.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: no se publica número de parcela; la referencia corresponde al parque."
   },
   {
@@ -1049,6 +1059,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y parámetros publicados. No confirma disponibilidad.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: referencia de parque, no de parcela individual."
   },
   {
@@ -1071,6 +1082,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; parcela, precio y superficie publicados. No confirma disponibilidad.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: verificar que la altura RP24 al 7700 corresponda al acceso del PIM II y no a una parcela."
   },
   {
@@ -1094,6 +1106,7 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie y comercializadora visibles. Hay diferencia menor de superficie entre encabezado y descripción.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la esquina publicada."
   },
   {
@@ -1115,17 +1128,17 @@ const nov27HourlyEntries = [
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio y superficies publicados. Dirección con discrepancia interna.",
+    "lastCheckedAt": "2026-11-27",
     "geolocationStatus": "Pendiente: altura contradictoria entre título y descripción."
   }
 ];
 publishedProperties.push(...nov27HourlyEntries);
 
 publishedProperties.forEach(item => {
-  item.lastCheckedAt = "2026-11-27";
   if (item.lat == null) item.lat = null;
   if (item.lng == null) item.lng = null;
   if (!item.verificationStatus) {
-    item.verificationStatus = "Fuente original accesible en la revisión del 27/11/2026; disponibilidad comercial no confirmada.";
+    item.verificationStatus = "No hay constancia individual de consulta de la fuente; verificar el enlace, el precio y la disponibilidad.";
   }
   if (!item.availabilityStatus) item.availabilityStatus = "No confirmada";
   if (!item.geolocationStatus) {
@@ -7718,7 +7731,7 @@ const MAP_VIEW_QUERY_KEYS = ["q", "tipo", "sector", "evidencia", "vigencia", "di
 const MAP_VIEW_CATEGORIES = ["all", "locality", "opportunity", "published"];
 const MAP_VIEW_KINDS = ["all", "industrial", "commercial", "tourism", "land"];
 const MAP_VIEW_EVIDENCE = ["all", "documented", "hypothesis"];
-const MAP_VIEW_AVAILABILITY = ["all", "no-confirmada", "pendiente-revalidacion", "no-vigente"];
+const MAP_VIEW_AVAILABILITY = ["all", "no-confirmada", "pendiente-revalidacion", "no-vigente", "no-es-oferta"];
 const MAP_VIEW_DILIGENCE = ["all", "complete", "pending"];
 
 function availabilityFilterKey(value) {
@@ -7726,6 +7739,7 @@ function availabilityFilterKey(value) {
   if (normalized === "no confirmada") return "no-confirmada";
   if (normalized === "pendiente de revalidacion") return "pendiente-revalidacion";
   if (normalized === "no vigente") return "no-vigente";
+  if (normalized === "no es una oferta de parcela") return "no-es-oferta";
   return "sin-estado";
 }
 
@@ -8655,10 +8669,12 @@ function buildTerritorialDossierDiagram(references) {
     '</svg>';
 }
 
+const MAX_TERRITORIAL_DOSSIER_REFERENCES = 500;
+
 function buildTerritorialDossierHtml(dossier) {
   if (!dossier || dossier.schema !== "moreno.territorial-dossier" ||
       dossier.schemaVersion !== 1 || !Array.isArray(dossier.references) ||
-      !dossier.references.length || dossier.references.length > 300) return "";
+      !dossier.references.length || dossier.references.length > MAX_TERRITORIAL_DOSSIER_REFERENCES) return "";
   const dateLabel = escapeTerritorialHtml(String(dossier.generatedAt || "").slice(0, 10));
   const title = escapeTerritorialHtml(dossier.title || "Dossier territorial · Moreno");
   const counts = dossier.counts || {};
@@ -10126,7 +10142,7 @@ if (typeof module !== "undefined" && module.exports) {
     isValidReviewDate, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState,
     getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates,
     buildTerritorialBrief, buildTerritorialBriefHtml,
-    buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml
+    MAX_TERRITORIAL_DOSSIER_REFERENCES, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml
   };
 }
 if (typeof document !== "undefined") initMapPage(document);

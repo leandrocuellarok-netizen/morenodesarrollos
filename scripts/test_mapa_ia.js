@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, publishedContactChannels, collectPotentialDuplicatePairs, paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, MAX_TERRITORIAL_DOSSIER_REFERENCES, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, publishedContactChannels, collectPotentialDuplicatePairs, paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -580,7 +580,7 @@ for (const item of all) {
     assert.equal(hasCoordinates(item), false, "no se inventan coordenadas para publicaciones pendientes: " + item.name);
     assert.match(item.geolocationStatus, /Pendiente/);
     assert.ok(item.verificationStatus && item.verificationStatus.length > 0, "cada ficha conserva un estado de verificación: " + item.name);
-    assert.ok(["No confirmada", "No vigente", "Pendiente de revalidación"].includes(item.availabilityStatus), "el estado comercial se conserva sin afirmar disponibilidad: " + item.name);
+    assert.ok(["No confirmada", "No vigente", "Pendiente de revalidación", "No es una oferta de parcela"].includes(item.availabilityStatus), "el estado comercial se conserva sin afirmar disponibilidad: " + item.name);
     assert.match(item.source, /^https:\/\//);
     continue;
   }
@@ -604,7 +604,8 @@ assert.equal(filterReferences(all, { category: "published" }).length, publishedP
 for (const [status, key] of [
   ["No confirmada", "no-confirmada"],
   ["Pendiente de revalidación", "pendiente-revalidacion"],
-  ["No vigente", "no-vigente"]
+  ["No vigente", "no-vigente"],
+  ["No es una oferta de parcela", "no-es-oferta"]
 ]) {
   const expected = publishedProperties.filter(item => item.availabilityStatus === status).length;
   assert.ok(expected > 0, "el inventario contiene registros con estado " + status);
@@ -617,8 +618,12 @@ assert.equal(filterReferences(all, { availability: "no-confirmada", query: "no c
 assert.equal(filterReferences(all, { availability: "estado-invalido" }).length, all.length, "un filtro de estado desconocido vuelve a la vista completa");
 assert.equal(availabilityFilterKey("Pendiente de revalidación"), "pendiente-revalidacion");
 assert.equal(availabilityFilterKey("No vigente"), "no-vigente");
+assert.equal(availabilityFilterKey("No es una oferta de parcela"), "no-es-oferta");
 assert.equal(formatSourceReviewDate("2026-11-27"), "27/11/2026");
 assert.equal(formatSourceReviewDate(""), "No informada");
+assert.ok(publishedProperties.every(item => /^\d{4}-\d{2}-\d{2}$/.test(item.lastCheckedAt || "")), "cada publicación conserva una fecha de revisión explícita");
+assert.ok(!source.includes('publishedProperties.forEach(item => {\n  item.lastCheckedAt ='), "la fecha de consulta no se asigna en bloque sin evidencia individual");
+assert.ok(source.includes("No hay constancia individual de consulta de la fuente"), "una ficha sin evidencia individual no recibe una afirmación automática de accesibilidad");
 assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { query: "Santa Teresa", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");
@@ -920,6 +925,7 @@ assert.match(industrialDossier.references[0].coordinates.scope, /no identifica u
 assert.equal(buildTerritorialDossier([], {}, "2026-11-26T03:00:00.000Z"), null, "una vista vacía no produce un dossier");
 const completeDossier = buildTerritorialDossier(all, {}, "2026-11-26T03:00:00.000Z");
 assert.equal(completeDossier.references.length, all.length, "el dossier completo incluye todas las referencias del inventario");
+assert.ok(MAX_TERRITORIAL_DOSSIER_REFERENCES >= all.length, "el límite HTML admite el inventario territorial completo vigente");
 assert.deepEqual(completeDossier.counts, expectedInventoryCounts);
 assert.equal(completeDossier.references.filter(reference => reference.type === "published").length, publishedProperties.length);
 const expectedSourceCount = all.filter(item => /^https:\/\//.test(String(item.source || ""))).length;
