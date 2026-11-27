@@ -3870,6 +3870,53 @@ publishedProperties.push(...[
   }
 ]);
 
+
+
+publishedProperties.push(...[
+  {
+    "id": "terreno-carola-lorenzini-aymaraes-2175",
+    "recordType": "Terreno industrial/comercial · lote individual dentro de oferta de varios lotes",
+    "name": "Carola Lorenzini / Aymaraes · lote 6 · 2.175 m²",
+    "locality": "Francisco Álvarez",
+    "address": "Sobre Carola Lorenzini y Aymaraes, frente al Arroyo Las Catonas, Francisco Álvarez",
+    "source": "https://www.inmuebles.clarin.com/terreno-en-venta-en-francisco-alvarez--15820454",
+    "agency": "Verónica Martínez Propiedades",
+    "contact": "Teléfono parcialmente visible en la ficha: 2302374; solicitar número completo.",
+    "price": "USD 130.000 (lote 6, 2.175 m² según encabezado)",
+    "currency": "USD",
+    "landSurfaceM2": 2175,
+    "surfaceNote": "El aviso también enumera lote 4 de 1.555 m² y lote 5 de 1.847 m²; no asigna precio individual a esos lotes.",
+    "observations": "La publicación declara zonificación R1 y propone usos industriales/logísticos/comerciales; debe verificarse la zonificación efectiva y el alcance de los usos ante el Municipio. La ubicación se describe sobre dos calles y frente al arroyo, sin número de puerta ni nomenclatura catastral. Existe otro desarrollo publicado sobre Carola Lorenzini 2300, pero no se pudo establecer si las parcelas son contiguas o coincidentes.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: la ficha agrupa lotes sobre Carola Lorenzini y Aymaraes sin individualizar el lote 6 por parcela catastral.",
+    "verificationStatus": "Ficha directa de Inmuebles Clarín accesible el 27/11/2026; precio y superficie del lote 6 publicados, sin disponibilidad confirmada."
+  },
+  {
+    "id": "predio-industrial-ruta24-66763",
+    "recordType": "Predio industrial con mejoras",
+    "name": "Predio industrial Ruta Provincial 24 · 66.763 m²",
+    "locality": "Moreno · corredor de Ruta Provincial 24",
+    "address": "Ruta Provincial 24, Partido de Moreno; la ficha no publica altura ni intersección precisa",
+    "source": "https://www.inmuebles.clarin.com/terreno-en-venta-en-moreno--18155186",
+    "agency": "MJM Propiedades",
+    "contact": "La ficha muestra teléfono parcialmente visible (+54 9 11 3…); martillero responsable JEA, matrícula profesional CMCPMGR 0178.",
+    "price": "USD 7.200.000",
+    "currency": "USD",
+    "landSurfaceM2": 66763,
+    "surfaceNote": "La publicación describe nave industrial, depósitos, oficinas, docks de carga, silos, red de hidrantes, tanque de 200.000 litros, red de gas industrial, 1.260 kVA y balanza para camiones; no informa superficie cubierta.",
+    "observations": "El aviso presenta un predio industrial con mejoras y equipamiento, no un lote baldío. Ubicación exacta y nomenclatura catastral ausentes. Hay otro registro previo de 10 ha en el corredor RP24/RP25; no se fusionan porque superficies y descripción difieren, pero existe riesgo de solapamiento hasta cotejar parcelas.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: Ruta Provincial 24 sin altura ni coordenada parcelaria.",
+    "verificationStatus": "Ficha directa de Inmuebles Clarín accesible el 27/11/2026; precio, superficie y mejoras descriptas, sin disponibilidad confirmada."
+  }
+]);
+
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
   ...opportunities.map(item => ({ ...item, type: "opportunity" })),
