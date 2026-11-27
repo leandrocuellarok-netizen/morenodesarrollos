@@ -1730,7 +1730,7 @@ body > noscript {
 .map-sidebar::-webkit-scrollbar-thumb { background: #bcb6a8; border-radius: 8px; }
 .map-touch-controls {
   position: absolute;
-  z-index: 4;
+  z-index: 6;
   right: 16px;
   bottom: 34px;
   display: grid;
