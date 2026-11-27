@@ -6562,7 +6562,7 @@ publishedProperties.push(...[
     "landSurfaceM2": null,
     "coveredSurfaceM2": null,
     "surfaceNote": "La cabecera del portal indica 1.500 m², mientras la descripción identifica un lote de 374 m² (17 × 22 m) y habla de cuatro lotes disponibles; superficie y alcance del precio sin conciliar.",
-    "publicationDate": "Publicado hace aproximadamente 2 meses; fecha exacta no visible.",
+    "publicationDate": "28/09/2026",
     "observations": "La descripción indica que el lote se ubica sobre Av. Argentinidad y que se vende junto con otros lotes o por separado. La cabecera publica 1.500 m², pero el texto específico dice 374 m². No calcular precio por m² ni asumir que USD 35.000 corresponde a la fracción total hasta aclararlo con Delizia.",
     "lat": null,
     "lng": null,
