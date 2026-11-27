@@ -846,6 +846,7 @@ async function testGeorefRequestQueue() {
     { id: "camilli", geocodeQuery: "Camilli 140", geocodeMatch: "CAMILLI 140" },
     { id: "ambiguous", geocodeQuery: "Ambigua 500", geocodeMatch: "AMBIGUA 500" },
     { id: "failed", geocodeQuery: "Falla 10", geocodeMatch: "FALLA 10" },
+    { id: "out-of-range", geocodeQuery: "Fuera de rango 1", geocodeMatch: "FUERA DE RANGO 1" },
     { id: "approximate", geocodeQuery: "Galileo Galilei al 7300", geocodeDisabled: true }
   ];
   let active = 0;
@@ -860,6 +861,17 @@ async function testGeorefRequestQueue() {
       await new Promise(resolve => setTimeout(resolve, 8));
       if (query === "Camilli 140") return { ok: false, json: async () => ({ direcciones: [] }) };
       if (query === "Falla 10") throw new Error("fallo simulado");
+      if (query === "Fuera de rango 1") {
+        return {
+          ok: true,
+          json: async () => ({
+            direcciones: [{
+              nomenclatura: "FUERA DE RANGO 1, MORENO, BUENOS AIRES",
+              ubicacion: { lat: "95", lon: "-58.80" }
+            }]
+          })
+        };
+      }
       if (query === "Ambigua 500") {
         return {
           ok: true,
@@ -885,8 +897,8 @@ async function testGeorefRequestQueue() {
   };
 
   const result = await resolvePublishedGeoreferences(items, fakeFetch, null, 2);
-  assert.equal(calls.length, 4, "una dirección repetida genera una sola consulta");
-  assert.equal(new Set(calls).size, 4, "cada consulta única se procesa una vez");
+  assert.equal(calls.length, 5, "una dirección repetida genera una sola consulta");
+  assert.equal(new Set(calls).size, 5, "cada consulta única se procesa una vez");
   assert.ok(maximumActive <= 2, "la cola respeta el límite de dos solicitudes simultáneas de la prueba");
   assert.ok(maximumActive > 1, "la cola conserva concurrencia controlada sin serializar todas las consultas");
   assert.deepEqual(result.get("San Juan Bautista 100"), {
@@ -897,6 +909,7 @@ async function testGeorefRequestQueue() {
   assert.equal(result.get("Camilli 140"), null, "una respuesta HTTP fallida queda pendiente");
   assert.equal(result.get("Ambigua 500"), null, "las coincidencias ambiguas no generan coordenadas");
   assert.equal(result.get("Falla 10"), null, "un error de red queda pendiente sin interrumpir la cola");
+  assert.equal(result.get("Fuera de rango 1"), null, "coordenadas fuera del rango geográfico válido se rechazan");
   assert.equal(result.has("Galileo Galilei al 7300"), false, "una ubicación aproximada marcada como no geocodificable no consulta Georef");
   assert.equal((await resolvePublishedGeoreferences([], fakeFetch)).size, 0, "un inventario vacío no genera consultas");
 }

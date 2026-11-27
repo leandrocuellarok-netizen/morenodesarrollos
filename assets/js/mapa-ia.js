@@ -5010,7 +5010,8 @@ async function resolvePublishedGeoreferences(items, fetcher, context, concurrenc
         const point = matches[0].ubicacion;
         const lat = Number(point.lat);
         const lng = Number(point.lon);
-        resolved.set(query, Number.isFinite(lat) && Number.isFinite(lng)
+        resolved.set(query, Number.isFinite(lat) && lat >= -90 && lat <= 90 &&
+          Number.isFinite(lng) && lng >= -180 && lng <= 180
           ? { lat, lng, nomenclatura: matches[0].nomenclatura || "" }
           : null);
       } catch (error) {
@@ -5139,7 +5140,9 @@ async function resolvePublishedGeoreferencesCached(items, fetcher, context, stor
       const point = fetched.get(entry.query) || null;
       resolved.set(entry.query, point);
       if (point && Number.isFinite(Number(point.lat)) &&
-          Number.isFinite(Number(point.lng)) && point.nomenclatura) {
+          Number(point.lat) >= -90 && Number(point.lat) <= 90 &&
+          Number.isFinite(Number(point.lng)) &&
+          Number(point.lng) >= -180 && Number(point.lng) <= 180 && point.nomenclatura) {
         cache.set(entry.key, {
           lat: Number(point.lat),
           lng: Number(point.lng),
