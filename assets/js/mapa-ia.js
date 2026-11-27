@@ -750,7 +750,7 @@ const nov27HourlyEntries = [
   {
     "id": "casa-centenario-600-360",
     "recordType": "Casa individual",
-    "name": "Casa · Centenario al 600 · Moreno",
+    "name": "Casa · Centenario al 600",
     "locality": "Moreno",
     "address": "Centenario al 600, entre Ameghino y Esteban de Luca, Moreno",
     "geocodeQuery": "Centenario 600, Moreno",
