@@ -632,8 +632,14 @@ publishedProperties.push(...nov27NewPublishedEntries);
 
 publishedProperties.forEach(item => {
   item.lastCheckedAt = "2026-11-27";
+  if (item.lat == null) item.lat = null;
+  if (item.lng == null) item.lng = null;
   if (!item.verificationStatus) {
     item.verificationStatus = "Fuente original accesible en la revisión del 27/11/2026; disponibilidad comercial no confirmada.";
+  }
+  if (!item.availabilityStatus) item.availabilityStatus = "No confirmada";
+  if (!item.geolocationStatus) {
+    item.geolocationStatus = "Pendiente: Georef deberá devolver una coincidencia inequívoca para la dirección publicada.";
   }
 });
 
