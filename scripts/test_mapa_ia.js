@@ -934,7 +934,31 @@ assert.ok(styles.includes(".map-dossier-status"));
 
 console.log("OK: pruebas del Mapa IA, exportaciones cartográficas y fichas editoriales imprimibles.");
 
-async function testGeorefRequestQueue() {
+async 
+const nov27_1032ExpectedIds = [
+  "terreno-9-de-julio-46-487",
+  "terreno-jose-marmol-rivadavia-1418",
+  "terreno-guatemala-2500-valentin-alsina-590",
+  "terreno-tres-de-febrero-7800-316",
+  "terreno-justo-daract-2751-2163",
+  "casa-quinta-samaniego-4900-4200",
+  "casa-martinez-melo-300-161",
+  "casa-25-de-mayo-2700-350",
+  "casa-concordia-2545-311",
+  "terreno-bartolome-mitre-3200-1260"
+];
+for (const id of nov27_1032ExpectedIds) {
+  assert.ok(publishedProperties.some(item => item.id === id), "la revisión 10:32 incorpora " + id);
+}
+const mariaEugenia = publishedProperties.find(item => item.id === "desarrollo-maria-eugenia-residences-village");
+assert.ok(mariaEugenia && mariaEugenia.sourceAlternates.some(source => source.url === "https://bocetos.xintel.com.ar/vcolanding/"), "María Eugenia conserva la fuente institucional de Grupo Vaccaro");
+assert.ok(!mariaEugenia.contact.includes("4492-28174"), "María Eugenia no conserva el teléfono con dígito adicional");
+assert.equal(publishedProperties.find(item => item.id === "terreno-jose-marmol-rivadavia-1418").geocodeDisabled, true, "José Mármol no se geolocaliza mientras exista posible solapamiento de parcelas");
+assert.equal(publishedProperties.find(item => item.id === "terreno-9-de-julio-46-487").geocodeDisabled, true, "9 de Julio 46 no se geolocaliza mientras el título del portal contradiga la dirección");
+assert.equal(publishedProperties.find(item => item.id === "terreno-bartolome-mitre-3200-1260").availabilityStatus, "Pendiente de revalidación");
+assert.equal(publishedProperties.find(item => item.id === "casa-concordia-2545-311").availabilityStatus, "Pendiente de revalidación");
+
+function testGeorefRequestQueue() {
   const items = [
     { id: "shared-a", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
     { id: "shared-b", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
