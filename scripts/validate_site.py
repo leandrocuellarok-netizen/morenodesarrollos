@@ -315,6 +315,13 @@ def main() -> None:
                 'id="atlas-index-summary"',
                 'id="map-review-disclosure"',
                 'id="map-verification-disclosure"',
+                'class="map-navigation-help"',
+                'id="map-touch-controls"',
+                'id="map-zoom-in"',
+                'id="map-zoom-out"',
+                'id="map-fit-all"',
+                'id="map-search-hint"',
+                'id="kind-filter" type="hidden"',
                 'href="https://mapas.moreno.gob.ar/" target="_blank" rel="noopener noreferrer"',
                 'href="https://arba.gov.ar/geoarba/inicio.asp" target="_blank" rel="noopener noreferrer"',
                 'href="https://geo.arba.gov.ar/geoserver/idera/wms?request=GetCapabilities&amp;service=WMS"',
@@ -339,7 +346,7 @@ def main() -> None:
                 errors.append("Falta assets/css/mapa-ia.css")
             else:
                 map_css_source = map_css_path.read_text(encoding="utf-8")
-                for required_style in (".map-dossier-export", ".map-dossier-status"):
+                for required_style in (".map-dossier-export", ".map-dossier-status", ".map-touch-controls", ".map-navigation-help", "min-height: 48px"):
                     if required_style not in map_css_source:
                         errors.append(f"assets/css/mapa-ia.css: falta el estilo del dossier: {required_style}")
             if re.search(r'<details\b', page_source):
@@ -409,6 +416,14 @@ def main() -> None:
                     "function formatSourceReviewDate(value)",
                     "function parseMapViewState(search, items)",
                     "function buildMapViewUrl(baseUrl, state, items)",
+                    "function reframeMap()",
+                    "map.zoomIn(",
+                    "map.zoomOut(",
+                    "map.fitBounds(bounds",
+                    "landSurfaceM2",
+                    "coveredSurfaceM2",
+                    "const surfaceSearch=",
+                    "Contexto documentado; los hechos se atribuyen a la fuente citada.",
                     "function currentMapViewState(referenceId)",
                     "function shareCurrentView()",
                     "shareViewButton.addEventListener(\"click\", shareCurrentView)",
@@ -441,8 +456,8 @@ def main() -> None:
                     'card.dataset.mapItem = item.id',
                     'element.addEventListener("click", () => {',
                     "function filterReferences",
-                    'const kind = settings.kind || "all";',
-                    "const kindMatches =",
+                    'const s=options||{},q=String(s.query||"").trim(),category=s.category||"all",kind=s.kind||"all";',
+                    'const kindMatches=kind==="all"||(item.type==="opportunity"&&item.kind===kind);',
                     'getElementById("kind-filter")',
                     'getElementById("availability-filter")',
                     'getElementById("diligence-filter")',
@@ -467,8 +482,8 @@ def main() -> None:
                     'diligence: diligenceInput.value',
                     'diligenceInput.addEventListener("change", resetPublishedPaginationAndRender)',
                     'availabilityInput.value = "all"',
-                    'url.searchParams.set("vigencia", normalized.availability)',
-                    'url.searchParams.set("diligencia", normalized.diligence)',
+                    'url.searchParams.set("vigencia",n.availability)',
+                    'url.searchParams.set("diligencia",n.diligence)',
                     'kindInput.addEventListener("change", resetPublishedPaginationAndRender)',
                     'kindInput.value = "all"',
                     "function countInventory(items)",
@@ -565,6 +580,8 @@ def main() -> None:
 
                     ".map-contact-link",
                     ".map-item-actions",
+                    ".map-touch-controls",
+                    ".map-navigation-help",
                     ".map-data-export-disclosure",
                     ".map-data-export-body",
                     ".map-data-export-actions",
@@ -589,7 +606,7 @@ def main() -> None:
                     if required_style not in map_css:
                         errors.append(f"assets/css/mapa-ia.css: falta estilo requerido: {required_style}")
 
-        if relative == Path("oportunidades/index.html"):
+        if relative == Path("oportunidades/index.html") and "opportunity-form" in page_source:
             page_source = file_path.read_text(encoding="utf-8")
             for required_field in ('name="nombre"', 'name="perfil"', 'name="interes"', 'name="zona"', 'name="ubicacion"', 'name="nomenclatura"', 'name="documentacion"', 'name="verificaciones"'):
                 if required_field not in page_source:
@@ -857,149 +874,55 @@ def main() -> None:
 
     opportunity_page = ROOT / "oportunidades/index.html"
     if not opportunity_page.is_file():
-        errors.append("Falta oportunidades/index.html para el formulario público")
+        errors.append("Falta oportunidades/index.html para el portal INFO PYME MORENO")
     else:
         opportunity_html = opportunity_page.read_text(encoding="utf-8")
-        if '<script src="../assets/js/opportunity-tools.js"></script>' not in opportunity_html:
-            errors.append("Oportunidades debe cargar las herramientas de contacto y expediente público")
-        if "dossier-import-note" not in opportunity_html:
-            errors.append("Oportunidades debe aclarar que el formulario no recupera datos internos")
-        for required_control in ("dossier-import-file", "validate-dossier-import", "apply-dossier-merge", "apply-dossier-replace", "contact-email", "contact-phone"):
-            if f'id="{required_control}"' not in opportunity_html:
-                errors.append(f"oportunidades/index.html: falta control de importación: {required_control}")
-        for forbidden_marker in ("pipeline-template-title", "pipeline-csv-file", "originacion-workbench", "originacion-print-dossier", "originacion-download-dossier"):
-            if forbidden_marker in opportunity_html:
-                errors.append(f"oportunidades/index.html: la página pública no debe exponer la herramienta interna {forbidden_marker}")
-        for script_src in ("../assets/js/originacion-workbench.js", "../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-agenda.js", "../assets/js/pipeline-dashboard-ui.js", "../assets/js/originacion-export.js"):
-            if script_src in opportunity_html:
-                errors.append(f"oportunidades/index.html: no debe cargar el módulo interno {script_src}")
-        email_field = re.search(r'<input\b(?=[^>]*id="contact-email")(?=[^>]*type="email")[^>]*>', opportunity_html)
-        phone_field = re.search(r'<input\b(?=[^>]*id="contact-phone")(?=[^>]*type="tel")[^>]*>', opportunity_html)
-        if not email_field or "required" in email_field.group(0):
-            errors.append("Oportunidades debe ofrecer un email alternativo visible y opcional")
-        if not phone_field or "required" in phone_field.group(0):
-            errors.append("Oportunidades debe ofrecer un teléfono alternativo visible y opcional")
-        if "email_contacto" not in opportunity_html or "telefono_contacto" not in opportunity_html:
-            errors.append("Oportunidades debe conectar los medios alternativos de contacto con el formulario")
-        faq_ids = ("faq-documentacion", "faq-indicadores", "faq-privacidad", "faq-mapa", "faq-inversores")
-        for faq_id in faq_ids:
-            if f'id="{faq_id}"' not in opportunity_html:
-                errors.append(f"oportunidades/index.html: falta respuesta frecuente {faq_id}")
-        if len(re.findall(r'<details class="opportunity-faq-item" id="faq-[^"]+"', opportunity_html)) != 5:
-            errors.append("Oportunidades debe mostrar exactamente cinco preguntas frecuentes")
-        if 'href="#opportunity-form"' not in opportunity_html or 'id="opportunity-faq"' not in opportunity_html:
-            errors.append("Oportunidades debe conectar las preguntas frecuentes con el formulario")
-        faq_schema_match = re.search(r'<script type="application/ld\+json" id="opportunity-faq-schema">(.*?)</script>', opportunity_html, re.S)
-        if not faq_schema_match:
-            errors.append("Oportunidades debe incluir datos estructurados FAQPage")
+        for required_markup in ('class="pyme-news-page"', 'id="pyme-total-count"', 'id="pyme-featured"', 'id="pyme-news-grid"'):
+            if required_markup not in opportunity_html:
+                errors.append(f"INFO PYME MORENO: falta estructura editorial: {required_markup}")
+        pyme_data_match = re.search(r"const\s+pymeNews\s*=\s*(\[.*?\]);", opportunity_html, re.S)
+        if not pyme_data_match:
+            errors.append("INFO PYME MORENO: falta el inventario editorial pymeNews")
         else:
             try:
-                faq_schema = json.loads(faq_schema_match.group(1))
-                if faq_schema.get("@type") != "FAQPage" or len(faq_schema.get("mainEntity", [])) != 5:
-                    errors.append("El esquema FAQPage debe contener exactamente cinco preguntas")
-                elif any(item.get("@type") != "Question" or not item.get("name") or not item.get("acceptedAnswer", {}).get("text") for item in faq_schema["mainEntity"]):
-                    errors.append("El esquema FAQPage contiene preguntas o respuestas incompletas")
-            except (json.JSONDecodeError, AttributeError, TypeError):
-                errors.append("El esquema FAQPage de Oportunidades no es JSON válido")
-
-    operations_page = ROOT / INTERNAL_PAGE
-    if not operations_page.is_file():
-        errors.append("Falta mesa-operativa/index.html para las herramientas locales")
-    else:
-        operations_html = operations_page.read_text(encoding="utf-8")
-        if 'href="../docs/plantilla-seguimiento-comercial.csv"' not in operations_html:
-            errors.append("Mesa Operativa debe enlazar la plantilla CSV de seguimiento comercial")
-        for required_control in (
-            "pipeline-csv-file", "pipeline-status", "pipeline-dashboard-output", "pipeline-reset",
-            "pipeline-metrics", "pipeline-finance-summary", "pipeline-stage-summary", "pipeline-counterparty-summary", "pipeline-next-actions",
-            "pipeline-records-body", "pipeline-filter-stage", "pipeline-filter-followup", "pipeline-filter-text",
-            "pipeline-download-summary", "pipeline-download-agenda", "pipeline-download-calendar",
-            "originacion-workbench", "originacion-import-file", "originacion-import-button",
-            "originacion-import-status", "originacion-print-dossier", "originacion-download-dossier",
-            "originacion-clear", "originacion-status"
-        ):
-            if f'id="{required_control}"' not in operations_html:
-                errors.append(f"mesa-operativa/index.html: falta control interno {required_control}")
-        if 'id="pipeline-download-summary" type="button" disabled' not in operations_html:
-            errors.append("Mesa Operativa debe mantener deshabilitada la exportación hasta validar un CSV.")
-        if 'id="pipeline-download-calendar" type="button" disabled' not in operations_html:
-            errors.append("Mesa Operativa debe mantener deshabilitada la exportación iCalendar hasta validar fechas.")
-        agenda_module = ROOT / "assets/js/pipeline-agenda.js"
-        if not agenda_module.is_file():
-            errors.append("Falta assets/js/pipeline-agenda.js para exportar seguimientos al calendario")
-        else:
-            agenda_source = agenda_module.read_text(encoding="utf-8")
-            for required_logic in ("api.buildAgendaIcs = function (summary)", "DTSTART;VALUE=DATE:", "DTEND;VALUE=DATE:", "function foldIcsLine(line)", "function icsEscape(value)"):
-                if required_logic not in agenda_source:
-                    errors.append(f"assets/js/pipeline-agenda.js: falta exportación iCalendar: {required_logic}")
-        pipeline_ui = ROOT / "assets/js/pipeline-dashboard-ui.js"
-        if not pipeline_ui.is_file() or 'downloadCalendarButton.addEventListener("click"' not in pipeline_ui.read_text(encoding="utf-8"):
-            errors.append("Mesa Operativa debe conectar el control de descarga iCalendar.")
-        elif "renderCounterparties" not in pipeline_ui.read_text(encoding="utf-8") or "pipeline-counterparty-summary" not in pipeline_ui.read_text(encoding="utf-8"):
-            errors.append("Mesa Operativa debe representar el desglose por tipo de contraparte.")
-        if '<link rel="stylesheet" href="../assets/css/originacion.css">' not in operations_html:
-            errors.append("Mesa Operativa debe cargar la hoja responsive de originación")
-        for script_src in (
-            "../assets/js/opportunity-tools.js", "../assets/js/originacion-workbench.js",
-            "../assets/js/pipeline-dashboard.js", "../assets/js/pipeline-agenda.js",
-            "../assets/js/pipeline-dashboard-ui.js", "../assets/js/originacion-export.js"
-        ):
-            if f'<script src="{script_src}"></script>' not in operations_html:
-                errors.append(f"Mesa Operativa debe cargar {script_src}")
+                pyme_news = json.loads(pyme_data_match.group(1))
+                if len(pyme_news) != 30:
+                    errors.append(f"INFO PYME MORENO: se esperaban 30 referencias editoriales y hay {len(pyme_news)}")
+                urls = [item.get("url", "") for item in pyme_news]
+                if len(set(urls)) != len(urls):
+                    errors.append("INFO PYME MORENO: hay URLs duplicadas en las noticias")
+                if not all(url.startswith("https://") for url in urls):
+                    errors.append("INFO PYME MORENO: cada noticia debe enlazar una fuente HTTPS")
+                if sum(1 for item in pyme_news if item.get("featured") is True) != 4:
+                    errors.append("INFO PYME MORENO: deben existir exactamente cuatro noticias destacadas")
+                for item in pyme_news:
+                    if not all(str(item.get(field, "")).strip() for field in ("title", "date", "source", "summary", "category", "url")):
+                        errors.append("INFO PYME MORENO: una noticia carece de título, fecha, fuente, resumen, categoría o URL")
+                        break
+            except json.JSONDecodeError as exc:
+                errors.append(f"INFO PYME MORENO: el inventario de noticias no es JSON válido: {exc}")
+        if 'target="_blank"' not in opportunity_html or 'rel="noopener noreferrer"' not in opportunity_html:
+            errors.append("INFO PYME MORENO: los enlaces externos deben abrirse con protección noopener")
+        if "Las destacadas se pueden reemplazar y reordenar" not in opportunity_html:
+            errors.append("INFO PYME MORENO: falta explicar el criterio editorial de destacadas")
 
     about_page = ROOT / "erica-acosta/index.html"
     if not about_page.is_file():
-        errors.append("Falta erica-acosta/index.html para validar el perfil editorial")
+        errors.append("Falta erica-acosta/index.html para validar SOY MORENO")
     else:
         about_html = about_page.read_text(encoding="utf-8")
-        required_markup = (
-            'class="wrap about-hero"',
-            'class="about-portrait-plate"',
-            'class="development-plate"',
-            'aria-labelledby="development-plate-title development-plate-desc"',
-            'id="development-plate-title"',
-            'id="development-plate-desc"',
-            'class="about-contact-path"',
-            'href="../oportunidades/?perfil=propietario&interes=terreno"',
-            'href="../oportunidades/?perfil=inversor&interes=inversion"',
-            'href="../oportunidades/?perfil=desarrollador&interes=desarrollo"',
-        )
-        for required in required_markup:
-            if required not in about_html:
-                errors.append(f"erica-acosta/index.html: falta componente editorial o recorrido comercial: {required}")
-        if len(re.findall(r'<article class="process-card"', about_html)) != 5:
-            errors.append("erica-acosta/index.html: el marco de desarrollo debe conservar exactamente cinco etapas")
-        if "esquema conceptual, no representa un inmueble ni un proyecto real" not in about_html.lower():
-            errors.append("erica-acosta/index.html: la ilustración de proceso debe declarar su alcance conceptual")
-        opportunity_path = ROOT / "oportunidades/index.html"
-        opportunity_html = opportunity_path.read_text(encoding="utf-8") if opportunity_path.is_file() else ""
-        if 'if(profileFromLink==="propietario")' not in opportunity_html:
-            errors.append("Oportunidades: falta el prellenado del perfil propietario desde la página de Erica")
-        if 'if(profileFromLink==="inversor")' not in opportunity_html:
-            errors.append("Oportunidades: falta el prellenado del perfil inversor desde la página de Erica")
-        if 'if(profileFromLink==="desarrollador")' not in opportunity_html:
-            errors.append("Oportunidades: falta el prellenado del perfil desarrollador")
-        if 'option value="Desarrollador/a"' not in opportunity_html or 'option value="Evaluar una oportunidad de desarrollo"' not in opportunity_html:
-            errors.append("Oportunidades: falta el perfil o la intención explícita de desarrollador")
-        if len(re.findall(r'<article class="opportunity-path"', opportunity_html)) != 3:
-            errors.append("Oportunidades: deben existir tres recorridos comerciales diferenciados")
-        if 'class="wrap opportunity-flow-plate"' not in opportunity_html or 'id="opportunity-flow-title"' not in opportunity_html or 'id="opportunity-flow-desc"' not in opportunity_html:
-            errors.append("Oportunidades: falta la lámina editorial accesible de las tres vías de originación")
-        if "no representa un inmueble, una parcela ni una operación existente" not in opportunity_html:
-            errors.append("Oportunidades: la lámina conceptual debe declarar que no representa un activo real")
-        if "const interestByLink={" not in opportunity_html or "Object.prototype.hasOwnProperty.call(interestByLink,interestFromLink)" not in opportunity_html:
-            errors.append("Oportunidades: falta la preselección de intención mediante una lista permitida")
-        opportunity_css_path = ROOT / "assets/css/erica.css"
-        opportunity_css = opportunity_css_path.read_text(encoding="utf-8") if opportunity_css_path.is_file() else ""
-        if "#opportunity-form{scroll-margin-top:112px}" not in opportunity_css or ".opportunity-hero-actions" not in opportunity_css:
-            errors.append("assets/css/erica.css: falta el desplazamiento accesible del acceso directo al formulario")
-        if ".opportunity-flow-plate" not in opportunity_css or "@media (max-width:760px)" not in opportunity_css[opportunity_css.find(".opportunity-flow-plate"):]:
-            errors.append("assets/css/erica.css: falta el diseño responsive de la lámina editorial de oportunidades")
-        if "function revealPropertyDetails()" not in opportunity_html:
-            errors.append("Oportunidades: falta la apertura contextual de los datos del inmueble")
-        for disclosure_id in ("feasibility-disclosure", "dossier-import-disclosure", "property-data-disclosure", "evidence-disclosure", "context-disclosure"):
-            if f'id="{disclosure_id}"' not in opportunity_html:
-                errors.append(f"Oportunidades: falta la sección progresiva {disclosure_id}")
+        for required_markup in (
+            'body class="soy-moreno-page"',
+            'class="wrap soy-moreno-hero"',
+            "Soy Licenciada en Administración de Empresas, emprendedora y sobre todo, vecina de Moreno.",
+            "Vilanova Group",
+            "Vilanova AI Solutions",
+            "Leandro A. Cuellar",
+            'href="../mapa-ia/"',
+            'href="../oportunidades/"',
+        ):
+            if required_markup not in about_html:
+                errors.append(f"SOY MORENO: falta contenido o navegación: {required_markup}")
 
     opportunity_module = ROOT / "assets/js/opportunity-tools.js"
     if not opportunity_module.is_file():
@@ -1073,37 +996,38 @@ def main() -> None:
                 errors.append(f"assets/css/erica.css: falta tratamiento editorial monocromático: {required_style}")
 
         for required_style in (
-            ".about-hero{",
-            ".about-pillars{",
-            ".development-plate{",
-            ".about-contact-path:focus-visible",
+            ".soy-moreno-hero",
+            ".pyme-news-page",
+            ".pyme-featured-grid",
+            ".pyme-news-grid",
         ):
             if required_style not in css_source:
                 errors.append(f"assets/css/erica.css: falta estilo de perfil editorial: {required_style}")
 
     home_page = ROOT / "index.html"
     if not home_page.is_file():
-        errors.append("Falta index.html para validar la lámina arquitectónica de portada")
+        errors.append("Falta index.html para validar la portada MORENO")
     else:
         home_html = home_page.read_text(encoding="utf-8")
         for required_markup in (
-            'class="art-panel"',
-            'class="architecture-drawing"',
-            'viewBox="0 0 760 820"',
-            'aria-label="Ilustración arquitectónica editorial',
+            "LIC. ERICA ACOSTA",
+            "GESTORA Y ARQUITECTA DE VÍNCULOS",
+            'href="./mapa-ia/"',
+            'href="./erica-acosta/"',
+            'href="./oportunidades/"',
+            'id="map-preview-title"',
+            'id="map-preview-description"',
             'class="hero-actions hero-commercial-actions"',
-            'href="./oportunidades/?perfil=propietario&interes=terreno"',
-            'href="./oportunidades/?perfil=inversor&interes=inversion"',
-            'href="./oportunidades/?perfil=desarrollador&interes=desarrollo"',
-            'class="hero-commercial-note"',
-            'Conecto propietarios, inversores y desarrolladores en Moreno.',
+            "Conecto propietarios, inversores y desarrolladores en Moreno.",
+            "INFO PYME MORENO",
+            "SOY MORENO",
         ):
             if required_markup not in home_html:
-                errors.append(f"index.html: falta componente editorial o recorrido comercial: {required_markup}")
-        if 'Conocé el Mapa IA' not in home_html:
-            errors.append("index.html: falta el acceso secundario al Mapa IA desde la portada")
-        if "no implica tasación, oferta ni compromiso de inversión" not in home_html:
-            errors.append("index.html: falta aclarar el alcance exploratorio del primer contacto")
+                errors.append(f"index.html: falta navegación o presentación vigente: {required_markup}")
+        if "no reemplazan la revisión técnica, dominial ni urbanística" not in home_html:
+            errors.append("index.html: falta aclarar el alcance exploratorio de la inteligencia territorial")
+        if "Explorar el Mapa IA" not in home_html:
+            errors.append("index.html: falta el acceso directo al Mapa IA")
 
     readme_path = ROOT / "README.md"
     if not readme_path.is_file():
