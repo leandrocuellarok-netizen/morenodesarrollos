@@ -1,6 +1,7 @@
 "use strict";
 const assert = require("node:assert/strict");
 const dashboard = require("../assets/js/pipeline-dashboard.js");
+require("../assets/js/pipeline-agenda.js");
 const headers = dashboard.headers;
 function makeRow(overrides) {
   const values = Object.fromEntries(headers.map(key => [key, ""]));
@@ -36,6 +37,57 @@ assert.match(summaryCsv, /fecha_corte;tipo;indicador;moneda;valor/);
 assert.match(summaryCsv, /honorarios;honorarios_cobrados;ARS;550,00/);
 assert.match(summaryCsv, /pipeline;seguimientos_vencidos;;1/);
 assert.doesNotMatch(summaryCsv, /M-001|Propietario|Solicitar plano/);
+const calendarIcs = dashboard.buildAgendaIcs(summary);
+assert.match(calendarIcs, /BEGIN:VCALENDAR/);
+assert.match(calendarIcs, /END:VCALENDAR/);
+assert.match(calendarIcs, /UID:moreno-M-001-20261124@morenodesarrollos\.github\.io/);
+assert.match(calendarIcs, /DTSTART;VALUE=DATE:20261124/);
+assert.match(calendarIcs, /DTEND;VALUE=DATE:20261125/);
+assert.match(calendarIcs, /SUMMARY:MORENO/);
+assert.doesNotMatch(calendarIcs, /M-003/, "las etapas cerradas no se incorporan al calendario");
+assert.doesNotMatch(calendarIcs, /email|telefono|DNI/i, "el calendario no incluye datos de contacto");
+const escapedCalendar = dashboard.buildAgendaIcs({
+  agendaItems: [
+    {
+      priority: "Próxima 7 días",
+      record: {
+        id: "M,04",
+        fields: {
+          fecha_proximo_seguimiento: "2026-11-28",
+          proxima_accion: "Revisar, coordinar; llamar\nmañana",
+          localidad: "Moreno, Buenos Aires",
+          tipo_activo: "Terreno",
+          etapa_comercial: "negociación",
+          estado_documental: "fuentes consultadas"
+        }
+      }
+    },
+    {
+      priority: "Sin fecha",
+      record: { id: "M-UNDATED", fields: { fecha_proximo_seguimiento: "", proxima_accion: "Definir fecha" } }
+    }
+  ]
+});
+assert.ok(escapedCalendar.includes("SUMMARY:MORENO · M,04 · Revisar\\, coordinar\\; llamar\\nmañana"), "el texto iCalendar debe escapar comas, punto y coma y saltos de línea");
+assert.ok(escapedCalendar.includes("LOCATION:Moreno\\, Buenos Aires"), "la localidad debe escapar comas");
+assert.equal((escapedCalendar.match(/BEGIN:VEVENT/g) || []).length, 1, "los registros sin fecha no deben crear eventos");
+const longCalendar = dashboard.buildAgendaIcs({
+  agendaItems: [{
+    priority: "Próxima 7 días",
+    record: {
+      id: "M-LONG",
+      fields: {
+        fecha_proximo_seguimiento: "2026-11-29",
+        proxima_accion: "Revisar documentación y coordinar reunión ".repeat(5),
+        localidad: "Moreno",
+        tipo_activo: "Terreno",
+        etapa_comercial: "primer contacto",
+        estado_documental: "fuentes consultadas"
+      }
+    }
+  }]
+});
+assert.ok(longCalendar.split("\r\n").some(line => line.startsWith(" ")), "las líneas iCalendar largas deben plegarse según RFC 5545");
 const injectionCsv = [
   headers.join(";"),
   makeRow({id_oportunidad:"SAFE-1",etapa_comercial:'=HYPERLINK("https://example.invalid","Abrir")'}),
