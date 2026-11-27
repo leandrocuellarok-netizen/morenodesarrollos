@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, all, countInventory, filterReferences, buildCsv, buildGeoJson, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -26,10 +26,15 @@ assert.ok(source.includes('kind: doc.getElementById("kind-filter").value'), "la 
 assert.ok(source.includes('kindInput.addEventListener("change", render)'), "el cambio de sector vuelve a renderizar el inventario");
 assert.ok(source.includes('kindInput.value = "all"'), "restablecer limpia también el filtro sectorial");
 assert.ok(mapPage.includes('id="map-verification-title"'), "el Mapa IA incluye la mesa de verificación documental");
-for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-documented-count", "atlas-hypotheses-count", "atlas-total-count"]) {
+for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-documented-count", "atlas-hypotheses-count", "atlas-published-count", "atlas-total-count"]) {
   assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
 }
 assert.ok(mapPage.includes("La forma distingue la clase"), "la leyenda explica la semántica de los símbolos sin depender del color");
+assert.ok(mapPage.includes('option value="published"'), "el filtro ofrece la capa de publicaciones inmobiliarias");
+assert.ok(mapPage.includes('id="published-list"'), "el mapa contiene una lista independiente de publicaciones");
+assert.ok(source.includes("function geocodePublishedAddresses()"), "la capa intenta georreferenciar las direcciones publicadas");
+assert.ok(source.includes("https://apis.datos.gob.ar/georef/api/v2.0/direcciones"), "la georreferencia utiliza el servicio oficial Georef");
+assert.ok(styles.includes(".map-pin-published") && styles.includes(".published-dot"), "la capa publicada tiene símbolo cartográfico propio");
 assert.ok(mapPage.includes('id="export-review"'), "el Mapa IA permite exportar la bitácora local");
 assert.ok(mapPage.includes('id="review-status"'), "el Mapa IA explica el estado y alcance del guardado local");
 assert.ok(mapPage.includes('id="clear-review"'), "el Mapa IA permite borrar la bitácora local desde la interfaz");
@@ -183,24 +188,35 @@ assert.ok(source.includes('link.download = "moreno-mapa-ia-referencias.geojson"'
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
 assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
-assert.equal(all.length, 11, "el inventario completo contiene once referencias");
+assert.equal(publishedProperties.length, 14, "la capa publicada contiene catorce avisos y desarrollos");
+assert.equal(all.length, 25, "el inventario completo contiene veinticinco referencias");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
-assert.deepEqual(countInventory(all), { localities: 6, documented: 4, hypotheses: 1, total: 11 });
+assert.equal(new Set(publishedProperties.map(item => item.source)).size, publishedProperties.length, "los enlaces de publicaciones no se duplican");
+assert.deepEqual(countInventory(all), { localities: 6, documented: 4, hypotheses: 1, published: 14, total: 25 });
 assert.deepEqual(
   countInventory(filterReferences(all, { evidence: "documented" })),
-  { localities: 0, documented: 4, hypotheses: 0, total: 4 },
+  { localities: 0, documented: 4, hypotheses: 0, published: 0, total: 4 },
   "el índice refleja el filtro de contextos con fuente"
 );
 assert.deepEqual(
   countInventory(filterReferences(all, { evidence: "hypothesis" })),
-  { localities: 0, documented: 0, hypotheses: 1, total: 1 },
+  { localities: 0, documented: 0, hypotheses: 1, published: 0, total: 1 },
   "el índice separa las hipótesis de los contextos con fuente"
 );
 
 for (const item of all) {
+  if (item.type === "published") {
+    assert.equal(hasCoordinates(item), false, "no se inventan coordenadas para publicaciones pendientes: " + item.name);
+    assert.match(item.geolocationStatus, /Pendiente/);
+    assert.equal(item.availabilityStatus, "No confirmada");
+    assert.match(item.source, /^https:\/\//);
+    continue;
+  }
   assert.ok(Number.isFinite(item.lat) && item.lat > -35 && item.lat < -34, "latitud plausible para Moreno: " + item.name);
   assert.ok(Number.isFinite(item.lng) && item.lng > -59 && item.lng < -58, "longitud plausible para Moreno: " + item.name);
 }
+assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nomenclatura: "MARTIN FIERRO 5000, MORENO, BUENOS AIRES" }), true);
+assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nomenclatura: "MARTIN FIERRO 4900, MORENO, BUENOS AIRES" }), false);
 for (const item of opportunities) {
   assert.ok(["documented", "hypothesis"].includes(item.stage), "nivel de evidencia explícito: " + item.name);
   assert.match(item.source, /^https:\/\//, "fuente pública HTTPS: " + item.name);
@@ -208,6 +224,8 @@ for (const item of opportunities) {
 
 assert.equal(filterReferences(all, { category: "locality" }).length, 6);
 assert.equal(filterReferences(all, { category: "opportunity" }).length, 5);
+assert.equal(filterReferences(all, { category: "published" }).length, 14);
+assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");
 assert.equal(filterReferences(all, { evidence: "hypothesis" }).length, 1, "el filtro de hipótesis no mezcla localidades sin clasificar");
 assert.deepEqual(filterReferences(all, { kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque"], "el filtro productivo/logístico muestra las dos referencias industriales existentes");
@@ -466,7 +484,7 @@ assert.ok(!/<svg onload/i.test(hostileTerritorialHtml));
 assert.ok(source.includes('briefButton.className = "map-brief-button"'));
 assert.ok(source.includes("function downloadTerritorialBrief(item)"));
 assert.ok(source.includes('link.download = "moreno-ficha-prospeccion-" + item.id + ".html"'));
-assert.ok(mapPage.includes("Cada tesis del inventario incluye una ficha editorial descargable"));
+assert.ok(mapPage.includes("Cada tesis incluye una ficha editorial"));
 assert.equal((mapPage.match(/class="verification-source"/g) || []).length, 4, "la mesa de verificación presenta cuatro rutas institucionales");
 for (const officialResource of [
   "https://geo.arba.gov.ar/geoserver/idera/wms?request=GetCapabilities&amp;service=WMS",
@@ -498,9 +516,10 @@ assert.equal(industrialDossier.references[0].sourceUrl, opportunities.find(item 
 assert.match(industrialDossier.references[0].coordinates.scope, /no identifica una parcela/);
 assert.equal(buildTerritorialDossier([], {}, "2026-11-26T03:00:00.000Z"), null, "una vista vacía no produce un dossier");
 const completeDossier = buildTerritorialDossier(all, {}, "2026-11-26T03:00:00.000Z");
-assert.equal(completeDossier.references.length, 11);
-assert.deepEqual(completeDossier.counts, { localities: 6, documented: 4, hypotheses: 1, total: 11 });
-assert.equal(completeDossier.references.filter(reference => reference.sourceUrl).length, 5, "solo las tesis conservan sus fuentes registradas");
+assert.equal(completeDossier.references.length, 25);
+assert.deepEqual(completeDossier.counts, { localities: 6, documented: 4, hypotheses: 1, published: 14, total: 25 });
+assert.equal(completeDossier.references.filter(reference => reference.type === "published").length, 14);
+assert.equal(completeDossier.references.filter(reference => reference.sourceUrl).length, 19, "las tesis y publicaciones conservan sus fuentes registradas");
 const dossierDiagram = buildTerritorialDossierDiagram(industrialDossier.references);
 assert.match(dossierDiagram, /<svg/);
 assert.match(dossierDiagram, /Distribución relativa de referencias/);
@@ -514,6 +533,8 @@ assert.match(dossierHtml, /Próximo paso/);
 assert.match(dossierHtml, /Consultar fuente original/);
 assert.match(dossierHtml, /Imprimir \/ guardar como PDF/);
 assert.match(dossierHtml, /no identifica una parcela/);
+assert.match(buildTerritorialDossierHtml(completeDossier), /Avisos \/ proyectos/);
+assert.match(buildTerritorialDossierDiagram(completeDossier.references), /schematic-published/);
 assert.match(dossierHtml, /no se incorporan/);
 assert.match(dossierHtml, /@page\{size:A4/);
 assert.ok(!/<script\b/i.test(dossierHtml), "el dossier es autónomo y no carga scripts");
