@@ -465,6 +465,25 @@ async function auditRoute(browser, route) {
       check(handoff.includes("RP25") && (await contactTab.locator("#map-reference-value").inputValue()).includes("rp25"), "mapa-ia: el formulario comercial recupera la referencia seleccionada");
       await contactTab.close();
 
+
+      const contactChannelsPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+      await contactChannelsPage.goto(BASE_URL + "/mapa-ia/?ref=desarrollo-pir25-ruta25-donbosco", { waitUntil: "domcontentloaded" });
+      const contactChannelsCard = contactChannelsPage.locator('#published-list [data-map-item="desarrollo-pir25-ruta25-donbosco"]');
+      await contactChannelsCard.waitFor({ state: "attached", timeout: 5000 });
+      const publicPhoneHrefs = await contactChannelsCard.locator(".map-public-contact-phone").evaluateAll(links => links.map(link => link.getAttribute("href")));
+      const publicEmailHrefs = await contactChannelsCard.locator(".map-public-contact-email").evaluateAll(links => links.map(link => link.getAttribute("href")));
+      check(publicPhoneHrefs.includes("tel:+541176004000") && publicPhoneHrefs.includes("tel:+5491171877878"), "mapa-ia: los dos teléfonos completos publicados quedan disponibles para llamar");
+      check(publicEmailHrefs.includes("mailto:inmobiliaria@torrespropiedades.info"), "mapa-ia: el email público queda disponible como enlace mailto");
+      check(await contactChannelsCard.locator(".map-public-contact-link").first().isVisible(), "mapa-ia: los canales de contacto directos son visibles en móvil");
+      await contactChannelsPage.close();
+
+      const partialChannelsPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+      await partialChannelsPage.goto(BASE_URL + "/mapa-ia/?ref=terreno-guemes-victorica-2820", { waitUntil: "domcontentloaded" });
+      const partialChannelsCard = partialChannelsPage.locator('#published-list [data-map-item="terreno-guemes-victorica-2820"]');
+      await partialChannelsCard.waitFor({ state: "attached", timeout: 5000 });
+      check(await partialChannelsCard.locator(".map-public-contact-phone").count() === 0, "mapa-ia: un teléfono parcial no genera un enlace de llamada");
+      await partialChannelsPage.close();
+
       const deepReferenceId = mapInventory.filter(item => item.type === "published").at(-1).id;
       const deepReferencePage = await browser.newPage({ viewport: { width: 390, height: 844 } });
       await deepReferencePage.goto(BASE_URL + "/mapa-ia/?ref=" + encodeURIComponent(deepReferenceId), { waitUntil: "domcontentloaded" });
