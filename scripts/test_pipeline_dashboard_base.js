@@ -32,11 +32,29 @@ assert.equal(summary.finance.ARS.counts.honorarios_cobrados, 2);
 assert.equal(summary.finance.ARS.counts.honorarios_propuestos, 2);
 assert.equal(summary.finance.USD.honorarios_acordados, 200);
 assert.equal(summary.nextActions[0].id, "M-001");
+const counterparties = Object.fromEntries(summary.counterpartyCounts.map(entry => [entry.type, entry]));
+assert.deepEqual(counterparties["Propietario/a"], {type:"Propietario/a",total:1,active:1,won:0,notCompleted:0,paused:0});
+assert.deepEqual(counterparties["Desarrollador/a"], {type:"Desarrollador/a",total:1,active:1,won:0,notCompleted:0,paused:0});
+assert.deepEqual(counterparties["Inversor/a"], {type:"Inversor/a",total:1,active:0,won:1,notCompleted:0,paused:0});
 const summaryCsv = dashboard.buildSummaryCsv(summary);
 assert.match(summaryCsv, /fecha_corte;tipo;indicador;moneda;valor/);
 assert.match(summaryCsv, /honorarios;honorarios_cobrados;ARS;550,00/);
 assert.match(summaryCsv, /pipeline;seguimientos_vencidos;;1/);
-assert.doesNotMatch(summaryCsv, /M-001|Propietario|Solicitar plano/);
+assert.match(summaryCsv, /contraparte;Desarrollador\/a · activas;;1/);
+assert.doesNotMatch(summaryCsv, /M-001|Solicitar plano/);
+const categoryCsv = [
+  headers.join(";"),
+  makeRow({id_oportunidad:"M-CAT-01",tipo_contraparte:"Fondo privado de prueba",etapa_comercial:"ganada"}),
+  makeRow({id_oportunidad:"M-CAT-02",tipo_contraparte:"",etapa_comercial:"no concretada"})
+].join("\n");
+const categoryParsed = dashboard.parsePipelineCsv(categoryCsv);
+assert.equal(categoryParsed.ok, true);
+const categorySummary = dashboard.summarizePipeline(categoryParsed.records, "2026-11-25");
+assert.deepEqual(categorySummary.counterpartyCounts.map(entry => entry.type).sort(), ["Otro / revisar", "Sin clasificar"]);
+const categoryExport = dashboard.buildSummaryCsv(categorySummary);
+assert.match(categoryExport, /Otro \/ revisar · ganadas;;1/);
+assert.match(categoryExport, /Sin clasificar · no_concretadas;;1/);
+assert.doesNotMatch(categoryExport, /Fondo privado de prueba|M-CAT-01|M-CAT-02/, "el resumen de contrapartes no debe exponer texto libre ni IDs");
 const calendarIcs = dashboard.buildAgendaIcs(summary);
 assert.match(calendarIcs, /BEGIN:VCALENDAR/);
 assert.match(calendarIcs, /END:VCALENDAR/);
