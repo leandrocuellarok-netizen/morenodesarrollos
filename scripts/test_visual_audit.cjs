@@ -427,8 +427,8 @@ async function auditOpportunityFlow(browser) {
     await page.locator("#contact-interest").selectOption("Presentar un terreno o inmueble");
     await page.locator("#contact-zone").fill("La Reja");
     check(await page.locator("#contact-email").getAttribute("type") === "email", "oportunidades: el email alternativo usa validación nativa");
-    check(await page.locator("#contact-email").isVisible() && !(await page.locator("#contact-email").isRequired()), "oportunidades: el email alternativo es visible y opcional");
-    check(await page.locator("#contact-phone").isVisible() && !(await page.locator("#contact-phone").isRequired()), "oportunidades: el teléfono alternativo es visible y opcional");
+    check(await page.locator("#contact-email").isVisible() && !(await page.locator("#contact-email").evaluate(element => element.required)), "oportunidades: el email alternativo es visible y opcional");
+    check(await page.locator("#contact-phone").isVisible() && !(await page.locator("#contact-phone").evaluate(element => element.required)), "oportunidades: el teléfono alternativo es visible y opcional");
     await page.locator("#contact-email").fill("contacto@example.com");
     await page.locator("#contact-phone").fill("+54 9 11 5555-0101");
     check(await page.locator("#property-data-disclosure").evaluate(element => element.open), "oportunidades: elegir una consulta de inmueble revela sus campos opcionales");
