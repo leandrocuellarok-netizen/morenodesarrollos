@@ -141,7 +141,7 @@
 
   function readMapReference(search) {
     const parameters = new URLSearchParams(String(search || ""));
-    const id = String(parameters.get("map_ref") || "").trim();
+    const id = String(parameters.get("map_ref") || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
     if (!/^[a-z0-9-]{1,40}$/.test(id) || !Object.prototype.hasOwnProperty.call(mapReferenceNames, id)) {
       return null;
     }
