@@ -2,10 +2,48 @@
 <a class="skip-link" href="#main-content">Saltar al contenido principal</a><header class="site-header"><a class="brand" href="../">ERICA M. ACOSTA<small>DESARROLLOS · INTELIGENCIA · MORENO</small></a><button class="mobile-menu" type="button" aria-controls="primary-navigation" aria-expanded="false" aria-label="Abrir menú de navegación"><span class="mobile-menu-icon" aria-hidden="true">☰</span><span class="mobile-menu-label">Menú</span></button><nav class="nav" id="primary-navigation" aria-label="Navegación principal"><a href="../">Inicio</a><a class="active" aria-current="page" href="./">Mapa IA</a><a href="../erica-acosta/">Sobre Erica</a><a href="../oportunidades/">Oportunidades</a><a class="nav-cta" href="https://wa.me/5491141671674?text=Hola%20Erica%2C%20me%20gustar%C3%ADa%20conversar%20sobre%20MORENO." target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></nav></header>
 <main id="main-content" tabindex="-1"><section class="wrap page-hero"><div class="eyebrow">Inteligencia territorial · Partido de Moreno</div><h1>Un mapa para encontrar <em class="serif">mejores preguntas.</em></h1><p>Una primera lectura del territorio para explorar localidades, corredores y posibles líneas de desarrollo. La IA ayuda a ordenar y relacionar información; la oportunidad real se confirma con investigación, documentación y trabajo de campo.</p></section>
 <section class="wrap map-shell"><div class="map-toolbar">
-  <div class="map-filter-group" role="group" aria-label="Filtros del inventario territorial">
+  <div class="map-filter-group" role="group" aria-label="Filtros unificados del inventario territorial">
     <label class="map-filter-field map-filter-search" for="search">
       <span>Buscar referencias</span>
-      <input id="search" type="search" maxlength="100" placeholder="Localidad, actividad, evidencia o próximo paso…" aria-label="Buscar en el mapa">
+      <input id="search" type="search" maxlength="100" placeholder="Localidad, actividad, evidencia o próximo paso…" aria-label="Buscar en el mapa" aria-describedby="map-search-hint">
+      <small id="map-search-hint" class="map-search-hint">Busca sin distinguir acentos; combina palabras en cualquier orden y tolera una diferencia de una letra en términos largos.</small>
+    </label>
+    <label class="map-filter-field map-filter-locality" for="locality-filter">
+      <span>Localidad</span>
+      <select id="locality-filter" aria-label="Filtrar por localidad">
+        <option value="all">Todas las localidades</option>
+        <option value="moreno">Moreno Centro</option>
+        <option value="paso">Paso del Rey</option>
+        <option value="lareja">La Reja</option>
+        <option value="alvarez">Francisco Álvarez</option>
+        <option value="trujui">Trujui</option>
+        <option value="cuartel">Cuartel V</option>
+        <option value="unassigned">Sin localidad precisa</option>
+      </select>
+    </label>
+    <label class="map-filter-field map-filter-activity" for="activity-filter">
+      <span>Actividad</span>
+      <select id="activity-filter" aria-label="Filtrar por actividad">
+        <option value="all">Todas las actividades</option>
+        <option value="industrial">Industria y logística</option>
+        <option value="commercial">Comercio y servicios</option>
+        <option value="tourism">Turismo y recreación</option>
+        <option value="land">Suelo y parcelas</option>
+        <option value="residential">Residencial y vivienda</option>
+        <option value="infrastructure">Infraestructura urbana</option>
+      </select>
+    </label>
+    <label class="map-filter-field map-filter-next-step" for="next-step-filter">
+      <span>Próximo paso</span>
+      <select id="next-step-filter" aria-label="Filtrar por próximo paso">
+        <option value="all">Todos los próximos pasos</option>
+        <option value="cadastral">Catastro y dominio</option>
+        <option value="planning">Normativa y urbanismo</option>
+        <option value="publication">Revalidar publicación</option>
+        <option value="contact">Contacto y documentación</option>
+        <option value="fieldwork">Relevamiento de campo</option>
+        <option value="feasibility">Factibilidad y servicios</option>
+      </select>
     </label>
     <label class="map-filter-field map-filter-sector" for="kind-filter">
       <span>Sector / línea de desarrollo</span>
@@ -15,6 +53,7 @@
         <option value="commercial">Comercial y servicios</option>
         <option value="tourism">Turismo y recreación</option>
         <option value="land">Prospección de suelo</option>
+        <option value="infrastructure">Infraestructura urbana</option>
       </select>
     </label>
     <label class="map-filter-field map-filter-status" for="availability-filter">
@@ -27,37 +66,33 @@
         <option value="no-es-oferta">No es una oferta de parcela</option>
       </select>
     </label>
-    <details id="map-refine-filters" class="map-mobile-disclosure map-filter-refine" data-mobile-collapsible open>
-      <summary><span>Refinar filtros</span><small>Tipo de referencia, evidencia e integridad de ficha</small></summary>
-      <div class="map-filter-refine-grid">
-        <label class="map-filter-field" for="category">
-          <span>Tipo de referencia</span>
-          <select id="category" aria-label="Filtrar tipo de referencia">
-            <option value="all">Todas las capas</option>
-            <option value="locality">Localidades</option>
-            <option value="opportunity">Tesis de oportunidad</option>
-            <option value="published">Propiedades y desarrollos publicados</option>
-          </select>
-        </label>
-        <label class="map-filter-field" for="evidence-filter">
-          <span>Nivel de evidencia</span>
-          <select id="evidence-filter" aria-label="Filtrar nivel de evidencia">
-            <option value="all">Todo el estado de evidencia</option>
-            <option value="documented">Contexto con fuente pública</option>
-            <option value="hypothesis">Hipótesis de prospección</option>
-          </select>
-        </label>
-        <label class="map-filter-field" for="diligence-filter">
-          <span>Datos de prospección · publicaciones</span>
-          <select id="diligence-filter" aria-label="Filtrar publicaciones por presencia de datos de prospección">
-            <option value="all">Todas las fichas</option>
-            <option value="complete">7 datos informados</option>
-            <option value="pending">Con datos pendientes</option>
-          </select>
-        </label>
-        <p class="map-filter-hint">El recuento mide la presencia de siete campos en la ficha; no verifica su exactitud, autenticidad, vigencia ni disponibilidad.</p>
-      </div>
-    </details>
+    <label class="map-filter-field map-filter-category" for="category">
+      <span>Tipo de referencia</span>
+      <select id="category" aria-label="Filtrar tipo de referencia">
+        <option value="all">Todas las capas</option>
+        <option value="locality">Localidades</option>
+        <option value="opportunity">Tesis de oportunidad</option>
+        <option value="published">Propiedades y desarrollos publicados</option>
+      </select>
+    </label>
+    <label class="map-filter-field map-filter-evidence" for="evidence-filter">
+      <span>Nivel de evidencia</span>
+      <select id="evidence-filter" aria-label="Filtrar nivel de evidencia">
+        <option value="all">Todo el estado de evidencia</option>
+        <option value="documented">Contexto con fuente pública</option>
+        <option value="hypothesis">Hipótesis de prospección</option>
+        <option value="published-source">Aviso de tercero · no confirma disponibilidad</option>
+      </select>
+    </label>
+    <label class="map-filter-field map-filter-diligence" for="diligence-filter">
+      <span>Datos de prospección · publicaciones</span>
+      <select id="diligence-filter" aria-label="Filtrar publicaciones por presencia de datos de prospección">
+        <option value="all">Todas las fichas</option>
+        <option value="complete">7 datos informados</option>
+        <option value="pending">Con datos pendientes</option>
+      </select>
+    </label>
+    <p class="map-filter-hint">El recuento mide la presencia de siete campos en la ficha; no verifica su exactitud, autenticidad, vigencia ni disponibilidad. Los filtros se combinan entre sí.</p>
   </div>
   <div class="map-toolbar-actions">
     <button class="map-reset" id="reset-map" type="button">Restablecer filtros</button>
@@ -66,39 +101,40 @@
     <label id="map-share-fallback-wrap" class="map-share-fallback" for="map-share-url" hidden>Enlace de esta vista
       <input id="map-share-url" type="url" readonly aria-label="Enlace de la vista filtrada">
     </label>
-    <span class="map-share-note">El enlace conserva búsqueda, tipo, sector, evidencia, estado registrado, integridad de ficha y referencia seleccionada; no comparte la bitácora local.</span>
+    <span class="map-share-note">El enlace conserva búsqueda, localidad, actividad, próximo paso, sector, tipo de referencia, evidencia, estado de publicación, integridad de ficha y referencia seleccionada; no comparte la bitácora local.</span>
     <button class="map-export map-dossier-export" id="export-dossier" type="button" disabled>Descargar dossier de vista ↓</button>
     <output id="dossier-status" class="map-dossier-status" aria-live="polite"></output>
     <span class="map-dossier-note">Genera un documento imprimible con las referencias visibles, sus fuentes y sus pendientes. No incorpora la bitácora local ni expedientes internos.</span>
     <span class="eyebrow" id="map-status" aria-live="polite">Mapa de trabajo · datos en revisión</span>
   </div>
 </div>
-<details id="map-data-export-disclosure" class="map-mobile-disclosure map-data-export-disclosure" data-mobile-collapsible open>
-  <summary><span>Exportar datos territoriales</span><small>CSV para hojas de cálculo · GeoJSON para QGIS y otros GIS</small></summary>
-  <div class="map-data-export-body">
+<section id="map-data-export-disclosure" class="map-data-export-disclosure">
+<header class="map-section-heading"><h2>Exportar datos territoriales</h2><p>CSV para hojas de cálculo · GeoJSON para QGIS y otros GIS</p></header>
+<div class="map-data-export-body">
     <p>Las descargas contienen únicamente las referencias que siguen visibles con los filtros actuales. Las coordenadas son orientativas y no identifican parcelas. En el CSV, los textos que podrían interpretarse como fórmulas se neutralizan al exportar; las coordenadas numéricas conservan su valor.</p>
     <div class="map-data-export-actions">
       <button class="map-export" id="export-csv" type="button" hidden>Descargar CSV visible ↓</button>
       <button class="map-export" id="export-geojson" type="button" hidden>Descargar GeoJSON visible ↓</button>
     </div>
   </div>
-</details>
-<details id="atlas-index-disclosure" class="map-mobile-disclosure map-atlas-index-disclosure" data-mobile-collapsible open>
-  <summary><span>Estado del inventario</span><span id="atlas-index-summary">367 referencias · 6 localidades · 4 contextos con fuente · 1 hipótesis · 356 avisos y proyectos</span></summary>
-  <section class="map-atlas-index" aria-label="Índice del inventario territorial y publicaciones inmobiliarias">
+
+</section><section id="atlas-index-disclosure" class="map-atlas-index-disclosure">
+<header class="map-section-heading"><h2>Estado del inventario</h2><p id="atlas-index-summary">370 referencias · 6 localidades · 7 contextos con fuente · 1 hipótesis · 356 avisos y proyectos</p></header>
+<section class="map-atlas-index" aria-label="Índice del inventario territorial y publicaciones inmobiliarias">
     <div class="map-atlas-index-heading">
       <span class="map-atlas-kicker">ÍNDICE / ESTADO DEL INVENTARIO</span>
-      <p id="atlas-index-status" role="status" aria-live="polite">367 de 367 referencias visibles · 6 localidades, 4 contextos con fuente pública, 1 hipótesis y 356 publicaciones.</p>
+      <p id="atlas-index-status" role="status" aria-live="polite">370 de 370 referencias visibles · 6 localidades, 7 contextos con fuente pública, 1 hipótesis y 356 publicaciones.</p>
     </div>
     <div class="map-atlas-stat"><strong id="atlas-localities-count">06</strong><span>Localidades visibles</span></div>
     <div class="map-atlas-stat"><strong id="atlas-documented-count">04</strong><span>Contextos con fuente</span></div>
     <div class="map-atlas-stat"><strong id="atlas-hypotheses-count">01</strong><span>Hipótesis visibles</span></div>
     <div class="map-atlas-stat"><strong id="atlas-published-count">356</strong><span>Avisos / proyectos</span></div>
-    <div class="map-atlas-stat"><strong id="atlas-total-count">367 / 367</strong><span>Referencias visibles</span></div>
+    <div class="map-atlas-stat"><strong id="atlas-total-count">370 / 370</strong><span>Referencias visibles</span></div>
   </section>
-</details><p class="map-brief-intro">Podés compartir una vista filtrada del atlas mediante un enlace; la bitácora de diligencia permanece en este navegador. Cada tesis incluye una ficha editorial descargable para desarrolladores; las propiedades y desarrollos publicados tienen fichas separadas con enlace original, precio, superficies, contacto público, estado de revisión y geolocalización. Las publicaciones de terceros no acreditan stock ni disponibilidad y se distinguen de las tesis territoriales.</p><details id="map-review-disclosure" class="map-mobile-disclosure map-review-disclosure" data-mobile-collapsible open>
-  <summary><span>Bitácora local</span><small>Registro interno · se guarda en este navegador</small></summary>
-  <p class="map-review-privacy"><strong>Privacidad:</strong> la bitácora se guarda en el almacenamiento local del navegador sin cifrado. Cualquier persona con acceso a este perfil de navegador o código ejecutado en este mismo sitio podría leerla. No registres nombres, teléfonos, correos, DNI, escrituras, datos bancarios ni detalles confidenciales de una negociación. El JSON exportado también es texto sin cifrar; borrar la bitácora no elimina las copias descargadas.</p>
+
+</section>p class="map-brief-intro">Podés compartir una vista filtrada del atlas mediante un enlace; la bitácora de diligencia permanece en este navegador. Cada tesis incluye una ficha editorial descargable para desarrolladores; las propiedades y desarrollos publicados tienen fichas separadas con enlace original, precio, superficies, contacto público, estado de revisión y geolocalización. Las publicaciones de terceros no acreditan stock ni disponibilidad y se distinguen de las tesis territoriales.</p><section id="map-review-disclosure" class="map-review-disclosure">
+<header class="map-section-heading"><h2>Bitácora local</h2><p>Registro interno · se guarda en este navegador</p></header>
+<p class="map-review-privacy"><strong>Privacidad:</strong> la bitácora se guarda en el almacenamiento local del navegador sin cifrado. Cualquier persona con acceso a este perfil de navegador o código ejecutado en este mismo sitio podría leerla. No registres nombres, teléfonos, correos, DNI, escrituras, datos bancarios ni detalles confidenciales de una negociación. El JSON exportado también es texto sin cifrar; borrar la bitácora no elimina las copias descargadas.</p>
   <p class="map-review-import-note">Para reducir consultas repetidas, las coordenadas públicas obtenidas de Georef se guardan en una caché local de este navegador por un máximo de 30 días. Esa caché no contiene teléfonos, correos ni datos de negociaciones; es independiente de la bitácora y no se elimina al borrar sus registros.</p>
   <div class="map-review-toolbar">
     <div class="map-review-toolbar-copy">
@@ -112,15 +148,16 @@
       <input id="import-review-file" type="file" accept=".json,application/json" aria-label="Seleccionar archivo JSON de bitácora" hidden>
     </div>
   </div>
-</details><div class="map-legend" aria-label="Leyenda del mapa"><span><i class="legend-dot locality-dot"></i> Localidad · círculo</span><span><i class="legend-dot documented-dot"></i> Contexto con fuente · cuadrado</span><span><i class="legend-dot hypothesis-dot"></i> Hipótesis · rombo</span><span><i class="legend-dot published-dot"></i> Publicación · hexágono</span><span class="map-legend-note">La forma distingue la clase; no indica disponibilidad.</span><span class="boundary-state" id="boundary-status" aria-live="polite">Límite municipal: verificando</span></div><div class="map-layout"><aside class="map-sidebar"><div class="eyebrow">Lectura territorial</div><h2>Moreno, capa por capa.</h2><p>Seleccioná un marcador para abrir su ficha, o una ficha para resaltar su punto en el mapa. Las tesis territoriales mantienen sus capas y criterios de evidencia; las propiedades y desarrollos publicados se muestran en una capa independiente con fuente original y disponibilidad no confirmada.</p><div id="locality-list"></div><h2 style="margin-top:30px">Tesis preliminares</h2><div id="opportunity-list"></div><h2 style="margin-top:30px">Propiedades y desarrollos publicados</h2><p class="map-published-intro">Publicaciones de terceros recopiladas para investigación territorial. Cada ficha muestra la fecha de revisión de la fuente, el estado comercial registrado y un control de siete datos de prospección (fuente, revisión, precio, superficie, anunciante, contacto y ubicación). Cuando el contacto público contiene un teléfono completo con prefijo reconocible o un email, se ofrece un acceso directo; números parciales y matrículas no se convierten en enlaces. El recuento solo indica si esos campos están presentes; no verifica su exactitud, autenticidad, vigencia ni disponibilidad. Los estados comerciales se interpretan así: “No confirmada” significa que no se comprobó stock; “Pendiente de revalidación” requiere una nueva consulta; “No vigente” conserva un antecedente que la fuente marcó como vendido, retirado o finalizado. Ningún estado confirma disponibilidad actual. Los marcadores aparecen solo si Georef devuelve una coincidencia inequívoca para la dirección publicada; si no, la ficha conserva la ubicación textual y queda pendiente.</p><p class="map-published-pagination-note">Para facilitar la lectura, las fichas se muestran en tramos de 24. La búsqueda y los filtros recorren todas las publicaciones; las exportaciones conservan el conjunto completo que coincide con los filtros, aunque no todas sus fichas estén abiertas en pantalla.</p><details id="duplicate-review-disclosure" class="map-mobile-disclosure map-duplicate-review" data-mobile-collapsible>
-  <summary><span>Coincidencias para revisar</span><small id="duplicate-review-summary" aria-live="polite">Preparando relaciones declaradas y fuentes compartidas…</small></summary>
-  <p class="map-duplicate-review-note">Esta bandeja reúne relaciones declaradas en el inventario y fichas que comparten una URL primaria o complementaria. Son señales para revisión humana, no duplicados confirmados: no se fusiona ni elimina ninguna publicación. No se aplican coincidencias automáticas por dirección, precio o superficie.</p>
+
+</section>div class="map-legend" aria-label="Leyenda del mapa"><span><i class="legend-dot locality-dot"></i> Localidad · círculo</span><span><i class="legend-dot documented-dot"></i> Contexto con fuente · cuadrado</span><span><i class="legend-dot hypothesis-dot"></i> Hipótesis · rombo</span><span><i class="legend-dot published-dot"></i> Publicación · hexágono</span><span class="map-legend-note">La forma distingue la clase; no indica disponibilidad.</span><span class="boundary-state" id="boundary-status" aria-live="polite">Límite municipal: verificando</span></div><div class="map-layout"><aside class="map-sidebar"><div class="eyebrow">Lectura territorial</div><h2>Moreno, capa por capa.</h2><p>Seleccioná un marcador para abrir su ficha, o una ficha para resaltar su punto en el mapa. Las tesis territoriales mantienen sus capas y criterios de evidencia; las propiedades y desarrollos publicados se muestran en una capa independiente con fuente original y disponibilidad no confirmada.</p><div id="map-empty-state" class="map-empty-state" role="status" aria-live="polite" hidden><h3>No hay referencias para esta combinación</h3><p>Quitá uno o más filtros o probá con otras palabras. La búsqueda acepta acentos omitidos y pequeñas diferencias de escritura.</p><button id="reset-empty-state" type="button">Restablecer todos los filtros</button></div><div id="locality-list"></div><h2 style="margin-top:30px">Tesis preliminares</h2><div id="opportunity-list"></div><h2 style="margin-top:30px">Propiedades y desarrollos publicados</h2><p class="map-published-intro">Publicaciones de terceros recopiladas para investigación territorial. Cada ficha muestra la fecha de revisión de la fuente, el estado comercial registrado y un control de siete datos de prospección (fuente, revisión, precio, superficie, anunciante, contacto y ubicación). Cuando el contacto público contiene un teléfono completo con prefijo reconocible o un email, se ofrece un acceso directo; números parciales y matrículas no se convierten en enlaces. El recuento solo indica si esos campos están presentes; no verifica su exactitud, autenticidad, vigencia ni disponibilidad. Los estados comerciales se interpretan así: “No confirmada” significa que no se comprobó stock; “Pendiente de revalidación” requiere una nueva consulta; “No vigente” conserva un antecedente que la fuente marcó como vendido, retirado o finalizado. Ningún estado confirma disponibilidad actual. Los marcadores aparecen solo si Georef devuelve una coincidencia inequívoca para la dirección publicada; si no, la ficha conserva la ubicación textual y queda pendiente.</p><p class="map-published-pagination-note">Para facilitar la lectura, las fichas se muestran en tramos de 24. La búsqueda y los filtros recorren todas las publicaciones; las exportaciones conservan el conjunto completo que coincide con los filtros, aunque no todas sus fichas estén abiertas en pantalla.</p><section id="duplicate-review-disclosure" class="map-duplicate-review">
+<header class="map-section-heading"><h2>Coincidencias para revisar</h2><p id="duplicate-review-summary" aria-live="polite">Preparando relaciones declaradas y fuentes compartidas…</p></header>
+<p class="map-duplicate-review-note">Esta bandeja reúne relaciones declaradas en el inventario y fichas que comparten una URL primaria o complementaria. Son señales para revisión humana, no duplicados confirmados: no se fusiona ni elimina ninguna publicación. No se aplican coincidencias automáticas por dirección, precio o superficie.</p>
   <div id="duplicate-review-list"></div>
-</details>
-<div id="published-list"></div></aside><div id="map" class="map-canvas" role="application" aria-label="Mapa interactivo del Partido de Moreno"><p class="map-loading">Cargando cartografía…</p></div></div><p class="map-note">El índice cuenta fichas del inventario, no inmuebles disponibles. Las ubicaciones de las oportunidades son referencias aproximadas de corredores o áreas; no identifican parcelas ni acreditan titularidad, disponibilidad, zonificación o rentabilidad. La capa de propiedades y desarrollos recoge publicaciones de terceros verificadas como accesibles en la fecha de revisión, pero no confirma stock, precio final ni vigencia comercial. Sus marcadores se generan únicamente cuando Georef devuelve una coincidencia inequívoca con la dirección pública; en caso contrario, se conserva la ubicación textual y la geolocalización queda pendiente. Las descargas CSV y GeoJSON incluyen únicamente las referencias que quedan visibles tras aplicar la búsqueda y los filtros. El GeoJSON permite continuar el análisis en QGIS u otros sistemas GIS; sus puntos tampoco representan geometrías parcelarias. El límite municipal es una referencia administrativa. Antes de avanzar se debe verificar nomenclatura catastral, dominio, normativa vigente, FOS/FOT, usos, restricciones ambientales e hidráulicas, servicios y accesos.</p>
-<details id="map-verification-disclosure" class="map-mobile-disclosure map-verification-disclosure" data-mobile-collapsible open>
-  <summary><span>Fuentes oficiales y diligencia</span><small>IDE Moreno · GeoARBA · Catastro · Obras Particulares</small></summary>
-  <section class="map-verification" aria-labelledby="map-verification-title">
+
+</section><div id="published-list"></div></aside><div id="map" class="map-canvas" role="application" aria-label="Mapa interactivo del Partido de Moreno"><p class="map-loading">Cargando cartografía…</p></div></div><p class="map-note">El índice cuenta fichas del inventario, no inmuebles disponibles. Las ubicaciones de las oportunidades son referencias aproximadas de corredores o áreas; no identifican parcelas ni acreditan titularidad, disponibilidad, zonificación o rentabilidad. La capa de propiedades y desarrollos recoge publicaciones de terceros verificadas como accesibles en la fecha de revisión, pero no confirma stock, precio final ni vigencia comercial. Sus marcadores se generan únicamente cuando Georef devuelve una coincidencia inequívoca con la dirección pública; en caso contrario, se conserva la ubicación textual y la geolocalización queda pendiente. Las descargas CSV y GeoJSON incluyen únicamente las referencias que quedan visibles tras aplicar la búsqueda y los filtros. El GeoJSON permite continuar el análisis en QGIS u otros sistemas GIS; sus puntos tampoco representan geometrías parcelarias. El límite municipal es una referencia administrativa. Antes de avanzar se debe verificar nomenclatura catastral, dominio, normativa vigente, FOS/FOT, usos, restricciones ambientales e hidráulicas, servicios y accesos.</p>
+<section id="map-verification-disclosure" class="map-verification-disclosure">
+<header class="map-section-heading"><h2>Fuentes oficiales y diligencia</h2><p>IDE Moreno · GeoARBA · Catastro · Obras Particulares</p></header>
+<section class="map-verification" aria-labelledby="map-verification-title">
   <div class="map-verification-heading">
     <div class="eyebrow">Mesa de verificación · fuentes oficiales</div>
     <h2 id="map-verification-title">Del área de interés a una parcela <em>comprobable.</em></h2>
@@ -193,6 +230,7 @@
   </div>
   <p class="verification-footnote">Estas fuentes son puntos de consulta, no una certificación automática. MORENO no descarga ni interpreta todavía parcelas individuales desde esos portales. Cada dato debe registrarse con su procedencia y fecha; las conclusiones requieren revisión técnica, dominial y urbanística.</p>
 </section>
-</details></section></main><footer class="site-footer"><span>© Erica M. Acosta · Moreno, Buenos Aires</span><span>Mapa IA · Versión exploratoria</span><a href="../">Volver al inicio ↗</a></footer>
+
+</section>/section></main><footer class="site-footer"><span>© Erica M. Acosta · Moreno, Buenos Aires</span><span>Mapa IA · Versión exploratoria</span><a href="../">Volver al inicio ↗</a></footer>
 <noscript><div class="map-fallback"><h3>Consulta del territorio sin mapa interactivo</h3><p>La cartografía requiere JavaScript. Esta lista conserva las referencias y sus fuentes principales.</p><h4>Localidades</h4><ul><li>Moreno Centro</li><li>Paso del Rey</li><li>La Reja</li><li>Francisco Álvarez</li><li>Trujui</li><li>Cuartel V</li></ul><h4>Tesis territoriales</h4><ul><li>RP25 · Darwin Passaponti · Av. San Fernando — Ordenanza 7443/25: <a href="https://sibom.slyt.gba.gob.ar/bulletins/14607/contents/2361465">fuente municipal</a></li><li>Nodo RP24/RP25 · Ecoparque Industrial — <a href="https://ecoparque.com.ar/">información publicada por el operador</a></li><li>Paso del Rey · Camino de la Ribera — <a href="https://www.gba.gob.ar/node/51424">información provincial</a></li><li>Distrito Ecológico Roggero — <a href="https://iduar.moreno.gob.ar/2025/08/12/distrito-ecologico-roggero-un-espacio-natural-para-descubrir/">información de IDUAR</a></li><li>Cuartel V · Trujui · La Reja — <a href="https://www.zonaprop.com.ar/terrenos-venta-moreno-mas-9000-m2.html">pista de prospección inmobiliaria</a>, no disponibilidad verificada</li></ul><p>Las referencias de oportunidades son áreas o corredores aproximados, no parcelas verificadas.</p></div></noscript>
 </body></html>
