@@ -352,7 +352,16 @@
     "casa-facundo-quiroga-1100-300-pendiente": "Facundo Quiroga 1100 · casa de 4 ambientes",
     "casa-pueyrredon-2544-560-pendiente": "Pueyrredon al 2544 · chalet de 3 dormitorios",
     "terreno-valparaiso-100-lote10-300": "Valparaíso 100 · lote 10 · 300 m² · Barrio Güemes",
-    "terreno-valparaiso-100-lote11-300": "Valparaíso 100 · lote 11 · 300 m² · Barrio Güemes"
+    "terreno-valparaiso-100-lote11-300": "Valparaíso 100 · lote 11 · 300 m² · Barrio Güemes",
+    "terreno-9-de-julio-46-487": "9 de Julio 46 · lote de 487 m² con estructura para cuatro departamentos",
+    "terreno-jose-marmol-rivadavia-1418": "José Mármol 100 · esquina Bernardino Rivadavia · 1.418 m²",
+    "terreno-guatemala-2500-valentin-alsina-590": "Guatemala 2500 esquina Valentín Alsina · 590 m²",
+    "terreno-justo-daract-2751-2163": "Justo Daract 2751 · dos parcelas por 2.163 m²",
+    "casa-quinta-samaniego-4900-4200": "Samaniego 4900 · casa quinta sobre 4.200 m²",
+    "casa-martinez-melo-300-161": "Martínez Melo al 300 · casa de 5 ambientes a refaccionar",
+    "casa-25-de-mayo-2700-350": "25 de Mayo 2700 · casa clásica tipo americana · Paso del Rey",
+    "casa-concordia-2545-311": "Concordia 2545 · casa de cinco ambientes · Moreno",
+    "terreno-bartolome-mitre-3200-1260": "Avenida Bartolomé Mitre 3200 · lote comercial de 1.260 m²"
   });
 
   function readMapReference(search) {
