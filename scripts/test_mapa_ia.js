@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -17,6 +17,8 @@ const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "
 assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
 assert.ok(mapPage.includes('id="kind-filter"'), "el atlas permite filtrar por sector o línea de desarrollo");
 assert.ok(mapPage.includes('id="availability-filter"'), "el atlas permite filtrar el estado registrado de las publicaciones");
+assert.ok(mapPage.includes('id="diligence-filter"'), "el atlas permite filtrar la presencia de datos de prospección");
+assert.ok(mapPage.includes("El recuento mide la presencia de siete campos"), "el filtro aclara que la integridad no equivale a verificación");
 for (const state of ["no-confirmada", "pendiente-revalidacion", "no-vigente"]) {
   assert.ok(mapPage.includes('option value="' + state + '"'), "el filtro ofrece el estado " + state);
 }
@@ -34,6 +36,23 @@ for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-do
   assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
 }
 const initialInventoryCounts = countInventory(all);
+const completeDiligenceSample = publishedDiligenceSummary({
+  type: "published", source: "https://example.org/aviso", lastCheckedAt: "2026-11-27",
+  price: "USD 85.000", landSurfaceM2: 320, agency: "Inmobiliaria de prueba",
+  contact: "Formulario público", address: "Av. de prueba 100", locality: "Moreno"
+});
+assert.deepEqual(completeDiligenceSample, { reported: 7, total: 7, missing: [], complete: true });
+const incompleteDiligenceSample = publishedDiligenceSummary({
+  type: "published", source: "https://example.org/aviso", lastCheckedAt: "2026-11-27",
+  price: "", surfaceNote: "", agency: "Inmobiliaria de prueba", contact: "",
+  address: "Av. de prueba 100", locality: "Moreno"
+});
+assert.deepEqual(incompleteDiligenceSample.missing, ["Referencia de precio", "Superficie", "Referencia de contacto"]);
+const completeDiligenceItems = filterReferences(all, { diligence: "complete" });
+const pendingDiligenceItems = filterReferences(all, { diligence: "pending" });
+assert.ok(completeDiligenceItems.every(item => item.type === "published" && publishedDiligenceSummary(item).complete));
+assert.ok(pendingDiligenceItems.every(item => item.type === "published" && !publishedDiligenceSummary(item).complete));
+assert.equal(completeDiligenceItems.length + pendingDiligenceItems.length, publishedProperties.length, "la clasificación de diligencia cubre todas las publicaciones sin incluir otras capas");
 function readStaticAtlasCount(id) {
   const match = mapPage.match(new RegExp('id="' + id + '">([^<]+)<'));
   assert.ok(match, "el HTML inicial conserva el contador " + id);
@@ -120,7 +139,7 @@ assert.equal(getSharedReferenceId("?ref=rp25", all), "rp25", "se reconoce una re
 assert.equal(getSharedReferenceId("?ref=no-existe", all), null, "se descarta una referencia desconocida");
 assert.equal(getSharedReferenceId("", all), null, "sin parámetro no se fuerza una selección");
 const parsedMapView = parseMapViewState(
-  "?q=log%C3%ADstica&tipo=opportunity&sector=industrial&evidencia=documented&vigencia=no-vigente&ref=rp25",
+  "?q=log%C3%ADstica&tipo=opportunity&sector=industrial&evidencia=documented&vigencia=no-vigente&diligencia=pending&ref=rp25",
   all
 );
 assert.deepEqual(parsedMapView, {
@@ -129,10 +148,11 @@ assert.deepEqual(parsedMapView, {
   kind: "industrial",
   evidence: "documented",
   availability: "no-vigente",
+  diligence: "pending",
   ref: "rp25"
 }, "la URL restaura búsqueda, tipo, sector, evidencia, estado de publicación y referencia");
-assert.deepEqual(parseMapViewState("?tipo=desconocido&sector=ilegal&evidencia=pendiente&vigencia=ilegal&ref=falso", all), {
-  query: "", category: "all", kind: "all", evidence: "all", availability: "all", ref: null
+assert.deepEqual(parseMapViewState("?tipo=desconocido&sector=ilegal&evidencia=pendiente&vigencia=ilegal&diligencia=ilegal&ref=falso", all), {
+  query: "", category: "all", kind: "all", evidence: "all", availability: "all", diligence: "all", ref: null
 }, "los parámetros no permitidos vuelven a valores seguros");
 assert.equal(parseMapViewState("?q=" + "x".repeat(140), all).query.length, 100, "la búsqueda compartida se limita a cien caracteres");
 const normalizedMapView = normalizeMapViewState({
@@ -141,10 +161,12 @@ const normalizedMapView = normalizeMapViewState({
   kind: "land",
   evidence: "hypothesis",
   availability: "pendiente-revalidacion",
+  diligence: "complete",
   ref: "cuartel"
 }, all);
 assert.equal(normalizedMapView.query, "suelo");
 assert.equal(normalizedMapView.availability, "pendiente-revalidacion");
+assert.equal(normalizedMapView.diligence, "complete");
 const mapViewUrl = new URL(buildMapViewUrl(
   "https://example.org/mapa-ia/?utm_source=mail&q=viejo&sector=tourism#inventario",
   parsedMapView,
@@ -156,14 +178,15 @@ assert.equal(mapViewUrl.searchParams.get("tipo"), "opportunity");
 assert.equal(mapViewUrl.searchParams.get("sector"), "industrial");
 assert.equal(mapViewUrl.searchParams.get("evidencia"), "documented");
 assert.equal(mapViewUrl.searchParams.get("vigencia"), "no-vigente");
+assert.equal(mapViewUrl.searchParams.get("diligencia"), "pending");
 assert.equal(mapViewUrl.searchParams.get("ref"), "rp25");
 assert.equal(mapViewUrl.hash, "#inventario", "la URL compartida conserva el fragmento");
 const defaultMapViewUrl = new URL(buildMapViewUrl(
-  "https://example.org/mapa-ia/?q=viejo&tipo=locality&sector=land&evidencia=hypothesis&vigencia=no-confirmada&ref=rp25",
+  "https://example.org/mapa-ia/?q=viejo&tipo=locality&sector=land&evidencia=hypothesis&vigencia=no-confirmada&diligencia=pending&ref=rp25",
   {},
   all
 ));
-assert.equal(["q", "tipo", "sector", "evidencia", "vigencia", "ref"].some(key => defaultMapViewUrl.searchParams.has(key)), false, "restablecer elimina todos los parámetros del mapa");
+assert.equal(["q", "tipo", "sector", "evidencia", "vigencia", "diligencia", "ref"].some(key => defaultMapViewUrl.searchParams.has(key)), false, "restablecer elimina todos los parámetros del mapa");
 const sharedUrl = new URL(buildReferenceUrl("https://example.org/mapa-ia/?layer=all&sector=industrial&q=dep%C3%B3sitos&vigencia=no-confirmada#inventario", "rp25"));
 assert.equal(sharedUrl.searchParams.get("ref"), "rp25", "la URL compartible identifica la referencia");
 assert.equal(sharedUrl.searchParams.get("layer"), "all", "la URL compartible conserva otros parámetros");
