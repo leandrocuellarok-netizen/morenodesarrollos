@@ -142,7 +142,7 @@ assert.equal(readStaticAtlasCount("atlas-total-count"), initialInventoryCounts.t
 assert.ok(mapPage.includes(initialInventoryCounts.total + " referencias · " + initialInventoryCounts.localities + " localidades · " + initialInventoryCounts.documented + " contextos con fuente · " + initialInventoryCounts.hypotheses + " hipótesis · " + initialInventoryCounts.published + " avisos y proyectos"), "el resumen estático coincide con el catálogo");
 assert.ok(mapPage.includes(initialInventoryCounts.total + " de " + initialInventoryCounts.total + " referencias visibles"), "el estado estático coincide con el catálogo");
 assert.ok(mapPage.includes("No hay referencias para esta combinación"), "el estado vacío ayuda a recuperar una búsqueda sin resultados");
-assert.ok(mapPage.includes("La forma distingue la clase"), "la leyenda explica la semántica de los símbolos sin depender del color");
+assert.ok(mapPage.includes("contexto con fuente") && mapPage.includes("hipótesis") && mapPage.includes("fichas sin coordenadas verificables siguen en el índice"), "la leyenda distingue contexto, hipótesis y referencias sin punto");
 assert.ok(mapPage.includes('option value="published"'), "el filtro ofrece la capa de publicaciones inmobiliarias");
 assert.ok(mapPage.includes('id="published-list"'), "el mapa contiene una lista independiente de publicaciones");
 const publicationIntro = mapPage.match(/<p class="map-published-intro">([\s\S]*?)<\/p>/)?.[1] || "";
@@ -154,7 +154,7 @@ assert.ok(source.includes("function resolvePublishedGeoreferencesCached(items, f
 assert.equal(GEOREF_CACHE_KEY, "moreno-georef-cache-v1", "la caché usa una clave versionada e independiente de la bitácora");
 assert.equal(GEOREF_CACHE_TTL_MS, 30 * 24 * 60 * 60 * 1000, "las coordenadas cacheadas vencen a los 30 días");
 assert.ok(source.includes("function availabilityFilterKey(value)"), "el motor normaliza estados comerciales permitidos");
-assert.ok(source.includes('url.searchParams.set("vigencia", normalized.availability)'), "el enlace compartido conserva el estado de publicación");
+assert.ok(source.includes('url.searchParams.set("vigencia",n.availability)'), "el enlace compartido conserva el estado de publicación");
 assert.ok(styles.includes(".map-pin-published") && styles.includes(".published-dot"), "la capa publicada tiene símbolo cartográfico propio");
 assert.ok(mapPage.includes('id="export-review"'), "el Mapa IA permite exportar la bitácora local");
 assert.ok(mapPage.includes('id="review-status"'), "el Mapa IA explica el estado y alcance del guardado local");
@@ -196,6 +196,15 @@ assert.ok(source.includes('contactLinkNode(item, "map-contact-link")'), "el CTA 
 assert.ok(source.includes("if (sharedItem) focusItem(sharedItem)"), "un enlace directo centra y abre la referencia al cargar");
 assert.ok(source.includes('map.on("dragstart", markUserNavigation)'), "el mapa registra el desplazamiento manual");
 assert.ok(source.includes('map.on("zoomstart", markUserNavigation)'), "el mapa registra el zoom manual");
+assert.equal((mapPage.match(/<h1\b/g) || []).length, 1, "el mapa conserva un único H1 accesible");
+assert.ok(mapPage.includes("Arrastrá para desplazarte") && mapPage.includes("pellizcá con dos"), "la ayuda explica desplazamiento y zoom en escritorio y móvil");
+assert.ok(mapPage.includes('id="map-zoom-in"') && mapPage.includes('id="map-zoom-out"') && mapPage.includes('id="map-fit-all"'), "hay controles táctiles visibles para zoom y reencuadre");
+assert.ok(mapPage.includes('id="kind-filter" type="hidden"') && !mapPage.includes('class="map-filter-field map-filter-sector"'), "el sector redundante queda integrado en Actividad sin romper enlaces heredados");
+assert.ok(styles.includes(".map-touch-controls") && styles.includes("min-height: 48px"), "los controles tienen objetivos táctiles amplios");
+assert.ok(source.includes("function reframeMap()") && source.includes("map.zoomIn(") && source.includes("map.zoomOut(") && source.includes("map.fitBounds(bounds"), "el zoom y el reencuadre están conectados al motor cartográfico");
+assert.ok(source.includes('mapTouchControls.hidden = true'), "los controles se ocultan si se activa el esquema estático");
+assert.ok(source.includes('makeCards(shown.filter(item => item.type === "opportunity"), opportunityList)'), "las tesis sin coordenadas permanecen en el índice");
+assert.ok(source.includes('makePublishedCards(shown.filter(item => item.type === "published"), publishedList)'), "las publicaciones sin coordenadas permanecen en el índice");
 assert.ok(source.includes('if (!bounds.isEmpty() && shouldFitMunicipalBounds(selectedReferenceId, userHasNavigated))'), "el límite municipal no reemplaza una vista elegida o manipulada");
 assert.ok(source.includes("function shouldFitMunicipalBounds(selectedReferenceId, userHasNavigated)"), "la política de encuadre municipal es comprobable");
 assert.equal(shouldFitMunicipalBounds(null, false), true, "sin selección ni interacción el límite puede encuadrar el mapa");
@@ -307,11 +316,13 @@ const contactUrl = new URL(buildOpportunityContactUrl("https://example.org/proye
   id: "rp25",
   name: "RP25 · Darwin Passaponti"
 }));
-assert.equal(contactUrl.pathname, "/proyecto/oportunidades/", "el CTA lleva al formulario de oportunidades");
-assert.equal(contactUrl.searchParams.get("map_ref"), "rp25", "el contacto conserva el identificador de la referencia");
-assert.equal(contactUrl.searchParams.has("map_name"), false, "el contacto no confía en etiquetas editables de la URL");
-assert.equal(referenceContactLabel({ type: "opportunity" }), "Conversar sobre esta tesis ↗", "la tesis ofrece una acción comercial contextual");
-assert.equal(referenceContactLabel({ type: "locality" }), "Consultar sobre esta localidad ↗", "la localidad ofrece una acción comercial contextual");
+assert.equal(contactUrl.hostname, "wa.me", "el CTA no apunta a INFO PYME como si fuera un formulario");
+assert.equal(contactUrl.pathname, "/5491141671674", "la consulta se dirige al WhatsApp público de MORENO");
+assert.match(contactUrl.searchParams.get("text"), /RP25/);
+assert.match(contactUrl.searchParams.get("text"), /rp25/);
+assert.equal(referenceContactLabel({ type: "opportunity" }), "Consultar esta tesis con MORENO ↗", "la tesis identifica claramente el destino comercial");
+assert.equal(referenceContactLabel({ type: "locality" }), "Consultar esta localidad con MORENO ↗", "la localidad identifica claramente el destino comercial");
+assert.equal(referenceContactLabel({ type: "published" }), "Consultar esta ficha con MORENO ↗", "la publicación distingue consulta editorial de contacto del anunciante");
 
 assert.ok(source.includes("card.dataset.mapItem = item.id"), "cada ficha tiene una identidad enlazable");
 assert.ok(source.includes('actions.className = "map-item-actions"'), "cada ficha reúne las acciones principales antes de la diligencia");
@@ -671,6 +682,24 @@ assert.ok(filterReferences(all, { query: "francisco alvarez", category: "localit
 assert.ok(filterReferences(all, { query: "FRANCISCO ÁLVAREZ", category: "locality" }).some(item => item.id === "alvarez"), "la búsqueda ignora diferencias de mayúsculas y acentos");
 assert.equal(filterReferences(all, { query: "cadena-sin-coincidencias-xyz" }).length, 0, "el estado vacío corresponde a cero coincidencias reales");
 assert.ok(filterReferences(all, { query: "saneamiento cuartel", category: "opportunity" }).some(item => item.id === "promeba-cuartel-v"), "los términos se combinan aunque estén en campos distintos");
+assert.ok(filterReferences(all, { query: "cuartel v promeba veredas", category: "opportunity" }).some(item => item.id === "promeba-cuartel-v"), "la búsqueda compuesta relaciona localidad, actividad y evidencia");
+assert.ok(filterReferences(all, { query: "iduar 400.000 m²", category: "opportunity" }).some(item => item.id === "base-aerea-moreno-norte"), "la búsqueda reconoce la fuente y una superficie expresada en m²");
+assert.ok(filterReferences(all, { query: "solicitar planos", category: "opportunity" }).some(item => item.id === "base-aerea-moreno-norte"), "la búsqueda indexa el próximo paso");
+assert.ok(filterReferences(all, { query: "logística cuartel v", category: "opportunity" }).some(item => item.id === "base-aerea-moreno-norte"), "la búsqueda indexa actividad y localidad");
+assert.ok(filterReferences(all, { query: "sibom 7443/25", category: "opportunity" }).some(item => item.id === "rp25"), "la búsqueda indexa la fuente normativa");
+assert.ok(filterReferences(all, { query: "Derqui 5890", category: "published" }).some(item => item.id === "sumio-lote-338"), "la búsqueda indexa calles y direcciones publicadas");
+assert.ok(filterReferences(all, { query: "338 m2", category: "published" }).some(item => item.id === "sumio-lote-338"), "la búsqueda indexa superficies numéricas y convierte m² a m2");
+assert.ok(filterReferences(all, { query: "Pablo Aquino Derqui 5890 338 m²", category: "published" }).some(item => item.id === "sumio-lote-338"), "la búsqueda compuesta cruza anunciante, calle y superficie");
+assert.deepEqual(
+  filterReferences(all, { query: "CUÁRTEL-V PROMEBA" }).map(item => item.id).sort(),
+  filterReferences(all, { query: "cuartel v promeba" }).map(item => item.id).sort(),
+  "la búsqueda ignora tildes, mayúsculas y puntuación"
+);
+const combinedFilters = filterReferences(all, { query: "cuartel v", locality: "cuartel", activity: "industrial", nextStep: "contact", evidence: "documented" });
+assert.deepEqual(combinedFilters.map(item => item.id), ["base-aerea-moreno-norte"], "la búsqueda y los filtros de localidad, actividad, próximo paso y evidencia se combinan");
+const baseAereaReference = opportunities.find(item => item.id === "base-aerea-moreno-norte");
+assert.equal(hasCoordinates(baseAereaReference), false, "la referencia sin coordenadas no recibe un punto inventado");
+assert.ok(filterReferences(all, { query: "base aérea", category: "opportunity" }).some(item => item.id === "base-aerea-moreno-norte"), "la referencia sin coordenadas sigue encontrándose desde el índice");
 assert.deepEqual(
   filterReferences(all, { query: "paso del rey", category: "locality" }).map(item => item.id),
   ["paso"]
