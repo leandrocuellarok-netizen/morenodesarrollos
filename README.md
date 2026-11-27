@@ -30,21 +30,21 @@ Esta referencia es un punto de partida. No reemplaza la verificación oficial de
 - [Código Python de evaluación y scoring](strategy/pillar-1/pillar1_origination.py)
 - [Investigación territorial inicial de Moreno](research/pilar-1/README.md)
 
-La investigación inicial identifica cinco tesis territoriales preliminares: corredor productivo-logístico RP25/Darwin Passaponti/Av. San Fernando; nodo RP24/RP25 y servicios complementarios de Ecoparque; comercio y servicios en Paso del Rey/Camino de la Ribera; turismo de cercanía en Distrito Ecológico Roggero; y prospección de parcelas grandes en Cuartel V, Trujui y La Reja.
+El inventario territorial reúne trece referencias: doce contextos documentados y una hipótesis de prospección. Incluye RP25/Darwin Passaponti/Av. San Fernando; Ecoparque Industrial; Camino de la Ribera; Distrito Ecológico Roggero; Base Aérea Moreno Norte; PRO.ME.BA. en Trujui y Cuartel V; MUI-MO; Utopía Bonaerense; Ordenanza 7497/26 (títulos imperfectos); Ordenanza 7542/26 (habilitaciones industriales y logísticas); Ordenanza 7572/26 (convenio urbanístico de Los Olivos); y la hipótesis de prospección de suelo en Cuartel V, Trujui y La Reja. Las normas y convenios son antecedentes de diligencia, no ofertas inmobiliarias ni prueba de disponibilidad.
 
-**Estado:** son tesis para investigación. No se presentan todavía veinte parcelas verificadas ni un ROI demostrado. Cada operación requiere comprobación dominial, catastral, urbanística, ambiental, hidráulica, de servicios y financiera.
+**Estado:** el inventario reúne antecedentes y líneas de investigación; no presenta veinte parcelas verificadas ni un ROI demostrado. Las ordenanzas y convenios documentan marcos y obligaciones, no disponibilidad ni factibilidad. Cada operación requiere comprobación dominial, catastral, urbanística, ambiental, hidráulica, de servicios y financiera.
 
 
 ## Mapa IA de originación
 
 - [Abrir Mapa IA de Moreno (versión vigente)](mapa-ia/index.html)
 - La ruta histórica `web/mapa-moreno/index.html` se conserva como acceso de compatibilidad y redirige a `/mapa-ia/`; no es una segunda herramienta cartográfica.
-- Incluye localidades y cinco tesis territoriales del Pilar 1, con búsqueda por contenido y filtros combinables por tipo, sector/línea de desarrollo y nivel de evidencia; las fichas, la leyenda y las fuentes públicas conservan su alcance documental.
+- Incluye localidades y trece referencias territoriales (doce contextos documentados y una hipótesis), con búsqueda por contenido y filtros combinables por tipo, localidad, actividad, próximo paso, evidencia, vigencia y diligencia; las fichas, la leyenda y las fuentes públicas conservan su alcance documental.
 - Distingue el contexto respaldado por una fuente pública de las hipótesis de prospección; esa distinción no equivale a verificar parcelas ni disponibilidad.
 - Superpone el límite administrativo municipal mediante GeoJSON de Georef / IGN (WGS84), con ajuste automático del encuadre.
 - Si MapLibre no carga o fallan de forma persistente las teselas de OpenStreetMap, el Mapa IA conserva una lámina esquemática local: mantiene la relación espacial aproximada, los filtros y la selección de fichas sin depender de la cartografía externa.
 - El esquema alternativo usa las coordenadas del inventario para ordenar referencias; no representa calles, límites administrativos ni parcelas, y no tiene escala.
-- Los marcadores de oportunidades son referencias aproximadas de áreas/corredores, no parcelas ni límites oficiales.
+- El único marcador de contexto territorial, Ecoparque, usa el pin enlazado por su operador y no identifica una parcela individual. Las demás referencias permanecen en el índice hasta contar con una coordenada pública verificable.
 - La capa independiente **Propiedades y desarrollos publicados** reúne avisos y proyectos de terceros. La cantidad exacta se calcula desde el inventario vigente del Mapa IA y se muestra en su índice, para evitar cifras duplicadas que queden desactualizadas en esta documentación. Última revisión pública registrada: 27/11/2026. Los avisos no implican disponibilidad confirmada; antecedentes y publicaciones retiradas permanecen en el historial con su estado señalado.
 - El filtro de integridad de ficha cuenta la presencia de siete datos de prospección (fuente, fecha de revisión, referencia de precio, superficie, anunciante, referencia de contacto y ubicación textual). El recuento no verifica exactitud, autenticidad, vigencia ni disponibilidad.
 - La bandeja de coincidencias reúne relaciones `potentialDuplicateOf` declaradas y URLs primarias/complementarias compartidas entre fichas. Es una cola de revisión humana, no una deduplicación automática: no infiere duplicados solo por dirección, superficie o precio y nunca fusiona ni elimina registros. El formulario de oportunidades valida sus referencias contra el inventario completo del Mapa IA para evitar enlaces a fichas que no estén en el catálogo canónico.
@@ -57,7 +57,7 @@ La investigación inicial identifica cinco tesis territoriales preliminares: cor
 Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales:
 
 - / — Inicio: presentación del proyecto, desarrollo inmobiliario, inteligencia territorial e IA aplicada.
-- /mapa-ia/ — Mapa IA: mapa interactivo del Partido de Moreno, localidades y cinco tesis preliminares de oportunidad.
+- /mapa-ia/ — Mapa IA: mapa interactivo del Partido de Moreno, seis localidades y trece referencias territoriales (doce contextos documentados y una hipótesis).
 - El índice editorial del Mapa IA cuenta dinámicamente las localidades, los contextos con fuente pública, las hipótesis y el total visible tras cada filtro. Es un recuento de fichas, no de inmuebles disponibles.
 - La cartografía usa símbolos monocromáticos por forma (círculo, cuadrado y rombo) para distinguir clases sin depender del color; las coordenadas siguen siendo referencias territoriales aproximadas.
 - /erica-acosta/ — Sobre Erica: perfil personal y enfoque de trabajo, con énfasis en residencia local, iniciativa emprendedora y alianzas.
@@ -106,17 +106,17 @@ Sitio personal de Erica M. Acosta en evolución, con cuatro destinos principales
 
 ### Resiliencia y accesibilidad del Mapa IA
 
-- Las fichas de localidades y tesis se renderizan aunque MapLibre GL JS o la cartografía base no estén disponibles.
+- Las fichas de localidades y referencias territoriales se renderizan aunque MapLibre GL JS o la cartografía base no estén disponibles.
 - Los filtros de texto, tipo, sector/línea de desarrollo y nivel de evidencia funcionan también en modo de consulta sin mapa.
 - Se incluye una alternativa HTML mediante `noscript` para lectores sin JavaScript, con enlaces directos a las fuentes.
 - Los controles de las fichas muestran foco visible para navegación por teclado.
-- El inventario de localidades y tesis usa fichas desplegables con línea a investigar, evidencia, estado, próximo paso y enlace directo a cada referencia externa; cuando la cartografía está disponible, cada ficha también permite centrar su marcador.
+- El inventario de localidades y referencias territoriales usa fichas desplegables con línea a investigar, evidencia, estado, próximo paso y enlace directo a cada fuente externa; cuando la cartografía está disponible, cada ficha también permite centrar su marcador.
 - Si falla el proveedor de teselas, se conserva el inventario de referencias y se informa el estado sin ocultar la investigación.
 
 
 ### Bitácora local de verificación del Mapa IA
 
-- Cada una de las cinco tareas por tesis conserva una fuente, documento o folio (hasta 240 caracteres), fecha de consulta y observación breve opcional (hasta 500 caracteres).
+- Cada una de las cinco tareas por referencia conserva una fuente, documento o folio (hasta 240 caracteres), fecha de consulta y observación breve opcional (hasta 500 caracteres).
 - Una tarea solo cuenta como **revisión documentada** cuando se completa una fuente/documento de al menos cuatro caracteres y una fecha ISO válida. La casilla permanece deshabilitada mientras falte alguno de esos dos datos.
 - La versión anterior guardaba casillas sin procedencia. Al actualizar, esas marcas se migran como pendientes de documentar; no se presentan como verificaciones completas ni se descartan silenciosamente.
 - El estado se conserva en `localStorage` del navegador actual. No se transmite al sitio, no sincroniza entre dispositivos y no debe utilizarse para guardar nombres de personas, datos personales, información dominial sensible ni documentación confidencial.
@@ -189,7 +189,7 @@ El formulario de `/oportunidades/` permite marcar varias referencias disponibles
 
 ## Esquema cartográfico editorial en Inicio
 
-La vista de Inicio muestra un esquema SVG de referencias espaciales construido a partir de las coordenadas de las seis localidades y las cinco tesis publicadas en `mapa-ia/index.html`. Los círculos identifican localidades; los cuadrados, tesis con contexto respaldado por fuente pública; y el rombo discontinuo, una hipótesis de prospección. Las posiciones son orientativas. El esquema no dibuja límites municipales, calles ni parcelas y no acredita disponibilidad. Si cambian las coordenadas o la clasificación de las fichas del Mapa IA, actualizar también el esquema de Inicio.
+La vista de Inicio muestra un esquema SVG construido a partir de las coordenadas trazables de las seis localidades y de la única referencia territorial con coordenada publicada y verificada (Ecoparque). Las once fichas documentales restantes y la hipótesis se conservan en el índice sin marcador, porque sus fuentes no identifican una coordenada cartográfica verificable. Los círculos identifican localidades y el cuadrado identifica el contexto documentado. El esquema no dibuja límites municipales, calles ni parcelas y no acredita disponibilidad. Si cambian las coordenadas o la clasificación, actualizar también el esquema de Inicio.
 
 
 ## Navegación móvil accesible
@@ -204,7 +204,7 @@ Las cuatro páginas públicas comparten un menú móvil desplegable, controlable
 
 ## Conversión comercial desde el Mapa IA
 
-Cada localidad o tesis territorial puede abrir el formulario de oportunidades con su identificador y nombre como contexto de origen. El formulario muestra esa referencia, incorpora una nota explícita sobre su alcance aproximado y la incluye en el borrador de WhatsApp para que la persona lo revise. La referencia no se transforma en identificación parcelaria ni acredita titularidad, disponibilidad, zonificación o factibilidad. El sitio no envía ni almacena el contacto automáticamente.
+Cada localidad o referencia territorial puede abrir el formulario de oportunidades con su identificador y nombre como contexto de origen. El formulario muestra esa referencia, incorpora una nota explícita sobre su alcance aproximado y la incluye en el borrador de WhatsApp para que la persona lo revise. La referencia no se transforma en identificación parcelaria ni acredita titularidad, disponibilidad, zonificación o factibilidad. El sitio no envía ni almacena el contacto automáticamente.
 
 
 ## Mesa de verificación parcelaria y urbanística
@@ -227,7 +227,7 @@ La secuencia de control exige nomenclatura catastral y plano de mensura, certifi
 
 - El Mapa IA permite importar una exportación JSON de bitácora con `schema_version: 2`; se rechazan archivos mal formados, versiones no compatibles y archivos mayores a 1 MB.
 - La importación se procesa íntegramente en el navegador. No sube el archivo ni transmite los registros a un servidor.
-- Solo se admiten identificadores de las cinco tesis y de las cinco tareas conocidas. Las referencias o tareas desconocidas se omiten y se informan.
+- Solo se admiten identificadores de las trece referencias territoriales y de las cinco tareas conocidas. Las referencias o tareas desconocidas se omiten y se informan.
 - Los registros importados completan datos locales faltantes cuando no hay contradicciones.
 - Si fuente, fecha u observación contienen valores no vacíos diferentes en ambos dispositivos, el sistema detecta el conflicto y conserva íntegramente el registro local. No sobrescribe ni combina silenciosamente datos contradictorios.
 - El resumen de importación informa registros nuevos, combinados, conflictos y elementos ignorados. Para resolver un conflicto, revisar ambos archivos exportados y actualizar manualmente la ficha correspondiente.
@@ -335,9 +335,9 @@ El acceso al Mapa IA queda como recorrido de investigación complementario. El p
 
 ### Ficha editorial de prospección territorial
 
-Cada tesis del inventario del Mapa IA incorpora la descarga local de una ficha HTML autónoma, preparada para revisión interna o para imprimir/guardar como PDF antes de una conversación con desarrolladores.
+Cada referencia territorial del inventario del Mapa IA incorpora la descarga local de una ficha HTML autónoma, preparada para revisión interna o para imprimir/guardar como PDF antes de una conversación con desarrolladores.
 
-- La ficha distingue **contexto con fuente pública** de **hipótesis de prospección** y conserva la línea a investigar, la evidencia registrada, el estado, el próximo paso, la coordenada aproximada y el enlace de origen.
+- La ficha distingue **contexto con fuente pública** de **hipótesis de prospección** y conserva la línea a investigar, la evidencia registrada, el estado, el próximo paso, la coordenada solo cuando existe una fuente cartográfica verificable y el enlace de origen.
 - Incluye una bitácora imprimible de diligencia y una lista de datos que deben reunirse antes de evaluar un inmueble concreto: nomenclatura, mensura, normativa vigente, dominio, restricciones, servicios, condiciones ambientales, disponibilidad y condiciones económicas.
 - No agrega parcelas, titulares, superficies, precios, disponibilidad ni factibilidad que no estén documentados en la referencia original.
 - La clasificación “contexto con fuente pública” no equivale a verificación independiente, vigencia normativa ni disponibilidad. La fuente debe abrirse y revisarse en origen.
@@ -357,11 +357,11 @@ La barra del Mapa IA permite compartir una vista del inventario con su búsqueda
 - Si el portapapeles está bloqueado, el enlace queda seleccionado en un campo para copiar manualmente.
 - La vista compartida no incluye la bitácora local de diligencia, datos de navegador ni expedientes internos. Los parámetros desconocidos de la URL se conservan.
 - Los enlaces de ficha individual mantienen los filtros activos para que una contraparte reciba el mismo contexto territorial.
-- Cada tarjeta muestra sus acciones principales antes de la bitácora extensa: consulta comercial contextual, ficha editorial descargable para tesis y enlace compartible. La consulta abre `/oportunidades/?map_ref=<id>`; el formulario recupera el nombre de la referencia en un bloque visible y en el borrador revisable de WhatsApp.
-- Las etiquetas comerciales distinguen tesis territoriales de localidades. No implican que exista una parcela, disponibilidad ni un proyecto confirmado.
+- Cada tarjeta muestra sus acciones principales antes de la bitácora extensa: consulta comercial contextual, ficha editorial descargable para la referencia y enlace compartible. La consulta abre `/oportunidades/?map_ref=<id>`; el formulario recupera el nombre de la referencia en un bloque visible y en el borrador revisable de WhatsApp.
+- Las etiquetas comerciales distinguen referencias territoriales de localidades. No implican que exista una parcela, disponibilidad ni un proyecto confirmado.
 - Las exportaciones CSV y GeoJSON se agrupan en un acceso secundario. En móvil el panel inicia cerrado; al abrirlo explica que CSV sirve para hojas de cálculo y GeoJSON para QGIS/GIS. Ambos archivos incluyen solo las referencias visibles y mantienen las advertencias sobre coordenadas aproximadas.
 - `scripts/test_mapa_ia.js` verifica restauración, validación de parámetros, longitud máxima, conservación de UTM y fragmentos, limpieza de filtros, etiquetas comerciales, agrupación de exportaciones y exclusión de la bitácora.
-- La auditoría Chromium abre el panel de exportaciones en móvil, comprueba que las acciones de la tesis precedan a la bitácora y sigue el enlace `map_ref` hasta el contexto visible del formulario público.
+- La auditoría Chromium abre el panel de exportaciones en móvil, comprueba que las acciones de la referencia precedan a la bitácora y sigue el enlace `map_ref` hasta el contexto visible del formulario público.
 
 
 ### Mesa Operativa local
