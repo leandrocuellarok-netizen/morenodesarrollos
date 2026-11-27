@@ -251,6 +251,8 @@ def main() -> None:
                 'id="atlas-total-count"',
                 'id="availability-filter"',
                 "Estado registrado de publicación",
+                'id="diligence-filter"',
+                "Datos de prospección",
                 'option value="no-confirmada"',
                 'option value="pendiente-revalidacion"',
                 'option value="no-vigente"',
@@ -376,7 +378,9 @@ def main() -> None:
                     "function setActiveReference(item, options)",
                     "function getSharedReferenceId(search, items)",
                     "function normalizeMapViewState(state, items)",
+                    "function publishedDiligenceSummary(item)",
                     "const MAP_VIEW_AVAILABILITY",
+                    "const MAP_VIEW_DILIGENCE",
                     "function availabilityFilterKey(value)",
                     "function formatSourceReviewDate(value)",
                     "function parseMapViewState(search, items)",
@@ -416,11 +420,14 @@ def main() -> None:
                     "const kindMatches =",
                     'getElementById("kind-filter")',
                     'getElementById("availability-filter")',
+                    'getElementById("diligence-filter")',
                     'kind: doc.getElementById("kind-filter").value',
                     'availability: availabilityInput.value',
-                    'availabilityInput.addEventListener("change", render)',
+                    'diligence: diligenceInput.value',
+                    'diligenceInput.addEventListener("change", render)',
                     'availabilityInput.value = "all"',
                     'url.searchParams.set("vigencia", normalized.availability)',
+                    'url.searchParams.set("diligencia", normalized.diligence)',
                     'kindInput.addEventListener("change", render)',
                     'kindInput.value = "all"',
                     "function countInventory(items)",
@@ -495,6 +502,8 @@ def main() -> None:
                     ".map-pin-hypothesis",
                     ".map-published-status",
                     ".map-published-review-date",
+                    ".map-published-diligence",
+                    ".map-filter-hint",
                     ".map-pin.is-selected",
                     ".map-item.is-active",
                     ".map-share-link",
@@ -1040,6 +1049,16 @@ def main() -> None:
             errors.append("index.html: falta el acceso secundario al Mapa IA desde la portada")
         if "no implica tasación, oferta ni compromiso de inversión" not in home_html:
             errors.append("index.html: falta aclarar el alcance exploratorio del primer contacto")
+
+    readme_path = ROOT / "README.md"
+    if not readme_path.is_file():
+        errors.append("Falta README.md para documentar el inventario del Mapa IA")
+    else:
+        readme_source = readme_path.read_text(encoding="utf-8")
+        if re.search(r"Propiedades y desarrollos publicados.*?registra\s+\d+\s+fichas", readme_source, re.IGNORECASE | re.DOTALL):
+            errors.append("README.md: no fijar una cantidad de publicaciones que puede quedar desactualizada")
+        if "la cantidad exacta se calcula desde el inventario vigente del mapa ia" not in readme_source.lower():
+            errors.append("README.md: falta remitir al índice dinámico del Mapa IA para la cantidad vigente")
 
     if errors:
         for error in errors:

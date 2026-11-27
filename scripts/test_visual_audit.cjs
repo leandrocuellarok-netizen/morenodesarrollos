@@ -6,6 +6,11 @@ const { spawn } = require("node:child_process");
 const { chromium } = require("playwright");
 
 const ROOT = path.resolve(__dirname, "..");
+const { all: mapInventory, filterReferences } = require("../assets/js/mapa-ia.js");
+const expectedDiligenceCounts = {
+  complete: filterReferences(mapInventory, { diligence: "complete" }).length,
+  pending: filterReferences(mapInventory, { diligence: "pending" }).length
+};
 const PORT = 4173;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 const ROUTES = [
@@ -311,6 +316,7 @@ async function auditRoute(browser, route) {
       check(await page.locator("#map-refine-filters").evaluate(element => element.open), "mapa-ia: los filtros secundarios no se abren");
       check(await page.locator("#category").isVisible() && await page.locator("#evidence-filter").isVisible(), "mapa-ia: los filtros secundarios no quedan disponibles al expandir");
       check(await page.locator("#availability-filter").isVisible(), "mapa-ia: el filtro de estado de publicación debe estar visible en móvil");
+      check(await page.locator("#diligence-filter").isVisible(), "mapa-ia: el filtro de integridad de ficha debe estar visible en móvil");
       await page.locator("#availability-filter").selectOption("no-vigente");
       const historicStatuses = (await page.locator("#published-list .map-published-status").allTextContents()).map(value => value.trim());
       check(historicStatuses.length > 0 && historicStatuses.every(value => value === "No vigente"), "mapa-ia: el filtro no debe mezclar publicaciones con otros estados");
@@ -318,6 +324,19 @@ async function auditRoute(browser, route) {
       check(sharedStatus === "no-vigente", "mapa-ia: la vista compartible debe conservar el estado registrado");
       const reviewDate = await page.locator("#published-list .map-published-review-date").first().innerText();
       check(/^Revisión de fuente: \d{2}\/\d{2}\/\d{4}$/.test(reviewDate), "mapa-ia: la ficha debe mostrar la fecha de revisión de la fuente");
+      await page.locator("#reset-map").click();
+      await page.locator("#diligence-filter").selectOption("pending");
+      const pendingDiligenceCount = await page.locator("#published-list .map-item-published").count();
+      check(pendingDiligenceCount === expectedDiligenceCounts.pending, "mapa-ia: el filtro pendiente coincide con el inventario calculado");
+      const pendingDiligenceStates = await page.locator("#published-list .map-published-diligence").evaluateAll(elements => elements.map(element => element.dataset.diligence));
+      check(pendingDiligenceStates.every(value => value === "pending"), "mapa-ia: las fichas pendientes identifican los campos faltantes");
+      check(await page.locator("#locality-list .map-item, #opportunity-list .map-item").count() === 0, "mapa-ia: la diligencia no mezcla localidades ni tesis territoriales");
+      check(await page.evaluate(() => new URL(window.location.href).searchParams.get("diligencia")) === "pending", "mapa-ia: el enlace compartible conserva la integridad pendiente");
+      await page.locator("#diligence-filter").selectOption("complete");
+      const completeDiligenceCount = await page.locator("#published-list .map-item-published").count();
+      check(completeDiligenceCount === expectedDiligenceCounts.complete, "mapa-ia: el filtro completo coincide con el inventario calculado");
+      const completeDiligenceStates = await page.locator("#published-list .map-published-diligence").evaluateAll(elements => elements.map(element => element.dataset.diligence));
+      check(completeDiligenceStates.every(value => value === "complete"), "mapa-ia: las fichas completas indican presencia de los siete campos");
       await page.locator("#reset-map").click();
       await page.locator("#map-refine-filters > summary").click();
       check(!(await page.locator("#map-refine-filters").evaluate(element => element.open)), "mapa-ia: los filtros secundarios no se pueden volver a contraer");

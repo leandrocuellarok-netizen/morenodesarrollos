@@ -1303,3 +1303,29 @@
     font-size: 11px;
   }
 }
+
+
+/* Integridad de ficha: presencia de datos de prospección, sin presentarla como verificación. */
+.map-published-diligence {
+  margin: 12px 0 14px;
+  padding: 11px 12px;
+  border-left: 2px solid #80533a;
+  background: rgba(232, 229, 217, .48);
+}
+.map-published-diligence strong {
+  display: block;
+  color: #343a36;
+  font: 600 10px/1.5 var(--sans);
+  letter-spacing: .035em;
+}
+.map-published-diligence p {
+  margin: 5px 0 0;
+  color: #62645c;
+  font: 10px/1.6 var(--sans);
+}
+.map-filter-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #77796f;
+  font: 10px/1.55 var(--sans);
+}
