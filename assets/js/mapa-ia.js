@@ -1261,12 +1261,12 @@ publishedProperties.push(
     "currency": "USD",
     "landSurfaceM2": 520.7,
     "surfaceNote": "Lote en esquina; el portal redondea la superficie a 521 m². No se informa superficie cubierta.",
-    "publicationDate": "Publicado hace 15 días al 27/11/2026",
-    "observations": "La ficha describe un lote en esquina entre calles 1 y 2, dentro de Álvarez del Bosque, sobre Ruta 7 y a 9 cuadras de Acceso Oeste. Informa servicios subterráneos y amenities del barrio. Otra copia del aviso muestra USD 55.000; confirmar precio vigente, identificación del lote, expensas y documentación.",
+    "publicationDate": "Publicado hoy (27/11/2026) en Inmoclick",
+    "observations": "La ficha describe un lote en esquina entre calles 1 y 2, dentro de Álvarez del Bosque, sobre Ruta 7 y a 9 cuadras de Acceso Oeste. Informa servicios subterráneos y amenities del barrio. Una copia anterior de Argenprop, rastreada hace cuatro meses, muestra USD 55.000; la ficha actual de Inmoclick muestra USD 52.000. Confirmar precio vigente, identificación del lote, expensas y documentación.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
-    "verificationStatus": "Ficha accesible el 27/11/2026; la diferencia de precio entre portales requiere confirmación directa.",
+    "verificationStatus": "Ficha de Inmoclick accesible y marcada como publicada hoy; una copia de Argenprop de cuatro meses muestra USD 55.000, por lo que el precio vigente requiere confirmación.",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
   },
@@ -1539,6 +1539,36 @@ publishedProperties.push(
     "verificationStatus": "Aviso accesible el 27/11/2026; publicado hace 3 meses, con vigencia comercial pendiente de reconfirmación.",
     "availabilityStatus": "Pendiente de revalidación",
     "geolocationStatus": "Pendiente: esquina publicada sin número parcelario; no asignar coordenada hasta confirmar ambas calles."
+  }
+]
+);
+
+publishedProperties.push(
+...[
+  {
+    "id": "terreno-los-abedules-lote121-600",
+    "recordType": "Terreno individual · lote central en barrio cerrado",
+    "name": "Lote central N.º 121 · Los Abedules 4100 · Álvarez del Bosque · 600 m²",
+    "locality": "Francisco Álvarez",
+    "address": "Los Abedules 4100, lote central N.º 121, barrio Álvarez del Bosque",
+    "geocodeQuery": "Los Abedules 4100, lote central N.º 121",
+    "geocodeMatch": "LOS ABEDULES 4100 LOTE 121",
+    "source": "https://inmoclick.com/57484-remax-vita/inmuebles/16765/ficha/terreno-en-venta-en-los-abedules-4100",
+    "agency": "RE/MAX Vita · publicación en Inmoclick",
+    "contact": "RE/MAX Vita · WhatsApp público informado en ficha sindicada: +54 11 2234-1800.",
+    "phone": "+54 11 2234-1800",
+    "price": "USD 37.000",
+    "currency": "USD",
+    "landSurfaceM2": 600,
+    "surfaceNote": "Lote central N.º 121; superficie publicada de 600 m².",
+    "publicationDate": "Publicado hoy (27/11/2026) en Inmoclick",
+    "observations": "La ficha describe un lote central N.º 121 en Álvarez del Bosque, con SUM, pileta climatizada, canchas de tenis y fútbol en construcción, 20 ha arboladas y seguridad 24 h. Existe una copia anterior de Inmoclick.ai por USD 40.000 y 600 m², publicada hace 7 meses; la ficha actual de RE/MAX Vita muestra USD 37.000. Confirmar que ambas referencias corresponden al mismo lote, precio, expensas, amenities y documentación. No confundir con el lote en esquina de 520,7 m² también publicado en Los Abedules 4100.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Ficha de RE/MAX Vita accesible el 27/11/2026 y marcada como publicada hoy; precio y disponibilidad no confirmados con el corredor.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: la dirección del barrio no identifica la parcela interna; no colocar un pin en el centro del barrio."
   }
 ]
 );
