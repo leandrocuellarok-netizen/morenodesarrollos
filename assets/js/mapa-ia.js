@@ -1418,6 +1418,83 @@ publishedProperties.push(
 ]
 );
 
+publishedProperties.push(
+...[
+  {
+    "id": "terreno-general-hornos-sn-939",
+    "recordType": "Terreno con proyecto de vivienda declarado",
+    "name": "Lote con proyecto declarado · General Hornos S/N · Prados del Oeste II",
+    "locality": "Moreno · Prados del Oeste II",
+    "address": "General Hornos S/N, Prados del Oeste II",
+    "geocodeQuery": "General Hornos S/N, Prados del Oeste II",
+    "geocodeMatch": "GENERAL HORNOS S N PRADOS DEL OESTE II",
+    "source": "https://inmoclick.com/121788-re-max-la-vie/inmuebles/2053/ficha/terreno-en-venta-en-general-hornos-sn",
+    "agency": "RE/MAX La Vie · publicación en Inmoclick",
+    "contact": "Formulario público de Inmoclick; agente individual y teléfono no visibles.",
+    "price": "USD 42.000",
+    "currency": "USD",
+    "landSurfaceM2": 939,
+    "surfaceNote": "El encabezado indica 939 m²; la descripción menciona 940 m² y también 800 m². Proyecto propuesto de 245 m² cubiertos + 90 m² semicubiertos, no construido.",
+    "publicationDate": "Publicado hace 15 días al 27/11/2026",
+    "observations": "La ficha declara proyecto de vivienda registrado y permiso municipal de obra aprobado, pero no adjunta número de expediente ni resolución. Superficie contradictoria: 939 m² en encabezado, 940 m² en descripción y 800 m² en otra línea. El proyecto propone 245 m² cubiertos y 90 m² semicubiertos. Una publicación relacionada del mismo barrio afirma 114 propietarios y Club House equipado; es una declaración comercial, no verificación independiente. Confirmar expediente, vigencia del permiso, planos, mensura, lote exacto, expensas y disponibilidad.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Ficha publicada hace 15 días y accesible el 27/11/2026; permiso declarado por el anunciante, sin verificación en expediente municipal.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: dirección sin número y sin identificación de lote; no asignar coordenada parcelaria."
+  },
+  {
+    "id": "terreno-salto-600-595",
+    "recordType": "Terreno individual · lote en esquina",
+    "name": "Lote en esquina · Salto 600 · 595 m²",
+    "locality": "Moreno",
+    "address": "Salto 600, Moreno",
+    "geocodeQuery": "Salto 600, Moreno",
+    "geocodeMatch": "SALTO 600",
+    "source": "https://inmoclick.com/248084-re-max-namai/inmuebles/1579/ficha/terreno-en-venta-en-salto-600",
+    "agency": "RE/MAX Namai · publicación en Inmoclick",
+    "contact": "Formulario público de Inmoclick; agente individual y teléfono no visibles.",
+    "price": "USD 44.000",
+    "currency": "USD",
+    "landSurfaceM2": 595,
+    "surfaceNote": "Lote en esquina, cerrado con portones; superficie aproximada según aviso.",
+    "publicationDate": "Publicado hace 15 días al 27/11/2026",
+    "observations": "El aviso describe un lote propio, esquina, cerrado y elevado respecto del terreno circundante. Ofrece varias alternativas de financiación directa y acepta permuta/vehículos según publicación. La ficha no precisa la calle transversal. Verificar nomenclatura catastral, escritura, medidas, servicios, condiciones de financiación y precio vigente.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Aviso publicado hace 15 días y accesible el 27/11/2026; ubicación exacta de la esquina pendiente.",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: falta la calle transversal para validar la esquina y evitar una geolocalización ambigua."
+  },
+  {
+    "id": "terreno-juan-diaz-solis-1800-595",
+    "recordType": "Terreno individual · lote en esquina",
+    "name": "Lote en esquina · Juan Díaz de Solís 1800 y Funes · Paso del Rey · 595 m²",
+    "locality": "Paso del Rey",
+    "address": "Esquina Funes y Juan Díaz de Solís al 1800",
+    "geocodeQuery": "Juan Díaz de Solís 1800 y Funes, Paso del Rey",
+    "geocodeMatch": "JUAN DIAZ DE SOLIS 1800 FUNES",
+    "source": "https://inmoclick.com/280711-mosca-propiedades/inmuebles/687/ficha/terreno-en-venta-en-juan-diaz-de-solis-al-1800",
+    "agency": "Mosca Propiedades · publicación en Inmoclick",
+    "contact": "Formulario público de Inmoclick; teléfono no visible.",
+    "price": "USD 45.000",
+    "currency": "USD",
+    "landSurfaceM2": 595,
+    "surfaceNote": "Lote en esquina; la superficie publicada es aproximada y debe cotejarse con el estado parcelario.",
+    "publicationDate": "Publicado hace 3 meses al 27/11/2026",
+    "observations": "La ficha sigue accesible, pero la publicación tiene aproximadamente tres meses y requiere reconfirmación comercial. Describe esquina Funes/Juan Díaz de Solís, a una cuadra de Acceso Oeste. Verificar medidas, título, servicios, zonificación y precio actual antes de tratarlo como oportunidad vigente.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "verificationStatus": "Aviso accesible el 27/11/2026; publicado hace 3 meses, con vigencia comercial pendiente de reconfirmación.",
+    "availabilityStatus": "Pendiente de revalidación",
+    "geolocationStatus": "Pendiente: esquina publicada sin número parcelario; no asignar coordenada hasta confirmar ambas calles."
+  }
+]
+);
+
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
   ...opportunities.map(item => ({ ...item, type: "opportunity" })),
