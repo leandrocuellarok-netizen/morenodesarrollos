@@ -507,8 +507,8 @@ async function auditRoute(browser, route) {
       const thesisCard = page.locator('[data-map-item="rp25"]');
       if (!(await thesisCard.evaluate(element => element.open))) await thesisCard.locator("summary").click();
       const thesisContact = thesisCard.locator(".map-item-actions .map-contact-link");
-      check(await thesisContact.isVisible(), "mapa-ia: la consulta comercial de la tesis no queda al inicio de la ficha");
-      check((await thesisContact.innerText()).includes("Consultar esta tesis con MORENO"), "mapa-ia: la acción comercial identifica el destino de consulta vigente");
+      check(await thesisContact.isVisible(), "mapa-ia: la consulta comercial de la referencia no queda al inicio de la ficha");
+      check((await thesisContact.innerText()).includes("Consultar esta referencia con MORENO"), "mapa-ia: la acción comercial identifica el destino de consulta vigente");
       check(await thesisCard.locator(".map-item-actions .map-brief-button").isVisible(), "mapa-ia: la descarga de ficha no queda accesible junto a la acción comercial");
       const actionOrder = await thesisCard.locator(".map-item-actions, .map-review-panel").evaluateAll(elements => elements.map(element => element.className));
       check(actionOrder.indexOf("map-item-actions") >= 0 && actionOrder.indexOf("map-review-panel") > actionOrder.indexOf("map-item-actions"), "mapa-ia: las acciones comerciales y la ficha aparecen antes de la bitácora extensa");
