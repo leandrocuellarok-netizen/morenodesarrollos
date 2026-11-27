@@ -68,7 +68,7 @@ assert.deepEqual(
 );
 
 const debugItem = mapCatalogue.all.find(item => item.id === "parque-francisco-lote-300");
-console.log("DEBUG_MAP_REF", JSON.stringify(debugItem && debugItem.id), debugItem && Array.from(debugItem.id).map(char => char.codePointAt(0)), tools.readMapReference("?map_ref=parque-francisco-lote-300"), tools.readMapReference("?map_ref=" + encodeURIComponent(debugItem && debugItem.id)));
+console.error("DEBUG_MAP_REF", JSON.stringify(debugItem && debugItem.id), debugItem && Array.from(debugItem.id).map(char => char.codePointAt(0)), tools.readMapReference("?map_ref=parque-francisco-lote-300"), tools.readMapReference("?map_ref=" + encodeURIComponent(debugItem && debugItem.id)));
 for (const item of mapCatalogue.all) {
   assert.deepEqual(
     tools.readMapReference("?map_ref=" + encodeURIComponent(item.id) + "&map_name=Etiqueta+no+confiable"),
