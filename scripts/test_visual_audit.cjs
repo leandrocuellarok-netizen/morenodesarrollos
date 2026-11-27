@@ -56,32 +56,46 @@ async function auditHomeCartography(page) {
   const source = fs.readFileSync(path.join(ROOT, "assets/js/mapa-ia.js"), "utf8");
 
   function readRecords(name, defaultKind) {
-    const match = source.match(new RegExp("const " + name + "=\\[([\\s\\S]*?)\\];"));
+    const match = source.match(new RegExp("const " + name + "=\\\\[([\\\\s\\\\S]*?)\\\\];"));
     if (!match) return [];
-    return (match[1].match(/\{[^{}]*\}/g) || []).map(entry => {
+    return (match[1].match(/\\{[^{}]*\\}/g) || []).map(entry => {
       const id = entry.match(/id:"([^"]+)"/);
       const lat = entry.match(/lat:([-0-9.]+)/);
       const lng = entry.match(/lng:([-0-9.]+)/);
       const stage = entry.match(/stage:"([^"]+)"/);
+      const coordinateSource = entry.match(/coordinateSource:"([^"]+)"/);
+      const coordinateCheckedAt = entry.match(/coordinateCheckedAt:"([^"]+)"/);
       return {
         id: id ? id[1] : null,
         lat: lat ? Number(lat[1]) : NaN,
         lng: lng ? Number(lng[1]) : NaN,
+        sourceUrl: coordinateSource ? coordinateSource[1] : null,
+        checkedAt: coordinateCheckedAt ? coordinateCheckedAt[1] : null,
         kind: defaultKind === "locality" ? "locality" : (stage ? stage[1] : null)
       };
     });
   }
 
-  const expected = [
+  const allRecords = [
     ...readRecords("localities", "locality"),
     ...readRecords("opportunities", "reference")
   ];
+  const expected = allRecords.filter(record =>
+    Number.isFinite(record.lat) &&
+    Number.isFinite(record.lng) &&
+    /^https:\\/\\//.test(record.sourceUrl || "") &&
+    /^\\d{4}-\\d{2}-\\d{2}$/.test(record.checkedAt || "")
+  );
+  const expectedCounts = expected.reduce((counts, record) => {
+    counts[record.kind] = (counts[record.kind] || 0) + 1;
+    return counts;
+  }, {});
   const expectedById = new Map(expected.map(record => [record.id, record]));
-  check(markers.length === 11, "inicio: el plano contiene seis localidades y cinco referencias territoriales");
+  check(markers.length === expected.length, "inicio: el plano solo muestra referencias con coordenadas, fuente y fecha verificables");
+  check(expectedCounts.locality === 6 && markers.filter(marker => marker.kind === "locality").length === 6, "inicio: el plano conserva las seis localidades con fuente trazable");
+  check(expectedCounts.documented === 1 && markers.filter(marker => marker.kind === "documented").length === 1, "inicio: el plano muestra únicamente el contexto documentado con coordenada trazable");
+  check(expectedCounts.hypothesis === 0 && markers.filter(marker => marker.kind === "hypothesis").length === 0, "inicio: las hipótesis sin coordenada trazable permanecen sin marcador");
   check(new Set(markers.map(marker => marker.id)).size === markers.length, "inicio: los identificadores del plano no están duplicados");
-  check(markers.filter(marker => marker.kind === "locality").length === 6, "inicio: el plano distingue las seis localidades");
-  check(markers.filter(marker => marker.kind === "documented").length === 4, "inicio: el plano distingue las cuatro referencias documentadas");
-  check(markers.filter(marker => marker.kind === "hypothesis").length === 1, "inicio: el plano distingue la hipótesis de prospección");
 
   for (const marker of markers) {
     const record = expectedById.get(marker.id);
