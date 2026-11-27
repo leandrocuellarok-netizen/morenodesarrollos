@@ -457,6 +457,11 @@
     "fraccion-rocha-blaquier-2001-10000": "Rocha Blaquier 2001 · fracción de 10.000 m² con mejoras",
     "terreno-libano-echeverria-2-lotes-456": "Líbano y Echeverría · dos lotes de 456 m² cada uno",
     "terreno-boulogne-sebastian-el-cano-373": "Boulogne Sur Mer y Sebastián El Cano · lote de 373,10 m²",
+    "quinta-nemesio-alvarez-3900-1100": "Nemesio Álvarez al 3900 · quinta de tres ambientes",
+    "quinta-tegucigalpa-4500-300": "Tegucigalpa al 4500 · quinta con pileta",
+    "quinta-los-robles-2900-270": "Los Robles 2900 · casa quinta tipo loft",
+    "quinta-mercedes-100-696": "Mercedes 100 · quinta de tres ambientes",
+    "quinta-mercedes-2200-1260": "Mercedes 2200 · quinta con dos viviendas y pileta",
   });
 
   function listMapReferenceIds() {
