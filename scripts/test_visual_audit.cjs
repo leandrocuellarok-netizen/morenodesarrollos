@@ -326,7 +326,8 @@ async function auditRoute(browser, route) {
       check(filteredSummary.includes("2 referencias"), "mapa-ia: el resumen móvil no refleja el filtro industrial");
       await page.locator("#reset-map").click();
       const resetSummary = await page.locator("#atlas-index-summary").innerText();
-      check(resetSummary.includes("39 referencias"), "mapa-ia: el resumen móvil no se actualiza al restablecer el inventario");
+      const resetCount = (await page.locator("#atlas-total-count").innerText()).split("/")[0].trim();
+      check(resetSummary.includes(resetCount + " referencias"), "mapa-ia: el resumen móvil no se actualiza al restablecer el inventario");
 
       await page.locator("#map-review-disclosure > summary").click();
       check(await page.locator(".map-review-toolbar").isVisible(), "mapa-ia: la bitácora local no se abre");
