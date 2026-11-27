@@ -241,14 +241,14 @@ const hourlyExpectedIds = [
   "terreno-pim-ii-rp24-2677",
   "terreno-pim-ii-rp24-7700-2103",
   "casa-san-ramon-2700-251",
-  "casa-perito-moreno-3800-350"
+  "casa-perito-moreno-3800-350",
   "terreno-los-abedules-4100-521",
   "terreno-chacabuco-emilio-mitre-206",
   "casa-francisco-piovano-3700-2960",
   "casa-faraday-2700-1472",
   "casa-intendente-pagano-2600-320",
   "casa-intendente-corvalan-2400-792",
-  "desarrollo-villa-justina-independencia-2199",
+  "desarrollo-villa-justina-2199",
   "terreno-ruta24-10ha-100000",
   "terreno-larrea-2419-220",
 ];
