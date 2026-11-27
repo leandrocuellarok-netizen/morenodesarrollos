@@ -2468,7 +2468,7 @@ const nov27FollowupEntries = [
   {
     "id": "casa-cervino-100-350-historico",
     "recordType": "Casa individual · aviso reactivado con fuentes cruzadas",
-    "name": "Casa 5 ambientes con pileta · Cervino 100 · Moreno",
+    "name": "Casa · Cervino 100 · Moreno · 350 m²",
     "locality": "Moreno",
     "address": "Cervino 100, Moreno",
     "geocodeQuery": "Cervino 100, Moreno",
