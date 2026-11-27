@@ -619,6 +619,9 @@ assert.equal(availabilityFilterKey("Pendiente de revalidación"), "pendiente-rev
 assert.equal(availabilityFilterKey("No vigente"), "no-vigente");
 assert.equal(formatSourceReviewDate("2026-11-27"), "27/11/2026");
 assert.equal(formatSourceReviewDate(""), "No informada");
+assert.ok(publishedProperties.every(item => /^\d{4}-\d{2}-\d{2}$/.test(item.lastCheckedAt || "")), "cada publicación conserva una fecha de revisión explícita");
+assert.ok(!source.includes('publishedProperties.forEach(item => {\n  item.lastCheckedAt ='), "la fecha de consulta no se asigna en bloque sin evidencia individual");
+assert.ok(source.includes("No hay constancia individual de consulta de la fuente"), "una ficha sin evidencia individual no recibe una afirmación automática de accesibilidad");
 assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { query: "Santa Teresa", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");
