@@ -119,7 +119,24 @@
     ecoparque: "Nodo RP24/RP25 · Ecoparque Industrial",
     ribera: "Paso del Rey · Camino de la Ribera",
     roggero: "Distrito Ecológico Roggero",
-    norte: "Cuartel V · Trujui · La Reja"
+    norte: "Cuartel V · Trujui · La Reja",
+    "sumio-lote-338": "Lote 01 · Loteo Sumio · 338 m²",
+    "sumio-lote-450": "Lote 02 · Loteo Sumio · 450 m²",
+    "sumio-proyecto": "Loteo Sumio · Proyecto N.º 41",
+    "parque-francisco-lote-300": "Parque Francisco · lote de 300 m²",
+    "parque-francisco-proyecto": "Parque Francisco · barrio abierto",
+    "parques-morenito-lote-594": "Parques del Morenito · lote de 594 m²",
+    "parques-morenito-proyecto": "Parques del Morenito · barrio abierto",
+    "trujui-lote-isabel-catolica-400": "Lote en Trujui · Isabel la Católica al 3300",
+    "la-reja-lote-general-hornos-471": "Lote en barrio Azteca · La Reja · 471 m²",
+    "cuartel-v-fraccion-san-fernando-galicia": "Fracción comercial/productiva · 4.431 m²",
+    "moreno-casa-martin-fierro-5000": "Casa en venta · Martín Fierro al 5000",
+    "moreno-casa-martin-fierro-4900": "Casa apta crédito · Martín Fierro al 4900",
+    "la-reja-casa-belisario-roldan-1800": "Casa para refacción · Belisario Roldán al 1800",
+    "paso-del-rey-casa-lebensohn-300": "Casa de 6 ambientes · Lebensohn 300",
+    "moreno-lote-tres-de-febrero-7800": "Lote baldío · Tres de Febrero 7800 · 316 m²",
+    "moreno-lote-industrial-gutenberg-5662": "Lote industrial · Gutenberg 5662 · 3.192 m²",
+    "cuartel-v-lote-lamadrid-2737": "Lote 16 · Gral. Aráoz de Lamadrid 6702 · 2.737 m²"
   });
 
   function readMapReference(search) {
