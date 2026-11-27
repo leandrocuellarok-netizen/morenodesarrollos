@@ -934,7 +934,6 @@ assert.ok(styles.includes(".map-dossier-status"));
 
 console.log("OK: pruebas del Mapa IA, exportaciones cartográficas y fichas editoriales imprimibles.");
 
-async 
 const nov27_1032ExpectedIds = [
   "terreno-9-de-julio-46-487",
   "terreno-jose-marmol-rivadavia-1418",
