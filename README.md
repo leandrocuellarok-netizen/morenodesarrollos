@@ -189,7 +189,7 @@ El formulario de `/oportunidades/` permite marcar varias referencias disponibles
 
 ## Esquema cartográfico editorial en Inicio
 
-La vista de Inicio muestra un esquema SVG construido a partir de las coordenadas trazables de las seis localidades y de la única referencia territorial con coordenada publicada y verificada (Ecoparque). Las doce fichas documentales restantes y la hipótesis se conservan en el índice sin marcador, porque sus fuentes no identifican una coordenada cartográfica verificable. Los círculos identifican localidades y el cuadrado identifica el contexto documentado. El esquema no dibuja límites municipales, calles ni parcelas y no acredita disponibilidad. Si cambian las coordenadas o la clasificación, actualizar también el esquema de Inicio.
+La vista de Inicio muestra un esquema SVG construido a partir de las coordenadas trazables de las seis localidades y de la única referencia territorial con coordenada publicada y verificada (Ecoparque). Las once fichas documentales restantes y la hipótesis se conservan en el índice sin marcador, porque sus fuentes no identifican una coordenada cartográfica verificable. Los círculos identifican localidades y el cuadrado identifica el contexto documentado. El esquema no dibuja límites municipales, calles ni parcelas y no acredita disponibilidad. Si cambian las coordenadas o la clasificación, actualizar también el esquema de Inicio.
 
 
 ## Navegación móvil accesible
