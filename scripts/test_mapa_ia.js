@@ -669,6 +669,24 @@ const publishedCsv = buildCsv(all.filter(item => item.type === "published").slic
 assert.ok(publishedCsv.includes("precio_publicado"), "CSV incluye el campo de precio de los avisos");
 assert.ok(publishedCsv.includes("Anticipo USD 12.000"), "CSV conserva el precio publicado sin reinterpretarlo");
 assert.ok(publishedCsv.includes("Geolocalización pendiente"), "CSV conserva el estado de geolocalización pendiente");
+const spreadsheetSafetyCsv = buildCsv([{
+  type: "published",
+  recordType: "Terreno",
+  name: '=HYPERLINK("https://example.invalid","Abrir")',
+  locality: "Moreno",
+  agency: "  +SUM(1,1)",
+  contact: "\t=1+1",
+  observations: "@SUM(1,1)",
+  lat: -34.6,
+  lng: -58.8,
+  source: "https://example.invalid/aviso"
+}]);
+assert.ok(spreadsheetSafetyCsv.includes('"\'=HYPERLINK'), "CSV neutraliza fórmulas que comienzan con =");
+assert.ok(spreadsheetSafetyCsv.includes('"\'  +SUM'), "CSV neutraliza fórmulas precedidas por espacios");
+assert.ok(spreadsheetSafetyCsv.includes('"\'\\t=1+1'), "CSV neutraliza fórmulas precedidas por tabulación");
+assert.ok(spreadsheetSafetyCsv.includes('"\'@SUM'), "CSV neutraliza fórmulas que comienzan con @");
+assert.ok(spreadsheetSafetyCsv.includes('"-34.6"') && spreadsheetSafetyCsv.includes('"-58.8"'), "CSV conserva coordenadas numéricas negativas sin convertirlas en texto");
+
 const filteredGeoJson = buildGeoJson(filterReferences(all, {
   category: "opportunity",
   evidence: "hypothesis"
