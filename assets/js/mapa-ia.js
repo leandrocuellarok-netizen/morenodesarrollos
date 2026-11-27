@@ -4488,6 +4488,227 @@ const nov27SupplementalEntries = [
 ];
 publishedProperties.push(...nov27SupplementalEntries);
 
+
+const nov27Turn7Entries = [
+  {
+    "id": "moreno-terreno-el-salvador-tupungato-393",
+    "recordType": "Terreno individual",
+    "name": "Calle El Salvador y Tupungato · 393 m²",
+    "locality": "Moreno",
+    "address": "Calle El Salvador y Tupungato, Moreno",
+    "geocodeQuery": "Calle El Salvador y Tupungato, Moreno",
+    "geocodeMatch": "EL SALVADOR TUPUNGATO",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-moreno--20831012",
+    "agency": "RE/MAX Caminos",
+    "contact": "Andrea Janczuk; corredores responsables Damián Perrone (CUCICBA 2787) y Patricia Alejandra Córdoba (CMCPDJMGR 246). El teléfono aparece incompleto en el portal.",
+    "price": "USD 60.000",
+    "currency": "USD",
+    "landSurfaceM2": 393,
+    "surfaceNote": "Frente publicado: 22,50 m. Superficie cubierta no informada. Electricidad según el aviso.",
+    "observations": "El anuncio describe paredón, portón y puerta, y ubica el lote en la esquina de El Salvador y Tupungato, cerca de Acceso Oeste y COTO. La aptitud constructiva es una afirmación comercial y requiere certificado urbanístico y documentación parcelaria.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible en la revisión del 27/11/2026; precio, superficie, contacto y ubicación publicados. Disponibilidad comercial no confirmada.",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la intersección; no representa geometría parcelaria."
+  },
+  {
+    "id": "prados-oeste-1b-lote-182-800",
+    "recordType": "Terreno individual en barrio cerrado",
+    "name": "Prados del Oeste 1-B · Lote 182 · 800 m²",
+    "locality": "La Reja",
+    "address": "Prados del Oeste 1-B, lote 182, La Reja, Moreno",
+    "geocodeDisabled": true,
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-lote-182-en-barrio-cerrado-prados-del-oeste-59068041.html",
+    "agency": "Valencia Viudes Bienes Raíces",
+    "contact": "Matías G. Valencia, col. 3034 CMCPM, y Matías F. Viudes, col. 3047 CMCPM. Teléfono no visible en la ficha.",
+    "price": "USD 59.000; expensas publicadas ARS 550.000",
+    "currency": "USD",
+    "landSurfaceM2": 800,
+    "surfaceNote": "Lote interno, orientación norte según el aviso. No se informa superficie cubierta.",
+    "observations": "La publicación declara escritura, posesión inmediata, servicios y proyecto aprobado para construir. Verificar vigencia de expensas, reglamento, identificación del lote, permiso y condiciones de posesión antes de avanzar.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Zonaprop accesible en la revisión del 27/11/2026; precio, superficie, lote y responsables publicados. Disponibilidad comercial no confirmada.",
+    "geolocationStatus": "Pendiente: la publicación identifica un lote interno, pero no aporta una dirección parcelaria suficiente para ubicarlo."
+  },
+  {
+    "id": "sofocles-3000-terreno-casa-330",
+    "recordType": "Terreno con vivienda y mejoras",
+    "name": "Sófocles 3000 · terreno con vivienda · 330 m²",
+    "locality": "Francisco Álvarez",
+    "address": "Sófocles 3000, Francisco Álvarez, Moreno",
+    "geocodeQuery": "Sofocles 3000, Francisco Alvarez, Moreno",
+    "geocodeMatch": "SOFOCLES 3000",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-y-casa-en-venta-zona-industrial-moreno-54309890.html",
+    "agency": "Calderón Propiedades / Calderón Inmobiliaria",
+    "contact": "Consultas mediante Zonaprop. Una ficha sindicada de Argenprop muestra el teléfono parcial 5292-11; no se publica un número completo verificable.",
+    "price": "USD 120.000",
+    "currency": "USD",
+    "landSurfaceM2": 330,
+    "coveredSurfaceM2": 100,
+    "surfaceNote": "100 m² cubiertos declarados por Zonaprop; terreno de 330 m² totales. Vivienda en planta baja y estructura preparada para continuar una planta alta.",
+    "observations": "El aviso ubica la propiedad a metros de Colectora Norte de Acceso Oeste, km 41, y la describe como zona industrial. Verificar zonificación parcelaria, planos, habilitaciones y estado de la construcción; no inferir permiso industrial por la descripción del anunciante.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio, superficies y descripción publicados. Disponibilidad comercial no confirmada.",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección publicada."
+  },
+  {
+    "id": "casa-quinta-patricias-argentinas-2100-5150",
+    "recordType": "Casa quinta individual",
+    "name": "Casa quinta · Patricias Argentinas 2100 · 5.150 m²",
+    "locality": "Cuartel V · Tierras del Morenito",
+    "address": "Patricias Argentinas 2100, Tierras del Morenito, Cuartel V, Moreno",
+    "geocodeQuery": "Patricias Argentinas 2100, Cuartel V, Moreno",
+    "geocodeMatch": "PATRICIAS ARGENTINAS 2100",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-quinta-sobre-lote-premium-5.150-m-sup2--moreno-60661542.html",
+    "agency": "RE/MAX; oficina no identificada en la ficha consultada",
+    "contact": "María Laura Torralba; corredor responsable Juan Alberto Crescimone, CMCPSM 2821 / CPI 9670. Teléfono no visible en la ficha.",
+    "price": "USD 90.000",
+    "currency": "USD",
+    "landSurfaceM2": 5150,
+    "coveredSurfaceM2": 150,
+    "surfaceNote": "40 m² semicubiertos según la descripción; 3 ambientes, 2 dormitorios y 2 baños. Antigüedad publicada: 21 años.",
+    "observations": "El aviso describe quincho, pileta y parque. El encabezado indica 190 m² totales, mientras la descripción informa 150 m² cubiertos y 40 m² semicubiertos; esos 190 m² corresponden a la construcción, no al terreno de 5.150 m². No se infiere potencial de subdivisión.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio, superficies, contacto y ubicación publicados. Disponibilidad comercial no confirmada.",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección pública."
+  },
+  {
+    "id": "alvarez-prado-2031-terreno-339",
+    "recordType": "Terreno individual con permiso anunciado",
+    "name": "Álvarez Prado 2031 · lote de 339 m² · permiso provisorio para dos locales",
+    "locality": "Trujui",
+    "address": "Álvarez Prado 2031 (el portal lo ubica en Álvarez Prado 2000), Trujui, Moreno",
+    "geocodeQuery": "Alvarez Prado 2031, Trujui, Moreno",
+    "geocodeMatch": "ALVAREZ PRADO 2031",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-trujui--18404916",
+    "agency": "Néstor Donato Negocios Inmobiliarios",
+    "contact": "Teléfono parcial publicado: 5292-11. No se identifica contacto personal en la ficha.",
+    "price": "USD 40.000",
+    "currency": "USD",
+    "landSurfaceM2": 339,
+    "surfaceNote": "10 × 33,90 m según la descripción. El aviso afirma un permiso provisorio para dos locales de aproximadamente 200 m² cubiertos; esa superficie sería proyectada, no construida.",
+    "observations": "El anuncio declara plano visado, permiso provisorio para dos locales, servicios y zonificación Acc R3, Área U. Exigir expediente municipal, plano visado, vigencia del permiso y certificado urbanístico actual. La zonificación no fue verificada independientemente.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, superficie, anunciante y permiso declarado publicados. Disponibilidad comercial no confirmada.",
+    "geolocationStatus": "Pendiente: el aviso alterna entre altura 2031 y referencia de portal 2000; verificar numeración antes de geocodificar."
+  },
+  {
+    "id": "parques-morenito-felix-de-azara-300",
+    "recordType": "Terreno individual en barrio abierto",
+    "name": "Parques del Morenito · Lote L20 Mza C · Felix de Azara 8200 · 300 m²",
+    "locality": "Trujui · Tierras del Morenito",
+    "address": "Felix de Azara al 8200, Trujui, Moreno; referencia interna L20, manzana C, PDM",
+    "geocodeDisabled": true,
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-lote-terreno-en-venta-300-m-sup2--loteo-parques-del-57225090.html",
+    "agency": "RAMIREZ Mandatos y Negocios Inmobiliarios",
+    "contact": "Matrículas COMARCOMGR 71/183: Hipólito Enrique Ramírez y Carolina Noelia Ramírez; CUCICBA 8496: Hipólito Agustín Alejo Ramírez. Teléfono no publicado en la ficha.",
+    "price": "USD 19.000",
+    "currency": "USD",
+    "landSurfaceM2": 300,
+    "surfaceNote": "12 × 25 m según el portal; lote identificado como L20, manzana C, PDM. No se informa superficie cubierta.",
+    "observations": "El anuncio declara lote perimetrado y escritura inmediata dentro de Parques del Morenito, barrio abierto de 3 ha y 50 lotes según la publicación. Es distinto del lote de 594 m² ya registrado; verificar nomenclatura, escritura y disponibilidad.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Zonaprop accesible en la revisión del 27/11/2026; precio, superficie, referencia interna y responsables publicados. Disponibilidad comercial no confirmada.",
+    "geolocationStatus": "Pendiente: el aviso identifica lote interno; no se asigna coordenada de parcela."
+  },
+  {
+    "id": "colectora-sur-km31-5-fraccion-33000",
+    "recordType": "Fracción con mejoras y obra parcial",
+    "name": "Colectora Sur Acceso Oeste km 31,5 · fracción de 33.000 m²",
+    "locality": "Moreno",
+    "address": "Colectora Sur Acceso Oeste km 31,5, Moreno",
+    "geocodeDisabled": true,
+    "source": "https://coldwellbankergrupoelite.com.ar/propiedad/terreno-en-moreno--4609501",
+    "sourceAlternates": [
+      {
+        "url": "https://www.argenprop.com/terreno-en-venta-en-moreno--19350623",
+        "label": "Publicación sindicada del mismo aviso: 33.000 m² y USD 7.400.000"
+      },
+      {
+        "url": "https://www.argenprop.com/terreno-en-venta-en-moreno--15520093",
+        "label": "Aviso anterior de Urrutia en el mismo km: 28.600 m²; el precio actual del portal figura USD 300, dato anómalo y no utilizable"
+      }
+    ],
+    "agency": "Coldwell Banker Grupo Elite",
+    "contact": "+54 9 11 5356 3294; responsables publicados: Adriana Daniela González (CUCICBA 9701), Claudio Marcelo Rodríguez Castro (CMCPDJLM 1114) y Silvina Vanesa Berton (CMCPSL, MP 980, tomo II, folio 323).",
+    "price": "USD 7.400.000",
+    "currency": "USD",
+    "landSurfaceM2": 33000,
+    "surfaceNote": "90 m de frente. No se publica superficie cubierta. El aviso describe salón de eventos, piscina, segundo salón en construcción, vivienda, quincho, vestuarios y casa de casero.",
+    "observations": "La ficha de Coldwell Banker publica FOS 0,60 y FOT 1, además de usos posibles; deben verificarse con certificado municipal vigente. Existe un aviso anterior de Urrutia en el mismo km 31,5 con 28.600 m² y mejoras similares, pero muestra USD 300 en Argenprop y la ficha directa de Urrutia devuelve 404. Se registra como posible mismo activo, no como segunda fracción; verificar mensura, dominio, superficie y precio por escrito.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Coldwell Banker accesible en la revisión del 27/11/2026; precio, superficie, contacto y mejoras publicados. Disponibilidad y superficie registral no confirmadas.",
+    "geolocationStatus": "Pendiente: referencia por corredor vial; no se asigna coordenada ni parcela."
+  },
+  {
+    "id": "casa-leopoldo-lugones-900-5000",
+    "recordType": "Casa quinta / casona individual",
+    "name": "Leopoldo Lugones 900 · casona sobre 5.000 m²",
+    "locality": "Moreno",
+    "address": "Leopoldo Lugones 900, Moreno",
+    "geocodeQuery": "Leopoldo Lugones 900, Moreno",
+    "geocodeMatch": "LEOPOLDO LUGONES 900",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-en-venta-moreno-a-5-minutos-del-centro-60654396.html?n_pg=1&n_pos=9&n_src=Listado",
+    "agency": "RE/MAX; oficina no identificada en la ficha consultada",
+    "contact": "Andrea Burnowicz; corredores responsables Damián Perrone (CUCICBA 2787) y Patricia Alejandra Córdoba (CMCPDJMGR 246). Teléfono no visible en la ficha.",
+    "price": "USD 220.000",
+    "currency": "USD",
+    "landSurfaceM2": 5000,
+    "coveredSurfaceM2": 200,
+    "surfaceNote": "5 ambientes, 4 dormitorios, 4 baños y 2 cocheras. Antigüedad publicada: 96 años. Incluye quincho, pileta y casa de visitas/casero; superficies de anexos no informadas.",
+    "observations": "La ficha directa de Zonaprop muestra USD 220.000. Una ficha sindicada anterior mostraba USD 250.000; se prioriza el precio de la ficha directa actual. No se publica mensura ni potencial urbanístico; no asumir subdivisión.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio, superficies, contacto y ubicación publicados. Disponibilidad comercial no confirmada.",
+    "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección pública."
+  }
+];
+publishedProperties.push(...nov27Turn7Entries);
+
+const turn7Ibis = publishedProperties.find(item => item.id === "desarrollo-ibis-iv-273");
+if (turn7Ibis) {
+  turn7Ibis.sourceAlternates = [
+    ...(turn7Ibis.sourceAlternates || []),
+    { url: "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-edificio-ibis-iv-58757107.html", label: "Ficha anterior del mismo desarrollo; no usar para contar unidades actuales" }
+  ];
+  turn7Ibis.source = "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememvein-edificio-ibis-iv-58757105.html";
+  turn7Ibis.price = "Desde USD 51.600; una unidad publicada de 43 m² totales y 41 m² cubiertos";
+  turn7Ibis.surfaceNote = "La ficha directa actual muestra 1 unidad de 2 ambientes, 43 m² totales y 41 m² cubiertos; el texto general del proyecto menciona unidades de 43 a 54 m².";
+  turn7Ibis.observations = "La ficha directa consultada el 27/11/2026 indica que la estructura ya es visible desde la calle y que la venta se realiza en etapa de obra, con entrega estimada en noviembre de 2027. La ficha muestra simultáneamente las etiquetas “En Pozo”, “En Construcción” y “Terminado”; la etapa física, el stock y la fecha efectiva de entrega deben confirmarse con el anunciante.";
+  turn7Ibis.lastCheckedAt = "2026-11-27";
+  turn7Ibis.availabilityStatus = "No confirmada";
+  turn7Ibis.verificationStatus = "Ficha directa de Zonaprop accesible el 27/11/2026; el anunciante declara estructura visible y entrega estimada noviembre de 2027. Avance físico y stock no verificados independientemente.";
+}
+const turn7Chacras = publishedProperties.find(item => item.id === "desarrollo-chacras-teofilo-galileo-7300");
+if (turn7Chacras) {
+  turn7Chacras.lastCheckedAt = "2026-11-27";
+  turn7Chacras.availabilityStatus = "No confirmada";
+  turn7Chacras.verificationStatus = "Ficha directa de Zonaprop accesible el 27/11/2026; el aviso publica 35 lotes, 18.000 m² de desarrollo y entrega estimada mayo de 2027. Stock y ejecución no verificados independientemente.";
+  turn7Chacras.observations = "La ficha directa consultada el 27/11/2026 mantiene publicado un lote individual de 326 m² a USD 23.000 contado o anticipo USD 5.000 más cuotas hasta 36 meses (total indicado USD 30.000). El proyecto se describe con 35 lotes sobre 18.000 m², calle de acceso asfaltada, sin expensas y servicio de electricidad; entrega aproximada mayo de 2027. No se verificaron subdivisión, agua/gas/cloacas, avance físico ni stock.";
+}
+
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
   ...opportunities.map(item => ({ ...item, type: "opportunity" })),
