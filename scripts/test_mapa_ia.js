@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -16,6 +16,10 @@ assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece
 const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
 assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
 assert.ok(mapPage.includes('id="kind-filter"'), "el atlas permite filtrar por sector o línea de desarrollo");
+assert.ok(mapPage.includes('id="availability-filter"'), "el atlas permite filtrar el estado registrado de las publicaciones");
+for (const state of ["no-confirmada", "pendiente-revalidacion", "no-vigente"]) {
+  assert.ok(mapPage.includes('option value="' + state + '"'), "el filtro ofrece el estado " + state);
+}
 for (const kind of ["industrial", "commercial", "tourism", "land"]) {
   assert.ok(mapPage.includes('option value="' + kind + '"'), "el filtro ofrece el sector " + kind);
 }
@@ -45,8 +49,12 @@ assert.ok(mapPage.includes(initialInventoryCounts.total + " de " + initialInvent
 assert.ok(mapPage.includes("La forma distingue la clase"), "la leyenda explica la semántica de los símbolos sin depender del color");
 assert.ok(mapPage.includes('option value="published"'), "el filtro ofrece la capa de publicaciones inmobiliarias");
 assert.ok(mapPage.includes('id="published-list"'), "el mapa contiene una lista independiente de publicaciones");
+const publicationIntro = mapPage.match(/<p class="map-published-intro">([\s\S]*?)<\/p>/)?.[1] || "";
+assert.ok(publicationIntro && !/\d{2}\/\d{2}\/\d{4}/.test(publicationIntro), "la introducción no debe congelar una fecha global de revisión");
 assert.ok(source.includes("function geocodePublishedAddresses()"), "la capa intenta georreferenciar las direcciones publicadas");
 assert.ok(source.includes("https://apis.datos.gob.ar/georef/api/v2.0/direcciones"), "la georreferencia utiliza el servicio oficial Georef");
+assert.ok(source.includes("function availabilityFilterKey(value)"), "el motor normaliza estados comerciales permitidos");
+assert.ok(source.includes('url.searchParams.set("vigencia", normalized.availability)'), "el enlace compartido conserva el estado de publicación");
 assert.ok(styles.includes(".map-pin-published") && styles.includes(".published-dot"), "la capa publicada tiene símbolo cartográfico propio");
 assert.ok(mapPage.includes('id="export-review"'), "el Mapa IA permite exportar la bitácora local");
 assert.ok(mapPage.includes('id="review-status"'), "el Mapa IA explica el estado y alcance del guardado local");
@@ -103,13 +111,16 @@ assert.ok(styles.includes(".map-share-link"), "los enlaces compartibles tienen u
 assert.ok(styles.includes(".map-item-actions"), "las acciones principales de cada ficha tienen una composición propia");
 assert.ok(styles.includes(".map-data-export-disclosure"), "las exportaciones tienen un acceso secundario propio");
 assert.ok(styles.includes(".map-filter-group"), "los filtros tienen una composición responsive propia");
+assert.ok(styles.includes("minmax(300px, 2fr)"), "la refinación dispone de ancho suficiente para sus dos selectores en escritorio");
 assert.ok(styles.includes(".map-filter-field"), "los controles muestran etiquetas y foco visible");
+assert.ok(styles.includes(".map-published-status"), "las fichas distinguen visualmente el estado comercial registrado");
+assert.ok(styles.includes(".map-published-review-date"), "las fichas muestran la fecha de consulta de la fuente");
 assert.ok(styles.includes(".map-toolbar-actions"), "las acciones del mapa se agrupan fuera de los filtros");
 assert.equal(getSharedReferenceId("?ref=rp25", all), "rp25", "se reconoce una referencia válida desde la URL");
 assert.equal(getSharedReferenceId("?ref=no-existe", all), null, "se descarta una referencia desconocida");
 assert.equal(getSharedReferenceId("", all), null, "sin parámetro no se fuerza una selección");
 const parsedMapView = parseMapViewState(
-  "?q=log%C3%ADstica&tipo=opportunity&sector=industrial&evidencia=documented&ref=rp25",
+  "?q=log%C3%ADstica&tipo=opportunity&sector=industrial&evidencia=documented&vigencia=no-vigente&ref=rp25",
   all
 );
 assert.deepEqual(parsedMapView, {
@@ -117,10 +128,11 @@ assert.deepEqual(parsedMapView, {
   category: "opportunity",
   kind: "industrial",
   evidence: "documented",
+  availability: "no-vigente",
   ref: "rp25"
-}, "la URL restaura búsqueda, tipo, sector, evidencia y referencia");
-assert.deepEqual(parseMapViewState("?tipo=desconocido&sector=ilegal&evidencia=pendiente&ref=falso", all), {
-  query: "", category: "all", kind: "all", evidence: "all", ref: null
+}, "la URL restaura búsqueda, tipo, sector, evidencia, estado de publicación y referencia");
+assert.deepEqual(parseMapViewState("?tipo=desconocido&sector=ilegal&evidencia=pendiente&vigencia=ilegal&ref=falso", all), {
+  query: "", category: "all", kind: "all", evidence: "all", availability: "all", ref: null
 }, "los parámetros no permitidos vuelven a valores seguros");
 assert.equal(parseMapViewState("?q=" + "x".repeat(140), all).query.length, 100, "la búsqueda compartida se limita a cien caracteres");
 const normalizedMapView = normalizeMapViewState({
@@ -128,9 +140,11 @@ const normalizedMapView = normalizeMapViewState({
   category: "opportunity",
   kind: "land",
   evidence: "hypothesis",
+  availability: "pendiente-revalidacion",
   ref: "cuartel"
 }, all);
 assert.equal(normalizedMapView.query, "suelo");
+assert.equal(normalizedMapView.availability, "pendiente-revalidacion");
 const mapViewUrl = new URL(buildMapViewUrl(
   "https://example.org/mapa-ia/?utm_source=mail&q=viejo&sector=tourism#inventario",
   parsedMapView,
@@ -141,19 +155,21 @@ assert.equal(mapViewUrl.searchParams.get("q"), "logística");
 assert.equal(mapViewUrl.searchParams.get("tipo"), "opportunity");
 assert.equal(mapViewUrl.searchParams.get("sector"), "industrial");
 assert.equal(mapViewUrl.searchParams.get("evidencia"), "documented");
+assert.equal(mapViewUrl.searchParams.get("vigencia"), "no-vigente");
 assert.equal(mapViewUrl.searchParams.get("ref"), "rp25");
 assert.equal(mapViewUrl.hash, "#inventario", "la URL compartida conserva el fragmento");
 const defaultMapViewUrl = new URL(buildMapViewUrl(
-  "https://example.org/mapa-ia/?q=viejo&tipo=locality&sector=land&evidencia=hypothesis&ref=rp25",
+  "https://example.org/mapa-ia/?q=viejo&tipo=locality&sector=land&evidencia=hypothesis&vigencia=no-confirmada&ref=rp25",
   {},
   all
 ));
-assert.equal(["q", "tipo", "sector", "evidencia", "ref"].some(key => defaultMapViewUrl.searchParams.has(key)), false, "restablecer elimina todos los parámetros del mapa");
-const sharedUrl = new URL(buildReferenceUrl("https://example.org/mapa-ia/?layer=all&sector=industrial&q=dep%C3%B3sitos#inventario", "rp25"));
+assert.equal(["q", "tipo", "sector", "evidencia", "vigencia", "ref"].some(key => defaultMapViewUrl.searchParams.has(key)), false, "restablecer elimina todos los parámetros del mapa");
+const sharedUrl = new URL(buildReferenceUrl("https://example.org/mapa-ia/?layer=all&sector=industrial&q=dep%C3%B3sitos&vigencia=no-confirmada#inventario", "rp25"));
 assert.equal(sharedUrl.searchParams.get("ref"), "rp25", "la URL compartible identifica la referencia");
 assert.equal(sharedUrl.searchParams.get("layer"), "all", "la URL compartible conserva otros parámetros");
 assert.equal(sharedUrl.searchParams.get("sector"), "industrial", "la ficha compartible conserva los filtros activos");
 assert.equal(sharedUrl.searchParams.get("q"), "depósitos", "la ficha compartible conserva la búsqueda activa");
+assert.equal(sharedUrl.searchParams.get("vigencia"), "no-confirmada", "la ficha compartible conserva el filtro de estado registrado");
 assert.equal(sharedUrl.hash, "#inventario", "la URL compartible conserva el fragmento existente");
 assert.ok(mapPage.includes('id="map-data-export-disclosure"'), "las exportaciones cartográficas se agrupan en un acceso secundario");
 assert.ok(mapPage.includes("CSV para hojas de cálculo"), "la descarga CSV explica su uso");
@@ -303,6 +319,24 @@ for (const item of opportunities) {
 assert.equal(filterReferences(all, { category: "locality" }).length, 6);
 assert.equal(filterReferences(all, { category: "opportunity" }).length, 5);
 assert.equal(filterReferences(all, { category: "published" }).length, publishedProperties.length);
+for (const [status, key] of [
+  ["No confirmada", "no-confirmada"],
+  ["Pendiente de revalidación", "pendiente-revalidacion"],
+  ["No vigente", "no-vigente"]
+]) {
+  const expected = publishedProperties.filter(item => item.availabilityStatus === status).length;
+  assert.ok(expected > 0, "el inventario contiene registros con estado " + status);
+  const filtered = filterReferences(all, { availability: key });
+  assert.equal(filtered.length, expected, "el filtro devuelve exactamente las publicaciones con estado " + status);
+  assert.ok(filtered.every(item => item.type === "published" && item.availabilityStatus === status));
+}
+assert.equal(filterReferences(all, { availability: "no-confirmada", category: "locality" }).length, 0, "el estado comercial no convierte localidades en publicaciones");
+assert.equal(filterReferences(all, { availability: "no-confirmada", query: "no confirmada" }).length, publishedProperties.filter(item => item.availabilityStatus === "No confirmada").length, "la búsqueda reconoce el estado comercial registrado");
+assert.equal(filterReferences(all, { availability: "estado-invalido" }).length, all.length, "un filtro de estado desconocido vuelve a la vista completa");
+assert.equal(availabilityFilterKey("Pendiente de revalidación"), "pendiente-revalidacion");
+assert.equal(availabilityFilterKey("No vigente"), "no-vigente");
+assert.equal(formatSourceReviewDate("2026-11-27"), "27/11/2026");
+assert.equal(formatSourceReviewDate(""), "No informada");
 assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { query: "Santa Teresa", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");

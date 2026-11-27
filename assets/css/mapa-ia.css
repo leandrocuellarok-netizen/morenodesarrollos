@@ -726,7 +726,7 @@
 }
 .map-filter-group {
   display: grid;
-  grid-template-columns: minmax(220px, 1.45fr) repeat(3, minmax(145px, 1fr));
+  grid-template-columns: minmax(220px, 1.45fr) repeat(2, minmax(145px, 1fr)) minmax(300px, 2fr);
   gap: 10px;
 }
 .map-filter-field {
@@ -777,7 +777,8 @@
   .map-filter-group {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .map-filter-search {
+  .map-filter-search,
+  .map-filter-refine {
     grid-column: 1 / -1;
   }
 }
@@ -1251,6 +1252,32 @@
 }
 .map-item-published > summary > span {
   color: #76523f;
+}
+.map-item-published > summary .map-published-status {
+  display: inline-flex;
+  align-self: flex-start;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #a9a497;
+  background: #f4f1e8;
+  color: #5c5d55;
+  font: 700 9px/1.35 var(--sans);
+  letter-spacing: .045em;
+}
+.map-item-published > summary .map-published-status--pendiente-revalidacion {
+  border-color: #a9794e;
+  background: #f3e9dc;
+  color: #704a30;
+}
+.map-item-published > summary .map-published-status--no-vigente {
+  border-style: dashed;
+  border-color: #8b6959;
+  color: #704c3d;
+}
+.map-item-published > summary .map-published-review-date {
+  color: #77796f;
+  font: 9px/1.45 var(--sans);
 }
 .map-published-intro {
   margin: 8px 0 14px;

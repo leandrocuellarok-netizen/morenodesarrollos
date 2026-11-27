@@ -249,6 +249,11 @@ def main() -> None:
                 'id="atlas-documented-count"',
                 'id="atlas-hypotheses-count"',
                 'id="atlas-total-count"',
+                'id="availability-filter"',
+                "Estado registrado de publicación",
+                'option value="no-confirmada"',
+                'option value="pendiente-revalidacion"',
+                'option value="no-vigente"',
                 "La forma distingue la clase",
                 "El índice cuenta fichas del inventario",
                 'id="export-dossier"',
@@ -272,6 +277,8 @@ def main() -> None:
                     errors.append(f"mapa-ia/index.html: falta el control de vista compartible {share_id}")
             if "no comparte la bitácora local" not in page_source:
                 errors.append("mapa-ia/index.html: debe aclarar que la vista compartida no incluye la bitácora local")
+            if "fecha de revisión de la fuente" not in page_source.lower() or "No vigente" not in page_source:
+                errors.append("mapa-ia/index.html: debe explicar fecha de consulta y estados registrados de publicación")
             if "no se envían al servidor" not in page_source or "no certifica" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar privacidad y alcance de la bitácora")
             if "almacenamiento local del navegador sin cifrado" not in page_source or "borrar la bitácora" not in page_source:
@@ -369,6 +376,9 @@ def main() -> None:
                     "function setActiveReference(item, options)",
                     "function getSharedReferenceId(search, items)",
                     "function normalizeMapViewState(state, items)",
+                    "const MAP_VIEW_AVAILABILITY",
+                    "function availabilityFilterKey(value)",
+                    "function formatSourceReviewDate(value)",
                     "function parseMapViewState(search, items)",
                     "function buildMapViewUrl(baseUrl, state, items)",
                     "function currentMapViewState(referenceId)",
@@ -405,7 +415,12 @@ def main() -> None:
                     'const kind = settings.kind || "all";',
                     "const kindMatches =",
                     'getElementById("kind-filter")',
+                    'getElementById("availability-filter")',
                     'kind: doc.getElementById("kind-filter").value',
+                    'availability: availabilityInput.value',
+                    'availabilityInput.addEventListener("change", render)',
+                    'availabilityInput.value = "all"',
+                    'url.searchParams.set("vigencia", normalized.availability)',
                     'kindInput.addEventListener("change", render)',
                     'kindInput.value = "all"',
                     "function countInventory(items)",
@@ -468,6 +483,7 @@ def main() -> None:
                     ".map-verification-disclosure",
                     ".map-mobile-disclosure > summary:focus-visible",
                     ".map-filter-group",
+                    "minmax(300px, 2fr)",
                     ".map-filter-field",
                     ".map-toolbar-actions",
                     ".map-atlas-stat",
@@ -477,6 +493,8 @@ def main() -> None:
                     ".map-pin-locality",
                     ".map-pin-documented",
                     ".map-pin-hypothesis",
+                    ".map-published-status",
+                    ".map-published-review-date",
                     ".map-pin.is-selected",
                     ".map-item.is-active",
                     ".map-share-link",

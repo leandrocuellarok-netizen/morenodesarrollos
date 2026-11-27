@@ -348,7 +348,8 @@ Cada tesis del inventario del Mapa IA incorpora la descarga local de una ficha H
 
 La barra del Mapa IA permite compartir una vista del inventario con su búsqueda, tipo de referencia, sector, nivel de evidencia y referencia seleccionada. El enlace restaura esos filtros al abrirse y conserva parámetros de campaña ajenos al mapa.
 
-- Los parámetros públicos son `q`, `tipo`, `sector`, `evidencia` y `ref`; sus valores se validan contra listas permitidas y la búsqueda se limita a 100 caracteres.
+- Los parámetros públicos son `q`, `tipo`, `sector`, `evidencia`, `vigencia` y `ref`; sus valores se validan contra listas permitidas y la búsqueda se limita a 100 caracteres.
+- El filtro de publicaciones separa los estados registrados **No confirmada**, **Pendiente de revalidación** y **No vigente**. No ofrece una categoría “Disponible” sin confirmación directa. Cada ficha muestra la fecha de revisión de su fuente, diferenciada de la fecha original del aviso.
 - La URL se actualiza al modificar filtros o seleccionar una referencia. La acción **Compartir vista** utiliza el diálogo nativo del dispositivo cuando está disponible y, en su defecto, copia el enlace al portapapeles.
 - Si el portapapeles está bloqueado, el enlace queda seleccionado en un campo para copiar manualmente.
 - La vista compartida no incluye la bitácora local de diligencia, datos de navegador ni expedientes internos. Los parámetros desconocidos de la URL se conservan.
