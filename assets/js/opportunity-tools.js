@@ -339,6 +339,20 @@
     "fraccion-monsegur-3100-6150-la-reja": "Avenida Monsegur 3100 · fracción de 6.150 m² · La Reja",
     "activo-mixto-bartolome-mitre-1400-4000": "Av. Bartolomé Mitre 1400 · 4.000 m² · triple acceso",
     "inmueble-comercial-libertador-500-368": "Avenida del Libertador al 500 · galpón y vivienda · 368 m²",
+    "terreno-4-vientos-pitagoras-336": "Barrio 4 Vientos · lote sobre Pitágoras · 336 m²",
+    "terreno-molina-campos-400-1434": "Florencio Molina Campos 400 · terreno de 1.434 m²",
+    "casa-luzuriaga-2698-900": "Luzuriaga 2698 · casa a refaccionar sobre 900 m²",
+    "casa-teniente-camilli-520-279": "Teniente Camilli al 520 · casa de 4 ambientes",
+    "casa-libertad-200-229": "Libertad 200 · casa de 4 ambientes · Moreno Centro",
+    "casa-lucia-rueda-42-660": "Lucía Rueda 42 · casa quinta en Paso del Rey",
+    "casa-el-resuello-720": "Casa en Barrio Cerrado El Resuello · lote de 720 m²",
+    "casa-almafuerte-3900-banco-provincia-924": "Almafuerte al 3900 · casa en Country Club Banco Provincia",
+    "casa-mariano-luciano-vega-613-367": "Mariano y Luciano de la Vega 613 · casa con depósito",
+    "casa-piovano-3700-superficie-conflictiva": "Francisco Piovano al 3700 · casa quinta sobre tres lotes anunciados",
+    "casa-facundo-quiroga-1100-300-pendiente": "Facundo Quiroga 1100 · casa de 4 ambientes",
+    "casa-pueyrredon-2544-560-pendiente": "Pueyrredon al 2544 · chalet de 3 dormitorios",
+    "terreno-valparaiso-100-lote10-300": "Valparaíso 100 · lote 10 · 300 m² · Barrio Güemes",
+    "terreno-valparaiso-100-lote11-300": "Valparaíso 100 · lote 11 · 300 m² · Barrio Güemes"
   });
 
   function readMapReference(search) {
