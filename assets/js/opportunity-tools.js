@@ -160,7 +160,7 @@
     "terreno-yapeyu-rafael-arcos-2850": "Yapeyú y Rafael Arcos · fracción de 2.850 m²",
     "terreno-prados-del-oeste-lote-230-800": "Prados del Oeste 1-B · Lote 230 · 800 m²",
     "terreno-general-savio-100-2050": "General Savio 100 · 2.050 m² (superficie contradictoria)",
-    "desarrollo-ecoparque-industrial-78-parcelas": "Ecoparque Industrial Moreno · 78 parcelas",
+    "desarrollo-ecoparque-78-parcelas": "Ecoparque Industrial Moreno · 78 parcelas",
     "terreno-parques-morenito-300-300": "Parques del Morenito · lote 300 m²",
     "terreno-pim-i-parque-municipal-2493": "Parque Municipal PIM I · 2.493 m²",
     "terreno-pim-ii-rp24-2677": "Parque Industrial PIM II · 2.677 m²",
