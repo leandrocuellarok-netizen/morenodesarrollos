@@ -6159,6 +6159,10 @@ const nov27_1058NewEntries = [
     "source": "https://www.argenprop.com/casa-en-venta-en-moreno-5-ambientes--20855460",
     "sourceAlternates": [
       {
+        "url": "https://www.argenprop.com/casa-en-venta-en-moreno-5-ambientes--20693713",
+        "label": "Otra ficha de Argenprop para el mismo activo; enlace directo devolvió 410"
+      },
+      {
         "url": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-venta-block-casa-oportunidad-moreno-lote-1100-m-60451554.html",
         "label": "Publicación paralela de Zonaprop; enlace directo devolvió 410"
       },
@@ -6174,36 +6178,42 @@ const nov27_1058NewEntries = [
     "landSurfaceM2": 1100,
     "coveredSurfaceM2": 250,
     "surfaceNote": "El anuncio describe tres monoambientes, una casa tipo alpina y una segunda vivienda en el fondo; 250 m² cubiertos aproximados según cabecera.",
-    "observations": "Las tres URLs directas consultadas devolvieron 410 Gone el 27/11/2026. Se conserva como antecedente histórico, sin afirmar que haya sido vendido. La publicación describía un activo mixto con potencial de renta; superficies y estado de las construcciones no pudieron revalidarse.",
+    "observations": "Las dos URLs directas de Argenprop, la de Zonaprop y la de Inmuebles Clarín devolvieron 410 Gone el 27/11/2026. Se conserva como antecedente histórico, sin afirmar que haya sido vendido. La publicación describía un activo mixto con potencial de renta; superficies y estado de las construcciones no pudieron revalidarse.",
     "lat": null,
     "lng": null,
     "geocodeDisabled": true,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No vigente",
     "geolocationStatus": "Pendiente: dirección aproximada; registro histórico sin georreferenciar.",
-    "verificationStatus": "Resultados indexados con precio y superficies; enlaces directos de Argenprop, Zonaprop e Inmuebles Clarín devolvieron 410 el 27/11/2026."
+    "verificationStatus": "Resultados indexados con precio y superficies; enlaces directos consultados de Argenprop, Zonaprop e Inmuebles Clarín devolvieron 410 el 27/11/2026."
   },
   {
     "id": "terreno-colectora-norte-fray-cayetano-1348-historico",
-    "recordType": "Fracción de terreno · antecedente no vigente",
-    "name": "Colectora Norte Acceso Oeste km 0 · esquina Fray Cayetano Rodríguez · 1.348 m²",
+    "recordType": "Fracción de terreno · pendiente de revalidación",
+    "name": "Colectora Norte Acceso Oeste · esquina Fray Cayetano Rodríguez · 1.348 m²",
     "locality": "La Reja",
-    "address": "Colectora Norte del Acceso Oeste km 0, esquina Fray Cayetano Rodríguez, La Reja, Moreno",
-    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-fraccion-en-venta-sobre-colectora-norte-acceso-53878076.html",
+    "address": "Colectora Norte del Acceso Oeste, esquina Fray Cayetano Rodríguez, La Reja, Moreno; el aviso menciona km 0 pero el encabezado indexado muestra km 100",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-la-reja--10357815",
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-fraccion-en-venta-sobre-colectora-norte-acceso-53878076.html",
+        "label": "Ficha paralela de Zonaprop; enlace directo devolvió 410 el 27/11/2026"
+      }
+    ],
     "agency": "No identificada en el resultado indexado disponible.",
     "contact": "No se encontró contacto público verificable en la ficha indexada.",
     "price": "USD 320.000 (último precio indexado)",
     "currency": "USD",
     "landSurfaceM2": 1348,
-    "surfaceNote": "La ficha indexada publicaba zonificación Residencial 5, FOS 0,40 y FOT 0,50; parámetros no verificados municipalmente.",
-    "observations": "El enlace directo de Zonaprop devolvió 410 Gone el 27/11/2026. Se conserva como antecedente no vigente, sin afirmar que se haya vendido. Ubicación y datos proceden del resultado indexado; no se obtuvo nomenclatura catastral ni documentación parcelaria.",
+    "surfaceNote": "El resultado indexado identifica lotes 10, 14, 15 y 16, con superficie aproximada de 1.348 m². Publicaba zonificación Residencial 5, FOS 0,40 y FOT 0,50; no verificados municipalmente.",
+    "observations": "El resultado de Argenprop, indexado el mes anterior, publica USD 320.000 y 1.348 m²; su acceso directo devuelve 405 Method Not Allowed, que no prueba retiro. La ficha paralela de Zonaprop devuelve 410 Gone. Existe además una contradicción de ubicación: el título/descrición indica km 0 y el encabezado indexado muestra km 100. Se clasifica pendiente de revalidación, no como disponible ni como vendido.",
     "lat": null,
     "lng": null,
     "geocodeDisabled": true,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No vigente",
-    "geolocationStatus": "Pendiente: ubicación aproximada sobre colectora; registro histórico sin coordenada parcelaria.",
-    "verificationStatus": "Resultado indexado con USD 320.000 y 1.348 m²; ficha directa de Zonaprop devolvió 410 el 27/11/2026."
+    "availabilityStatus": "Pendiente de revalidación",
+    "geolocationStatus": "Pendiente: ubicación de colectora y km contradictorios; sin identificación parcelaria.",
+    "verificationStatus": "Resultado indexado de Argenprop con precio y superficie; enlace directo respondió 405 el 27/11/2026. Ficha paralela de Zonaprop respondió 410. Vigencia comercial no verificable."
   },
   {
     "id": "casa-antartida-argentina-600-342-historico",
