@@ -1148,3 +1148,106 @@ main#main-content:focus {
 .pipeline-counterparty-panel{margin:14px 0}
 .pipeline-counterparty-table th:not(:first-child),.pipeline-counterparty-table td:not(:first-child){text-align:right;white-space:nowrap}
 .pipeline-counterparty-total td{border-top:1px solid #77796f;font-weight:700;color:var(--ink)}
+
+
+/* Lámina editorial del recorrido comercial: esquema conceptual, no cartografía. */
+.opportunity-flow-plate {
+  margin: 0 auto 46px;
+  border: 1px solid #c9c4b7;
+  background: #eeece4;
+}
+.opportunity-flow-frame {
+  overflow: hidden;
+  background: #eeece4;
+}
+.opportunity-flow-drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.opportunity-flow-caption {
+  display: grid;
+  grid-template-columns: minmax(230px, .78fr) 1.22fr;
+  align-items: center;
+  gap: 28px;
+  padding: 19px 24px 21px;
+  border-top: 1px solid #c9c4b7;
+}
+.opportunity-flow-caption > div {
+  display: grid;
+  gap: 8px;
+}
+.opportunity-flow-caption span {
+  color: #8d5a3d;
+  font: 600 9px/1.5 var(--sans);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.opportunity-flow-caption strong {
+  color: #30342d;
+  font: 400 clamp(22px, 2.4vw, 30px)/1.05 var(--serif);
+}
+.opportunity-flow-caption p {
+  max-width: 680px;
+  margin: 0;
+  color: #66675e;
+  font: 12px/1.8 var(--sans);
+}
+.opportunity-paths {
+  gap: 0;
+  margin-top: 8px;
+}
+.opportunity-path {
+  position: relative;
+  border: 0;
+  border-top: 1px solid #a9a598;
+  background: transparent;
+  padding: 25px 28px 24px 0;
+}
+.opportunity-path + .opportunity-path {
+  border-left: 1px solid #d1ccc0;
+  padding-left: 28px;
+}
+.opportunity-path span {
+  display: inline-block;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #b36c47;
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+.opportunity-path h2 {
+  max-width: 300px;
+  font-size: clamp(23px, 2.2vw, 29px);
+  line-height: 1.08;
+}
+.opportunity-path p {
+  max-width: 360px;
+  font-size: 12px;
+  line-height: 1.85;
+}
+.opportunity-path-link {
+  margin-top: 22px;
+}
+@media (max-width: 760px) {
+  .opportunity-flow-plate {
+    margin-bottom: 34px;
+  }
+  .opportunity-flow-caption {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 16px 15px 18px;
+  }
+  .opportunity-flow-caption strong {
+    max-width: 320px;
+  }
+  .opportunity-flow-caption p {
+    font-size: 11px;
+  }
+  .opportunity-path + .opportunity-path {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .opportunity-path {
+    padding: 22px 0;
+  }
+}
