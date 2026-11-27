@@ -3501,7 +3501,7 @@ const nov27CurrentReviewEntries = [
     "address": "Intendente Corvalán 2302, Moreno",
     "source": "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememhoin-maria-eugenia-residences-village-maria-eugenia-50620018.html",
     "agency": "Grupo Vaccaro · desarrolladora",
-    "contact": "Oficina María Eugenia R&V: +54 11 4492-28174 según sucursales oficiales; Oficina Moreno: +54 11 4492-2817; WhatsApp general: +54 11 5053-5918; info@grupovaccaro.com · atencionalcliente@grupovaccaro.com · showroom en Intendente Corvalán 2302. El teléfono de la sucursal María Eugenia aparece con un dígito adicional frente al de Oficina Moreno: confirmar al contactar.",
+    "contact": "Oficina Moreno de Grupo Vaccaro: +54 11 4492-2817 · WhatsApp general: +54 11 5053-5918 · showroom en Intendente Corvalán 2302; contacto mediante formulario oficial.",
     "price": "Venta desde USD 139.000; alquiler desde USD 700 según la misma ficha. No usar el importe de alquiler como precio de venta.",
     "currency": "USD",
     "lat": null,
@@ -3509,17 +3509,21 @@ const nov27CurrentReviewEntries = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: Georef debe confirmar el acceso del desarrollo; el marcador no representará una unidad individual.",
-    "verificationStatus": "Ficha directa del emprendimiento en Zonaprop abierta el 27/11/2026; muestra 18 unidades y etiquetas de etapas mixtas. Sitio institucional y sucursal María Eugenia de Grupo Vaccaro consultados. Stock y estado de cada unidad no confirmados.",
+    "verificationStatus": "Ficha de Zonaprop accesible el 27/11/2026 y página institucional de Grupo Vaccaro consultada. Zonaprop muestra 17 unidades y Argenprop 18; el desarrollador describe el barrio como consolidado con más de 150 familias. Stock y estado de cada unidad no confirmados.",
     "phone": "+541150535918",
     "sourceAlternates": [
       {
         "url": "https://www.grupovaccaro.com/vaccaro",
-        "label": "Sitio oficial de Grupo Vaccaro, desarrolladora"
+        "label": "Sitio oficial de Grupo Vaccaro"
+      },
+      {
+        "url": "https://bocetos.xintel.com.ar/vcolanding/",
+        "label": "Página institucional de María Eugenia Residences & Village; declara barrio consolidado con más de 150 familias"
       }
     ],
     "publicationDate": "Fecha original no informada; ficha del emprendimiento consultada el 27/11/2026.",
-    "surfaceNote": "Desarrollo sobre 8 ha y 240 viviendas según la publicación. La ficha específica consultada muestra 18 unidades, de 59 a 314 m² totales y 58 a 202 m² cubiertos. No se informa superficie de terreno individual para cada unidad.",
-    "observations": "La ficha directa de Zonaprop accesible el 27/11/2026 muestra 18 unidades, venta desde USD 139.000 y alquiler desde USD 700. El desarrollo se describe sobre 8 ha y con 240 viviendas. La página exhibe simultáneamente etiquetas “En Pozo”, “En Construcción” y “Terminado”, además de entrega inmediata; por ello no se atribuye una etapa homogénea a todo el conjunto. Grupo Vaccaro identifica el showroom del propio emprendimiento en Intendente Corvalán 2302. Confirmar stock por unidad, etapa física, escritura, expensas y precio final.",
+    "surfaceNote": "Desarrollo sobre 8 ha y 240 viviendas según la publicación; Grupo Vaccaro afirma que más de 150 familias ya residen allí. Zonaprop muestra 17 unidades de 59 a 314 m² totales y 58 a 202 m² cubiertos, mientras Argenprop muestra 18. No se informa superficie de terreno individual para cada unidad.",
+    "observations": "La ficha de Zonaprop muestra 17 unidades y venta desde USD 139.000; Argenprop muestra 18, por lo que el inventario publicado difiere entre portales. Grupo Vaccaro declara que el barrio está totalmente consolidado y que más de 150 familias ya residen allí; por ello se clasifica como barrio terminado con unidades en comercialización, no como obra nueva. Zonaprop conserva etiquetas mixtas de pozo, construcción, terminado y entrega inmediata. Confirmar stock, estado y precio por unidad, escritura y expensas.",
     "geocodeQuery": "Intendente Corvalan 2302, Moreno, Buenos Aires"
   }
 ];
@@ -5753,6 +5757,287 @@ const nov27_0923NewEntries = [
   }
 ];;;;
 publishedProperties.push(...nov27_0923NewEntries);
+
+
+const nov27_1032NewEntries = [
+  {
+    "id": "terreno-9-de-julio-46-487",
+    "recordType": "Terreno con estructura existente · oportunidad de desarrollo",
+    "name": "9 de Julio 46 · lote de 487 m² con estructura para cuatro departamentos",
+    "locality": "Moreno Centro",
+    "address": "9 de Julio 46, Moreno; el encabezado de Argenprop lo etiqueta como Colectora Norte Acceso Oeste km 100",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-centro-moreno--8079012",
+    "sourceAlternates": [
+      {
+        "url": "https://www.mercadoprop.net/ar/terrenos/venta-terreno-moreno-29028",
+        "label": "Ficha sindicada de MercadoProp para la misma fracción"
+      }
+    ],
+    "agency": "Dambolena",
+    "contact": "Martín Dambolena, CMCPDJMGR 205 / CUCICBA 7176; consulta mediante formulario de Argenprop; el teléfono de la ficha aparece incompleto.",
+    "price": "USD 130.000",
+    "currency": "USD",
+    "landSurfaceM2": 487,
+    "surfaceNote": "487 m² de terreno. El aviso describe la estructura existente para cuatro departamentos, pero no informa superficie cubierta de esa estructura. Publica CU1, FOS 0,60, FOT 3 sin premios o 2,4 con premios y alturas de 21 m entre medianeras / 36 m perímetro libre, todo sujeto a certificado municipal.",
+    "observations": "El anuncio lo ofrece para continuar un complejo de departamentos. Existe una contradicción de ubicación: el encabezado de Argenprop dice Colectora Norte Acceso Oeste km 100, mientras la descripción especifica 9 de Julio 46. No geolocalizar hasta verificar nomenclatura catastral, altura, estado de la estructura y certificado urbanístico. Los parámetros son declarados por el anunciante, no una aprobación de proyecto.",
+    "lat": null,
+    "lng": null,
+    "geocodeDisabled": true,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: discrepancia entre el encabezado del portal y la dirección descriptiva; no colocar marcador parcelario.",
+    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; USD 130.000, 487 m² y estructura para cuatro departamentos publicados. Precio, estado físico, documentación y disponibilidad no confirmados."
+  },
+  {
+    "id": "terreno-jose-marmol-rivadavia-1418",
+    "recordType": "Fracción de terreno",
+    "name": "José Mármol 100 · esquina Bernardino Rivadavia · 1.418 m²",
+    "locality": "Moreno Centro",
+    "address": "José Mármol 100, esquina Bernardino Rivadavia, Moreno",
+    "geocodeDisabled": true,
+    "source": "https://www.argenprop.com/terreno-en-venta-en-centro-moreno--19475734",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/terreno-en-venta-en-centro-3352921",
+        "label": "Ficha sindicada de Proppies para la misma fracción"
+      }
+    ],
+    "agency": "Dambolena",
+    "contact": "Martín Dambolena, CMCPDJMGR 205 / CUCICBA 7176; formulario de consulta del portal; teléfono completo no visible en la ficha consultada.",
+    "price": "USD 490.000",
+    "currency": "USD",
+    "landSurfaceM2": 1418,
+    "publicationDate": "Proppies indicaba publicado hace 4 meses al 27/11/2026; Argenprop indexado hace aproximadamente 2 meses.",
+    "surfaceNote": "1.418 m²; 65,4 m de frente sobre José Mármol y 15,7 m sobre Bernardino Rivadavia. La ficha declara R1b, FOS 0,60, FOT 1,20 y altura máxima 12 m; confirmar en certificado urbanístico.",
+    "observations": "La publicación identifica una fracción en esquina y acepta oferta de contado. Detecté otra ficha en José Mármol 100 por 584 m² y USD 190.000, con construcción a demoler; no se incorporó como oportunidad separada porque podría solaparse con esta fracción y no hay nomenclatura catastral para resolverlo. Solicitar plano, partidas y estado parcelario antes de tratar ambos avisos como activos distintos.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "Pendiente de revalidación",
+    "geolocationStatus": "Pendiente: dos publicaciones con la misma dirección pública y superficies diferentes; no asignar coordenadas parcelarias hasta verificar parcelas.",
+    "verificationStatus": "Ficha directa de Argenprop accesible/indexada en la revisión del 27/11/2026 y copia de Proppies con igual precio y superficie; publicación de varios meses. Disponibilidad comercial no confirmada."
+  },
+  {
+    "id": "terreno-guatemala-2500-valentin-alsina-590",
+    "recordType": "Terreno individual",
+    "name": "Guatemala 2500 esquina Valentín Alsina · 590 m²",
+    "locality": "Moreno",
+    "address": "Guatemala 2500, esquina Valentín Alsina, Moreno",
+    "geocodeQuery": "Guatemala 2500, Moreno, Buenos Aires",
+    "geocodeMatch": "GUATEMALA 2500",
+    "source": "https://www.mercadoprop.net/ar/terrenos/venta-terreno-moreno-29232",
+    "agency": "Dambolena",
+    "contact": "Martín Dambolena, CMCPDJMGR 205 / CUCICBA 7176; consulta por formulario de MercadoProp; teléfono completo no visible.",
+    "price": "USD 60.000",
+    "currency": "USD",
+    "landSurfaceM2": 590,
+    "surfaceNote": "590 m²; frente 11,11 m y fondo 53,09 m. El aviso publica zonificación R4, FOS 0,50, FOT 0,80 y altura máxima 7 m; requiere validación municipal.",
+    "observations": "La ficha directa de MercadoProp identifica el código del anunciante DAM0332_LP359922 y publica ubicación, dimensiones y parámetros. Las superficies se declaran aproximadas; solicitar estado parcelario, servicios efectivos y certificado urbanístico.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: la dirección es pública, pero el punto solo se utilizará si Georef devuelve una coincidencia inequívoca; no representa el lote catastral.",
+    "verificationStatus": "Ficha directa de MercadoProp accesible el 27/11/2026; precio USD 60.000, 590 m², anunciante y dimensiones publicados. Disponibilidad no confirmada."
+  },
+  {
+    "id": "terreno-tres-de-febrero-7800-316",
+    "recordType": "Terreno individual · lote baldío",
+    "name": "Tres de Febrero 7800 · lote de 316 m²",
+    "locality": "Moreno · entorno limítrofe con José C. Paz",
+    "address": "Tres de Febrero 7800, entre Montevideo y Río de la Plata, Moreno",
+    "geocodeQuery": "Tres de Febrero 7800, Moreno, Buenos Aires",
+    "geocodeMatch": "TRES DE FEBRERO 7800",
+    "source": "https://pabloaquinoinmobiliaria.com.ar/propiedades/venta-lotemoreno/",
+    "sourceAlternates": [
+      {
+        "url": "https://www.argenprop.com/inmobiliarias/pablo-aquino-soluciones-inmobiliarias/inmuebles/venta",
+        "label": "Perfil de publicaciones de Pablo Aquino; contiene el mismo aviso"
+      }
+    ],
+    "agency": "Pablo Aquino Inmobiliaria",
+    "contact": "+54 9 11 7001-7411 · 02320-423003; oficina Hipólito Yrigoyen 1119, José C. Paz.",
+    "phone": "+5491170017411",
+    "price": "USD 16.000 contado; financiación anunciada: anticipo USD 10.000 + 30 cuotas de USD 260 (total financiado USD 17.800).",
+    "currency": "USD",
+    "landSurfaceM2": 316,
+    "surfaceNote": "316 m² (13,40 × 22,40 m). Lote baldío; el anunciante indica que no tiene servicios instalados y que la energía podría solicitarse con sistema prepago.",
+    "observations": "El anunciante afirma escritura lista para transferir. La cabecera del sitio muestra USD 10.000 / cuotas, mientras la descripción fija USD 16.000 al contado y USD 10.000 más 30 cuotas de USD 260; la financiación suma USD 17.800. Confirmar precio, plan, servicios, escritura y nomenclatura. La ubicación está a dos cuadras del límite con José C. Paz según la descripción.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: dirección pública disponible; el mapa solo colocará un punto si Georef devuelve una única coincidencia exacta.",
+    "verificationStatus": "Ficha directa de Pablo Aquino Inmobiliaria accesible el 27/11/2026; 316 m², medidas, precio contado, financiación y contacto publicados. Disponibilidad no confirmada."
+  },
+  {
+    "id": "terreno-justo-daract-2751-2163",
+    "recordType": "Fracción de terreno · dos parcelas",
+    "name": "Justo Daract 2751 · dos parcelas por 2.163 m²",
+    "locality": "Moreno Centro",
+    "address": "Justo Daract 2751, Moreno; encabezado de Zonaprop indica altura 2700",
+    "geocodeDisabled": true,
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-lote-en-venta-o-permuta-ubicado-en-moreno-47191082.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/terreno-en-venta-en-centro-14916766",
+        "label": "Ficha sindicada de Proppies para la misma fracción"
+      }
+    ],
+    "agency": "Dambolena",
+    "contact": "Martín Dambolena, CMCPDJMGR 205 / CUCICBA 7176; WhatsApp +54 11 2311-0532 según la ficha sindicada de Proppies.",
+    "price": "USD 230.000",
+    "currency": "USD",
+    "landSurfaceM2": 2163,
+    "publicationDate": "Proppies indicaba publicado hace 3 meses al 27/11/2026; ficha directa de Zonaprop accesible el 27/11/2026.",
+    "surfaceNote": "Dos parcelas: parcela 7 de 1.233 m² y parcela 8 de 930 m². El aviso publica R4b, FOS 0,60, FOT 1,00 y altura máxima 9 m, sujeto a certificado municipal.",
+    "observations": "La ficha ofrece venta conjunta, permuta y posibilidad de financiación. Confirmar si ambas parcelas se venden juntas o por separado, títulos, servicios de agua y cloacas, estado parcelario y vigencia del precio. El encabezado dice 2700 y la descripción 2751; geolocalización deshabilitada hasta resolver la numeración.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "Pendiente de revalidación",
+    "geolocationStatus": "Pendiente: discrepancia entre altura del encabezado (2700) y dirección descriptiva (2751); no asignar coordenadas.",
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio USD 230.000, 2.163 m² y desglose de dos parcelas publicados. Aviso de varios meses; disponibilidad no confirmada."
+  },
+  {
+    "id": "casa-quinta-samaniego-4900-4200",
+    "recordType": "Casa quinta individual · dos fracciones contiguas",
+    "name": "Samaniego 4900 · casa quinta sobre 4.200 m²",
+    "locality": "Francisco Álvarez · Barrio El Ensueño",
+    "address": "Esquina Samaniego y Pedro de Angelis, Barrio El Ensueño, Francisco Álvarez, Moreno (ficha: Samaniego 4900)",
+    "geocodeQuery": "Samaniego 4900, Francisco Alvarez, Moreno, Buenos Aires",
+    "geocodeMatch": "SAMANIEGO 4900",
+    "source": "https://emilianoescola17.kitepropcrm.com/site/properties/592799/casa-quinta-de-4200-m2-parque-vegetacion-pileta",
+    "sourceAlternates": [
+      {
+        "url": "https://casa.mercadolibre.com.ar/MLA-2216012443-casa-quinta-de-4200-m2-parque-vegetacion-pileta-_JM",
+        "label": "Publicación sindicada de MercadoLibre para la misma casa quinta"
+      }
+    ],
+    "agency": "Emiliano Escola Servicios Inmobiliarios",
+    "contact": "Formulario de contacto de Emiliano Escola Servicios Inmobiliarios; no se expone un teléfono completo en la ficha consultada.",
+    "price": "USD 89.000",
+    "currency": "USD",
+    "landSurfaceM2": 4200,
+    "coveredSurfaceM2": 130,
+    "publicationDate": "MercadoLibre indicaba publicado hace aproximadamente 37 días al 27/11/2026; ficha del corredor indexada hace 2 semanas.",
+    "surfaceNote": "Dos fracciones de 70 × 30 m (2.100 m² cada una), unidas en un total anunciado de 4.200 m²; 130 m² cubiertos y 4.100 m² no cubiertos según ficha técnica del anunciante. Otros resultados sindicados muestran 4.230 m² totales, por lo que debe prevalecer mensura/título.",
+    "observations": "Casa quinta en esquina, con vivienda, dependencia secundaria, galpón, parque arbolado y pileta tipo tanque australiano. El aviso ofrece el conjunto de dos parcelas; no asumir subdivisión o venta separada. Verificar títulos, agua de pozo, instalaciones, planos y disponibilidad.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: la esquina es pública, pero no se asignó punto parcelario; Georef debe resolver Samaniego 4900 de forma inequívoca.",
+    "verificationStatus": "Ficha del corredor accesible/indexada el 27/11/2026; USD 89.000, dos fracciones por 4.200 m² y 130 m² cubiertos publicados. Estado comercial y documentación no confirmados."
+  },
+  {
+    "id": "casa-martinez-melo-300-161",
+    "recordType": "Casa individual a refaccionar · potencial de reutilización",
+    "name": "Martínez Melo al 300 · casa de 5 ambientes a refaccionar",
+    "locality": "Moreno Centro",
+    "address": "Martínez Melo al 300, entre Emilio Mitre y Leandro N. Alem, Moreno",
+    "geocodeDisabled": true,
+    "source": "https://proppies.app/propiedad/buenos-aires/moreno/casa-5-amb-en-venta-en-moreno-41159528",
+    "agency": "Mendoza Verón Propiedades",
+    "contact": "WhatsApp +54 11 3456-3827 · contacto mediante la ficha pública de Proppies.",
+    "phone": "+541134563827",
+    "price": "USD 70.000",
+    "currency": "USD",
+    "coveredSurfaceM2": 161,
+    "publicationDate": "Publicado hace aproximadamente 2 meses al 27/11/2026; fecha exacta no visible.",
+    "surfaceNote": "161 m² cubiertos según el portal; no se publica superficie del terreno. Cuatro dormitorios, cinco ambientes y un baño según la ficha.",
+    "observations": "La descripción indica casa a refaccionar, todos los servicios y uso potencial para inversión. El aviso publica FOS 0,60, FOT 3 y zonificación Centro Urbano 1; son datos del anunciante y requieren certificado municipal. No se puede calcular precio por m² de terreno porque la superficie de lote no está publicada.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: dirección aproximada “al 300”; no asignar coordenadas sin altura exacta y coincidencia inequívoca.",
+    "verificationStatus": "Ficha pública de Proppies accesible el 27/11/2026; precio USD 70.000, 161 m² cubiertos, anunciante y WhatsApp publicados. Disponibilidad no confirmada."
+  },
+  {
+    "id": "casa-25-de-mayo-2700-350",
+    "recordType": "Casa individual · tipo americana",
+    "name": "25 de Mayo 2700 · casa clásica tipo americana · Paso del Rey",
+    "locality": "Paso del Rey · Barrio La Quebrada",
+    "address": "25 de Mayo 2700, Paso del Rey, Moreno",
+    "geocodeQuery": "25 de Mayo 2700, Paso del Rey, Moreno, Buenos Aires",
+    "geocodeMatch": "25 DE MAYO 2700",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-clasica-tipo-americana-apto-credito-50198265.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/casa-3-amb-en-venta-en-moreno-45632288",
+        "label": "Ficha sindicada de Proppies para la misma casa"
+      }
+    ],
+    "agency": "Mateo Propiedades S.R.L.",
+    "contact": "WhatsApp +54 11 3939-7500 según ficha sindicada de Proppies; matrícula publicada 203 Dpto. M-GR.",
+    "phone": "+541139397500",
+    "price": "USD 65.000",
+    "currency": "USD",
+    "landSurfaceM2": 350,
+    "publicationDate": "Proppies indicaba publicado hace aproximadamente 3 semanas al 27/11/2026; fecha exacta no visible.",
+    "surfaceNote": "Terreno de 10 × 35 m (350 m²). Zonaprop muestra 1 m² cubierto en la tabla técnica, dato manifiestamente inconsistente con la descripción; no se registra superficie cubierta.",
+    "observations": "Casa de tres ambientes, dos dormitorios, living-comedor, cocina integrada, baño, lavadero, cuarto de herramientas y cochera pasante. El aviso la declara apta crédito y menciona pavimento y servicios. Confirmar planos, superficie cubierta real, estado de crédito y disponibilidad.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "No confirmada",
+    "geolocationStatus": "Pendiente: altura pública disponible; marcador solo si Georef devuelve una coincidencia única para 25 de Mayo 2700, Paso del Rey.",
+    "verificationStatus": "Ficha directa de Zonaprop accesible en la revisión del 27/11/2026; precio USD 65.000 y terreno 350 m² publicados. La superficie cubierta del portal es inconsistente y se deja sin completar. Disponibilidad no confirmada."
+  },
+  {
+    "id": "casa-concordia-2545-311",
+    "recordType": "Casa individual de dos plantas",
+    "name": "Concordia 2545 · casa de cinco ambientes · Moreno",
+    "locality": "Moreno",
+    "address": "Concordia 2545, Moreno",
+    "geocodeQuery": "Concordia 2545, Moreno, Buenos Aires",
+    "geocodeMatch": "CONCORDIA 2545",
+    "source": "https://www.jorgelinamartinezpropiedades.com.ar/propiedad/183298_casa-de-dos-plantas-en-venta-en-moreno/",
+    "agency": "Jorgelina Martinez Propiedades",
+    "contact": "Jorgelina Martínez · +54 11 6732-4994 · Jorgelinamartinezprop@gmail.com.",
+    "phone": "+541167324994",
+    "price": "USD 130.000",
+    "currency": "USD",
+    "landSurfaceM2": 311,
+    "coveredSurfaceM2": 198,
+    "publicationDate": "Actualizado el 11/07/2026 a las 10:20 según ficha de la inmobiliaria.",
+    "surfaceNote": "311 m² totales y 198 m² cubiertos según la ficha de la inmobiliaria; cuatro dormitorios, cinco ambientes y tres baños.",
+    "observations": "Casa de dos plantas, pileta de 7 × 3 m, garage y terraza. La planta baja tiene antigüedad declarada de 60 años y la planta alta de 20. La ficha sigue marcada “En venta”, pero su última actualización es de julio: revalidar precio, estado y disponibilidad antes de una visita.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "Pendiente de revalidación",
+    "geolocationStatus": "Pendiente: dirección exacta publicada; el marcador se habilitará solo si Georef devuelve una coincidencia inequívoca.",
+    "verificationStatus": "Ficha directa de Jorgelina Martinez Propiedades accesible el 27/11/2026 y marcada “En venta”; precio, superficies, contacto y actualización del 11/07/2026 publicados. Por antigüedad de la actualización, disponibilidad pendiente de confirmación."
+  },
+  {
+    "id": "terreno-bartolome-mitre-3200-1260",
+    "recordType": "Terreno individual · corredor comercial",
+    "name": "Avenida Bartolomé Mitre 3200 · lote comercial de 1.260 m²",
+    "locality": "Moreno",
+    "address": "Avenida Bartolomé Mitre 3200, Moreno, a metros de Av. Victorica",
+    "geocodeQuery": "Avenida Bartolome Mitre 3200, Moreno, Buenos Aires",
+    "geocodeMatch": "AVENIDA BARTOLOME MITRE 3200",
+    "source": "https://proppies.app/propiedad/buenos-aires/moreno/terreno-en-venta-en-moreno-3352983",
+    "agency": "Marisol Espinosa Propiedades",
+    "contact": "WhatsApp 011 3399-6622, publicado en Proppies.",
+    "phone": "+541133996622",
+    "price": "USD 495.000",
+    "currency": "USD",
+    "landSurfaceM2": 1260,
+    "publicationDate": "Proppies indicaba publicado hace 5 meses / 168 días al 27/11/2026; sin cambios de precio registrados en esa ficha.",
+    "surfaceNote": "1.260 m² de terreno; no se publica superficie cubierta. El anuncio lo ubica frente a supermercado Día% y cerca de estación YPF, a metros de Av. Victorica.",
+    "observations": "La ficha sindicada indica que lleva 168 días publicada y no registra cambios de precio. Su análisis automático de Proppies lo ubica 16% por encima de la mediana de 12 terrenos comparables cercanos; esa estimación no es una tasación. Por antigüedad, se clasifica pendiente de revalidación comercial. Solicitar certificado urbanístico y confirmar el precio.",
+    "lat": null,
+    "lng": null,
+    "lastCheckedAt": "2026-11-27",
+    "availabilityStatus": "Pendiente de revalidación",
+    "geolocationStatus": "Pendiente: dirección pública disponible; solo colocar marcador si Georef devuelve coincidencia inequívoca.",
+    "verificationStatus": "Ficha de Proppies accesible el 27/11/2026; USD 495.000, 1.260 m², anunciante y WhatsApp publicados. La publicación lleva 168 días; disponibilidad comercial pendiente de revalidación."
+  }
+];
+publishedProperties.push(...nov27_1032NewEntries);
 
 const all = [
   ...localities.map(item => ({ ...item, type: "locality" })),
