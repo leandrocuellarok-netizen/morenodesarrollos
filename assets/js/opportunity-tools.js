@@ -167,6 +167,16 @@
     "terreno-pim-ii-rp24-7700-2103": "PIM II · parcela 67 · RP 24 al 7700 · 2.103 m²",
     "casa-san-ramon-2700-251": "Dos casas independientes · San Ramón al 2700",
     "casa-perito-moreno-3800-350": "Casa · Perito Moreno 3800/3870 · La Reja"
+    "terreno-los-abedules-4100-521": "Lote en esquina · Los Abedules 4100 · Álvarez del Bosque · 520,7 m²",
+    "terreno-chacabuco-emilio-mitre-206": "Dos lotes en Chacabuco entre Emilio Mitre y Moreno · 206,42 m²",
+    "casa-francisco-piovano-3700-2960": "Casa quinta sobre tres lotes · Francisco Piovano 3700 · 2.960 m²",
+    "casa-faraday-2700-1472": "Casa quinta con pileta · Faraday 2700 · 1.472 m²",
+    "casa-intendente-pagano-2600-320": "Chalet 3 ambientes con pileta · Intendente Pagano al 2600 · 320 m²",
+    "casa-intendente-corvalan-2400-792": "Casa 4 ambientes · Haras María Eugenia · Intendente Corvalán 2400",
+    "desarrollo-villa-justina-independencia-2199": "Villa Justina · Independencia 2199 · Moreno",
+    "terreno-ruta24-10ha-100000": "Fracción de 10 ha · Ruta 24 · entorno Ruta 24/Ruta 25",
+    "terreno-larrea-2419-220": "Lote · Larrea 2419 · 220 m² · Moreno Sur",
+
   });
 
   function readMapReference(search) {
