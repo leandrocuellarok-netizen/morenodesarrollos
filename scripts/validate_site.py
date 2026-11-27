@@ -260,7 +260,7 @@ def main() -> None:
                 'option value="no-confirmada"',
                 'option value="pendiente-revalidacion"',
                 'option value="no-vigente"',
-                "La forma distingue la clase",
+                "Círculo: localidad",
                 "El índice cuenta fichas del inventario",
                 'id="export-dossier"',
                 'id="dossier-status"'
@@ -436,7 +436,7 @@ def main() -> None:
                     "buildTerritorialDossier(visibleItems",
                     "dossierExportButton.addEventListener(\"click\", downloadTerritorialDossier)",
                     "function buildOpportunityContactUrl(baseUrl, item)",
-                    'url.searchParams.delete("map_name")',
+                    "https://wa.me/5491141671674",
                     "function referenceContactLabel(item)",
                     "link.textContent = referenceContactLabel(item)",
                     'actions.className = "map-item-actions"',
@@ -880,7 +880,7 @@ def main() -> None:
         for required_markup in ('class="pyme-news-page"', 'id="pyme-total-count"', 'id="pyme-featured"', 'id="pyme-news-grid"'):
             if required_markup not in opportunity_html:
                 errors.append(f"INFO PYME MORENO: falta estructura editorial: {required_markup}")
-        pyme_data_match = re.search(r"const\s+pymeNews\s*=\s*(\[.*?\]);", opportunity_html, re.S)
+        pyme_data_match = re.search(r"const\s+pymeNews\s*=\s*(\[.*?\])\s*(?=\nconst\s+featuredNews)", opportunity_html, re.S)
         if not pyme_data_match:
             errors.append("INFO PYME MORENO: falta el inventario editorial pymeNews")
         else:
@@ -997,7 +997,7 @@ def main() -> None:
 
         for required_style in (
             ".soy-moreno-hero",
-            ".pyme-news-page",
+            ".pyme-news-hero",
             ".pyme-featured-grid",
             ".pyme-news-grid",
         ):
