@@ -5841,7 +5841,7 @@ const nov27_1032NewEntries = [
     "verificationStatus": "Ficha directa de MercadoProp accesible el 27/11/2026; precio USD 60.000, 590 m², anunciante y dimensiones publicados. Disponibilidad no confirmada."
   },
   {
-    "id": "terreno-tres-de-febrero-7800-316",
+    "id": "moreno-lote-tres-de-febrero-7800",
     "recordType": "Terreno individual · lote baldío",
     "name": "Tres de Febrero 7800 · lote de 316 m²",
     "locality": "Moreno · entorno limítrofe con José C. Paz",
