@@ -251,6 +251,9 @@ const hourlyExpectedIds = [
   "desarrollo-villa-justina-2199",
   "terreno-ruta24-10ha-100000",
   "terreno-larrea-2419-220",
+  "terreno-general-hornos-sn-939",
+  "terreno-salto-600-595",
+  "terreno-juan-diaz-solis-1800-595",
 ];
 for (const id of hourlyExpectedIds) {
   assert.ok(publishedProperties.some(item => item.id === id), "la revisión horaria incorpora " + id);
