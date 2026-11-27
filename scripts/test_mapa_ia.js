@@ -188,11 +188,11 @@ assert.ok(source.includes('link.download = "moreno-mapa-ia-referencias.geojson"'
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
 assert.equal(opportunities.length, 5, "se conservan las cinco tesis");
-assert.equal(publishedProperties.length, 14, "la capa publicada contiene catorce avisos y desarrollos");
-assert.equal(all.length, 25, "el inventario completo contiene veinticinco referencias");
+assert.equal(publishedProperties.length, 17, "la capa publicada contiene diecisiete avisos y desarrollos");
+assert.equal(all.length, 28, "el inventario completo contiene veintiocho referencias");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
 assert.equal(new Set(publishedProperties.map(item => item.source)).size, publishedProperties.length, "los enlaces de publicaciones no se duplican");
-assert.deepEqual(countInventory(all), { localities: 6, documented: 4, hypotheses: 1, published: 14, total: 25 });
+assert.deepEqual(countInventory(all), { localities: 6, documented: 4, hypotheses: 1, published: 17, total: 28 });
 assert.deepEqual(
   countInventory(filterReferences(all, { evidence: "documented" })),
   { localities: 0, documented: 4, hypotheses: 0, published: 0, total: 4 },
@@ -224,7 +224,7 @@ for (const item of opportunities) {
 
 assert.equal(filterReferences(all, { category: "locality" }).length, 6);
 assert.equal(filterReferences(all, { category: "opportunity" }).length, 5);
-assert.equal(filterReferences(all, { category: "published" }).length, 14);
+assert.equal(filterReferences(all, { category: "published" }).length, 17);
 assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { evidence: "documented" }).length, 4, "el filtro documentado solo muestra tesis con fuente");
 assert.equal(filterReferences(all, { evidence: "hypothesis" }).length, 1, "el filtro de hipótesis no mezcla localidades sin clasificar");
@@ -291,8 +291,8 @@ assert.match(hypothesisFeature.properties.coordinate_scope, /no identifica una p
 assert.match(filteredGeoJson.disclaimer.toLocaleLowerCase("es-AR"), /no identifican parcelas/);
 assert.equal(
   buildGeoJson(all).features.length,
-  25,
-  "la exportación completa conserva las veinticinco referencias actuales"
+  28,
+  "la exportación completa conserva las veintiocho referencias actuales"
 );
 assert.ok(
   buildGeoJson(all).features.filter(feature => feature.properties.category !== "Propiedades y desarrollos publicados").every(feature => feature.geometry.type === "Point"),
@@ -308,7 +308,7 @@ assert.ok(
 );
 assert.equal(
   JSON.parse(JSON.stringify(buildGeoJson(all))).features.length,
-  25,
+  28,
   "GeoJSON puede serializarse como JSON válido"
 );
 
@@ -524,10 +524,10 @@ assert.equal(industrialDossier.references[0].sourceUrl, opportunities.find(item 
 assert.match(industrialDossier.references[0].coordinates.scope, /no identifica una parcela/);
 assert.equal(buildTerritorialDossier([], {}, "2026-11-26T03:00:00.000Z"), null, "una vista vacía no produce un dossier");
 const completeDossier = buildTerritorialDossier(all, {}, "2026-11-26T03:00:00.000Z");
-assert.equal(completeDossier.references.length, 25);
-assert.deepEqual(completeDossier.counts, { localities: 6, documented: 4, hypotheses: 1, published: 14, total: 25 });
-assert.equal(completeDossier.references.filter(reference => reference.type === "published").length, 14);
-assert.equal(completeDossier.references.filter(reference => reference.sourceUrl).length, 19, "las tesis y publicaciones conservan sus fuentes registradas");
+assert.equal(completeDossier.references.length, 28);
+assert.deepEqual(completeDossier.counts, { localities: 6, documented: 4, hypotheses: 1, published: 17, total: 28 });
+assert.equal(completeDossier.references.filter(reference => reference.type === "published").length, 17);
+assert.equal(completeDossier.references.filter(reference => reference.sourceUrl).length, 22, "las tesis y publicaciones conservan sus fuentes registradas");
 const dossierDiagram = buildTerritorialDossierDiagram(industrialDossier.references);
 assert.match(dossierDiagram, /<svg/);
 assert.match(dossierDiagram, /Distribución relativa de referencias/);
