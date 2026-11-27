@@ -939,7 +939,6 @@ const nov27_1032ExpectedIds = [
   "terreno-9-de-julio-46-487",
   "terreno-jose-marmol-rivadavia-1418",
   "terreno-guatemala-2500-valentin-alsina-590",
-  "moreno-lote-tres-de-febrero-7800",
   "terreno-justo-daract-2751-2163",
   "casa-quinta-samaniego-4900-4200",
   "casa-martinez-melo-300-161",
@@ -954,6 +953,8 @@ const mariaEugenia = publishedProperties.find(item => item.id === "desarrollo-ma
 assert.ok(mariaEugenia && mariaEugenia.sourceAlternates.some(source => source.url === "https://bocetos.xintel.com.ar/vcolanding/"), "María Eugenia conserva la fuente institucional de Grupo Vaccaro");
 assert.ok(!mariaEugenia.contact.includes("4492-28174"), "María Eugenia no conserva el teléfono con dígito adicional");
 assert.equal(publishedProperties.find(item => item.id === "terreno-jose-marmol-rivadavia-1418").geocodeDisabled, true, "José Mármol no se geolocaliza mientras exista posible solapamiento de parcelas");
+const tresDeFebrero = publishedProperties.find(item => item.id === "moreno-lote-tres-de-febrero-7800");
+assert.ok(tresDeFebrero && tresDeFebrero.price.includes("USD 17.800") && tresDeFebrero.observations.includes("No tiene servicios instalados"), "Tres de Febrero se actualiza en su registro canónico sin duplicar la URL");
 assert.equal(publishedProperties.find(item => item.id === "terreno-9-de-julio-46-487").geocodeDisabled, true, "9 de Julio 46 no se geolocaliza mientras el título del portal contradiga la dirección");
 assert.equal(publishedProperties.find(item => item.id === "terreno-bartolome-mitre-3200-1260").availabilityStatus, "Pendiente de revalidación");
 assert.equal(publishedProperties.find(item => item.id === "casa-concordia-2545-311").availabilityStatus, "Pendiente de revalidación");
