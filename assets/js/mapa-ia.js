@@ -1776,7 +1776,7 @@ publishedProperties.push(
     "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-venta-de-casa-4-ambientes-con-parque-y-pileta-en-56644991.html",
     "agency": "Aviso en Zonaprop; responsables Matías G. Valencia, Col. 3034 CMCPM y Matías F. Viudes, Col. 3047 CMCPM",
     "contact": "Formulario / WhatsApp de Zonaprop; contacto comercial a través de Valencia Viudes Bienes Raíces.",
-    "price": "USD 173.000",
+    "price": "USD 159.000",
     "currency": "USD",
     "landSurfaceM2": 400,
     "coveredSurfaceM2": 160,
@@ -1788,7 +1788,7 @@ publishedProperties.push(
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se intentará geocodificar la dirección pública.",
-    "verificationStatus": "Ficha individual accesible en Zonaprop; la ficha consultada publica USD 173.000 y 400 m² totales / 160 m² cubiertos. Disponibilidad y precio final no confirmados con el anunciante."
+    "verificationStatus": "Ficha individual accesible en Zonaprop el 27/11/2026; la ficha directa publica USD 159.000, 400 m² totales y 160 m² cubiertos. Disponibilidad no confirmada."
   },
   {
     "id": "terreno-chiclana-600-359-historico",
