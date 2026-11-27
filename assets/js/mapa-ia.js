@@ -1219,6 +1219,7 @@ function initMapPage(doc) {
   const dossierStatusElement = doc.getElementById("dossier-status");
   const localityList = doc.getElementById("locality-list");
   const opportunityList = doc.getElementById("opportunity-list");
+  const publishedList = doc.getElementById("published-list");
   const exportButton = doc.getElementById("export-csv");
   const geoJsonExportButton = doc.getElementById("export-geojson");
   const reviewExportButton = doc.getElementById("export-review");
@@ -1230,6 +1231,7 @@ function initMapPage(doc) {
     localities: doc.getElementById("atlas-localities-count"),
     documented: doc.getElementById("atlas-documented-count"),
     hypotheses: doc.getElementById("atlas-hypotheses-count"),
+    published: doc.getElementById("atlas-published-count"),
     total: doc.getElementById("atlas-total-count"),
     status: doc.getElementById("atlas-index-status"),
     summary: doc.getElementById("atlas-index-summary")
@@ -1446,6 +1448,28 @@ function initMapPage(doc) {
       box.append(contactLinkNode(item, "map-contact-link"));
       return box;
     }
+    if (item.type === "published") {
+      const label = doc.createElement("small");
+      label.textContent = item.recordType + " · " + item.locality;
+      box.prepend(label);
+      addLine("Ubicación publicada:", item.address);
+      addLine("Precio publicado:", item.price);
+      addLine("Superficie:", item.landSurfaceM2 != null ? item.landSurfaceM2 + " m² de terreno" : item.surfaceNote);
+      addLine("Anunciante:", item.agency);
+      addLine("Contacto público:", item.contact);
+      addLine("Verificación:", item.verificationStatus);
+      addLine("Geolocalización:", item.geolocationStatus);
+      const sourceLink = doc.createElement("a");
+      sourceLink.href = item.source;
+      sourceLink.target = "_blank";
+      sourceLink.rel = "noopener noreferrer";
+      sourceLink.textContent = "Abrir aviso original ↗";
+      box.append(sourceLink);
+      const caution = doc.createElement("p");
+      caution.textContent = "Publicación de terceros. No acredita stock, disponibilidad, dominio ni condiciones vigentes.";
+      box.append(caution);
+      return box;
+    }
     const stage = doc.createElement("small");
     stage.textContent =
       (item.stage === "hypothesis" ? "Hipótesis de prospección" : "Contexto con fuente pública") +
@@ -1563,7 +1587,7 @@ function initMapPage(doc) {
         button.setAttribute("aria-pressed", String(button.dataset.fallbackReference === item.id));
       });
     }
-    [localityList, opportunityList].forEach(list => {
+    [localityList, opportunityList, publishedList].forEach(list => {
       list.querySelectorAll("[data-map-item]").forEach(card => {
         const selected = card.dataset.mapItem === item.id;
         card.classList.toggle("is-active", selected);
@@ -1803,21 +1827,105 @@ function initMapPage(doc) {
     });
   }
 
+  function makePublishedCards(items, target) {
+    if (!target) return;
+    target.replaceChildren();
+    items.forEach(item => {
+      const card = doc.createElement("details");
+      card.className = "map-item map-item-published";
+      card.dataset.mapItem = item.id;
+      if (selectedReferenceId === item.id) { card.classList.add("is-active"); card.open = true; }
+      const summary = doc.createElement("summary");
+      summary.addEventListener("click", () => setActiveReference(item));
+      const title = doc.createElement("strong");
+      title.textContent = item.name;
+      const meta = doc.createElement("span");
+      meta.textContent = item.recordType + " · " + item.locality + " · " + item.verificationStatus;
+      summary.append(title, meta);
+      card.append(summary);
+      const body = doc.createElement("div");
+      body.className = "map-item-body";
+      const actions = doc.createElement("div");
+      actions.className = "map-item-actions";
+      const sourceLink = doc.createElement("a");
+      sourceLink.className = "map-source-link map-source-primary";
+      sourceLink.href = item.source;
+      sourceLink.target = "_blank";
+      sourceLink.rel = "noopener noreferrer";
+      sourceLink.textContent = "Abrir aviso original ↗";
+      actions.append(sourceLink);
+      const shareLink = doc.createElement("a");
+      shareLink.className = "map-share-link";
+      shareLink.href = buildReferenceUrl(doc.defaultView.location.href, item.id);
+      shareLink.target = "_blank";
+      shareLink.rel = "noopener noreferrer";
+      shareLink.textContent = "Compartir ficha MORENO ↗";
+      actions.append(shareLink);
+      if (markers.has(item.id)) {
+        const focusButton = doc.createElement("button");
+        focusButton.type = "button";
+        focusButton.className = "map-focus-button";
+        focusButton.textContent = "Ubicar en el mapa";
+        focusButton.addEventListener("click", () => focusItem(item));
+        actions.append(focusButton);
+      } else {
+        const pending = doc.createElement("span");
+        pending.className = "map-published-pending";
+        pending.textContent = "Ubicación textual · geolocalización pendiente";
+        actions.append(pending);
+      }
+      if (item.phone) {
+        const phoneLink = doc.createElement("a");
+        phoneLink.className = "map-contact-link";
+        phoneLink.href = "tel:" + item.phone.replace(/[^+\d]/g, "");
+        phoneLink.textContent = "Llamar al anunciante ↗";
+        actions.append(phoneLink);
+      }
+      body.append(actions);
+      const addDetail = (label, value) => {
+        if (value == null || value === "") return;
+        const paragraph = doc.createElement("p");
+        const heading = doc.createElement("strong");
+        heading.textContent = label + " ";
+        paragraph.append(heading, doc.createTextNode(String(value)));
+        body.append(paragraph);
+      };
+      addDetail("Tipo:", item.recordType);
+      addDetail("Localidad:", item.locality);
+      addDetail("Ubicación publicada:", item.address);
+      addDetail("Precio publicado:", item.price);
+      addDetail("Superficie de terreno:", item.landSurfaceM2 != null ? item.landSurfaceM2 + " m²" : item.surfaceNote);
+      addDetail("Superficie cubierta:", item.coveredSurfaceM2 != null ? item.coveredSurfaceM2 + " m²" : "");
+      addDetail("Fecha del aviso:", item.publicationDate || "No informada");
+      addDetail("Inmobiliaria / desarrolladora:", item.agency);
+      addDetail("Contacto público:", item.contact);
+      addDetail("Estado de verificación:", item.verificationStatus);
+      addDetail("Disponibilidad:", item.availabilityStatus);
+      addDetail("Geolocalización:", item.geolocationStatus);
+      addDetail("Observaciones:", item.observations);
+      card.append(body);
+      target.append(card);
+    });
+  }
+
   function updateAtlasIndex(items) {
     const counts = countInventory(items);
     if (atlasCounts.localities) atlasCounts.localities.textContent = String(counts.localities).padStart(2, "0");
     if (atlasCounts.documented) atlasCounts.documented.textContent = String(counts.documented).padStart(2, "0");
     if (atlasCounts.hypotheses) atlasCounts.hypotheses.textContent = String(counts.hypotheses).padStart(2, "0");
+    if (atlasCounts.published) atlasCounts.published.textContent = String(counts.published).padStart(2, "0");
     if (atlasCounts.total) atlasCounts.total.textContent = counts.total + " / " + all.length;
     if (atlasCounts.status) {
       atlasCounts.status.textContent = counts.total + " de " + all.length +
         " referencias visibles · " + counts.localities + " localidades, " +
-        counts.documented + " contextos con fuente y " + counts.hypotheses + " hipótesis.";
+        counts.documented + " contextos con fuente, " + counts.hypotheses +
+        " hipótesis y " + counts.published + " publicaciones.";
     }
     if (atlasCounts.summary) {
       atlasCounts.summary.textContent = counts.total + " referencias · " +
         counts.localities + " localidades · " + counts.documented +
-        " contextos con fuente · " + counts.hypotheses + " hipótesis";
+        " contextos con fuente · " + counts.hypotheses + " hipótesis · " +
+        counts.published + " avisos y proyectos";
     }
   }
 
@@ -1847,6 +1955,7 @@ function initMapPage(doc) {
     });
     makeCards(shown.filter(item => item.type === "locality"), localityList);
     makeCards(shown.filter(item => item.type === "opportunity"), opportunityList);
+    makePublishedCards(shown.filter(item => item.type === "published"), publishedList);
     if (staticFallbackActive) renderStaticFallback(shown);
     const selectedItem = all.find(item => item.id === selectedReferenceId);
     statusElement.textContent = selectedItem
