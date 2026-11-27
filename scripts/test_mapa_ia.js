@@ -478,7 +478,7 @@ const nov27CurrentReviewIds = [
 for (const id of nov27CurrentReviewIds) {
   const item = publishedProperties.find(record => record.id === id);
   assert.ok(item, "la revisión incorpora " + id);
-  assert.equal(item.availabilityStatus, id === "sofocles-3000-terreno-casa-330" ? "Pendiente de revalidación" : "No confirmada", "no se presume disponibilidad para " + id);
+  assert.equal(item.availabilityStatus, (id === "sofocles-3000-terreno-casa-330" || id === "terreno-juan-diaz-de-solis-3400-350") ? "Pendiente de revalidación" : "No confirmada", "no se presume disponibilidad para " + id);
   assert.equal(item.lastCheckedAt, "2026-11-27", "fecha de revisión registrada para " + id);
   assert.equal(item.lat, null, "no se inventa latitud para " + id);
   assert.equal(item.lng, null, "no se inventa longitud para " + id);
@@ -507,7 +507,7 @@ const turn7ExpectedIds = [
 for (const id of turn7ExpectedIds) {
   const item = publishedProperties.find(record => record.id === id);
   assert.ok(item, "la séptima revisión horaria incorpora " + id);
-  assert.equal(item.availabilityStatus, id === "sofocles-3000-terreno-casa-330" ? "Pendiente de revalidación" : "No confirmada", "no se presume disponibilidad para " + id);
+  assert.equal(item.availabilityStatus, (id === "sofocles-3000-terreno-casa-330" || id === "terreno-juan-diaz-de-solis-3400-350") ? "Pendiente de revalidación" : "No confirmada", "no se presume disponibilidad para " + id);
   assert.equal(item.lastCheckedAt, "2026-11-27", "fecha de revisión registrada para " + id);
   assert.equal(item.lat, null, "no se inventa latitud para " + id);
   assert.equal(item.lng, null, "no se inventa longitud para " + id);
