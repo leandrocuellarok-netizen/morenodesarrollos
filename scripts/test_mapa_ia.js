@@ -235,7 +235,7 @@ const hourlyExpectedIds = [
   "terreno-yapeyu-rafael-arcos-2850",
   "terreno-prados-del-oeste-lote-230-800",
   "terreno-general-savio-100-2050",
-  "desarrollo-ecoparque-industrial-78-parcelas",
+  "desarrollo-ecoparque-78-parcelas",
   "terreno-parques-morenito-300-300",
   "terreno-pim-i-parque-municipal-2493",
   "terreno-pim-ii-rp24-2677",
