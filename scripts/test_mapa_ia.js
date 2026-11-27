@@ -1195,10 +1195,52 @@ const racineReactivated = publishedProperties.find(record => record.id === "casa
 assert.ok(racineReactivated);
 assert.equal(racineReactivated.availabilityStatus, "No confirmada");
 assert.ok(racineReactivated.source.includes("20962051"));
+const turn12ExpectedIds = [
+  "desarrollo-parque-central-av-libertador-6400",
+  "terreno-chile-133-1036",
+  "casa-salvador-6300-300",
+  "terreno-haras-maria-victoria-lote32-800",
+  "casa-labarden-2000-800-industrial",
+  "terreno-santa-teresa-de-jesus-2900-221",
+  "predio-piovano-4300-18816",
+  "terreno-prados-oeste1-lote137-778",
+  "terreno-prados-oeste2-831",
+  "terreno-casco-alvarez-725",
+  "terreno-san-carlos-4500-552",
+  "terreno-reverendo-padre-fahy-2300-756",
+  "quinta-constituyentes-800-1261",
+  "quinta-el-arreo-2900-779",
+  "quinta-reverendo-padre-fahy-200-1300",
+  "quinta-leguizamon-1400-1200",
+  "quinta-los-aromos-400-1308",
+  "quinta-la-providencia-900-1537",
+  "quinta-juana-de-arco-700-600",
+  "quinta-zuloaga-1500-1680",
+  "predio-deportivo-san-luis-2600-10860",
+  "fraccion-rocha-blaquier-2001-10000",
+  "terreno-libano-echeverria-2-lotes-456",
+  "terreno-boulogne-sebastian-el-cano-373"
+];
+for (const id of turn12ExpectedIds) {
+  const item = publishedProperties.find(record => record.id === id);
+  assert.ok(item, "la revisión 12 incorpora " + id);
+  assert.equal(item.lastCheckedAt, "2026-11-27");
+  assert.ok(item.source && item.source.startsWith("https://"));
+  assert.equal(item.availabilityStatus, "No confirmada");
+}
+const parqueCentral = publishedProperties.find(record => record.id === "desarrollo-parque-central-av-libertador-6400");
+assert.ok(parqueCentral.publicationDate.includes("12/11/2026"));
+assert.ok(parqueCentral.sourceAlternates.some(source => source.url.includes("infraestructura-electrica")));
+const harasVictoria = publishedProperties.find(record => record.id === "terreno-haras-maria-victoria-lote32-800");
+assert.ok(harasVictoria.sourceAlternates.length === 1);
+const sanCarlos = publishedProperties.find(record => record.id === "terreno-san-carlos-4500-552");
+assert.ok(sanCarlos.observations.includes("cesión de derechos"));
+const laProvidencia = publishedProperties.find(record => record.id === "quinta-la-providencia-900-1537");
+assert.ok(laProvidencia.observations.includes("no cuentan con planos aprobados"));
 const sourceUrls = publishedProperties.map(record => record.source).filter(Boolean);
 assert.equal(new Set(sourceUrls).size, sourceUrls.length, "no se duplican enlaces primarios");
-assert.equal(publishedProperties.length, 313, "el catálogo incorpora 23 altas netas sin duplicados");
-assert.equal(all.length, 324, "el inventario completo refleja 313 publicaciones y 11 referencias territoriales");
+assert.equal(publishedProperties.length, 337, "el catálogo incorpora 24 altas netas sin duplicados");
+assert.equal(all.length, 348, "el inventario completo refleja 337 publicaciones y 11 referencias territoriales");
 
 
 testGeorefRequestQueue()
