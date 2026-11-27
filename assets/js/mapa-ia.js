@@ -7731,7 +7731,7 @@ const MAP_VIEW_QUERY_KEYS = ["q", "tipo", "sector", "evidencia", "vigencia", "di
 const MAP_VIEW_CATEGORIES = ["all", "locality", "opportunity", "published"];
 const MAP_VIEW_KINDS = ["all", "industrial", "commercial", "tourism", "land"];
 const MAP_VIEW_EVIDENCE = ["all", "documented", "hypothesis"];
-const MAP_VIEW_AVAILABILITY = ["all", "no-confirmada", "pendiente-revalidacion", "no-vigente"];
+const MAP_VIEW_AVAILABILITY = ["all", "no-confirmada", "pendiente-revalidacion", "no-vigente", "no-es-oferta"];
 const MAP_VIEW_DILIGENCE = ["all", "complete", "pending"];
 
 function availabilityFilterKey(value) {
@@ -7739,6 +7739,7 @@ function availabilityFilterKey(value) {
   if (normalized === "no confirmada") return "no-confirmada";
   if (normalized === "pendiente de revalidacion") return "pendiente-revalidacion";
   if (normalized === "no vigente") return "no-vigente";
+  if (normalized === "no es una oferta de parcela") return "no-es-oferta";
   return "sin-estado";
 }
 
