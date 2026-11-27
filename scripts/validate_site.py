@@ -956,7 +956,7 @@ def main() -> None:
             errors.append("Oportunidades: falta el perfil o la intención explícita de desarrollador")
         if len(re.findall(r'<article class="opportunity-path"', opportunity_html)) != 3:
             errors.append("Oportunidades: deben existir tres recorridos comerciales diferenciados")
-        if 'class="opportunity-flow-plate"' not in opportunity_html or 'id="opportunity-flow-title"' not in opportunity_html or 'id="opportunity-flow-desc"' not in opportunity_html:
+        if 'class="wrap opportunity-flow-plate"' not in opportunity_html or 'id="opportunity-flow-title"' not in opportunity_html or 'id="opportunity-flow-desc"' not in opportunity_html:
             errors.append("Oportunidades: falta la lámina editorial accesible de las tres vías de originación")
         if "no representa un inmueble, una parcela ni una operación existente" not in opportunity_html:
             errors.append("Oportunidades: la lámina conceptual debe declarar que no representa un activo real")
