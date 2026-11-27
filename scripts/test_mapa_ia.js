@@ -38,6 +38,11 @@ for (const indexId of ["atlas-index-status", "atlas-localities-count", "atlas-do
   assert.ok(mapPage.includes('id="' + indexId + '"'), "el atlas muestra el indicador " + indexId);
 }
 const initialInventoryCounts = countInventory(all);
+assert.ok(filterReferences(all, { query: "Moreno" }).length > 0, "la búsqueda simple encuentra referencias de Moreno");
+assert.ok(filterReferences(all, { query: "francisco alvarez" }).length > 0, "la búsqueda ignora tildes y encuentra Francisco Álvarez");
+assert.ok(filterReferences(all, { query: "francisco alvarez", category: "locality" }).some(item => item.id === "alvarez"), "la búsqueda acentuación-insensible encuentra la localidad correcta");
+assert.ok(filterReferences(all, { query: "parque industrial" }).length > 0, "la búsqueda por varias palabras encuentra publicaciones y contextos");
+assert.equal(filterReferences(all, { query: "texto-que-no-existe-123" }).length, 0, "la búsqueda informa correctamente una consulta sin coincidencias");
 
 const duplicateReview = collectPotentialDuplicatePairs(all);
 const pairHasIds = (pairs, first, second) => pairs.some(pair =>
