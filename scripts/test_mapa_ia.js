@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -311,6 +311,10 @@ for (const item of all) {
 }
 assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nomenclatura: "MARTIN FIERRO 5000, MORENO, BUENOS AIRES" }), true);
 assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nomenclatura: "MARTIN FIERRO 4900, MORENO, BUENOS AIRES" }), false);
+
+assert.equal(GEOREF_MAX_CONCURRENCY, 3, "las consultas a Georef tienen un límite conservador de concurrencia");
+assert.ok(source.includes("async function resolvePublishedGeoreferences(items, fetcher, context, concurrency)"), "la resolución de Georef está aislada y puede probarse sin red");
+assert.ok(source.includes("resolvePublishedGeoreferences(publishedProperties, fetcher, view, GEOREF_MAX_CONCURRENCY)"), "la página utiliza la cola limitada para consultar direcciones");
 for (const item of opportunities) {
   assert.ok(["documented", "hypothesis"].includes(item.stage), "nivel de evidencia explícito: " + item.name);
   assert.match(item.source, /^https:\/\//, "fuente pública HTTPS: " + item.name);
@@ -679,3 +683,70 @@ assert.ok(styles.includes(".map-dossier-export"));
 assert.ok(styles.includes(".map-dossier-status"));
 
 console.log("OK: pruebas del Mapa IA, exportaciones cartográficas y fichas editoriales imprimibles.");
+
+async function testGeorefRequestQueue() {
+  const items = [
+    { id: "shared-a", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
+    { id: "shared-b", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
+    { id: "camilli", geocodeQuery: "Camilli 140", geocodeMatch: "CAMILLI 140" },
+    { id: "ambiguous", geocodeQuery: "Ambigua 500", geocodeMatch: "AMBIGUA 500" },
+    { id: "failed", geocodeQuery: "Falla 10", geocodeMatch: "FALLA 10" }
+  ];
+  let active = 0;
+  let maximumActive = 0;
+  const calls = [];
+  const fakeFetch = async url => {
+    const query = new URL(url).searchParams.get("direccion");
+    calls.push(query);
+    active += 1;
+    maximumActive = Math.max(maximumActive, active);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 8));
+      if (query === "Camilli 140") return { ok: false, json: async () => ({ direcciones: [] }) };
+      if (query === "Falla 10") throw new Error("fallo simulado");
+      if (query === "Ambigua 500") {
+        return {
+          ok: true,
+          json: async () => ({
+            direcciones: [
+              { nomenclatura: "AMBIGUA 500, MORENO, BUENOS AIRES", ubicacion: { lat: "-34.60", lon: "-58.80" } },
+              { nomenclatura: "AMBIGUA 500, MORENO, BUENOS AIRES", ubicacion: { lat: "-34.61", lon: "-58.81" } }
+            ]
+          })
+        };
+      }
+      return {
+        ok: true,
+        json: async () => ({
+          direcciones: [
+            { nomenclatura: "SAN JUAN BAUTISTA 100, MORENO, BUENOS AIRES", ubicacion: { lat: "-34.62", lon: "-58.82" } }
+          ]
+        })
+      };
+    } finally {
+      active -= 1;
+    }
+  };
+
+  const result = await resolvePublishedGeoreferences(items, fakeFetch, null, 2);
+  assert.equal(calls.length, 4, "una dirección repetida genera una sola consulta");
+  assert.equal(new Set(calls).size, 4, "cada consulta única se procesa una vez");
+  assert.ok(maximumActive <= 2, "la cola respeta el límite de dos solicitudes simultáneas de la prueba");
+  assert.ok(maximumActive > 1, "la cola conserva concurrencia controlada sin serializar todas las consultas");
+  assert.deepEqual(result.get("San Juan Bautista 100"), {
+    lat: -34.62,
+    lng: -58.82,
+    nomenclatura: "SAN JUAN BAUTISTA 100, MORENO, BUENOS AIRES"
+  });
+  assert.equal(result.get("Camilli 140"), null, "una respuesta HTTP fallida queda pendiente");
+  assert.equal(result.get("Ambigua 500"), null, "las coincidencias ambiguas no generan coordenadas");
+  assert.equal(result.get("Falla 10"), null, "un error de red queda pendiente sin interrumpir la cola");
+  assert.equal((await resolvePublishedGeoreferences([], fakeFetch)).size, 0, "un inventario vacío no genera consultas");
+}
+
+testGeorefRequestQueue()
+  .then(() => console.log("OK: cola de Georef con concurrencia limitada, deduplicación y rechazo de coincidencias ambiguas."))
+  .catch(error => {
+    console.error(error);
+    process.exitCode = 1;
+  });

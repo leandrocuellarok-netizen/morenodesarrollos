@@ -2372,6 +2372,72 @@ function georefAddressMatches(item, entry) {
   return Boolean(tokens.length && actual && tokens.every(token => actual.includes(token)));
 }
 
+const GEOREF_MAX_CONCURRENCY = 3;
+
+async function resolvePublishedGeoreferences(items, fetcher, context, concurrency) {
+  const list = Array.isArray(items) ? items : [];
+  const resolved = new Map();
+  if (typeof fetcher !== "function") return resolved;
+
+  const uniqueQueries = new Map();
+  list.forEach(item => {
+    const query = String(item && (item.geocodeQuery || item.address) || "").trim();
+    if (query && !uniqueQueries.has(query)) uniqueQueries.set(query, item);
+  });
+
+  const entries = Array.from(uniqueQueries.entries());
+  if (!entries.length) return resolved;
+  const requestedLimit = Number(concurrency);
+  const limit = Number.isInteger(requestedLimit) && requestedLimit > 0
+    ? Math.min(requestedLimit, GEOREF_MAX_CONCURRENCY)
+    : GEOREF_MAX_CONCURRENCY;
+  let nextIndex = 0;
+
+  async function worker() {
+    while (true) {
+      const index = nextIndex;
+      nextIndex += 1;
+      if (index >= entries.length) return;
+
+      const [query, sample] = entries[index];
+      const params = new URLSearchParams({
+        direccion: query,
+        provincia: "Buenos Aires",
+        departamento: "Moreno",
+        max: "5"
+      });
+      const url = "https://apis.datos.gob.ar/georef/api/v2.0/direcciones?" + params.toString();
+
+      try {
+        const response = await fetcher.call(context || null, url, {
+          headers: { Accept: "application/json" }
+        });
+        if (!response || !response.ok) throw new Error("Georef no disponible");
+        const data = await response.json();
+        const matches = (Array.isArray(data.direcciones) ? data.direcciones : []).filter(entry =>
+          entry && entry.ubicacion && georefAddressMatches(sample, entry)
+        );
+        if (matches.length !== 1) {
+          resolved.set(query, null);
+          continue;
+        }
+        const point = matches[0].ubicacion;
+        const lat = Number(point.lat);
+        const lng = Number(point.lon);
+        resolved.set(query, Number.isFinite(lat) && Number.isFinite(lng)
+          ? { lat, lng, nomenclatura: matches[0].nomenclatura || "" }
+          : null);
+      } catch (error) {
+        resolved.set(query, null);
+      }
+    }
+  }
+
+  const workers = Math.min(limit, entries.length);
+  await Promise.all(Array.from({ length: workers }, () => worker()));
+  return resolved;
+}
+
 function buildCsv(items) {
   const headers = [
     "tipo", "nombre", "latitud_referencia", "longitud_referencia", "categoria", "nivel_evidencia",
@@ -3206,41 +3272,8 @@ function initMapPage(doc) {
       render();
       return;
     }
-    const queries = new Map();
-    publishedProperties.forEach(item => {
-      const query = item.geocodeQuery || item.address;
-      if (!query || queries.has(query)) return;
-      const params = new URLSearchParams({
-        direccion: query,
-        provincia: "Buenos Aires",
-        departamento: "Moreno",
-        max: "5"
-      });
-      const url = "https://apis.datos.gob.ar/georef/api/v2.0/direcciones?" + params.toString();
-      const request = fetcher.call(view, url, { headers: { Accept: "application/json" } })
-        .then(response => {
-          if (!response.ok) throw new Error("Georef no disponible");
-          return response.json();
-        })
-        .then(data => {
-          const sample = publishedProperties.find(candidate => (candidate.geocodeQuery || candidate.address) === query) || {};
-          const matches = (Array.isArray(data.direcciones) ? data.direcciones : []).filter(entry =>
-            entry && entry.ubicacion && georefAddressMatches(sample, entry)
-          );
-          if (matches.length !== 1) return null;
-          const point = matches[0].ubicacion;
-          const lat = Number(point.lat);
-          const lng = Number(point.lon);
-          return Number.isFinite(lat) && Number.isFinite(lng)
-            ? { lat, lng, nomenclatura: matches[0].nomenclatura || "" }
-            : null;
-        })
-        .catch(() => null);
-      queries.set(query, request);
-    });
-    Promise.all(Array.from(queries.entries()).map(async ([query, request]) => [query, await request]))
-      .then(results => {
-        const resolved = new Map(results);
+    resolvePublishedGeoreferences(publishedProperties, fetcher, view, GEOREF_MAX_CONCURRENCY)
+      .then(resolved => {
         publishedProperties.forEach(item => {
           const point = resolved.get(item.geocodeQuery || item.address);
           if (point) {
@@ -4069,6 +4102,7 @@ if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches,
     availabilityFilterKey, formatSourceReviewDate,
+    resolvePublishedGeoreferences, GEOREF_MAX_CONCURRENCY,
     getSharedReferenceId, normalizeMapViewState, parseMapViewState, buildMapViewUrl,
     buildReferenceUrl, buildOpportunityContactUrl, referenceContactLabel,
     shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, LEGACY_REVIEW_STORAGE_KEY,
