@@ -2022,31 +2022,27 @@ const nov27FollowupEntries = [
   },
   {
     "id": "desarrollo-chacras-teofilo-galileo-7300",
-    "recordType": "Desarrollo inmobiliario · barrio de lotes con lote individual publicado",
-    "name": "Chacras de Teófilo · lote de 326 m² · Trujui",
+    "recordType": "Desarrollo inmobiliario · loteo de 35 parcelas; comercialización de lotes no revalidada",
+    "name": "Chacras de Teófilo · loteo de 35 parcelas · Trujui",
     "locality": "Trujui",
     "address": "Galileo Galilei al 7300, Trujui, Moreno",
     "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terrenos-en-trujui-58930130.html",
-    "sourceAlternates": [
-      {
-        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-de-lote-en-moreno-59977491.html",
-        "label": "Aviso anterior de 324 m² y USD 25.000; enlace directo devolvió 410 el 27/11/2026"
-      }
-    ],
-    "agency": "Aviso en Zonaprop; responsable matriculado Natalio Carames, CMCPSI 7110 / CUCICBA 9320",
-    "contact": "Natalio Carames; formulario de Zonaprop. Teléfono no publicado en la ficha.",
-    "price": "USD 23.000 contado; financiación: anticipo USD 5.000 y cuotas mensuales en dólares hasta 36 meses, total publicado USD 30.000",
+    "sourceAlternates": [{url:"https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-de-lote-en-moreno-59977491.html",label:"Aviso histórico de 324 m² / USD 25.000; enlace devolvió 410 Gone el 27/11/2026."}, {url:"https://www.argenprop.com/terreno-en-venta-en-trujui--20559575",label:"Argenprop: lote de 324 m² / USD 25.000; enlace devolvió 410 Gone el 27/11/2026."}, {url:"https://www.argenprop.com/terreno-en-venta-en-trujui--20559576",label:"Argenprop: lote de 471 m² / USD 36.000; enlace devolvió 410 Gone el 27/11/2026."}, {url:"https://inmoclick.com/17491-re-max-buro-ii/inmuebles/4957/ficha/lote-en-venta-en-galileo-galilei-7300",label:"Ficha sindicada de RE/MAX Buro II para lote de 471 m²; enlace devolvió 410 Gone."}],
+    "agency": "Avisos históricos de Natalio Carames y RE/MAX Buro II; intermediarios y stock actuales no revalidados.",
+    "contact": "Natalio Carames (ficha histórica de 326 m²) y Sebastián García / RE/MAX Buro II (ficha histórica de 471 m²); teléfonos no revalidados.",
+    "price": "Sin precio vigente verificable; avisos históricos USD 23.000–36.000",
+    "publicationDate": "Entregas estimadas en avisos históricos: mayo de 2027 para un lote de 326 m² y octubre de 2026 para lotes de 324/471 m²; fechas no verificadas.",
     "currency": "USD",
-    "landSurfaceM2": 326,
-    "surfaceNote": "El aviso describe un proyecto de 35 lotes sobre 18.000 m²; lote individual publicado de 326 m². No se informa superficie cubierta.",
-    "observations": "Ficha directa de Zonaprop accesible el 27/11/2026: lote publicado de 326 m², USD 23.000 contado o financiación con anticipo USD 5.000 y cuotas hasta 36 meses, total indicado USD 30.000; entrega aproximada anunciada para mayo de 2027. El aviso informa 35 lotes sobre 18.000 m² y servicio de electricidad. No se verificaron subdivisión, permisos, avance físico ni stock. Un aviso anterior de 324 m², USD 25.000 y entrega octubre de 2026 devolvió 410 y permanece como antecedente separado.",
+    "landSurfaceM2": null,
+    "surfaceNote": "Desarrollo anunciado sobre 18.000 m²; avisos individuales históricos publicaron lotes de 324, 326 y 471 m². La superficie total no corresponde a una parcela individual.",
+    "observations": "Los avisos históricos describen un barrio semicerrado de 35 lotes sobre 18.000 m², con lotes entre 324 y 471 m², acceso asfaltado, cordón/cuneta, electricidad y agua, sin expensas. Una ficha para lote de 326 m² anunció entrega en mayo de 2027; otras para 324 y 471 m² anunciaron octubre de 2026. Los enlaces directos de Zonaprop para 326/324 m² y Argenprop para 324/471 m² devolvieron 410 Gone el 27/11/2026. No se verificaron subdivisión, permisos, avance físico, entrega ni stock. Se conserva como antecedente del desarrollo, no como disponibilidad confirmada.",
     "lat": null,
     "lng": null,
     "geocodeDisabled": true,
     "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
-    "geolocationStatus": "Pendiente: altura aproximada al 7300 y sin lote identificado.",
-    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio, superficie y condiciones son datos del anunciante. Disponibilidad y ejecución no confirmadas."
+    "availabilityStatus": "Pendiente de revalidación",
+    "geolocationStatus": "Pendiente: Galileo Galilei al 7300 identifica el acceso del desarrollo, no la ubicación exacta de cada lote.",
+    "verificationStatus": "Los enlaces directos de Zonaprop para lotes de 326/324 m², Argenprop para 324/471 m² y la ficha sindicada de Inmoclick devolvieron 410 Gone el 27/11/2026. Las fechas de entrega anunciadas (octubre de 2026 y mayo de 2027) y la ejecución del desarrollo no se verificaron independientemente. Sin disponibilidad confirmada."
   },
   {
     "id": "terreno-derqui-7660-384",
