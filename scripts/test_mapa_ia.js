@@ -439,7 +439,16 @@ const turn7ExpectedIds = [
   "alvarez-prado-2031-terreno-339",
   "parques-morenito-felix-de-azara-300",
   "colectora-sur-km31-5-fraccion-33000",
-  "casa-leopoldo-lugones-900-5000"
+  "casa-leopoldo-lugones-900-5000",
+  "terreno-marco-sastre-10552-dos-lotes-360",
+  "terreno-juan-stefani-torre-alta-iii-420",
+  "terreno-aeronautica-argentina-2300-430",
+  "loteo-barrio-malaver-etapa-2-pitagoras-echeverria-400",
+  "terreno-gervasio-mendez-10500-400",
+  "casa-quinta-ambrosetti-2000-3195",
+  "casa-quinta-juan-bautista-alberdi-1400-2000",
+  "casa-prados-oeste-general-hornos-2900-850",
+  "casa-quinta-infanta-isabel-4200-1527"
 ];
 for (const id of turn7ExpectedIds) {
   const item = publishedProperties.find(record => record.id === id);
