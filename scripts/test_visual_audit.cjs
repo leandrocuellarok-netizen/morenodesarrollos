@@ -56,9 +56,9 @@ async function auditHomeCartography(page) {
   const source = fs.readFileSync(path.join(ROOT, "assets/js/mapa-ia.js"), "utf8");
 
   function readRecords(name, defaultKind) {
-    const match = source.match(new RegExp("const " + name + "=\\\\[([\\\\s\\\\S]*?)\\\\];"));
+    const match = source.match(new RegExp("const " + name + "=\\[([\\s\\S]*?)\\];"));
     if (!match) return [];
-    return (match[1].match(/\\{[^{}]*\\}/g) || []).map(entry => {
+    return (match[1].match(/\{[^{}]*\}/g) || []).map(entry => {
       const id = entry.match(/id:"([^"]+)"/);
       const lat = entry.match(/lat:([-0-9.]+)/);
       const lng = entry.match(/lng:([-0-9.]+)/);
@@ -83,8 +83,8 @@ async function auditHomeCartography(page) {
   const expected = allRecords.filter(record =>
     Number.isFinite(record.lat) &&
     Number.isFinite(record.lng) &&
-    /^https:\\/\\//.test(record.sourceUrl || "") &&
-    /^\\d{4}-\\d{2}-\\d{2}$/.test(record.checkedAt || "")
+    /^https:\/\//.test(record.sourceUrl || "") &&
+    /^\d{4}-\d{2}-\d{2}$/.test(record.checkedAt || "")
   );
   const expectedCounts = expected.reduce((counts, record) => {
     counts[record.kind] = (counts[record.kind] || 0) + 1;
