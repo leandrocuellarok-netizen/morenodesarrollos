@@ -545,6 +545,59 @@ async function auditOpportunityFlow(browser) {
   }
 }
 
+async function auditOpportunityFaq(browser) {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const pageErrors = [];
+  page.on("pageerror", error => pageErrors.push(error.message));
+  try {
+    const response = await page.goto(BASE_URL + "/oportunidades/", { waitUntil: "domcontentloaded" });
+    check(Boolean(response && response.ok()), "FAQ oportunidades: la página responde correctamente");
+    const items = page.locator(".opportunity-faq-item");
+    check(await items.count() === 5, "FAQ oportunidades: se muestran cinco preguntas");
+    const summaries = await page.locator(".opportunity-faq-item > summary").allInnerTexts();
+    const schemaText = await page.locator("#opportunity-faq-schema").textContent();
+    const schema = JSON.parse(schemaText);
+    check(schema["@type"] === "FAQPage" && schema.mainEntity.length === 5, "FAQ oportunidades: el esquema estructurado contiene cinco respuestas");
+    check(JSON.stringify(summaries.map(value => value.trim())) === JSON.stringify(schema.mainEntity.map(item => item.name)), "FAQ oportunidades: el texto visible coincide con las preguntas del esquema");
+    const answers = await page.locator(".opportunity-faq-answer p").allTextContents();
+    check(JSON.stringify(answers.map(value => value.trim())) === JSON.stringify(schema.mainEntity.map(item => item.acceptedAnswer.text)), "FAQ oportunidades: las respuestas visibles coinciden exactamente con el contenido estructurado");
+    for (let index = 0; index < await items.count(); index += 1) {
+      const item = items.nth(index);
+      check(!(await item.evaluate(element => element.open)), "FAQ oportunidades: la respuesta " + (index + 1) + " inicia contraída");
+      check(await item.locator("summary").isVisible(), "FAQ oportunidades: la pregunta " + (index + 1) + " es visible");
+      check((await item.locator(".opportunity-faq-answer").textContent()).trim().length > 40, "FAQ oportunidades: la respuesta " + (index + 1) + " tiene contenido útil");
+    }
+    const firstSummary = items.first().locator("summary");
+    await firstSummary.focus();
+    await page.keyboard.press("Enter");
+    check(await items.first().evaluate(element => element.open), "FAQ oportunidades: Enter expande la primera respuesta");
+    await page.keyboard.press("Enter");
+    check(!(await items.first().evaluate(element => element.open)), "FAQ oportunidades: Enter vuelve a contraer la respuesta");
+    check(await page.locator(".opportunity-faq-cta").getAttribute("href") === "#opportunity-form", "FAQ oportunidades: el CTA conduce al formulario");
+    const faqTop = await page.locator(".opportunity-faq").evaluate(element => element.getBoundingClientRect().top + window.scrollY);
+    const formTop = await page.locator("#opportunity-form").evaluate(element => element.getBoundingClientRect().top + window.scrollY);
+    check(faqTop < formTop, "FAQ oportunidades: las respuestas aparecen antes del formulario");
+    for (const width of [320, 360, 390, 768, 1024, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await delay(50);
+      const dimensions = await page.evaluate(() => ({
+        viewport: window.innerWidth,
+        document: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth)
+      }));
+      check(dimensions.document <= dimensions.viewport + 1, "FAQ oportunidades: no hay desbordamiento horizontal a " + width + "px");
+      if (width <= 760) {
+        check(await page.locator(".opportunity-faq").evaluate(element => getComputedStyle(element).display === "block"), "FAQ oportunidades: la columna editorial se apila en móvil");
+      }
+    }
+    check(pageErrors.length === 0, "FAQ oportunidades: errores JavaScript: " + pageErrors.join(" | "));
+    console.log("PASS: oportunidades — cinco FAQ, JSON-LD coincidente, teclado y seis anchos");
+  } catch (error) {
+    check(false, "FAQ oportunidades: auditoría interrumpida: " + error.message);
+  } finally {
+    await page.close();
+  }
+}
+
 async function auditMapFallback(browser) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
   const pageErrors = [];
@@ -658,6 +711,7 @@ async function auditLegacyMapRedirect(browser) {
       await auditRoute(browser, route);
     }
     await auditOpportunityFlow(browser);
+    await auditOpportunityFaq(browser);
     await auditMapFallback(browser);
     await auditLegacyMapRedirect(browser);
   } catch (error) {
