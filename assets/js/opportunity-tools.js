@@ -362,6 +362,13 @@
     "casa-25-de-mayo-2700-350": "25 de Mayo 2700 · casa clásica tipo americana · Paso del Rey",
     "casa-concordia-2545-311": "Concordia 2545 · casa de cinco ambientes · Moreno",
     "terreno-bartolome-mitre-3200-1260": "Avenida Bartolomé Mitre 3200 · lote comercial de 1.260 m²"
+    "casa-doctor-asseff-400-361": "Casa con jardín y departamento independiente · Dr. Asseff 400",
+    "desarrollo-fincas-san-jose-87ha-650": "Fincas San José · 87 ha · 650 lotes de 800 m²",
+    "fincas-san-jose-lote-800-etapa3-30600": "Fincas San José · lote publicado de 800 m² · etapa 3",
+    "terreno-boulevard-evita-100-111-pendiente": "Terreno sobre Boulevard Evita 100 · Moreno Centro · ficha a corregir",
+    "casa-emilio-mitre-2300-1100-historico": "Block de viviendas y monoambientes · Emilio Mitre 2300",
+    "terreno-colectora-norte-fray-cayetano-1348-historico": "Colectora Norte Acceso Oeste km 0 · esquina Fray Cayetano Rodríguez · 1.348 m²",
+    "casa-antartida-argentina-600-342-historico": "Casa, local y depósito · Antártida Argentina 600"
   });
 
   function readMapReference(search) {
