@@ -209,7 +209,7 @@ for (const id of nov27ExpectedIds) {
   assert.ok(publishedProperties.some(item => item.id === id), "la revisión incorpora " + id);
 }
 assert.equal(publishedProperties.find(item => item.id === "la-reja-casa-quinta-santa-teresa-2401").availabilityStatus, "No vigente");
-assert.equal(publishedProperties.find(item => item.id === "parques-morenito-proyecto").availabilityStatus, "No vigente como desarrollo nuevo; antecedente histórico.");
+assert.equal(publishedProperties.find(item => item.id === "parques-morenito-proyecto").availabilityStatus, "No vigente");
 
 assert.deepEqual(countInventory(all), { localities: 6, documented: 4, hypotheses: 1, published: 28, total: 39 });
 assert.deepEqual(
