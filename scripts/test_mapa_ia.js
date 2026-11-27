@@ -545,7 +545,7 @@ assert.match(industrialDossier.references[0].coordinates.scope, /no identifica u
 assert.equal(buildTerritorialDossier([], {}, "2026-11-26T03:00:00.000Z"), null, "una vista vacía no produce un dossier");
 const completeDossier = buildTerritorialDossier(all, {}, "2026-11-26T03:00:00.000Z");
 assert.equal(completeDossier.references.length, 29);
-assert.deepEqual(completeDossier.counts, { localities: 6, documented: 4, hypotheses: 1, published: 18, total: 29 });
+assert.deepEqual(completeDossier.counts, { localities: 6, documented: 4, hypotheses: 1, published: 28, total: 39 });
 assert.equal(completeDossier.references.filter(reference => reference.type === "published").length, 28);
 assert.equal(completeDossier.references.filter(reference => reference.sourceUrl).length, 23, "las tesis y publicaciones conservan sus fuentes registradas");
 const dossierDiagram = buildTerritorialDossierDiagram(industrialDossier.references);
