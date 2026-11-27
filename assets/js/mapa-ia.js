@@ -1508,6 +1508,100 @@ function initMapPage(doc) {
     return link;
   }
 
+  function addMapMarker(item) {
+    if (!map || !hasCoordinates(item) || markers.has(item.id)) return null;
+    const element = doc.createElement("button");
+    element.type = "button";
+    element.className = "map-pin " + (item.type === "locality"
+      ? "map-pin-locality"
+      : (item.type === "published" ? "map-pin-published" :
+        (item.stage === "hypothesis" ? "map-pin-hypothesis" : "map-pin-documented")));
+    element.setAttribute("aria-label", "Ver " + item.name + " en el mapa");
+    element.title = item.name;
+    const popup = new maplibregl.Popup({ offset: 16, maxWidth: "340px" }).setDOMContent(popupNode(item));
+    element.addEventListener("click", () => setActiveReference(item, { reveal: true, scroll: true }));
+    const marker = new maplibregl.Marker({ element, anchor: "center" })
+      .setLngLat([Number(item.lng), Number(item.lat)])
+      .setPopup(popup)
+      .addTo(map);
+    markers.set(item.id, marker);
+    return marker;
+  }
+
+  function geocodePublishedAddresses() {
+    const view = doc.defaultView;
+    const fetcher = view && view.fetch;
+    if (typeof fetcher !== "function") {
+      publishedProperties.forEach(item => {
+        item.geolocationStatus = "Pendiente: el navegador no habilitó la consulta de Georef.";
+      });
+      render();
+      return;
+    }
+    const queries = new Map();
+    publishedProperties.forEach(item => {
+      const query = item.geocodeQuery || item.address;
+      if (!query || queries.has(query)) return;
+      const params = new URLSearchParams({
+        direccion: query,
+        provincia: "Buenos Aires",
+        departamento: "Moreno",
+        max: "5"
+      });
+      const url = "https://apis.datos.gob.ar/georef/api/v2.0/direcciones?" + params.toString();
+      const request = fetcher.call(view, url, { headers: { Accept: "application/json" } })
+        .then(response => {
+          if (!response.ok) throw new Error("Georef no disponible");
+          return response.json();
+        })
+        .then(data => {
+          const sample = publishedProperties.find(candidate => (candidate.geocodeQuery || candidate.address) === query) || {};
+          const matches = (Array.isArray(data.direcciones) ? data.direcciones : []).filter(entry =>
+            entry && entry.ubicacion && georefAddressMatches(sample, entry)
+          );
+          if (matches.length !== 1) return null;
+          const point = matches[0].ubicacion;
+          const lat = Number(point.lat);
+          const lng = Number(point.lon);
+          return Number.isFinite(lat) && Number.isFinite(lng)
+            ? { lat, lng, nomenclatura: matches[0].nomenclatura || "" }
+            : null;
+        })
+        .catch(() => null);
+      queries.set(query, request);
+    });
+    Promise.all(Array.from(queries.entries()).map(async ([query, request]) => [query, await request]))
+      .then(results => {
+        const resolved = new Map(results);
+        publishedProperties.forEach(item => {
+          const point = resolved.get(item.geocodeQuery || item.address);
+          if (point) {
+            item.lat = point.lat;
+            item.lng = point.lng;
+            item.geocodeReference = point.nomenclatura;
+            item.geolocationStatus = "Georreferencia aproximada de dirección obtenida mediante Georef; no parcelaria.";
+          } else {
+            item.lat = null;
+            item.lng = null;
+            item.geolocationStatus = "Pendiente: Georef no devolvió una coincidencia inequívoca para la dirección publicada.";
+          }
+          addMapMarker(item);
+        });
+        render();
+        const selected = all.find(item => item.id === selectedReferenceId);
+        if (selected && markers.has(selected.id) && !userHasNavigated) focusItem(selected);
+        const located = publishedProperties.filter(hasCoordinates).length;
+        statusElement.textContent = located + " de " + publishedProperties.length +
+          " publicaciones georreferenciadas por dirección; el resto conserva ubicación textual pendiente.";
+      })
+      .catch(() => {
+        publishedProperties.forEach(item => {
+          item.geolocationStatus = "Pendiente: no fue posible consultar Georef en esta sesión.";
+        });
+        render();
+      });
+  }
+
   function currentMapViewState(referenceId) {
     return {
       query: searchInput.value,
@@ -2154,25 +2248,8 @@ function initMapPage(doc) {
       });
       map.on("load", () => {
         map.resize();
-        all.forEach(item => {
-          const element = doc.createElement("button");
-          element.type = "button";
-          element.className = "map-pin " + (item.type === "locality"
-            ? "map-pin-locality"
-            : (item.stage === "hypothesis" ? "map-pin-hypothesis" : "map-pin-documented"));
-          element.setAttribute("aria-label", "Ver " + item.name + " en el mapa");
-          element.title = item.name;
-          const popup = new maplibregl.Popup({ offset: 16, maxWidth: "340px" })
-            .setDOMContent(popupNode(item));
-          element.addEventListener("click", () => {
-            setActiveReference(item, { reveal: true, scroll: true });
-          });
-          const marker = new maplibregl.Marker({ element, anchor: "center" })
-            .setLngLat([item.lng, item.lat])
-            .setPopup(popup)
-            .addTo(map);
-          markers.set(item.id, marker);
-        });
+        all.forEach(addMapMarker);
+        geocodePublishedAddresses();
 
         const boundaryUrl = "https://apis.datos.gob.ar/georef/api/v2.0/municipios?nombre=Moreno&provincia=Buenos%20Aires&formato=geojson";
         fetch(boundaryUrl).then(response => {
