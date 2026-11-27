@@ -527,7 +527,7 @@ assert.match(turn7Chacras.observations, /entrega aproximada mayo de 2027/);
 assert.equal(publishedProperties.find(item => item.id === "la-reja-casa-quinta-santa-teresa-2401").availabilityStatus, "No vigente");
 assert.equal(publishedProperties.find(item => item.id === "parques-morenito-proyecto").availabilityStatus, "No confirmada");
 assert.equal(publishedProperties.find(item => item.id === "sumio-lote-450").availabilityStatus, "No vigente");
-assert.equal(publishedProperties.find(item => item.id === "casa-racine-800-no-vigente").availabilityStatus, "No vigente");
+assert.equal(publishedProperties.find(item => item.id === "casa-racine-800-no-vigente").availabilityStatus, "No confirmada"); // Nueva ficha directa accesible; conservar el historial anterior.
 assert.equal(publishedProperties.find(item => item.id === "moreno-casa-martin-fierro-4900").availabilityStatus, "Pendiente de revalidación");
 assert.ok(publishedProperties.find(item => item.id === "casa-bernardino-rivadavia-1000").price.startsWith("USD 150.000"));
 
