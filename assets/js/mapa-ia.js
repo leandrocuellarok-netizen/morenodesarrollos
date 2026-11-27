@@ -10541,10 +10541,15 @@ function initMapPage(doc) {
   reviewStatusElement.textContent = reviewStorage
     ? "Las marcas se guardan en este navegador; no se envían al servidor."
     : "El almacenamiento local no está disponible; exportá la bitácora para conservar las marcas mientras trabajás.";
-  const initialViewState = parseMapViewState(
-    doc.defaultView && doc.defaultView.location ? doc.defaultView.location.search : "",
-    all
-  );
+  const initialViewState = {
+    query: "",
+    category: "all",
+    kind: "all",
+    evidence: "all",
+    availability: "all",
+    diligence: "all",
+    ref: null
+  };
   searchInput.value = initialViewState.query;
   categoryInput.value = initialViewState.category;
   kindInput.value = initialViewState.kind;
