@@ -75,6 +75,12 @@ for (const item of mapCatalogue.all) {
   );
 }
 
+assert.deepEqual(
+  tools.listMapReferenceIds().sort(),
+  mapCatalogue.all.map(item => item.id).sort(),
+  "el catálogo comercial no conserva referencias obsoletas ni omite referencias del Mapa IA"
+);
+
 const contactMessage = tools.buildContactMessage({
   fields: {
     nombre: "Contacto de prueba",
