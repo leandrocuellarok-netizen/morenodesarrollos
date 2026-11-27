@@ -692,7 +692,7 @@ assert.ok(filterReferences(all, { query: "logistca", category: "opportunity" }).
 assert.ok(filterReferences(all, { query: "francisco alvarez", category: "locality" }).some(item => item.id === "alvarez"), "el buscador encuentra localidades aunque se omitan los acentos");
 assert.ok(filterReferences(all, { query: "FRANCISCO ÁLVAREZ", category: "locality" }).some(item => item.id === "alvarez"), "la búsqueda ignora diferencias de mayúsculas y acentos");
 assert.equal(filterReferences(all, { query: "cadena-sin-coincidencias-xyz" }).length, 0, "el estado vacío corresponde a cero coincidencias reales");
-assert.ok(filterReferences(all, { query: "saneamiento cuartel", category: "opportunity" }).some(item => item.id === "promeba-cuartel-v"), "los términos se combinan aunque estén en campos distintos");
+assert.ok(filterReferences(all, { query: "veredas cuartel", category: "opportunity" }).some(item => item.id === "promeba-cuartel-v"), "la búsqueda cruza localidad y evidencia real de la ficha");
 assert.ok(filterReferences(all, { query: "cuartel v promeba veredas", category: "opportunity" }).some(item => item.id === "promeba-cuartel-v"), "la búsqueda compuesta relaciona localidad, actividad y evidencia");
 assert.ok(filterReferences(all, { query: "iduar 400.000 m²", category: "opportunity" }).some(item => item.id === "base-aerea-moreno-norte"), "la búsqueda reconoce la fuente y una superficie expresada en m²");
 assert.ok(filterReferences(all, { query: "solicitar planos", category: "opportunity" }).some(item => item.id === "base-aerea-moreno-norte"), "la búsqueda indexa el próximo paso");
