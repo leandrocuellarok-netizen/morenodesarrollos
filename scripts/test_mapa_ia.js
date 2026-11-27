@@ -580,7 +580,7 @@ for (const item of all) {
     assert.equal(hasCoordinates(item), false, "no se inventan coordenadas para publicaciones pendientes: " + item.name);
     assert.match(item.geolocationStatus, /Pendiente/);
     assert.ok(item.verificationStatus && item.verificationStatus.length > 0, "cada ficha conserva un estado de verificación: " + item.name);
-    assert.ok(["No confirmada", "No vigente", "Pendiente de revalidación"].includes(item.availabilityStatus), "el estado comercial se conserva sin afirmar disponibilidad: " + item.name);
+    assert.ok(["No confirmada", "No vigente", "Pendiente de revalidación", "No es una oferta de parcela"].includes(item.availabilityStatus), "el estado comercial se conserva sin afirmar disponibilidad: " + item.name);
     assert.match(item.source, /^https:\/\//);
     continue;
   }
@@ -604,7 +604,8 @@ assert.equal(filterReferences(all, { category: "published" }).length, publishedP
 for (const [status, key] of [
   ["No confirmada", "no-confirmada"],
   ["Pendiente de revalidación", "pendiente-revalidacion"],
-  ["No vigente", "no-vigente"]
+  ["No vigente", "no-vigente"],
+  ["No es una oferta de parcela", "no-es-oferta"]
 ]) {
   const expected = publishedProperties.filter(item => item.availabilityStatus === status).length;
   assert.ok(expected > 0, "el inventario contiene registros con estado " + status);
@@ -617,6 +618,7 @@ assert.equal(filterReferences(all, { availability: "no-confirmada", query: "no c
 assert.equal(filterReferences(all, { availability: "estado-invalido" }).length, all.length, "un filtro de estado desconocido vuelve a la vista completa");
 assert.equal(availabilityFilterKey("Pendiente de revalidación"), "pendiente-revalidacion");
 assert.equal(availabilityFilterKey("No vigente"), "no-vigente");
+assert.equal(availabilityFilterKey("No es una oferta de parcela"), "no-es-oferta");
 assert.equal(formatSourceReviewDate("2026-11-27"), "27/11/2026");
 assert.equal(formatSourceReviewDate(""), "No informada");
 assert.ok(publishedProperties.every(item => /^\d{4}-\d{2}-\d{2}$/.test(item.lastCheckedAt || "")), "cada publicación conserva una fecha de revisión explícita");
