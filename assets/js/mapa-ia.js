@@ -1640,7 +1640,7 @@ publishedProperties.push(
     "landSurfaceM2": 322.78,
     "coveredSurfaceM2": 87.28,
     "surfaceNote": "322,78 m² totales; 87,28 m² cubiertos y 208,5 m² descubiertos.",
-    "observations": "Dos dormitorios, un baño y espacios exteriores. La ficha declara escritura inmediata; verificar título, planos, estado de ocupación y medidas definitivas.",
+    "observations": "Dos dormitorios, un baño y espacios exteriores. La ficha sindicada registra una baja desde USD 69.000 (28/09/2026) a USD 64.900; tomar el valor actual solo como precio pedido y confirmar con la corredora. La ficha declara escritura inmediata; verificar título, planos, estado de ocupación y medidas definitivas.",
     "lat": null,
     "lng": null,
     "geocodeQuery": "Padre Fahy 90, La Reja, Moreno, Buenos Aires",
@@ -1847,7 +1847,7 @@ publishedProperties.push(
     "currency": "USD",
     "landSurfaceM2": 2737,
     "surfaceNote": "El aviso describía cuatro parcelas 15–18, cada una de 2.737 m², en conjunto o por separado.",
-    "observations": "La URL directa devuelve 410 Gone el 27/11/2026. La ficha se contradice entre Cuartel V en el título y Cuartel IV en la descripción; ubicación y plan de pagos son antecedentes, no oferta vigente.",
+    "observations": "La URL directa devuelve 410 Gone el 27/11/2026. La ficha se contradice entre Cuartel V en el título y Cuartel IV en la descripción. Posible solapamiento territorial con el lote 16 de General Aráoz de Lamadrid 6702 ya registrado en el mapa (2.737 m²); no tratarlo como parcela distinta sin nomenclatura catastral. Ubicación y plan de pagos son antecedentes, no oferta vigente.",
     "lat": null,
     "lng": null,
     "geocodeQuery": "General Aráoz de Lamadrid 6300, Moreno, Buenos Aires",
@@ -1885,16 +1885,11 @@ publishedProperties.push(
     "locality": "La Reja / Cuartel V",
     "address": "Ruta Provincial 25 y Don Bosco; la ficha municipal también consigna Ruta 25 y Moctezuma",
     "source": "https://torrespropiedades0.tuinmobiliaria.com.ar/d/63604-PIR-25-%7C-parque-industrial-en-moreno--en-Moreno",
-    "sourceAlternates": [
-      {
-        "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
-        "label": "Listado municipal de parques industriales ↗"
-      }
-    ],
+    "sourceAlternates": [{"url":"https://www.moreno.gob.ar/industrias-parques-web.php","label":"Listado municipal de parques industriales ↗"},{"url":"https://moreno.gob.ar/noticia-detalle.php?id=2718","label":"Decreto de creación anunciado por Municipio y Provincia · 07/12/2022 ↗"}],
     "agency": "PIR 25; comercialización publicada por Torres Propiedades. El Municipio identifica Impacto Inmobiliaria como contacto.",
     "contact": "Municipio: Impacto Inmobiliaria, +54 11 7600 4000. Torres Propiedades: +54 9 11 7187-7878 · inmobiliaria@torrespropiedades.info.",
     "surfaceNote": "27 ha; 60 unidades funcionales; unidades publicadas de 2.000 a 4.200 m². La ficha del comercializador informa final de obras aprobado y entrega enero de 2023.",
-    "observations": "No es una obra en curso: la ficha informa entrega enero de 2023 y final de obras otorgado en 2021. Publica aprobación provincial, aptitud hidráulica y ambiental y plano de subdivisión aprobado por ARBA; corroborar copias oficiales antes de invertir. El municipio incluye PIR25 en su listado de parques industriales. La diferencia entre Ruta 25 y Moctezuma (Municipio) y Ruta 25 y Don Bosco (comercializador) debe aclararse para la ubicación de acceso.",
+    "observations": "No es una obra en curso: el comercializador informa entrega enero de 2023 y final de obras otorgado en 2021. El Municipio lo incluye en su listado de parques industriales y una noticia oficial del 07/12/2022 documenta la entrega del decreto de creación del Parque Industrial Privado R25 “PIR25” de La Reja. La ficha comercial publica aprobación provincial, aptitud hidráulica y ambiental y plano de subdivisión aprobado por ARBA; corroborar copias oficiales antes de invertir. El municipio consigna Ruta 25 y Moctezuma, mientras el comercializador ubica el parque sobre Ruta 25 y Don Bosco: confirmar acceso y nomenclatura.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
