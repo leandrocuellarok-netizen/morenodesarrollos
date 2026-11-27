@@ -1129,7 +1129,7 @@ function buildTerritorialDossierHtml(dossier) {
     '.eyebrow{margin:0;color:var(--rust);font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}' +
     'h1{max-width:700px;margin:24px 0 12px;font:400 43px/1.02 Georgia,serif;letter-spacing:-.04em}' +
     '.cover-copy{max-width:560px;color:var(--muted);font:17px/1.5 Georgia,serif}' +
-    '.cover-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}' +
+    '.cover-stats{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}' +
     '.cover-stat{padding:14px 10px 14px 0;border-right:1px solid var(--line)}.cover-stat:last-child{border:0}' +
     '.cover-stat strong{display:block;font:400 29px/1 Georgia,serif}.cover-stat span{display:block;margin-top:7px;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.1em}' +
     '.filter-list{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0;padding:0;list-style:none}.filter-list li{padding:5px 8px;border:1px solid var(--line);font-size:8px}' +
@@ -1151,13 +1151,14 @@ function buildTerritorialDossierHtml(dossier) {
     '<div><div class="cover-stats"><div class="cover-stat"><strong>' + String(Number(counts.localities) || 0).padStart(2, "0") + '</strong><span>Localidades</span></div>' +
     '<div class="cover-stat"><strong>' + String(Number(counts.documented) || 0).padStart(2, "0") + '</strong><span>Contextos con fuente</span></div>' +
     '<div class="cover-stat"><strong>' + String(Number(counts.hypotheses) || 0).padStart(2, "0") + '</strong><span>Hipótesis</span></div>' +
-    '<div class="cover-stat"><strong>' + total + '</strong><span>Referencias incluidas</span></div></div>' +
+    '<div class="cover-stat"><strong>' + String(Number(counts.published) || 0).padStart(2, "0") + '</strong><span>Avisos / proyectos</span></div>' +
+     '<div class="cover-stat"><strong>' + total + '</strong><span>Referencias incluidas</span></div></div>' +
     '<p class="eyebrow" style="margin-top:18px">Criterios de selección</p><ul class="filter-list">' + filterMarkup + '</ul>' +
     '<footer>ERICA M. ACOSTA · MORENO · Generado localmente desde la vista filtrada del inventario.</footer></div></section>' +
     '<section class="sheet map-page"><p class="eyebrow">Lámina de conjunto · esquema sin escala</p><h2 class="section-title">Distribución relativa de las referencias.</h2>' +
     '<p class="muted">Los puntos se ordenan únicamente por sus coordenadas aproximadas. El esquema no contiene cartografía base, límites municipales, calles ni geometrías parcelarias.</p>' +
     diagram +
-    '<div class="diagram-legend"><span><i class="legend-mark legend-circle"></i> Localidad</span><span><i class="legend-mark"></i> Contexto con fuente</span><span><i class="legend-mark legend-diamond"></i> Hipótesis</span></div>' +
+    '<div class="diagram-legend"><span><i class="legend-mark legend-circle"></i> Localidad</span><span><i class="legend-mark"></i> Contexto con fuente</span><span><i class="legend-mark legend-diamond"></i> Hipótesis</span><span><i class="legend-mark legend-published"></i> Publicación</span></div>' +
     '<h2 class="section-title">Índice de referencias.</h2><ol class="index-list">' + indexMarkup + '</ol>' +
     '<div class="caution"><strong>Alcance de esta lámina</strong><ul><li>Es un esquema relativo, no un mapa oficial ni un plano a escala.</li><li>Los números identifican las referencias del índice; no representan parcelas ni predios disponibles.</li><li>Las coordenadas no sustituyen la individualización catastral ni la consulta de normativa vigente.</li></ul></div></section>' +
     '<section class="sheet"><p class="eyebrow">Fichas de referencia · ' + total + ' registros</p><h2 class="section-title">Evidencia, estado y próximos pasos.</h2>' +
