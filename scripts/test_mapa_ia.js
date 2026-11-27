@@ -700,6 +700,7 @@ const csv = buildCsv([{
 assert.ok(csv.startsWith("\uFEFF"), "CSV compatible con acentos en hojas de cálculo");
 assert.ok(csv.includes('"Parcela ""A"", sector norte"'), "CSV escapa comillas y comas");
 assert.ok(csv.includes("alcance_de_coordenada"), "CSV informa el alcance de las coordenadas");
+assert.ok(csv.includes("tipo_de_evidencia") && csv.includes("nivel_de_confianza") && csv.includes("fecha_de_fuente") && csv.includes("fecha_de_consulta"), "CSV exporta la trazabilidad de la evidencia");
 assert.ok(csv.includes("no identifica una parcela"), "CSV conserva la advertencia parcelaria");
 const publishedCsv = buildCsv(all.filter(item => item.type === "published").slice(0, 1));
 assert.ok(publishedCsv.includes("precio_publicado"), "CSV incluye el campo de precio de los avisos");
@@ -758,9 +759,16 @@ assert.equal(
   "la exportación completa conserva todas las referencias actuales"
 );
 assert.ok(
-  buildGeoJson(all).features.filter(feature => feature.properties.category !== "Propiedades y desarrollos publicados").every(feature => feature.geometry.type === "Point"),
-  "las referencias territoriales conservan puntos de referencia"
+  buildGeoJson(all).features.filter(feature => feature.properties.category !== "Propiedades y desarrollos publicados" && feature.geometry !== null).every(feature => feature.geometry.type === "Point"),
+  "las referencias territoriales con coordenadas conservan puntos de referencia"
 );
+assert.ok(
+  buildGeoJson(all).features.filter(feature => feature.properties.category !== "Propiedades y desarrollos publicados" && feature.geometry === null).every(feature => /Sin coordenada precisa/.test(feature.properties.coordinate_scope)),
+  "las referencias sin coordenadas no se dibujan ni se exportan como puntos"
+);
+const muiFeature = buildGeoJson(all).features.find(feature => feature.properties.id === "mui-mo-monitoreo-urbano-inmobiliario");
+assert.equal(muiFeature.geometry, null, "MUI-MO no recibe una coordenada que la fuente no publica");
+assert.match(muiFeature.properties.coordinate_scope, /Sin coordenada precisa/);
 assert.ok(
   buildGeoJson(all).features.filter(feature => feature.properties.category === "Propiedades y desarrollos publicados").every(feature => feature.geometry === null),
   "las publicaciones pendientes no reciben coordenadas inventadas en GeoJSON"
