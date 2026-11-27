@@ -1143,3 +1143,8 @@ main#main-content:focus {
   .contact-method-fields legend{font-size:19px}
   .contact-method-fields>p{font-size:12px}
 }
+
+/* Desglose comercial por tipo de contraparte: cifras observadas, sin scoring ni proyecciones. */
+.pipeline-counterparty-panel{margin:14px 0}
+.pipeline-counterparty-table th:not(:first-child),.pipeline-counterparty-table td:not(:first-child){text-align:right;white-space:nowrap}
+.pipeline-counterparty-total td{border-top:1px solid #77796f;font-weight:700;color:var(--ink)}
