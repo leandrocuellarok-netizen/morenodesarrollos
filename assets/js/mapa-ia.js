@@ -3217,8 +3217,8 @@ function initMapPage(doc) {
       const reviewDate = doc.createElement("small");
       reviewDate.className = "map-published-review-date";
       reviewDate.textContent = item.lastCheckedAt
-        ? "Fuente consultada el " + formatSourceReviewDate(item.lastCheckedAt)
-        : "Fecha de consulta no informada";
+        ? "Revisión de fuente: " + formatSourceReviewDate(item.lastCheckedAt)
+        : "Revisión de fuente: no informada";
       summary.append(title, meta, availability, reviewDate);
       card.append(summary);
       const body = doc.createElement("div");

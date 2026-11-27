@@ -317,7 +317,7 @@ async function auditRoute(browser, route) {
       const sharedStatus = await page.evaluate(() => new URL(window.location.href).searchParams.get("vigencia"));
       check(sharedStatus === "no-vigente", "mapa-ia: la vista compartible debe conservar el estado registrado");
       const reviewDate = await page.locator("#published-list .map-published-review-date").first().innerText();
-      check(/^Fuente consultada el \d{2}\/\d{2}\/\d{4}$/.test(reviewDate), "mapa-ia: la ficha debe mostrar la fecha de consulta de la fuente");
+      check(/^Revisión de fuente: \d{2}\/\d{2}\/\d{4}$/.test(reviewDate), "mapa-ia: la ficha debe mostrar la fecha de revisión de la fuente");
       await page.locator("#reset-map").click();
       await page.locator("#map-refine-filters > summary").click();
       check(!(await page.locator("#map-refine-filters").evaluate(element => element.open)), "mapa-ia: los filtros secundarios no se pueden volver a contraer");

@@ -277,7 +277,7 @@ def main() -> None:
                     errors.append(f"mapa-ia/index.html: falta el control de vista compartible {share_id}")
             if "no comparte la bitácora local" not in page_source:
                 errors.append("mapa-ia/index.html: debe aclarar que la vista compartida no incluye la bitácora local")
-            if "fecha de consulta de la fuente" not in page_source.lower() or "No vigente" not in page_source:
+            if "fecha de revisión de la fuente" not in page_source.lower() or "No vigente" not in page_source:
                 errors.append("mapa-ia/index.html: debe explicar fecha de consulta y estados registrados de publicación")
             if "no se envían al servidor" not in page_source or "no certifica" not in page_source:
                 errors.append("mapa-ia/index.html: falta explicar privacidad y alcance de la bitácora")
