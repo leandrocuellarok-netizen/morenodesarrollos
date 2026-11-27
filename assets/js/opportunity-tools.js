@@ -301,11 +301,11 @@
     "casa-cornelio-saavedra-100-375": "Cornelio Saavedra 100 · casa de 4 ambientes con quincho",
     "desarrollo-haras-maria-elena-unidades": "Haras María Elena · unidades desde USD 199.000",
     "casa-san-carlos-2400-370": "San Carlos 2400 · casa de 3 ambientes con pileta y local",
-    "casa-cura-brochero-6600-170": "Cura Brochero 6600 · casa de 3 ambientes · Barrio La Victoria",
+    "casa-cura-brochero-6600-170": "Cura Brochero 6600 · casa de 3 ambientes",
     "terreno-pir25-4188": "Parque Industrial PIR25 · lote de 4.188,30 m²",
-    "terreno-pir25-2709": "Parque Industrial PIR25 · lote de 2.709,33 m² · posible solapamiento con lote 21",
+    "terreno-pir25-2709": "Parque Industrial PIR25 · lote de 2.709,33 m² · Gírgola",
     "terreno-polo24-rp24-rp25-2914": "Ruta 24 y 25 · Polo 24 · terreno de 2.914 m²",
-    "terreno-libertad-637-845-historico": "Libertad 637 · lote de 845 m² · antecedente no vigente",
+    "terreno-libertad-637-845-historico": "Libertad 637 · lote de 845 m² con mejoras · enlace no vigente",
   });
 
   function readMapReference(search) {
