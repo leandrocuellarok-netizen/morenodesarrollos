@@ -6190,7 +6190,7 @@ const nov27_1058NewEntries = [
   {
     "id": "terreno-colectora-norte-fray-cayetano-1348-historico",
     "recordType": "Fracción de terreno · pendiente de revalidación",
-    "name": "Colectora Norte Acceso Oeste · esquina Fray Cayetano Rodríguez · 1.348 m²",
+    "name": "Colectora Norte Acceso Oeste km 0 · esquina Fray Cayetano Rodríguez · 1.348 m²",
     "locality": "La Reja",
     "address": "Colectora Norte del Acceso Oeste, esquina Fray Cayetano Rodríguez, La Reja, Moreno; el aviso menciona km 0 pero el encabezado indexado muestra km 100",
     "source": "https://www.argenprop.com/terreno-en-venta-en-la-reja--10357815",
