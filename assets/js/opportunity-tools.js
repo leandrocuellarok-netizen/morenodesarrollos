@@ -334,7 +334,7 @@
     "terreno-solares-zapiola-lote22-450": "Solares de Zapiola · lote 22 · 450 m²",
     "casa-piovano-3322-234": "Av. Francisco Piovano 3322 · chalet de 5 ambientes",
     "casa-damicis-1485-270": "Damicis 1485 · casa y dos departamentos independientes",
-    "casa-ecuador-2300-241-no-vigente": "Ecuador 2300 · dos viviendas independientes · publicación no vigente",
+    "casa-ecuador-2300-241-no-vigente": "Ecuador 2300 · dos viviendas independientes · Villa Anita",
     "terreno-espana-700-928-casa-galpon": "España 700/747 · lote de 928 m² con casa, galpón y pileta",
     "fraccion-monsegur-3100-6150-la-reja": "Avenida Monsegur 3100 · fracción de 6.150 m² · La Reja",
     "activo-mixto-bartolome-mitre-1400-4000": "Av. Bartolomé Mitre 1400 · 4.000 m² · triple acceso",
