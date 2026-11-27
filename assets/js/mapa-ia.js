@@ -6865,8 +6865,9 @@ publishedProperties.push(...[
     "recordType": "Casa individual en barrio cerrado · publicación reactivada",
     "name": "Maipú 1341 · El Casco de Moreno · casa con pileta",
     "locality": "Moreno Centro",
-    "address": "Maipú 1341, lote 45, El Casco de Moreno",
-    "geocodeQuery": "Maipu 1341, Moreno, Buenos Aires",
+    "address": "Maipú 1300 (cabecera de PlataPlace) / Maipú 1341 (descripción), lote 45, El Casco de Moreno",
+    "geocodeQuery": "Maipu 1341, El Casco de Moreno, Moreno, Buenos Aires",
+    "geocodeDisabled": true,
     "source": "https://plataplace.com/propiedad/casa-de-5-ambientes-en-venta-en-moreno-0c28e77c",
     "sourceAlternates": [
       {
@@ -6885,13 +6886,13 @@ publishedProperties.push(...[
     "landSurfaceM2": 600,
     "coveredSurfaceM2": 220,
     "publicationDate": "20/10/2026 (nueva ficha de PlataPlace); aviso anterior indexado hasta 22/10/2026.",
-    "observations": "Nueva ficha de 5 ambientes publicada en PlataPlace para Maipú 1341, lote 45, El Casco de Moreno: cuatro dormitorios en suite, cuatro baños, pileta y dos cocheras, sobre lote de 600 m² con 220 m² cubiertos. Expensas publicadas: USD 497/mes. La ficha anterior de Inmuebles Clarín y su copia en Proppies habían dejado de estar disponibles; la nueva publicación parece corresponder al mismo inmueble por dirección y superficies, pero la disponibilidad real debe confirmarse con el anunciante. El aviso anterior describía seis ambientes, mientras la nueva ficha indica cinco.",
+    "observations": "Nueva ficha de 5 ambientes publicada en PlataPlace para El Casco de Moreno: la cabecera indica Maipú 1300 y la descripción Maipú 1341, lote 45. Coincide con el antecedente en lote de 600 m², 220 m² cubiertos, cuatro dormitorios en suite, cuatro baños, pileta y dos cocheras; se agrupa provisionalmente como probable reactivación del mismo activo, no como identidad parcelaria confirmada. Expensas publicadas: USD 497/mes. La ficha anterior de Inmuebles Clarín y su copia en Proppies dejaron de estar disponibles; el aviso anterior describía seis ambientes y el nuevo cinco.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
-    "verificationStatus": "PlataPlace muestra una nueva ficha activa publicada el 20/10/2026 y consultada el 27/11/2026, con USD 280.000, lote 600 m² y 220 m² cubiertos. La publicación anterior de Inmuebles Clarín devolvió 410 Gone; la coincidencia por dirección y superficies sugiere reactivación del mismo activo, no una segunda propiedad. Disponibilidad no confirmada.",
-    "geolocationStatus": "Pendiente: dirección pública exacta; Georef debe confirmar coincidencia inequívoca y el lote interno."
+    "verificationStatus": "PlataPlace muestra una nueva ficha activa publicada el 20/10/2026 y consultada el 27/11/2026, con USD 280.000, lote 600 m², 220 m² cubiertos y expensas USD 497/mes. La cabecera indica Maipú 1300 y el cuerpo Maipú 1341, lote 45; la publicación anterior de Inmuebles Clarín devolvió 410 Gone. La coincidencia de superficies y características sugiere reactivación del mismo activo, pero la identidad de parcela y la disponibilidad no están confirmadas.",
+    "geolocationStatus": "Pendiente: conflicto de altura Maipú 1300/1341; marcador deshabilitado hasta confirmar dirección y lote con el anunciante o documentación catastral."
   },
   {
     "id": "casa-ituzaingo-1400-723",

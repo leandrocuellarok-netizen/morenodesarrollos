@@ -1272,6 +1272,8 @@ const maipuReactivated = publishedProperties.find(record => record.id === "casa-
 assert.equal(maipuReactivated.availabilityStatus, "No confirmada");
 assert.ok(maipuReactivated.source.includes("0c28e77c"));
 assert.ok(maipuReactivated.sourceAlternates.some(source => source.url.includes("20725083") && source.label.includes("410 Gone")));
+assert.equal(maipuReactivated.geocodeDisabled, true);
+assert.ok(maipuReactivated.address.includes("1300") && maipuReactivated.address.includes("1341"));
 assert.ok(publishedProperties.find(record => record.id === "casa-ituzaingo-1400-723").sourceAlternates.some(source => source.url.includes("77606a04")));
 assert.ok(publishedProperties.find(record => record.id === "casa-doctor-asseff-400-361").sourceAlternates.some(source => source.url.includes("3023930f")));
 
