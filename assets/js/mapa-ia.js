@@ -2021,7 +2021,7 @@ const nov27FollowupEntries = [
   {
     "id": "desarrollo-chacras-teofilo-galileo-7300",
     "recordType": "Desarrollo inmobiliario · barrio de lotes con lote individual publicado",
-    "name": "Chacras de Teófilo · lote publicado de 326 m² · Trujui",
+    "name": "Chacras de Teófilo · lote de 326 m² · Trujui",
     "locality": "Trujui",
     "address": "Galileo Galilei al 7300, Trujui, Moreno",
     "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terrenos-en-trujui-58930130.html",
@@ -7380,7 +7380,7 @@ function buildTerritorialDossierDiagram(references) {
 function buildTerritorialDossierHtml(dossier) {
   if (!dossier || dossier.schema !== "moreno.territorial-dossier" ||
       dossier.schemaVersion !== 1 || !Array.isArray(dossier.references) ||
-      !dossier.references.length || dossier.references.length > 250) return "";
+      !dossier.references.length || dossier.references.length > 300) return "";
   const dateLabel = escapeTerritorialHtml(String(dossier.generatedAt || "").slice(0, 10));
   const title = escapeTerritorialHtml(dossier.title || "Dossier territorial · Moreno");
   const counts = dossier.counts || {};
