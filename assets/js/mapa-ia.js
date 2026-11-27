@@ -2049,28 +2049,47 @@ const nov27FollowupEntries = [
     "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio y superficie publicados; disponibilidad no confirmada."
   },
   {
-    "id": "terreno-abdon-calderon-1000-250",
-    "recordType": "Terreno individual",
-    "name": "Lote comercial · Abdón Calderón 1000 · 250 m²",
-    "locality": "Moreno",
-    "address": "Abdón Calderón 1000, Moreno",
-    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-lote-terreno-250-m-sup2--en-moreno-60769310.html",
-    "agency": "RE/MAX; corredor responsable María de los Ángeles Meade, CPI 9172 / CMCPM 3083",
-    "contact": "Sebastián Stos; contacto mediante formulario de Zonaprop.",
-    "price": "USD 45.000",
-    "currency": "USD",
-    "landSurfaceM2": 250,
-    "surfaceNote": "El aviso informa 250 m²; no publica superficie cubierta.",
-    "observations": "La ficha lo ubica a unos 100 m de Av. Victorica y 150 m de Acceso Oeste, Ruta 23, Bingo y Shopping Nine. El uso comercial sugerido es una propuesta del anunciante, no una habilitación ni zonificación verificada.",
-    "lat": null,
-    "lng": null,
-    "geocodeQuery": "Abdon Calderon 1000, Moreno, Buenos Aires",
-    "geocodeMatch": "ABDON CALDERON 1000",
-    "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
-    "geolocationStatus": "Pendiente: Georef debe devolver una única coincidencia inequívoca para Abdón Calderón 1000.",
-    "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio y superficie publicados; disponibilidad no confirmada."
-  },
+  "id": "terreno-abdon-calderon-1000-250",
+  "recordType": "Terreno individual",
+  "name": "Lote comercial · Abdón Calderón 1000 · 250 m²",
+  "locality": "Moreno",
+  "address": "Abdón Calderón 1000, Moreno",
+  "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-lote-terreno-250-m-sup2--en-moreno-60769310.html",
+  "agency": "RE/MAX; corredor responsable María de los Ángeles Meade, CPI 9172 / CMCPM 3083",
+  "contact": "Sebastián Stos; contacto mediante formulario de Zonaprop.",
+  "price": "USD 45.000",
+  "currency": "USD",
+  "landSurfaceM2": 250,
+  "surfaceNote": "El aviso informa 250 m²; no publica superficie cubierta.",
+  "observations": "La ficha lo ubica a unos 100 m de Av. Victorica y 150 m de Acceso Oeste, Ruta 23, Bingo y Shopping Nine. El uso comercial sugerido es una propuesta del anunciante, no una habilitación ni zonificación verificada. Se deduplicaron cuatro copias adicionales de Argenprop/Zonaprop por coincidir dirección, superficie, precio y contacto; se conserva una sola oportunidad con enlaces alternativos.",
+  "lat": null,
+  "lng": null,
+  "geocodeQuery": "Abdon Calderon 1000, Moreno, Buenos Aires",
+  "geocodeMatch": "ABDON CALDERON 1000",
+  "lastCheckedAt": "2026-11-27",
+  "availabilityStatus": "No confirmada",
+  "geolocationStatus": "Pendiente: Georef debe devolver una única coincidencia inequívoca para Abdón Calderón 1000.",
+  "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio y superficie publicados; disponibilidad no confirmada.",
+  "sourceAlternates": [
+    {
+      "url": "https://www.argenprop.com/terreno-en-venta-en-moreno--20504273",
+      "label": "Copia de Argenprop del mismo aviso"
+    },
+    {
+      "url": "https://www.argenprop.com/terreno-en-venta-en-moreno--20724444",
+      "label": "Otra ficha de Argenprop del mismo lote"
+    },
+    {
+      "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-lote-terreno-250-m-sup2--en-moreno-59946189.html",
+      "label": "Copia anterior en Zonaprop"
+    },
+    {
+      "url": "https://www.argenprop.com/terreno-en-venta-en-moreno--20297323",
+      "label": "Otra copia de Argenprop"
+    }
+  ],
+  "publicationDate": "La ficha primaria de Zonaprop estaba indexada hace 5 días; las copias del mismo aviso aparecían indexadas entre 2 y 3 meses antes. Fecha original no informada."
+},
   {
     "id": "terreno-conscripto-bernardi-1800-3888",
     "recordType": "Terreno individual · zona rural declarada",
