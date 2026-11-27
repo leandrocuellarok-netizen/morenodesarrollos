@@ -5421,8 +5421,14 @@ const nov27_0923NewEntries = [
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
-    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio, superficie, dimensiones, corredor y parámetros declarados por el anunciante publicados. Disponibilidad no confirmada.",
-    "geolocationStatus": "Pendiente: se consultará Georef para la dirección pública; el punto solo se utilizará si la nomenclatura coincide inequívocamente."
+    "verificationStatus": "Ficha directa de Zonaprop accesible el 27/11/2026; precio USD 650.000, 1.434 m², dimensiones, corredor y parámetros declarados publicados. La URL asociada en Dambolena devuelve 404; disponibilidad no confirmada.",
+    "geolocationStatus": "Pendiente: se consultará Georef para la dirección pública; el punto solo se utilizará si la nomenclatura coincide inequívocamente.",
+    "sourceAlternates": [
+      {
+        "url": "https://dambolena.com.ar/propiedad/terreno-venta-en-molina-campos-400--4627199",
+        "label": "Dambolena · ficha institucional asociada; devolvió 404 en esta revisión"
+      }
+    ]
   },
   {
     "id": "casa-luzuriaga-2698-900",
@@ -5745,7 +5751,7 @@ const nov27_0923NewEntries = [
     "verificationStatus": "Ficha directa de Inmoclick accesible el 27/11/2026; publicada hace 15 días, precio USD 10.000, 300 m² y lote 11 identificados. Disponibilidad comercial no confirmada.",
     "geolocationStatus": "Pendiente: la dirección pública se repite para lotes distintos; no asignar coordenadas de parcela sin plano o nomenclatura."
   }
-];;;
+];;;;
 publishedProperties.push(...nov27_0923NewEntries);
 
 const all = [
