@@ -9782,18 +9782,29 @@ function csvCell(value) {
 }
 
 function hasCoordinates(item) {
-  const source = item && (item.coordinateSource || item.geolocationSource);
-  const checkedAt = item && (item.coordinateCheckedAt || item.geolocationCheckedAt);
+  if (!item || typeof item !== "object") return false;
+  const source = item.coordinateSource || item.geolocationSource;
+  const checkedAt = item.coordinateCheckedAt || item.geolocationCheckedAt;
+  const latitude = item.lat == null || String(item.lat).trim() === "" ? NaN : Number(item.lat);
+  const longitude = item.lng == null || String(item.lng).trim() === "" ? NaN : Number(item.lng);
+  let sourceUrl;
+  try {
+    sourceUrl = new URL(String(source || ""));
+  } catch (error) {
+    return false;
+  }
   return Boolean(
-    item &&
-    typeof source === "string" &&
-    /^https:\/\//.test(source) &&
-    typeof checkedAt === "string" &&
-    /^\d{4}-\d{2}-\d{2}$/.test(checkedAt) &&
-    item.lat != null &&
-    item.lng != null &&
-    Number.isFinite(Number(item.lat)) &&
-    Number.isFinite(Number(item.lng))
+    sourceUrl.protocol === "https:" &&
+    sourceUrl.hostname &&
+    !sourceUrl.username &&
+    !sourceUrl.password &&
+    isValidReviewDate(checkedAt) &&
+    Number.isFinite(latitude) &&
+    latitude >= -90 &&
+    latitude <= 90 &&
+    Number.isFinite(longitude) &&
+    longitude >= -180 &&
+    longitude <= 180
   );
 }
 
