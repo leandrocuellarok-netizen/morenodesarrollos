@@ -999,12 +999,13 @@ const nov27HourlyEntries = [
     "price": "USD 13.000",
     "currency": "USD",
     "landSurfaceM2": 300,
-    "observations": "La ficha ofrece lotes de 300, 594 y 1.200 m² con escritura inmediata y anticipo/cuotas. No publica número de lote ni confirma stock actual; no fusionar con la publicación independiente de 594 m².",
+    "observations": "La ficha ofrece lotes de 300, 594 y 1.200 m² con escritura inmediata y anticipo/cuotas. No publica número de lote ni confirma stock actual; no fusionar con la publicación independiente de 594 m². Existe ficha específica L20, manzana C, 300 m² a USD 19.000; puede ser la misma parcela o un lote distinto. No se fusionan hasta confirmar lote y nomenclatura.",
     "lat": null,
     "lng": null,
     "availabilityStatus": "No confirmada",
     "verificationStatus": "Ficha directa de Argenprop accesible en la revisión del 27/11/2026; precio y superficie publicados. Lote exacto y disponibilidad no confirmados.",
-    "geolocationStatus": "Pendiente: la dirección identifica el barrio, no el lote individual."
+    "geolocationStatus": "Pendiente: la dirección identifica el barrio, no el lote individual.",
+    "lastCheckedAt": "2026-11-27"
   },
   {
     "id": "terreno-pim-i-parque-municipal-2493",
@@ -2735,7 +2736,7 @@ const nov27FollowupEntries = [
     "price": "USD 55.000",
     "currency": "USD",
     "landSurfaceM2": 781,
-    "observations": "Lote 145 en cul-de-sac. La ficha anuncia seguridad 24 h, agua potable, cloacas, electricidad, gas natural, internet, calles pavimentadas y amenities. Confirmar expensas, reglamento, estado de infraestructura y disponibilidad.",
+    "observations": "Lote 145 en cul-de-sac. La ficha anuncia seguridad 24 h, agua potable, cloacas, electricidad, gas natural, internet, calles pavimentadas y amenities. Confirmar expensas, reglamento, estado de infraestructura y disponibilidad. Otra ficha indexada para General Hornos 2998 publicaba 902,49 m² y USD 20.000, pero el enlace directo devolvió 410 el 27/11/2026. Sin número de lote no se pudo demostrar si es la misma parcela; se conserva como referencia histórica, no como oferta activa separada.",
     "lat": null,
     "lng": null,
     "geocodeQuery": "General Hornos 2998, La Reja, Moreno, Buenos Aires",
@@ -2743,7 +2744,13 @@ const nov27FollowupEntries = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: Georef debe devolver una única coincidencia inequívoca para General Hornos 2998.",
-    "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio, lote y superficie publicados; disponibilidad no confirmada."
+    "verificationStatus": "Ficha individual de Zonaprop accesible el 27/11/2026; precio, lote y superficie publicados; disponibilidad no confirmada. Otra ficha indexada de la misma dirección devolvió 410 y presenta superficie/precio distintos; identidad parcelaria pendiente.",
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-en-venta-en-prados-del-oeste-2-60355714.html",
+        "label": "Ficha indexada para General Hornos 2998, 902,49 m² y USD 20.000; enlace directo 410 el 27/11/2026; posible duplicado."
+      }
+    ]
   },
   {
     "id": "terreno-joaquin-v-gonzalez-2400-615",
@@ -2807,13 +2814,17 @@ const nov27FollowupEntries = [
       {
         "url": "https://www.moreno.gob.ar/industrias-parques-web.php",
         "label": "Directorio oficial municipal de parques industriales"
+      },
+      {
+        "url": "https://www.moreno.gob.ar/noticia-detalle.php?id=6389",
+        "label": "Fuente municipal 28/05/2025: 80 ha, 60 empresas y lotes disponibles ya adquiridos."
       }
     ],
     "agency": "Grupo Posadas",
     "contact": "+54 11 2153 1882 · info@grupoposadas.com.ar",
     "landSurfaceM2": 800000,
     "surfaceNote": "El desarrollador declara 80 hectáreas de superficie total, un galpón de 25.000 m² y lotes desde 2.400 a 15.000 m². No publica inventario individual, precio ni superficie cubierta de una unidad en venta.",
-    "observations": "La ficha oficial de Grupo Posadas incluye Parque Industrial Reconquista en su cartera industrial. El Municipio también lo lista en Martín de Gainza al 2.000, Trujui. No se publican precios, stock de lotes, fecha de entrega, plano de subdivisión, zonificación parcelaria ni estado de obras; solicitar documentación y disponibilidad directamente al desarrollador.",
+    "observations": "La ficha oficial de Grupo Posadas incluye Parque Industrial Reconquista en su cartera industrial. El Municipio también lo lista en Martín de Gainza al 2.000, Trujui. No se publican precios, stock de lotes, fecha de entrega, plano de subdivisión, zonificación parcelaria ni estado de obras; solicitar documentación y disponibilidad directamente al desarrollador. El Municipio informó el 28/05/2025 que el parque tiene 80 ha, 60 empresas con radicación confirmada y que todos los lotes disponibles ya habían sido adquiridos. No se presenta como stock abierto. Una publicación Zonaprop consultada el 27/11/2026 ofrece 3.420 m² por 'USD 150' sin unidad aclarada; se registra aparte como posible reventa pendiente.",
     "lat": null,
     "lng": null,
     "geocodeQuery": "General Martin de Gainza 1900, Trujui, Moreno, Buenos Aires",
@@ -2821,7 +2832,7 @@ const nov27FollowupEntries = [
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: Georef debe devolver una coincidencia inequívoca para la dirección del acceso; el punto sería de parque, no parcelario.",
-    "verificationStatus": "Sitio del desarrollador accesible el 27/11/2026 con superficie y tipología de lotes; directorio municipal confirma ubicación y contacto. Stock y precios no publicados."
+    "verificationStatus": "Desarrollador accesible y fuente municipal del 28/05/2025: parque de 80 ha, 60 empresas y todos los lotes disponibles ya adquiridos. Stock actual no verificado."
   },
   {
     "id": "desarrollo-parque-industrial-desarrollo-productivo-40ha",
@@ -4067,26 +4078,41 @@ publishedProperties.push(...[
   },
   {
     "id": "casa-alberdi-1100-739",
-    "recordType": "Casa a refaccionar / inmueble con potencial de desarrollo",
-    "name": "Juan Bautista Alberdi 1100 · casa a refaccionar sobre dos parcelas",
-    "locality": "Moreno Sur",
-    "address": "Juan Bautista Alberdi al 1100, entre Intendente Ibáñez y Martín García, Moreno Sur",
-    "source": "https://www.buscainmueble.com/terreno-en-venta-en-moreno--20872470",
-    "agency": "Publicación RE/MAX en Buscainmueble / plataforma RAU S.R.L.; corredor responsable Fiorella Velardez, CPI 8214 / CMCPDJLM 1022",
-    "contact": "Paola Gisela Amarante; formulario de Buscainmueble",
+    "recordType": "Terreno con vivienda y mejoras · dos parcelas contiguas",
+    "name": "Juan Bautista Alberdi 1100 · dos parcelas contiguas con casa y pileta",
+    "locality": "Moreno (las fuentes difieren entre Moreno Centro y Moreno Sur)",
+    "address": "Juan Bautista Alberdi 1100, entre Intendente Ibáñez y Martín García según una ficha; otras solo indican Alberdi 1100.",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-lote-en-venta-dos-parcelas-desarrollo-moreno-739-60642448.html",
+    "agency": "RE/MAX New",
+    "contact": "Paola Gisela Amarante; WhatsApp +54 11 3626-8888; responsable Fiorella Velardez, CPI 8214 / CMCPDJLM 1022.",
     "price": "USD 98.000",
     "currency": "USD",
     "landSurfaceM2": 739,
     "coveredSurfaceM2": 100,
-    "surfaceNote": "739 m² aproximados sobre dos parcelas contiguas; casa de aproximadamente 100 m². Galpón adicional sin superficie publicada.",
-    "observations": "La ficha describe casa de cuatro ambientes a refaccionar, galpón y pileta de material también a refaccionar. El aviso está clasificado como terreno, pero la descripción confirma construcciones existentes. La unión de las dos parcelas como una sola superficie debe comprobarse con nomenclatura catastral, títulos y mensura. La aptitud para un desarrollo no está acreditada.",
+    "surfaceNote": "Dos parcelas contiguas; 739 m² de terreno publicados. Una ficha sindicada informa 100 m² cubiertos para la vivienda; el galpón no tiene superficie separada.",
+    "observations": "Activo consolidado desde publicaciones de RE/MAX New, Buscainmueble y PlataStar. Precio más reciente USD 98.000; PlataStar publicaba USD 105.000 el 06/10/2026. Se describen dos parcelas, vivienda, galpón y pileta. FOS/FOT y metros construibles son afirmaciones del anunciante, no certificado urbanístico. Fuentes difieren entre Moreno Centro y Sur; confirmar nomenclatura catastral.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geocodeDisabled": true,
-    "geolocationStatus": "Pendiente: dirección publicada como altura aproximada al 1100 y dos parcelas sin individualizar.",
-    "verificationStatus": "Ficha directa de Buscainmueble accesible el 27/11/2026; precio, terreno y superficie aproximada de vivienda publicados. Disponibilidad y situación catastral no confirmadas."
+    "geolocationStatus": "Pendiente: dos parcelas contiguas y referencias barriales contradictorias; no asignar coordenadas sin nomenclatura catastral.",
+    "verificationStatus": "Ficha Zonaprop accesible 27/11/2026; Proppies y Buscainmueble publican USD 98.000 y 739 m²; PlataStar conserva precio histórico de USD 105.000. Disponibilidad no confirmada.",
+    "publicationDate": "Proppies indica publicación hace 20 días al 27/11/2026; PlataStar publicaba USD 105.000 el 06/10/2026.",
+    "sourceAlternates": [
+      {
+        "url": "https://www.buscainmueble.com/terreno-en-venta-en-moreno--20872470",
+        "label": "Ficha sindicada RE/MAX New; 739 m² de terreno y 100 m² cubiertos."
+      },
+      {
+        "url": "https://platastar.com/propiedad/terreno-de-739-m2-en-venta-en-moreno-98768f89",
+        "label": "Publicación anterior del 06/10/2026, USD 105.000."
+      },
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/terreno-en-venta-en-moreno-67704483",
+        "label": "Ficha agregadora reciente; USD 98.000 y contacto RE/MAX New."
+      }
+    ]
   },
   {
     "id": "casa-martin-fierro-5400-200",
@@ -4338,20 +4364,30 @@ const nov27FreshEntries = [
     "geocodeQuery": "Cornelio Saavedra 100, Moreno",
     "source": "https://www.argenprop.com/casa-en-venta-en-moreno-4-ambientes--20846180",
     "agency": "RE/MAX Platino 2 · publicación en Argenprop / RAU S.R.L.",
-    "contact": "Natalia Pereyra; corredor responsable Walter Pascualini, CPI 3763 / CSI 5601. Teléfono parcialmente visible como +54 (11).",
+    "contact": "Natalia Pereyra; responsable Walter Pascualini, CPI 3763 / CSI 5601; WhatsApp público +54 9 11 5455-2460 según Proppies.",
     "price": "USD 190.000",
     "currency": "USD",
     "landSurfaceM2": 375,
     "coveredSurfaceM2": 211,
     "surfaceNote": "Casa de dos plantas, tres dormitorios, dos baños, quincho cerrado y galpón/depósito; 27 años de antigüedad declarados.",
-    "observations": "La ficha publica servicios activos y superficies aproximadas. Verificar medidas con título y mensura, estado de instalaciones, documentación de ampliaciones y precio vigente con RE/MAX Platino 2.",
+    "observations": "La ficha publica servicios activos y superficies aproximadas. Verificar medidas con título y mensura, estado de instalaciones, documentación de ampliaciones y precio vigente con RE/MAX Platino 2. Nueva ficha Proppies/Zonaprop del 27/11/2026 publica USD 190.000, 375 m² totales y 211 m² cubiertos, con tres dormitorios y dos baños. La nueva ficha dice Cornelio Saavedra 0 y la anterior 100; se consolida como un solo activo por coincidencia de precio, superficies y características. El enlace directo de Zonaprop asociado a la copia nueva devolvió 410; Argenprop permanece como fuente principal.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
-    "geolocationStatus": "Pendiente: dirección publicada; se requiere coincidencia inequívoca de Georef para colocar marcador."
-  ,
-    "verificationStatus": "Ficha directa de Argenprop accesible el 27/11/2026; precio, dirección, superficies, corredor y anunciante publicados. Disponibilidad no confirmada."
+    "geolocationStatus": "Pendiente: dirección publicada; se requiere coincidencia inequívoca de Georef para colocar marcador.",
+    "verificationStatus": "Argenprop permanece como fuente principal; Proppies muestra copia nueva el 27/11/2026 con mismo precio y superficies. La URL Zonaprop de esa copia devuelve 410; dirección 0/100 pendiente.",
+    "publicationDate": "Proppies indica una nueva ficha publicada el 27/11/2026.",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/casa-4-amb-en-venta-en-moreno-76030633",
+        "label": "Nueva ficha Proppies del 27/11/2026; USD 190.000, 375 m² y 211 m² cubiertos."
+      },
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-4-ambientes-211-m-sup2--moreno-60798874.html",
+        "label": "Enlace Zonaprop asociado; devolvió 410."
+      }
+    ]
   },
   {
     "id": "desarrollo-haras-maria-elena-unidades",
@@ -4659,12 +4695,12 @@ const nov27Turn7Entries = [
     "currency": "USD",
     "landSurfaceM2": 300,
     "surfaceNote": "12 × 25 m según el portal; lote identificado como L20, manzana C, PDM. No se informa superficie cubierta.",
-    "observations": "El anuncio declara lote perimetrado y escritura inmediata dentro de Parques del Morenito, barrio abierto de 3 ha y 50 lotes según la publicación. Es distinto del lote de 594 m² ya registrado; verificar nomenclatura, escritura y disponibilidad.",
+    "observations": "El anuncio declara lote perimetrado y escritura inmediata dentro de Parques del Morenito, barrio abierto de 3 ha y 50 lotes según la publicación. Es distinto del lote de 594 m² ya registrado; verificar nomenclatura, escritura y disponibilidad. Revalidada la ficha L20/Mza C: otra publicación genérica de 300 m² en Parques del Morenito por USD 13.000 no informa lote; puede ser esta misma parcela o un lote distinto. No fusionar ni contar dos parcelas hasta confirmar nomenclatura.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
-    "verificationStatus": "Ficha directa de Zonaprop accesible en la revisión del 27/11/2026; precio, superficie, referencia interna y responsables publicados. Disponibilidad comercial no confirmada.",
+    "verificationStatus": "Ficha Zonaprop L20/Mza C accesible el 27/11/2026; USD 19.000 y 300 m². Otra ficha genérica de 300 m² podría coincidir; identidad pendiente.",
     "geolocationStatus": "Pendiente: el aviso identifica lote interno; no se asigna coordenada de parcela."
   },
   {
@@ -5070,7 +5106,7 @@ const nov27_0855NewEntries = [
     "locality": "La Reja · Moreno",
     "address": "Calle Mariano Moreno entre Gervasio Posadas y Av. Francisco Miero, La Reja",
     "geocodeDisabled": true,
-    "source": "https://inmoup.com.ar/252859-sabrina-peluso-inmobiliaria/inmuebles/1635/ficha/terreno-en-venta-en-mariano-moreno",
+    "source": "https://inmoclick.com/252859-sabrina-peluso-inmobiliaria/inmuebles/2676/ficha/terreno-en-venta-en-mariano-moreno",
     "sourceAlternates": [
       {
         "url": "https://terreno.mercadolibre.com.ar/MLA-4166209024-lotes-premium-925m2-la-reja-mariano-moreno-financiacion-_JM",
@@ -5078,20 +5114,20 @@ const nov27_0855NewEntries = [
       }
     ],
     "agency": "Sabrina Peluso Inmobiliaria · Col. 267 MGR",
-    "contact": "Formulario público de Inmoup; oficina publicada en Intendente Dr. Asseff 92, Moreno. Teléfono no visible en la ficha.",
+    "contact": "Sabrina Peluso Inmobiliaria, Col. 267 MGR; formulario Inmoclick; teléfono no visible.",
     "price": "USD 38.000 por lote; el aviso ofrece dos lotes (5 y 11). Anticipo publicado: USD 10.000 por lote y saldo financiable.",
     "currency": "USD",
     "landSurfaceM2": 925,
     "coveredSurfaceM2": null,
     "surfaceNote": "Dos parcelas separadas de 925 m² cada una; 20 × 46,25 m cada lote. No sumar como una sola fracción sin confirmar que se venden juntas.",
-    "publicationDate": "Inmoup no informa fecha original. Un resultado de MercadoLibre lo indexaba como publicado hace 1 día, pero el acceso directo devolvió 403 el 27/11/2026.",
-    "observations": "La ficha enumera lotes 5 y 11 con igual superficie y precio por unidad, factibilidad de luz aprobada y financiación directa. La disponibilidad de ambos lotes debe consultarse por separado; no se publica numeración catastral ni plano de subdivisión en la ficha.",
+    "publicationDate": "Inmoclick indica publicado hace 21 días al 27/11/2026.",
+    "observations": "La ficha enumera lotes 5 y 11 con igual superficie y precio por unidad, factibilidad de luz aprobada y financiación directa. La disponibilidad de ambos lotes debe consultarse por separado; no se publica numeración catastral ni plano de subdivisión en la ficha. Revalidado con ficha directa Inmoclick 2676: lotes 5 y 11, 925 m² cada uno, USD 38.000 cada uno. Publicado hace 21 días. No se confirma disponibilidad individual ni aprobación municipal.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se publica un tramo de calle, sin altura ni identificación inequívoca de cada lote.",
-    "verificationStatus": "Ficha directa de Inmoup accesible el 27/11/2026 y publicación de MercadoLibre indexada como reciente. Precio por lote y superficies publicados; stock de ambos lotes no confirmado."
+    "verificationStatus": "Ficha directa Inmoclick accesible 27/11/2026, publicada hace 21 días; lotes 5 y 11, USD 38.000 por lote. Stock no confirmado."
   },
   {
     "id": "terreno-de-la-vega-200-dos-lotes-970",
@@ -6772,29 +6808,6 @@ publishedProperties.push(...[
     "geolocationStatus": "Pendiente: Georef debe confirmar la dirección; no se publica parcela ni frente."
   },
   {
-    "id": "terreno-alberdi-1100-739-dos-parcelas",
-    "recordType": "Terreno con casa y pileta · dos parcelas contiguas",
-    "name": "Juan Bautista Alberdi 1100 · dos parcelas contiguas · 739 m²",
-    "locality": "Moreno Centro",
-    "address": "Juan Bautista Alberdi 1100, Moreno Centro",
-    "geocodeQuery": "Juan Bautista Alberdi 1100, Moreno, Buenos Aires",
-    "source": "https://platastar.com/propiedad/terreno-de-739-m2-en-venta-en-moreno-98768f89",
-    "agency": "RE/MAX New",
-    "contact": "Paola Gisela Amarante · RE/MAX New; contacto mediante PlataStar.",
-    "price": "USD 105.000",
-    "currency": "USD",
-    "landSurfaceM2": 739,
-    "coveredSurfaceM2": null,
-    "publicationDate": "06/10/2026",
-    "observations": "La ficha describe dos parcelas contiguas que se ofrecen juntas, actualmente con casa y pileta. La descripción informa frente conjunto 20,79 m y fondo 22,68 m, pero el resumen comercial de REMAX New indica frente 3 m; medidas contradictorias a verificar con mensura. El anunciante publica FOS 60%, FOT 180%, altura orientativa 12 m/3 pisos y unos 1.330 m² edificables, además de usos PH, departamentos, comercio en PB y estudio profesional. Son referencias orientativas del aviso, sujetas a verificación municipal y catastral; no asumir que esos metros son aprobables.",
-    "lat": null,
-    "lng": null,
-    "lastCheckedAt": "2026-11-27",
-    "availabilityStatus": "No confirmada",
-    "verificationStatus": "Ficha de PlataStar/RE/MAX New accesible el 27/11/2026; publicada el 06/10/2026 y vista el 27/11/2026. Precio USD 105.000 y superficie 739 m². Frente publicado de 3 m en resumen y 20,79 m en descripción; dos parcelas e indicadores urbanísticos sujetos a mensura y certificado municipal. Disponibilidad no confirmada.",
-    "geolocationStatus": "Pendiente: dirección pública exacta, pero dos parcelas contiguas; georreferenciar solo con coincidencia inequívoca."
-  },
-  {
     "id": "terreno-miero-3751-7100-historico",
     "recordType": "Fracción de terreno · antecedente histórico retirado",
     "name": "Miero 3751 · fracción con superficie contradictoria",
@@ -6919,13 +6932,531 @@ publishedProperties.push(...[
     "landSurfaceM2": null,
     "coveredSurfaceM2": 180,
     "publicationDate": "20/11/2026",
-    "observations": "Dos unidades en un mismo predio: casa principal de tres ambientes y departamento de dos ambientes. Cinco ambientes, tres dormitorios, dos baños y una cochera según la ficha. La ficha publica 300 m² de superficie total y 180 m² cubiertos, pero no desglosa superficie del terreno por separado. El anunciante declara títulos perfectos y apta crédito. Dirección sin número; geolocalización pendiente.",
+    "observations": "Dos unidades en un mismo predio: casa principal de tres ambientes y departamento de dos ambientes. Cinco ambientes, tres dormitorios, dos baños y una cochera según la ficha. La ficha publica 300 m² de superficie total y 180 m² cubiertos, pero no desglosa superficie del terreno por separado. El anunciante declara títulos perfectos y apta crédito. Dirección sin número; geolocalización pendiente. Nueva publicación en Marcelino Soule al 1200, USD 37.000 y 195 m², podría estar en el mismo corredor, pero superficie y descripción difieren. Se conserva separada con vínculo de posible duplicado hasta cotejar parcela.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "verificationStatus": "PlataPlace registra aviso activo publicado el 20/11/2026 y visto el 27/11/2026. Precio USD 72.000, 300 m² totales y 180 m² cubiertos; disponibilidad no confirmada.",
     "geolocationStatus": "Pendiente: dirección sin altura; no asignar coordenada parcelaria."
+  }
+]);
+
+publishedProperties.push(...[
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "casa-aristobulo-del-valle-1600-560",
+    "recordType": "Casa individual · dos viviendas en un mismo lote",
+    "name": "Aristóbulo del Valle al 1600 · casa principal y segunda vivienda",
+    "locality": "Moreno",
+    "address": "Aristóbulo del Valle al 1600, Moreno",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-4-ambientes-mas-casa-2-ambientes-sobre-gran-lote-60809400.html",
+    "agency": "J. Aguilar Brokers Inmobiliarios",
+    "contact": "Julián Aguilar Amat, CMCPSI 6737 / CUCICBA 7839; consultas por Zonaprop; teléfono no visible.",
+    "price": "USD 105.000",
+    "currency": "USD",
+    "landSurfaceM2": null,
+    "coveredSurfaceM2": 120,
+    "surfaceNote": "560 m² totales y 120 m² cubiertos; no desglosa terreno. Incluye segunda casa de 2 ambientes sin superficie individual.",
+    "publicationDate": "Proppies indica publicada hoy al 27/11/2026.",
+    "observations": "Casa principal de 4 ambientes, 2 dormitorios, 1 baño y 4 cocheras, más vivienda secundaria de 2 ambientes. Confirmar si los 560 m² incluyen ambas construcciones y superficie parcelaria real.",
+    "geocodeQuery": "Aristóbulo del Valle 1600, Moreno, Buenos Aires",
+    "geolocationStatus": "Pendiente: dirección publicada, sin coordenadas verificadas.",
+    "verificationStatus": "Zonaprop accesible 27/11/2026; Proppies indica publicación del día. Disponibilidad no confirmada."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "casa-eugenia-ottone-asconape-3300-300",
+    "recordType": "Casa individual · a refaccionar",
+    "name": "Eugenia Ottone de Asconape al 3300 · casa a refaccionar",
+    "locality": "Moreno",
+    "address": "Eugenia Ottone de Asconape al 3300, Moreno",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-venta-casa-4-ambientes-cochera-moreno-60509809.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/casa-4-amb-en-venta-en-moreno-63799353",
+        "label": "Ficha sindicada: publicación hace 29 días y contacto público."
+      }
+    ],
+    "agency": "Cultura Inmobiliaria / Paula Chaves",
+    "contact": "Paula Noemí Chaves, CMCPM 3076 / CPI 9696; WhatsApp +54 11 6551-0342.",
+    "price": "USD 40.000",
+    "currency": "USD",
+    "landSurfaceM2": 300,
+    "coveredSurfaceM2": 200,
+    "surfaceNote": "Lote 300 m² (10 × 30 m), 200 m² cubiertos.",
+    "publicationDate": "Proppies indica publicada hace 29 días al 27/11/2026.",
+    "observations": "2 dormitorios, 1 baño, 1 cochera, parrilla y depósito/galpón; se anuncia a refaccionar. Verificar estado estructural, servicios, planos y título.",
+    "geocodeQuery": "Eugenia Ottone de Asconape 3300, Moreno, Buenos Aires",
+    "geolocationStatus": "Pendiente: dirección publicada; sin coordenadas verificadas.",
+    "verificationStatus": "Zonaprop accesible 27/11/2026; Proppies informa publicación hace 29 días. Disponibilidad no confirmada."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "casa-leandro-alem-carpintero-pedro-mena-263",
+    "recordType": "Casa individual",
+    "name": "Leandro N. Alem entre El Carpintero y Pedro de Mena · casa de 3 dormitorios",
+    "locality": "Moreno",
+    "address": "Leandro N. Alem, entre El Carpintero y Pedro de Mena; sin altura",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-en-venta-3-dorm.-1-bano-cocheras-263-60595631.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/casa-4-amb-en-venta-en-moreno-65784239",
+        "label": "Ficha sindicada: publicada hace 25 días."
+      }
+    ],
+    "agency": "Yacoub",
+    "contact": "WhatsApp +54 221 696-3853.",
+    "price": "USD 89.000",
+    "currency": "USD",
+    "landSurfaceM2": 263,
+    "coveredSurfaceM2": 105,
+    "surfaceNote": "263 m² totales y 105 m² cubiertos.",
+    "publicationDate": "Proppies indica publicada hace 25 días al 27/11/2026.",
+    "observations": "3 dormitorios, 1 baño y 2 cocheras; antigüedad 27 años. Ubicación entre calles, sin altura ni nomenclatura. Posible solapamiento con antecedente histórico Alem 1700; mantener separado.",
+    "potentialDuplicateOf": "casa-leandro-n-alem-1700-historico",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: ubicación por calles transversales.",
+    "verificationStatus": "Zonaprop accesible 27/11/2026; Proppies indica publicación hace 25 días. Disponibilidad no confirmada."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "casa-jose-maria-paz-cabildo-emilio-mitre-400",
+    "recordType": "Casa individual",
+    "name": "José María Paz entre Cabildo y Emilio Mitre · casa de 4 dormitorios",
+    "locality": "Moreno",
+    "address": "José María Paz entre Cabildo y Emilio Mitre; sin altura",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-en-venta-4-dorm.-2-banos-cochera-400-60800250.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/casa-5-amb-en-venta-en-moreno-76025867",
+        "label": "Ficha sindicada publicada el 27/11/2026."
+      }
+    ],
+    "agency": "Yacoub",
+    "contact": "WhatsApp +54 221 696-3853.",
+    "price": "USD 120.000",
+    "currency": "USD",
+    "landSurfaceM2": 400,
+    "coveredSurfaceM2": 200,
+    "surfaceNote": "400 m² totales y 200 m² cubiertos; sin mensura.",
+    "publicationDate": "Proppies indica publicada hoy al 27/11/2026.",
+    "observations": "4 dormitorios, 2 baños, cochera y pileta. Confirmar dirección exacta, superficie parcelaria y servicios.",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: solo se publican calles transversales.",
+    "verificationStatus": "Zonaprop accesible 27/11/2026; Proppies indica publicación del día. Disponibilidad no confirmada."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "casa-general-hornos-axteca-los-olmos-500",
+    "recordType": "Casa individual",
+    "name": "General Hornos entre Axteca y Los Olmos · casa de 4 dormitorios",
+    "locality": "Moreno",
+    "address": "General Hornos entre Axteca y Los Olmos; sin altura",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-en-venta-4-dorm.-3-banos-moreno-60809187.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/casa-5-amb-en-venta-en-moreno-76024994",
+        "label": "Ficha sindicada publicada el 27/11/2026."
+      }
+    ],
+    "agency": "Yacoub",
+    "contact": "WhatsApp +54 221 696-3853.",
+    "price": "USD 165.000",
+    "currency": "USD",
+    "landSurfaceM2": 500,
+    "coveredSurfaceM2": 200,
+    "surfaceNote": "500 m² totales y 200 m² cubiertos; superficie parcelaria no cotejada.",
+    "publicationDate": "Proppies indica publicada hoy al 27/11/2026.",
+    "observations": "4 dormitorios, 3 baños, 1 cochera y antigüedad 15 años. Ubicación por calles transversales; no confundir con lotes de Prados del Oeste al 2800.",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: sin altura ni parcela exacta.",
+    "verificationStatus": "Zonaprop accesible 27/11/2026; Proppies indica publicación del día. Disponibilidad no confirmada."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "casa-don-segundo-sombra-1700-281",
+    "recordType": "Casa individual",
+    "name": "Don Segundo Sombra 1700 · casa de 3 ambientes",
+    "locality": "Moreno",
+    "address": "Don Segundo Sombra 1700, Moreno",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-venta-casa-en-moreno-60746271.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/casa-3-amb-en-venta-en-moreno-76018408",
+        "label": "Ficha sindicada publicada el 27/11/2026."
+      }
+    ],
+    "agency": "RE/MAX Naval / RAU S.R.L.",
+    "contact": "Azucena Arevalos; responsables María Montserrat Vera, CSI 5971, y Gustavo Alejandro Browarski, CPI 1674; WhatsApp +54 11 3273-2160.",
+    "price": "USD 41.900",
+    "currency": "USD",
+    "landSurfaceM2": 281,
+    "coveredSurfaceM2": 164,
+    "surfaceNote": "281 m² totales y 164 m² cubiertos.",
+    "publicationDate": "Proppies indica publicada hoy al 27/11/2026.",
+    "observations": "2 dormitorios, 1 baño, 2 cocheras y 46 años de antigüedad. Verificar título, mantenimiento y superficie cubierta.",
+    "geocodeQuery": "Don Segundo Sombra 1700, Moreno, Buenos Aires",
+    "geolocationStatus": "Pendiente: dirección publicada; sin coordenadas verificadas.",
+    "verificationStatus": "Zonaprop accesible 27/11/2026; Proppies indica publicación del día. Disponibilidad no confirmada."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "casa-marcelino-soule-1200-195",
+    "recordType": "Casa individual · posible solapamiento de dirección",
+    "name": "Marcelino Soule al 1200 · casa de 3 ambientes",
+    "locality": "Moreno",
+    "address": "Marcelino Soule al 1200, Moreno",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-casa-3-ambientes-en-venta-moreno-60809656.html",
+    "agency": "Ramirez Mandatos y Negocios Inmobiliarios",
+    "contact": "Hipólito Enrique Ramírez / Carolina Noelia Ramírez, COMARCOMGR 71/183; Hipólito Agustín Alejo Ramírez, CUCICBA 8496; formulario Zonaprop, sin teléfono visible.",
+    "price": "USD 37.000",
+    "currency": "USD",
+    "landSurfaceM2": 195,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "195 m² totales; medidas irregulares publicadas; superficie cubierta no informada.",
+    "publicationDate": "Proppies indica publicada hoy al 27/11/2026.",
+    "observations": "2 dormitorios, 1 baño, 1 cochera y 40 años. Posible solapamiento con otra publicación de calle Soule entre Rafael y Núñez (300 m² y dos unidades); superficies y descripción difieren.",
+    "potentialDuplicateOf": "casa-soule-rafael-nunez-300-dos-unidades",
+    "geocodeQuery": "Marcelino Soule 1200, Moreno, Buenos Aires",
+    "geolocationStatus": "Pendiente: posible solapamiento con otra ficha del mismo corredor.",
+    "verificationStatus": "Zonaprop accesible 27/11/2026; Proppies indica publicación del día. Cubierta no informada; posible duplicado pendiente."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "casa-zeballos-900-140",
+    "recordType": "Casa / dúplex individual",
+    "name": "Zeballos 900 · dúplex de 5 ambientes",
+    "locality": "Moreno",
+    "address": "Zeballos 900, Moreno",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/veclcain-duplex-en-venta-en-moreno-60779323.html",
+    "sourceAlternates": [
+      {
+        "url": "https://proppies.app/propiedad/buenos-aires/moreno/casa-5-amb-en-venta-en-moreno-75093985",
+        "label": "Ficha sindicada publicada hace 3 días."
+      }
+    ],
+    "agency": "RE/MAX GO / RAU S.R.L.",
+    "contact": "German Torres Caceres; responsables Diego José Muiños, CMCPSI 5352, y Cristian Javier Alonso, CUCICBA 6252; WhatsApp +54 11 6275-2941.",
+    "price": "USD 98.000",
+    "currency": "USD",
+    "landSurfaceM2": null,
+    "coveredSurfaceM2": 100,
+    "surfaceNote": "140 m² totales y 100 m² cubiertos; no desglosa terreno.",
+    "publicationDate": "Proppies indica publicada hace 3 días al 27/11/2026.",
+    "observations": "Cabecera 5 ambientes y descripción de 4 dormitorios, 1 baño y 1 toilette; 21 años. Construcción independiente al fondo sin superficie propia informada.",
+    "geocodeQuery": "Zeballos 900, Moreno, Buenos Aires",
+    "geolocationStatus": "Pendiente: dirección publicada; sin coordenadas verificadas.",
+    "verificationStatus": "Zonaprop accesible 27/11/2026; Proppies indica publicación hace 3 días. Disponibilidad no confirmada."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No vigente",
+    "id": "casa-leandro-n-alem-1700-historico",
+    "recordType": "Casa individual · antecedente histórico no vigente",
+    "name": "Leandro N. Alem 1700 · casa de 4 ambientes (retirada)",
+    "locality": "Moreno",
+    "address": "Leandro N. Alem 1700, Moreno",
+    "source": "https://proppies.app/propiedad/buenos-aires/moreno/casa-4-amb-en-venta-en-moreno-65794693",
+    "agency": "KT Gestión Inmobiliaria",
+    "contact": "Karina Trus, CSM 2920; Proppies indica que ya no recibe consultas.",
+    "price": "USD 119.900 (último precio 05/11/2026)",
+    "currency": "USD",
+    "landSurfaceM2": 754.29,
+    "coveredSurfaceM2": 144,
+    "surfaceNote": "754,29 m² totales; 144 m² cubiertos, 18 m² semicubiertos y 592,29 m² descubiertos.",
+    "publicationDate": "Actualizada 25/10/2026; último precio 05/11/2026.",
+    "observations": "Casa de 4 ambientes, 3 dormitorios, 2 baños, piscina y galpón. Proppies indica expresamente que ya no está disponible y no recibe consultas. Se conserva como antecedente.",
+    "geocodeQuery": "Leandro N. Alem 1700, Moreno, Buenos Aires",
+    "geolocationStatus": "Pendiente: dirección publicada, sin coordenadas verificadas.",
+    "verificationStatus": "Proppies indica expresamente que ya no está disponible; último precio USD 119.900 al 05/11/2026. Registro histórico."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "terreno-mariano-moreno-lote1-650",
+    "recordType": "Terreno individual · lote 1 de fraccionamiento anunciado",
+    "name": "Nuevo loteo Mariano Moreno · lote 1 · 650,38 m²",
+    "locality": "La Reja",
+    "address": "Calle Mariano Moreno entre Gervasio Posadas y Av. Francisco Miero, La Reja, Moreno",
+    "source": "https://inmoclick.com/252859-sabrina-peluso-inmobiliaria/inmuebles/2674/ficha/terreno-en-venta-en-mariano-moreno",
+    "agency": "Sabrina Peluso Inmobiliaria, Col. 267 MGR",
+    "contact": "Formulario Inmoclick; oficina Intendente Dr. Asseff 92; teléfono no visible.",
+    "price": "USD 30.000 contado; anticipo desde USD 10.000 y saldo en cuotas, sin cronograma total.",
+    "currency": "USD",
+    "landSurfaceM2": 650.38,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "Lote 1; 20,15 × 32,5 m, con ochava a ceder.",
+    "publicationDate": "Inmoclick indica publicado hace 3 días al 27/11/2026.",
+    "observations": "Nuevo fraccionamiento; se menciona gestión/factibilidad de electricidad ante Edenor para pilar, no instalación. No se publica aprobación municipal ni plano de subdivisión.",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: lote interno sin nomenclatura catastral.",
+    "verificationStatus": "Inmoclick accesible 27/11/2026, publicada hace 3 días. Stock y aprobación no confirmados."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "terreno-mariano-moreno-lotes-2-3-4-7-8-801",
+    "recordType": "Varios lotes individuales ofrecidos en un mismo aviso",
+    "name": "Nuevo loteo Mariano Moreno · lotes 2, 3, 4, 7 y 8 · 801,30–805,80 m²",
+    "locality": "La Reja",
+    "address": "Calle Mariano Moreno entre Gervasio Posadas y Av. Francisco Miero, La Reja, Moreno",
+    "source": "https://inmoclick.com/252859-sabrina-peluso-inmobiliaria/inmuebles/2675/ficha/terreno-en-venta-en-mariano-moreno",
+    "agency": "Sabrina Peluso Inmobiliaria, Col. 267 MGR",
+    "contact": "Formulario Inmoclick; oficina Intendente Dr. Asseff 92; teléfono no visible.",
+    "price": "USD 35.000 por lote; anticipo desde USD 10.000 y saldo en cuotas.",
+    "currency": "USD",
+    "landSurfaceM2": null,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "Lotes 2,3,7,8: 805,80 m² cada uno; lote 4: 801,30 m². No sumar como una fracción.",
+    "publicationDate": "Inmoclick indica publicado hace 21 días al 27/11/2026.",
+    "observations": "Un aviso agrupa cinco lotes internos. Confirmar disponibilidad y precio de cada parcela, plano aprobado y nomenclatura catastral.",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: lotes internos sin coordenadas parcelarias.",
+    "verificationStatus": "Inmoclick accesible 27/11/2026, publicada hace 21 días. Stock y aprobación no confirmados."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "desarrollo-loteo-mariano-moreno-la-reja",
+    "recordType": "Fraccionamiento residencial anunciado · aprobación no verificada",
+    "name": "Nuevo fraccionamiento sobre calle Mariano Moreno · La Reja",
+    "locality": "La Reja",
+    "address": "Calle Mariano Moreno entre Gervasio Posadas y Av. Francisco Miero, La Reja, Moreno",
+    "source": "https://inmoup.com.ar/252859-sabrina-peluso-inmobiliaria/inmuebles/1635/ficha/terreno-en-venta-en-mariano-moreno",
+    "agency": "Sabrina Peluso Inmobiliaria, Col. 267 MGR",
+    "contact": "Formulario Inmoclick/Inmoup; oficina Intendente Dr. Asseff 92; teléfono no visible.",
+    "price": null,
+    "currency": null,
+    "landSurfaceM2": null,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "Lotes individuales anunciados de 650,38 m²; 801,30–805,80 m²; y 925 m². No se publica superficie total ni cantidad total de lotes.",
+    "observations": "Anuncio comercial de nuevo fraccionamiento; factibilidad/gestión eléctrica mencionada, no instalación. No se encontró plano aprobado, expediente municipal, infraestructura completa ni cronograma de obras. No clasificar como proyecto aprobado o en ejecución.",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: tramo de calle; polígono y lotes internos no identificados.",
+    "verificationStatus": "Inmoup accesible 27/11/2026 y tres fichas Inmoclick del mismo fraccionamiento. Anuncio comercial verificado; aprobación y ejecución no."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "terreno-loteo-la-quebrada-copernico-200-300-financiado",
+    "recordType": "Terreno individual en loteo · financiación anunciada",
+    "name": "Loteo La Quebrada · Copérnico al 200 · 300 m² · oferta financiada",
+    "locality": "Villa Zapiola / Paso del Rey",
+    "address": "Copérnico al 200, Villa Zapiola, Paso del Rey, Moreno",
+    "source": "https://www.argenprop.com/terreno-en-venta-en-villa-zapiola--18731701",
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-loteo-la-quebrada-58012634.html",
+        "label": "Otra ficha del loteo con anticipo y cuotas; lote interno no identificado."
+      }
+    ],
+    "agency": "Melogno Propiedades",
+    "contact": "Teléfono parcial +54 11 40…; formulario/WhatsApp del portal; número no completado.",
+    "price": "USD 7.500 de anticipo + 36 cuotas de USD 700; no se publica total contractual.",
+    "currency": "USD",
+    "landSurfaceM2": 300,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "300 m²; 12 m de frente por 24 m de fondo según aviso.",
+    "observations": "El aviso dice listo para escriturar y posesión inmediata; informa electricidad. No publica lote, desarrollador, cantidad de lotes ni documentación municipal. Otra publicación del mismo loteo por USD 26.000 contado tiene código distinto; posible lote distinto o duplicado.",
+    "potentialDuplicateOf": "terreno-loteo-la-quebrada-copernico-200-300-contado",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: calle y lote genérico, sin parcela individual.",
+    "verificationStatus": "Argenprop accesible la última semana y consultada 27/11/2026. Anticipo y cuotas publicados; disponibilidad y parcela no confirmadas."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No confirmada",
+    "id": "terreno-loteo-la-quebrada-copernico-200-300-contado",
+    "recordType": "Terreno individual en loteo · precio contado anunciado",
+    "name": "Loteo La Quebrada · Copérnico al 200 · 300 m² · oferta contado",
+    "locality": "Villa Zapiola / Paso del Rey",
+    "address": "Copérnico al 200, Villa Zapiola, Paso del Rey, Moreno",
+    "source": "https://www.buscainmueble.com/terreno-en-venta-en-villa-zapiola--18731662",
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-loteo-la-quebrada-57972754.html",
+        "label": "Otra publicación del loteo con precio contado; número de lote no informado."
+      }
+    ],
+    "agency": "Melogno Propiedades",
+    "contact": "Melogno Propiedades; teléfono parcial +54 11 40…; no se completa el número.",
+    "price": "USD 26.000 contado",
+    "currency": "USD",
+    "landSurfaceM2": 300,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "300 m²; medidas sindicadas 24 m de frente por 12 m de fondo.",
+    "observations": "Mismo loteo y calle que la oferta financiada, pero código de aviso distinto y sin lote interno. Puede ser otro lote o segunda publicación del mismo; no contar dos parcelas confirmadas.",
+    "potentialDuplicateOf": "terreno-loteo-la-quebrada-copernico-200-300-financiado",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: lote individual no identificado.",
+    "verificationStatus": "Buscainmueble accesible en la revisión; USD 26.000 y 300 m² publicados. Identidad frente a otra oferta pendiente."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "Pendiente de revalidación",
+    "id": "terreno-diario-la-prensa-general-savio-9200",
+    "recordType": "Fracción de terreno · potencial loteo",
+    "name": "Diario La Prensa y General Savio · fracción de 9.200 m²",
+    "locality": "Moreno",
+    "address": "Intersección de Diario La Prensa y General Savio, Moreno; sin numeración parcelaria",
+    "source": "https://terreno.mercadolibre.com.ar/MLA-1799156701-terreno-fraccion-en-venta-moreno-_JM",
+    "sourceAlternates": [
+      {
+        "url": "https://dambolena.com.ar/propiedad/terreno-venta-en-diario-la-prensa-y-general-savio--4627178",
+        "label": "Ficha Dambolena; enlace 404 en revisión."
+      },
+      {
+        "url": "https://www.argenprop.com/terreno-en-venta-en-centro-moreno--8091779",
+        "label": "Ficha sindicada de la misma fracción."
+      }
+    ],
+    "agency": "Dambolena",
+    "contact": "Dambolena, identidad verificada en MercadoLibre; consultas por plataforma. Martín Dambolena, CMCPDJMGR 205 / CUCICBA 7176; teléfono oculto.",
+    "price": "USD 400.000",
+    "currency": "USD",
+    "landSurfaceM2": 9200,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "9.200 m²; frente 92,03 m y fondo 100 m según descripción.",
+    "publicationDate": "MercadoLibre indica publicado hace 2 meses al 27/11/2026.",
+    "observations": "Anuncio ideal para loteo; declara R4A, FOS 0,5 y FOT 0,8, pero también incluye indicadores R4B. No tratar zonificación como verificada. Acepta contado, permuta y financiación. Página Dambolena devolvió 404; MercadoLibre accesible.",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: intersección sin parcela; MercadoLibre publica altura 0.",
+    "verificationStatus": "MercadoLibre accesible 27/11/2026, publicado hace 2 meses; USD 400.000 y 9.200 m². Ficha directa del corredor no disponible; zonificación y stock pendientes."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "Pendiente de revalidación",
+    "id": "terreno-parque-industrial-reconquista-3420",
+    "recordType": "Terreno industrial individual · oferta con precio ambiguo",
+    "name": "Parque Industrial Reconquista · lote de 3.420 m² · Trujui",
+    "locality": "Trujui",
+    "address": "Camino del Buen Ayre y Acceso Oeste, Trujui, Moreno; lote interno no identificado",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-en-venta-en-parque-industrial-reconquista-59179490.html",
+    "agency": "Trigo Inmuebles Industriales",
+    "contact": "Formulario Zonaprop; teléfono no expuesto.",
+    "price": "USD 150 (así aparece; unidad no especificada)",
+    "currency": "USD",
+    "landSurfaceM2": 3420,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "3.420 m² totales; lote interno no identificado.",
+    "observations": "Anuncio describe parque de 80 ha, categorías I/II/III y posibilidad de construir 60%. Municipio informó 28/05/2025 que todos los lotes disponibles ya habían sido adquiridos. Podría ser reventa; confirmar titularidad, lote, unidad de precio y stock.",
+    "sourceAlternates": [
+      {
+        "url": "https://www.moreno.gob.ar/noticia-detalle.php?id=6389",
+        "label": "Fuente municipal 28/05/2025: todos los lotes disponibles ya adquiridos."
+      }
+    ],
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: lote industrial interno sin identificación parcelaria.",
+    "verificationStatus": "Zonaprop accesible 27/11/2026; precio USD 150 sin unidad. Fuente municipal informa lotes originales adquiridos; no se confirma reventa."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No es una oferta de parcela",
+    "id": "desarrollo-distrito-ecologico-roggero",
+    "recordType": "Proyecto público urbano, ambiental y turístico · por etapas",
+    "name": "Distrito Ecológico Roggero · plataforma de desarrollo urbano, ambiental y turístico",
+    "locality": "Entorno del Dique Ing. Roggero, Partido de Moreno",
+    "address": "Polígono delimitado por Ordenanza 7164/24; Av. de la Argentinidad, ribera del Río Reconquista, Lago San Francisco, Cañada del Bajo Hondo, calles Linares y Mercedes, Av. de las Montoneras y Av. Gral. San Martín.",
+    "source": "https://iduar.moreno.gob.ar/distrito-ecologico-roggero/",
+    "sourceAlternates": [
+      {
+        "url": "https://iduar.moreno.gob.ar/2025/08/12/distrito-ecologico-roggero-un-espacio-natural-para-descubrir/",
+        "label": "IDUAR: primera etapa inaugurada 12/08/2025; área natural 550 ha."
+      },
+      {
+        "url": "https://sibom.slyt.gba.gob.ar/bulletins/10934/contents/2082238",
+        "label": "Ordenanza municipal 7164/24."
+      },
+      {
+        "url": "https://www.gba.gob.ar/comirec/noticias/comirec_particip%C3%B3_de_la_inauguraci%C3%B3n_del_%E2%80%9Cdistrito_ecol%C3%B3gico_roggero%E2%80%9D",
+        "label": "COMIREC: primera etapa inaugurada 10/12/2024."
+      }
+    ],
+    "agency": "Municipalidad de Moreno · IDUAR",
+    "contact": "administraciong_iduar@moreno.gov.ar",
+    "price": null,
+    "currency": null,
+    "landSurfaceM2": null,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "Área natural protegida de 550 ha según IDUAR 2025; no equivale a superficie total del distrito ni a parcelas comercializables.",
+    "publicationDate": "Ordenanza 7164/24 del 13/06/2024; primera etapa inaugurada 12/08/2025.",
+    "observations": "Proyecto público de desarrollo urbano, ambiental y turístico, con inversión compatible con protección natural. IDUAR informa encuentros con desarrolladores, beneficios impositivos y FonDER. Primera etapa inaugurada en 2025. No hay lotes individuales, precios ni inventario privado; no es oferta de parcela.",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: polígono normativo sin coordenadas parcelarias.",
+    "verificationStatus": "Fuente oficial IDUAR accesible 27/11/2026; Ordenanza 7164/24 y comunicación oficial sobre primera etapa inaugurada en 2025."
+  },
+  {
+    "lastCheckedAt": "2026-11-27",
+    "lat": null,
+    "lng": null,
+    "availabilityStatus": "No vigente",
+    "id": "terreno-prados-oeste2-lote132-800-historico",
+    "recordType": "Terreno individual · antecedente histórico en barrio cerrado",
+    "name": "Prados del Oeste II · lote interno 132 · 800 m² (aviso retirado)",
+    "locality": "La Reja",
+    "address": "General Hornos al 2800, Prados del Oeste II, La Reja, Moreno",
+    "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terreno-en-prados-del-oeste-2-59955023.html",
+    "sourceAlternates": [
+      {
+        "url": "https://www.zonaprop.com.ar/terrenos-venta-moreno-menos-20000-dolar.html",
+        "label": "Resultados indexados: lote 132, 800 m² y condiciones de precio."
+      }
+    ],
+    "agency": "Sabrina Peluso Inmobiliaria, Col. 267 MGR",
+    "contact": "Formulario Zonaprop; oficina Intendente Dr. Asseff 92; teléfono no visible.",
+    "price": "USD 39.000 contado; financiación USD 20.000 + 12 cuotas, total publicado USD 41.000; encabezado USD 20.000.",
+    "currency": "USD",
+    "landSurfaceM2": 800,
+    "coveredSurfaceM2": null,
+    "surfaceNote": "Lote interno 132 de 800 m² según resultado indexado.",
+    "observations": "Resultado describía lote 132, posesión inmediata y amenities. Enlace directo Zonaprop devolvió 410 el 27/11/2026; se conserva como antecedente, sin afirmar venta.",
+    "geocodeDisabled": true,
+    "geolocationStatus": "Pendiente: lote interno sin coordenada parcelaria.",
+    "verificationStatus": "Resultado indexado con precio y superficie, pero enlace directo 410 el 27/11/2026. No presentar como oferta actual."
   }
 ]);
 
