@@ -2027,7 +2027,7 @@ const nov27FollowupEntries = [
     "locality": "Trujui",
     "address": "Galileo Galilei al 7300, Trujui, Moreno",
     "source": "https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-terrenos-en-trujui-58930130.html",
-    "sourceAlternates": [{url:"https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-de-lote-en-moreno-59977491.html",label:"Aviso histórico de 324 m² / USD 25.000; enlace devolvió 410 Gone el 27/11/2026."}, {url:"https://www.argenprop.com/terreno-en-venta-en-trujui--20559575",label:"Argenprop: lote de 324 m² / USD 25.000; enlace devolvió 410 Gone el 27/11/2026."}, {url:"https://www.argenprop.com/terreno-en-venta-en-trujui--20559576",label:"Argenprop: lote de 471 m² / USD 36.000; enlace devolvió 410 Gone el 27/11/2026."}, {url:"https://inmoclick.com/17491-re-max-buro-ii/inmuebles/4957/ficha/lote-en-venta-en-galileo-galilei-7300",label:"Ficha sindicada de RE/MAX Buro II para lote de 471 m²; enlace devolvió 410 Gone."}],
+    "sourceAlternates": [{url:"https://www.zonaprop.com.ar/propiedades/clasificado/vecltrin-venta-de-lote-en-moreno-59977491.html",label:"Aviso histórico de 324 m² / USD 25.000; enlace devolvió 410 Gone el 27/11/2026."}, {url:"https://www.argenprop.com/terreno-en-venta-en-trujui--20559575",label:"Argenprop: lote de 324 m² / USD 25.000; enlace devolvió 410 Gone el 27/11/2026."}],
     "agency": "Avisos históricos de Natalio Carames y RE/MAX Buro II; intermediarios y stock actuales no revalidados.",
     "contact": "Natalio Carames (ficha histórica de 326 m²) y Sebastián García / RE/MAX Buro II (ficha histórica de 471 m²); teléfonos no revalidados.",
     "price": "Sin precio vigente verificable; avisos históricos USD 23.000–36.000",
