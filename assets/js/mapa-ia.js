@@ -109,14 +109,14 @@ const publishedProperties = [
     "currency": "USD",
     "landSurfaceM2": 300,
     "surfaceNote": "12 × 25 m · terreno descubierto",
-    "observations": "El valor de publicación corresponde al anticipo. La ficha individual informa 93 parcelas; la ficha del emprendimiento, 95. Subdivisión en trámite según la inmobiliaria. Otra ficha de Pugliese para Parque Francisco publica 300 m² a USD 16.500 en Lapacho al 2100; la ficha primaria Lapacho y Schubert publica USD 3.000 como anticipo más cuotas. Sin número de lote no se sabe si es la misma parcela o una distinta; se agrega como fuente alternativa, no como nueva oportunidad.",
+    "observations": "El valor de publicación corresponde al anticipo. La ficha individual informa 93 parcelas; la ficha del emprendimiento, 95. Subdivisión en trámite según la inmobiliaria. Otra ficha de Pugliese para Parque Francisco publica 300 m² a USD 16.500 en Lapacho al 2100; la ficha primaria Lapacho y Schubert publica USD 3.000 como anticipo más cuotas. Sin número de lote no se sabe si es la misma parcela o una distinta; se agrega como fuente alternativa, no como nueva oportunidad. La ficha alternativa de Pugliese (Lapacho al 2100, 300 m², USD 16.500, entrega enero 2027) declara que el proyecto contará con aprobación municipal y escritura individual, en futuro; no prueba que estén aprobadas. Servicios: gas envasado, electricidad, energía trifásica, alumbrado público y biodigestor; sin agua corriente/potable, cable ni cloaca. Sin número de lote, puede ser la misma parcela o una distinta.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
   ,
-    "verificationStatus": "Ficha de Pugliese para Lapacho y Schubert accesible; una segunda ficha de la misma inmobiliaria para Lapacho al 2100 publica 300 m² a USD 16.500 y entrega enero 2027. Sin identificación de lote, posible solapamiento; disponibilidad no confirmada."
+    "verificationStatus": "Ficha principal de Pugliese para Lapacho y Schubert accesible; ficha alternativa de la misma inmobiliaria para Lapacho al 2100 accesible el 27/11/2026, USD 16.500, 300 m² y entrega enero 2027. La aprobación municipal y escritura individual se anuncian en futuro; sin identificación de lote, posible solapamiento y disponibilidad no confirmada."
   },
   {
     "id": "parque-francisco-proyecto",
@@ -127,20 +127,21 @@ const publishedProperties = [
     "geocodeQuery": "Lapacho y Schubert",
     "geocodeMatch": "LAPACHO SCHUBERT",
     "source": "https://www.puglieseinmobiliaria.com.ar/d/69884-Parque-Francisco-en-Francisco-Alvarez",
+    "publicationDate": "Ficha individual reciente vista 27/11/2026; declara obra iniciada noviembre de 2025 y entrega estimada enero de 2027.",
     "agency": "Pugliese Inmobiliaria",
     "contact": "Nicolás Di Puglia Pugliese, CMCPDJMGR 225 · tel. (011) 15 5015-3003",
     "phone": "+54 11 50153003",
     "price": "Contado desde USD 14.000; anticipos desde USD 3.000 y hasta 60 cuotas fijas",
     "currency": "USD",
     "surfaceNote": "La ficha de emprendimiento informa 95 terrenos desde 300 m²; la ficha individual menciona 93.",
-    "observations": "La ficha anuncia obra iniciada en noviembre de 2025 y entrega en enero de 2027. Discrepancia de cantidad: 95 terrenos en emprendimiento y 93 parcelas en aviso individual; verificar avance, permisos y masterplan.",
+    "observations": "La ficha individual reciente de Pugliese para Lapacho al 2100 (vinculada en el registro del lote de 300 m²) reitera 95 lotes desde 300 m², obra iniciada en noviembre de 2025 y entrega estimada enero de 2027. Servicios declarados: gas envasado, energía trifásica, alumbrado público, biodigestor y electricidad; declara que no hay agua corriente, agua potable, cable ni cloaca. El texto dice que el proyecto contará con aprobación municipal y escritura individual, en futuro: no acredita que ya estén aprobadas la subdivisión ni las escrituras. Otra ficha individual había mencionado 93 parcelas; la cantidad sigue discrepante. No hay stock ni avance físico certificados independientemente.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: se consultará Georef para la dirección publicada."
   ,
-    "verificationStatus": "Ficha accesible en la última revisión registrada del 27/11/2026; disponibilidad comercial no confirmada."
+    "verificationStatus": "Fichas directas de Pugliese accesibles el 27/11/2026; la ficha individual reciente publica 95 lotes desde 300 m², obra iniciada noviembre 2025, entrega enero 2027 y precio de contado desde USD 14.000. La aprobación municipal y escritura individual se expresan como futuras, no como aprobaciones ya obtenidas. Servicios incompletos (sin agua corriente/potable, cable ni cloaca). Cantidad 93/95 discrepante; disponibilidad no confirmada."
   },
   {
     "id": "parques-morenito-lote-594",
