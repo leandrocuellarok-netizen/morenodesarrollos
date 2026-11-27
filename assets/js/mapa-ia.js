@@ -645,7 +645,7 @@ const nov27NewPublishedEntries = [
     "price": "Departamentos desde USD 51.600; anticipo desde USD 19.780 + saldo en 30 cuotas; cocheras desde USD 15.000.",
     "currency": "USD",
     "surfaceNote": "La ficha actual publica 3 unidades de 2 ambientes, 43–48 m² totales y 40–45 m² cubiertos. El texto general indica departamentos de 43–54 m².",
-    "observations": "La ficha directa consultada el 27/11/2026 lo identifica como en construcción, con inicio de obra en febrero de 2025 y finalización estimada en noviembre de 2027. Publica tres unidades en la ficha actual; confirmar stock, avance físico y condiciones de financiación con el anunciante.",
+    "observations": "La ficha consultada el 27/11/2026 publica tres unidades de 43–48 m² totales y 40–45 m² cubiertos, desde USD 51.600, con entrega estimada en noviembre de 2027 e inicio de obra declarado en febrero de 2025. Sin embargo, la misma ficha muestra simultáneamente las etiquetas “En Pozo”, “En Construcción” y “Terminado”; la etapa física real y el stock deben confirmarse con el anunciante.",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
