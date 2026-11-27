@@ -3502,14 +3502,14 @@ const nov27CurrentReviewEntries = [
     "source": "https://www.zonaprop.com.ar/propiedades/emprendimiento/ememhoin-maria-eugenia-residences-village-maria-eugenia-50620018.html",
     "agency": "Grupo Vaccaro · desarrolladora",
     "contact": "Oficina María Eugenia R&V: +54 11 4492-2817 · WhatsApp: +54 11 5053-5918 · info@grupovaccaro.com · atencionalcliente@grupovaccaro.com · showroom en Intendente Corvalán 2302.",
-    "price": "Venta desde USD 139.000 según ficha actual; la misma ficha separa alquiler desde USD 650. No usar el importe de alquiler como precio de venta.",
+    "price": "Venta desde USD 139.000; alquiler desde USD 700 según la misma ficha. No usar el importe de alquiler como precio de venta.",
     "currency": "USD",
     "lat": null,
     "lng": null,
     "lastCheckedAt": "2026-11-27",
     "availabilityStatus": "No confirmada",
     "geolocationStatus": "Pendiente: Georef debe confirmar el acceso del desarrollo; el marcador no representará una unidad individual.",
-    "verificationStatus": "Ficha directa del emprendimiento en Zonaprop accesible el 27/11/2026; sitio institucional y sucursal María Eugenia de Grupo Vaccaro consultados. La ficha mezcla etapas de obra; stock y estado de cada unidad no confirmados.",
+    "verificationStatus": "Ficha directa del emprendimiento en Zonaprop abierta el 27/11/2026; muestra 18 unidades y etiquetas de etapas mixtas. Sitio institucional y sucursal María Eugenia de Grupo Vaccaro consultados. Stock y estado de cada unidad no confirmados.",
     "phone": "+541150535918",
     "sourceAlternates": [
       {
@@ -3518,8 +3518,8 @@ const nov27CurrentReviewEntries = [
       }
     ],
     "publicationDate": "Fecha original no informada; ficha del emprendimiento consultada el 27/11/2026.",
-    "surfaceNote": "Desarrollo sobre 8 ha y 240 viviendas según la publicación. La ficha específica actual muestra 16 unidades, de 59 a 240 m² totales y 58 a 202 m² cubiertos. No se informa superficie de terreno individual para cada unidad.",
-    "observations": "La ficha directa actual de Zonaprop muestra 16 unidades y venta desde USD 139.000; separa alquiler desde USD 650. El desarrollo se describe sobre 8 ha y con 240 viviendas. La página exhibe simultáneamente etiquetas “En Pozo”, “En Construcción” y “Terminado”, además de entrega inmediata; por ello no se atribuye una etapa homogénea a todo el conjunto. Grupo Vaccaro confirma la oficina del propio emprendimiento en Intendente Corvalán 2302. Confirmar stock por unidad, etapa física, escritura, expensas y precio final.",
+    "surfaceNote": "Desarrollo sobre 8 ha y 240 viviendas según la publicación. La ficha específica consultada muestra 18 unidades, de 59 a 314 m² totales y 58 a 202 m² cubiertos. No se informa superficie de terreno individual para cada unidad.",
+    "observations": "La ficha directa de Zonaprop accesible el 27/11/2026 muestra 18 unidades, venta desde USD 139.000 y alquiler desde USD 700. El desarrollo se describe sobre 8 ha y con 240 viviendas. La página exhibe simultáneamente etiquetas “En Pozo”, “En Construcción” y “Terminado”, además de entrega inmediata; por ello no se atribuye una etapa homogénea a todo el conjunto. Grupo Vaccaro identifica el showroom del propio emprendimiento en Intendente Corvalán 2302. Confirmar stock por unidad, etapa física, escritura, expensas y precio final.",
     "geocodeQuery": "Intendente Corvalan 2302, Moreno, Buenos Aires"
   }
 ];
