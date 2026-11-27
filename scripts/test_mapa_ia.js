@@ -934,7 +934,6 @@ assert.ok(styles.includes(".map-dossier-status"));
 
 console.log("OK: pruebas del Mapa IA, exportaciones cartográficas y fichas editoriales imprimibles.");
 
-async 
 const nov27_1032ExpectedIds = [
   "terreno-9-de-julio-46-487",
   "terreno-jose-marmol-rivadavia-1418",
@@ -958,7 +957,7 @@ assert.equal(publishedProperties.find(item => item.id === "terreno-9-de-julio-46
 assert.equal(publishedProperties.find(item => item.id === "terreno-bartolome-mitre-3200-1260").availabilityStatus, "Pendiente de revalidación");
 assert.equal(publishedProperties.find(item => item.id === "casa-concordia-2545-311").availabilityStatus, "Pendiente de revalidación");
 
-function testGeorefRequestQueue() {
+async function testGeorefRequestQueue() {
   const items = [
     { id: "shared-a", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
     { id: "shared-b", geocodeQuery: "San Juan Bautista 100", geocodeMatch: "SAN JUAN BAUTISTA 100" },
