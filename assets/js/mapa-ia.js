@@ -9715,16 +9715,16 @@ function prefersReducedMotion(view) {
 function normalizeReferenceSearchText(value) {
   return String(value == null ? "" : value)
     .normalize("NFD")
-    .replace(/[\\u0300-\\u036f]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLocaleLowerCase("es-AR")
-    .replace(/[^\\p{L}\\p{N}]+/gu, " ")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
     .trim();
 }
 
 function filterReferences(items, options) {
   const settings = options || {};
   const query = normalizeReferenceSearchText(settings.query || "");
-  const queryTerms = query ? query.split(/\\s+/).filter(Boolean) : [];
+  const queryTerms = query ? query.split(/\s+/).filter(Boolean) : [];
   const category = settings.category || "all";
   const kind = settings.kind || "all";
   const evidence = settings.evidence || "all";
