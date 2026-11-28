@@ -9784,8 +9784,8 @@ function normalizeSearchText(value) {
 function editDistanceAtMostOne(a,b){if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,e=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue;}if(++e>1)return false;if(a.length===b.length){i++;j++;}else if(a.length>b.length)i++;else j++;}if(i<a.length||j<b.length)e++;return e<=1;}
 function searchTokenMatchStrength(token,word){
   if(token===word)return 3;
-  // Abbreviations, one-letter locality suffixes and numeric tokens must match exactly.
-  if(token.length<=2||/^\d+$/.test(token))return 0;
+  // Short tokens, numbers, decimals and alphanumeric cadastral identifiers must match exactly.
+  if(token.length<=2||/\d/.test(token)||/\d/.test(word))return 0;
   if(word.startsWith(token))return 2;
   if(token.length>=5&&word.length>=5&&editDistanceAtMostOne(token,word))return 1;
   return 0;
