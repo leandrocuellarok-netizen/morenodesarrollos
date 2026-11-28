@@ -9923,7 +9923,8 @@ function georefAddressMatches(item, entry) {
   const expected = normalizeAddressText(item && (item.geocodeMatch || item.address));
   const actual = normalizeAddressText(entry && entry.nomenclatura);
   const tokens = expected.split(/\s+/).filter(token => token.length > 2 || /\d/.test(token));
-  const actualTokens = new Set(actual.split(/\\s+/).filter(Boolean));\n  return Boolean(tokens.length && actualTokens.size && tokens.every(token => actualTokens.has(token)));
+  const actualTokens = new Set(actual.split(/\s+/).filter(Boolean));
+  return Boolean(tokens.length && actualTokens.size && tokens.every(token => actualTokens.has(token)));
 }
 
 const GEOREF_MAX_CONCURRENCY = 3;
