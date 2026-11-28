@@ -315,11 +315,13 @@ async function auditRoute(browser, route) {
       check(!(await page.locator("body").innerText()).includes("/section>"), "mapa-ia: el documento no expone fragmentos de etiquetas HTML");
 
       check(await page.locator(".map-sidebar").isVisible(), "mapa-ia: el panel lateral de investigación está visible");
+      check(await page.locator("#map-review-disclosure").isVisible(), "mapa-ia: la bitácora local queda accesible al final del panel lateral");
       check(await page.locator("#map").isVisible(), "mapa-ia: el mapa ocupa el espacio principal");
       check(await page.locator(".map-panel-heading").isVisible(), "mapa-ia: la cabecera del panel está visible");
       check(await page.locator(".map-panel-home").isVisible(), "mapa-ia: existe una salida clara hacia el sitio principal");
       check(await page.locator(".map-navigation-help").isVisible(), "mapa-ia: las instrucciones de arrastre, zoom, selección y reencuadre están visibles");
       check(await page.locator(".map-legend").isVisible(), "mapa-ia: la leyenda de símbolos y evidencia está visible");
+      check((await page.locator(".map-brief-intro").innerText()).includes("permanecen en el índice sin marcador"), "mapa-ia: el panel visible explica la conservación de referencias sin coordenadas");
       check((await page.locator(".map-note").innerText()).includes("Solo se dibujan puntos con fuente cartográfica y fecha de verificación"), "mapa-ia: el alcance de coordenadas trazables está explicado");
       check(await page.locator("#search").isVisible(), "mapa-ia: el buscador principal está visible");
       for (const id of ["locality-filter", "activity-filter", "next-step-filter", "scope-filter"]) {
