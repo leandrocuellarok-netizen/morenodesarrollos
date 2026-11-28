@@ -14,6 +14,10 @@ assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la
 assert.ok(source.includes("attributionControl: { compact: false }"), "la atribución OSM permanece visible también en móvil");
 assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece el enlace para reportar problemas cartográficos");
 const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
+const sectionOpenCount = (mapPage.match(/<section\\b/gi) || []).length;
+const sectionCloseCount = (mapPage.match(/<\\/section\\s*>/gi) || []).length;
+assert.equal(sectionCloseCount, sectionOpenCount, "mapa-ia/index.html: todas las secciones deben cerrarse explícitamente");
+assert.ok(!mapPage.includes("</section>/section>"), "mapa-ia/index.html: no debe quedar texto de cierre HTML malformado");
 const homePage = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
 assert.ok(mapPage.includes("<h4>Referencias territoriales</h4>"), "el fallback sin JavaScript conserva el índice territorial");
