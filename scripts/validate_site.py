@@ -257,6 +257,12 @@ def main() -> None:
                 'id="duplicate-review-summary"',
                 'id="duplicate-review-list"',
                 "Datos de prospección",
+                'id="scope-filter"',
+                '<dialog id="map-advanced-filters"',
+                'id="open-advanced-filters"',
+                'id="advanced-filter-count"',
+                'id="category" type="hidden"',
+                'id="evidence-filter" type="hidden"',
                 'option value="no-confirmada"',
                 'option value="pendiente-revalidacion"',
                 'option value="no-vigente"',
@@ -277,8 +283,10 @@ def main() -> None:
                 errors.append("mapa-ia/index.html: debe explicar la carga progresiva y la cobertura completa de filtros/exportaciones")
             if 'id="export-geojson"' not in page_source:
                 errors.append("mapa-ia/index.html: falta la descarga GeoJSON de referencias visibles")
-            if 'id="map-data-export-disclosure"' not in page_source:
-                errors.append("mapa-ia/index.html: falta el acceso secundario a exportaciones CSV y GeoJSON")
+            if 'id="export-csv"' not in page_source or 'id="export-geojson"' not in page_source:
+                errors.append("mapa-ia/index.html: faltan las descargas CSV y GeoJSON de referencias visibles")
+            if "CSV neutraliza fórmulas" not in page_source or "geometry:null" not in page_source:
+                errors.append("mapa-ia/index.html: falta explicar la seguridad del CSV y la geometría nula")
             for review_id in ('id="export-review"', 'id="review-status"', 'id="clear-review"'):
                 if review_id not in page_source:
                     errors.append(f"mapa-ia/index.html: falta el control de bitácora local {review_id}")
@@ -371,11 +379,11 @@ def main() -> None:
             else:
                 map_js = map_js_path.read_text(encoding="utf-8")
                 for required_logic in (
-                    "function initResponsiveDisclosures(doc)",
-                    "const mobileStates = new WeakMap()",
-                    "mobileStates.get(disclosure)",
-                    'matchMedia("(max-width: 760px)")',
-                    'doc.querySelectorAll("details[data-mobile-collapsible]")',
+                    "function mapScopeFromFilters(category, evidence)",
+                    "function mapFiltersFromScope(scope)",
+                    'scopeInput.addEventListener("change"',
+                    'advancedFiltersButton.addEventListener("click"',
+                    'advancedFiltersDialog.addEventListener("close"',
                     'summary: doc.getElementById("atlas-index-summary")',
                     "atlasCounts.summary.textContent",
                     "new maplibregl.Map(",
@@ -539,19 +547,15 @@ def main() -> None:
                 for required_style in (
                     ".map-canvas .maplibregl-canvas",
                     ".map-atlas-index",
-                    ".map-mobile-disclosure",
-                    ".map-filter-refine",
                     ".map-atlas-index-disclosure",
                     ".map-review-disclosure",
                     ".map-verification-disclosure",
-                    ".map-mobile-disclosure > summary:focus-visible",
                     ".map-filter-group",
                     ".map-section-heading",
                     ".map-empty-state",
                     ".map-filter-locality",
                     ".map-filter-activity",
                     ".map-filter-next-step",
-                    "minmax(300px, 2fr)",
                     ".map-filter-field",
                     ".map-toolbar-actions",
                     ".map-atlas-stat",
@@ -582,9 +586,10 @@ def main() -> None:
                     ".map-item-actions",
                     ".map-touch-controls",
                     ".map-navigation-help",
-                    ".map-data-export-disclosure",
-                    ".map-data-export-body",
-                    ".map-data-export-actions",
+                    ".map-filter-advanced-trigger",
+                    ".map-advanced-filters",
+                    ".map-advanced-filter-grid",
+                    "#open-advanced-filters",
                     ".map-review-toolbar",
                     ".map-review-toolbar-actions",
                     ".map-review-import-note",

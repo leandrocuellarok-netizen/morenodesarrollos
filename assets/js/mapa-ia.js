@@ -9412,6 +9412,32 @@ const MAP_VIEW_EVIDENCE = ["all", "documented", "hypothesis", "published-source"
 const MAP_VIEW_AVAILABILITY = ["all", "no-confirmada", "pendiente-revalidacion", "no-vigente", "no-es-oferta"];
 const MAP_VIEW_DILIGENCE = ["all", "complete", "pending"];
 
+function mapScopeFromFilters(category, evidence) {
+  const type = MAP_VIEW_CATEGORIES.includes(category) ? category : "all";
+  const level = MAP_VIEW_EVIDENCE.includes(evidence) ? evidence : "all";
+  if (type === "all" && level === "all") return "all";
+  if (type === "locality" && level === "all") return "locality";
+  if (type === "opportunity" && level === "all") return "territorial";
+  if ((type === "all" || type === "opportunity") && level === "documented") return "documented";
+  if ((type === "all" || type === "opportunity") && level === "hypothesis") return "hypothesis";
+  if ((type === "all" || type === "published") && level === "published-source") return "published";
+  if (type === "published" && level === "all") return "published";
+  return "custom";
+}
+
+function mapFiltersFromScope(scope) {
+  const mappings = {
+    all: { category: "all", evidence: "all" },
+    locality: { category: "locality", evidence: "all" },
+    territorial: { category: "opportunity", evidence: "all" },
+    documented: { category: "opportunity", evidence: "documented" },
+    hypothesis: { category: "opportunity", evidence: "hypothesis" },
+    published: { category: "published", evidence: "published-source" }
+  };
+  return mappings[scope] ? { ...mappings[scope] } : null;
+}
+
+
 function availabilityFilterKey(value) {
   const normalized = String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es-AR").trim();
   if (normalized === "no confirmada") return "no-confirmada";
@@ -10521,42 +10547,9 @@ function buildTerritorialDossierHtml(dossier) {
 
 
 
-function initResponsiveDisclosures(doc) {
-  const view = doc && doc.defaultView;
-  if (!view || typeof view.matchMedia !== "function") return;
-  const media = view.matchMedia("(max-width: 760px)");
-  const disclosures = Array.from(doc.querySelectorAll("details[data-mobile-collapsible]"));
-  if (!disclosures.length) return;
-  const mobileStates = new WeakMap();
-
-  disclosures.forEach(disclosure => {
-    const summary = disclosure.querySelector("summary");
-    if (summary) {
-      summary.addEventListener("click", () => {
-        if (media.matches) mobileStates.set(disclosure, !disclosure.open);
-      });
-    }
-  });
-
-  const applyViewportDefault = isMobile => {
-    disclosures.forEach(disclosure => {
-      if (!isMobile) disclosure.open = true;
-      else disclosure.open = mobileStates.has(disclosure) ? mobileStates.get(disclosure) : false;
-    });
-  };
-
-  applyViewportDefault(media.matches);
-  if (typeof media.addEventListener === "function") {
-    media.addEventListener("change", event => applyViewportDefault(event.matches));
-  } else if (typeof media.addListener === "function") {
-    media.addListener(event => applyViewportDefault(event.matches));
-  }
-}
-
 function initMapPage(doc) {
   const mapElement = doc.getElementById("map");
   if (!mapElement) return;
-  initResponsiveDisclosures(doc);
 
   const zoomInButton = doc.getElementById("map-zoom-in");
   const zoomOutButton = doc.getElementById("map-zoom-out");
@@ -10567,6 +10560,7 @@ function initMapPage(doc) {
   const searchInput = doc.getElementById("search");
   const searchResultsStatus = doc.getElementById("search-results-status");
   const categoryInput = doc.getElementById("category");
+  const scopeInput = doc.getElementById("scope-filter");
   const kindInput = doc.getElementById("kind-filter");
   const localityInput = doc.getElementById("locality-filter");
   const activityInput = doc.getElementById("activity-filter");
@@ -10574,6 +10568,12 @@ function initMapPage(doc) {
   const evidenceInput = doc.getElementById("evidence-filter");
   const availabilityInput = doc.getElementById("availability-filter");
   const diligenceInput = doc.getElementById("diligence-filter");
+  const advancedFiltersButton = doc.getElementById("open-advanced-filters");
+  const advancedFiltersDialog = doc.getElementById("map-advanced-filters");
+  const advancedFiltersCloseButton = doc.getElementById("close-advanced-filters");
+  const advancedFiltersDoneButton = doc.getElementById("apply-advanced-filters");
+  const advancedFiltersResetButton = doc.getElementById("reset-advanced-filters");
+  const advancedFilterCount = doc.getElementById("advanced-filter-count");
   const emptyState = doc.getElementById("map-empty-state");
   const duplicateReviewDisclosure = doc.getElementById("duplicate-review-disclosure");
   const duplicateReviewSummary = doc.getElementById("duplicate-review-summary");
@@ -10631,6 +10631,16 @@ function initMapPage(doc) {
   activityInput.value = initialViewState.activity;
   nextStepInput.value = initialViewState.nextStep;
   evidenceInput.value = initialViewState.evidence;
+  if (scopeInput) {
+    const initialScope = mapScopeFromFilters(categoryInput.value, evidenceInput.value);
+    if (initialScope === "custom") {
+      const customOption = doc.createElement("option");
+      customOption.value = "custom";
+      customOption.textContent = "Combinación guardada";
+      scopeInput.append(customOption);
+    }
+    scopeInput.value = initialScope;
+  }
   availabilityInput.value = initialViewState.availability;
   diligenceInput.value = initialViewState.diligence;
   let selectedReferenceId = initialViewState.ref;
@@ -11640,6 +11650,13 @@ function initMapPage(doc) {
   }
 
   function render() {
+    if (advancedFilterCount && advancedFiltersButton) {
+      const activeAdvancedCount = [availabilityInput.value !== "all", diligenceInput.value !== "all"].filter(Boolean).length;
+      advancedFilterCount.textContent = activeAdvancedCount ? activeAdvancedCount + " activos" : "Opcional";
+      advancedFiltersButton.setAttribute("aria-label", activeAdvancedCount ? "Más criterios, " + activeAdvancedCount + " activos" : "Más criterios");
+      advancedFiltersButton.classList.toggle("has-active-filters", activeAdvancedCount > 0);
+    }
+
     const shown = filterReferences(all, {
       query: searchInput.value,
       category: categoryInput.value,
@@ -11661,7 +11678,8 @@ function initMapPage(doc) {
         const opportunityCount = shown.filter(item => item.type === "opportunity").length;
         const localityCount = shown.filter(item => item.type === "locality").length;
         const unlocatedCount = shown.filter(item => !hasCoordinates(item)).length;
-        searchResultsStatus.textContent = shown.length + " coincidencias: " + publishedCount + " publicaciones, " + opportunityCount + " tesis y " + localityCount + " localidades; " + unlocatedCount + " fichas sin coordenadas verificables siguen en el índice.";
+        const matchLabel = shown.length === 1 ? "coincidencia" : "coincidencias";
+        searchResultsStatus.textContent = shown.length + " " + matchLabel + ": " + publishedCount + " publicaciones, " + opportunityCount + " referencias territoriales y " + localityCount + " localidades; " + unlocatedCount + " fichas sin coordenadas verificables siguen en el índice.";
       } else {
         searchResultsStatus.textContent = "0 coincidencias. Probá con menos palabras o restablecé los filtros.";
       }
@@ -11991,6 +12009,44 @@ function initMapPage(doc) {
     publishedCardsLimit = PUBLISHED_CARD_PAGE_SIZE;
     render();
   }
+
+  if (scopeInput) {
+    scopeInput.addEventListener("change", () => {
+      const mappedFilters = mapFiltersFromScope(scopeInput.value);
+      if (mappedFilters) {
+        categoryInput.value = mappedFilters.category;
+        evidenceInput.value = mappedFilters.evidence;
+      }
+      resetPublishedPaginationAndRender();
+    });
+  }
+  if (advancedFiltersButton && advancedFiltersDialog) {
+    const closeAdvancedFilters = () => {
+      if (advancedFiltersDialog.open && typeof advancedFiltersDialog.close === "function") {
+        advancedFiltersDialog.close();
+      } else {
+        advancedFiltersDialog.removeAttribute("open");
+      }
+      advancedFiltersButton.setAttribute("aria-expanded", "false");
+    };
+    advancedFiltersButton.addEventListener("click", () => {
+      if (!advancedFiltersDialog.open) {
+        if (typeof advancedFiltersDialog.showModal === "function") advancedFiltersDialog.showModal();
+        else advancedFiltersDialog.setAttribute("open", "");
+        advancedFiltersButton.setAttribute("aria-expanded", "true");
+      }
+    });
+    if (advancedFiltersCloseButton) advancedFiltersCloseButton.addEventListener("click", closeAdvancedFilters);
+    if (advancedFiltersDoneButton) advancedFiltersDoneButton.addEventListener("click", closeAdvancedFilters);
+    if (advancedFiltersResetButton) advancedFiltersResetButton.addEventListener("click", () => {
+      availabilityInput.value = "all";
+      diligenceInput.value = "all";
+      resetPublishedPaginationAndRender();
+    });
+    advancedFiltersDialog.addEventListener("close", () => advancedFiltersButton.setAttribute("aria-expanded", "false"));
+    advancedFiltersDialog.addEventListener("cancel", () => advancedFiltersButton.setAttribute("aria-expanded", "false"));
+  }
+
   searchInput.addEventListener("input", resetPublishedPaginationAndRender);
   categoryInput.addEventListener("change", resetPublishedPaginationAndRender);
   kindInput.addEventListener("change", resetPublishedPaginationAndRender);
@@ -12014,6 +12070,7 @@ function initMapPage(doc) {
   doc.getElementById("reset-map").addEventListener("click", () => {
     searchInput.value = "";
     categoryInput.value = "all";
+    if (scopeInput) scopeInput.value = "all";
     kindInput.value = "all";
     localityInput.value = "all";
     activityInput.value = "all";
@@ -12038,6 +12095,7 @@ function initMapPage(doc) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches,
+    mapScopeFromFilters, mapFiltersFromScope,
     availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, publishedContactChannels, collectPotentialDuplicatePairs,
     paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE,
     resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached,

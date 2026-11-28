@@ -7,7 +7,7 @@ const modulePath = path.join(__dirname, "../assets/js/mapa-ia.js");
 const source = fs.readFileSync(modulePath, "utf8");
 const stylePath = path.join(__dirname, "../assets/css/mapa-ia.css");
 const styles = fs.readFileSync(stylePath, "utf8");
-const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, MAX_TERRITORIAL_DOSSIER_REFERENCES, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, publishedContactChannels, collectPotentialDuplicatePairs, paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
+const { localities, opportunities, publishedProperties, all, countInventory, filterReferences, buildCsv, buildGeoJson, hasCoordinates, georefAddressMatches, resolvePublishedGeoreferences, resolvePublishedGeoreferencesCached, GEOREF_CACHE_KEY, GEOREF_CACHE_TTL_MS, GEOREF_MAX_CONCURRENCY, buildTerritorialBrief, buildTerritorialBriefHtml, MAX_TERRITORIAL_DOSSIER_REFERENCES, buildTerritorialDossier, buildTerritorialDossierDiagram, buildTerritorialDossierHtml, getSharedReferenceId, referenceContactLabel, normalizeMapViewState, parseMapViewState, buildMapViewUrl, mapScopeFromFilters, mapFiltersFromScope, buildReferenceUrl, buildOpportunityContactUrl, availabilityFilterKey, formatSourceReviewDate, publishedDiligenceSummary, publishedContactChannels, collectPotentialDuplicatePairs, paginatePublishedCards, PUBLISHED_CARD_PAGE_SIZE, shouldFitMunicipalBounds, prefersReducedMotion, reviewTasks, REVIEW_STORAGE_KEY, normalizeReviewState, readReviewState, writeReviewState, clearReviewState, updateReviewState, getReviewSummary, buildReviewExport, parseReviewImport, mergeReviewStates, isValidReviewDate, LEGACY_REVIEW_STORAGE_KEY } = require(modulePath);
 assert.ok(source.indexOf("mapElement.replaceChildren();") < source.indexOf("new maplibregl.Map("), "el contenedor se vacía antes de crear el mapa");
 assert.ok(source.includes("maplibregl.Marker"), "los puntos usan marcadores MapLibre");
 assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la capa base usa teselas OSM");
@@ -31,6 +31,16 @@ assert.ok(mapPage.includes('id="kind-filter" type="hidden"'), "el atlas conserva
 assert.ok(mapPage.includes('id="locality-filter"'), "el atlas permite filtrar por localidad");
 assert.ok(mapPage.includes('id="activity-filter"'), "el atlas permite filtrar por actividad");
 assert.ok(mapPage.includes('id="next-step-filter"'), "el atlas permite filtrar por próximo paso");
+assert.ok(mapPage.includes('id="scope-filter"'), "el atlas combina tipo de referencia y evidencia en un único control principal");
+assert.ok(mapPage.includes('id="category" type="hidden"') && mapPage.includes('id="evidence-filter" type="hidden"'), "la vista conserva los filtros heredados para enlaces compartidos");
+assert.ok(mapPage.includes('<dialog id="map-advanced-filters"') && mapPage.includes('id="availability-filter"') && mapPage.includes('id="diligence-filter"'), "los criterios de publicación permanecen disponibles en un diálogo accesible");
+assert.ok(mapPage.includes('id="open-advanced-filters"') && mapPage.includes('id="advanced-filter-count"'), "la interfaz informa cuántos criterios avanzados están activos");
+assert.ok(!mapPage.includes('id="map-data-export-disclosure"'), "se elimina el bloque explicativo redundante de exportación; las acciones siguen en la barra del mapa");
+const sidebarStart = mapPage.indexOf('<aside class="map-sidebar">');
+const sidebarEnd = mapPage.indexOf("</aside>", sidebarStart);
+assert.ok(sidebarStart >= 0 && mapPage.indexOf('id="map-review-disclosure"') > sidebarStart && mapPage.indexOf('id="map-review-disclosure"') < sidebarEnd, "la bitácora local queda accesible al final del panel lateral del mapa");
+assert.ok(mapPage.includes("Las referencias sin coordenadas trazables permanecen en el índice sin marcador"), "la introducción visible explica cómo se conservan las referencias sin geolocalización");
+assert.ok(mapPage.includes("CSV neutraliza fórmulas") && mapPage.includes("geometry:null"), "la barra de exportación explica la protección CSV y la geometría nula");
 assert.ok(mapPage.includes('id="map-empty-state"'), "la búsqueda presenta un estado vacío útil");
 assert.ok(mapPage.includes('id="search-results-status"'), "el buscador comunica en vivo la cantidad y tipo de coincidencias");
 assert.ok(mapPage.includes('class="map-panel-heading"'), "el mapa conserva una cabecera y navegación dentro del panel flotante");
@@ -52,6 +62,9 @@ assert.ok(source.includes('getElementById("kind-filter")'), "el motor conecta el
 assert.ok(source.includes("kind: kindInput.value"), "la renderización utiliza el sector seleccionado");
 assert.ok(source.includes("locality: localityInput.value") && source.includes("activity: activityInput.value") && source.includes("nextStep: nextStepInput.value"), "la renderización combina localidad, actividad y próximo paso");
 assert.ok(source.includes("function searchQueryMatches(query,searchable)") && source.includes("function normalizeSearchText(value)"), "el buscador normaliza acentos, tokens y pequeñas erratas");
+assert.ok(source.includes("function mapScopeFromFilters(category, evidence)") && source.includes("function mapFiltersFromScope(scope)"), "el selector compacto conserva el modelo de filtros heredado");
+assert.ok(source.includes("scopeInput.addEventListener(\"change\"") && source.includes("advancedFiltersDialog.addEventListener(\"close\""), "los filtros compactos y el diálogo actualizan la búsqueda y su estado accesible");
+assert.ok(!source.includes("function initResponsiveDisclosures(doc)"), "no quedan controladores de páginas desplegables que ya no existen");
 assert.ok(source.includes("searchResultsStatus.textContent") && source.includes("sourceAlternates"), "el buscador informa resultados y busca también en fuentes alternativas");
 assert.ok(source.includes('kindInput.addEventListener("change", resetPublishedPaginationAndRender)'), "el cambio de sector reinicia la página visible y vuelve a renderizar el inventario");
 assert.ok(source.includes('kindInput.value = "all"'), "restablecer limpia también el filtro sectorial");
@@ -270,9 +283,9 @@ assert.ok(source.includes("map.jumpTo(camera)"), "las referencias evitan animaci
 assert.ok(source.includes("map.jumpTo(home)"), "restablecer el mapa respeta el movimiento reducido");
 assert.ok(styles.includes(".map-share-link"), "los enlaces compartibles tienen un estilo identificable");
 assert.ok(styles.includes(".map-item-actions"), "las acciones principales de cada ficha tienen una composición propia");
-assert.ok(styles.includes(".map-data-export-disclosure"), "las exportaciones tienen un acceso secundario propio");
+assert.ok(styles.includes(".map-advanced-filters"), "los criterios secundarios usan un diálogo accesible");
 assert.ok(styles.includes(".map-filter-group"), "los filtros tienen una composición responsive propia");
-assert.ok(styles.includes("minmax(300px, 2fr)"), "la refinación dispone de ancho suficiente para sus dos selectores en escritorio");
+assert.ok(styles.includes(".map-advanced-filter-grid") && styles.includes("#open-advanced-filters"), "la refinación avanzada tiene una grilla propia y un disparador visible");
 assert.ok(styles.includes(".map-filter-field"), "los controles muestran etiquetas y foco visible");
 assert.ok(styles.includes(".map-published-status"), "las fichas distinguen visualmente el estado comercial registrado");
 assert.ok(styles.includes(".map-public-contact-link"), "los teléfonos y emails públicos tienen accesos directos con estilo propio");
@@ -298,6 +311,16 @@ assert.deepEqual(parsedMapView, {
   diligence: "pending",
   ref: "rp25"
 }, "la URL restaura búsqueda, tipo, sector, evidencia, estado de publicación y referencia");
+assert.equal(mapScopeFromFilters("all", "all"), "all", "la vista general se representa con el filtro compacto");
+assert.equal(mapScopeFromFilters("locality", "all"), "locality", "las localidades se representan con el filtro compacto");
+assert.equal(mapScopeFromFilters("opportunity", "all"), "territorial", "las referencias territoriales conservan la capa completa");
+assert.equal(mapScopeFromFilters("opportunity", "documented"), "documented", "los contextos documentados se distinguen de las hipótesis");
+assert.equal(mapScopeFromFilters("all", "hypothesis"), "hypothesis", "las hipótesis conservan sus enlaces heredados");
+assert.equal(mapScopeFromFilters("published", "published-source"), "published", "los avisos publicados se representan en una sola opción");
+assert.equal(mapScopeFromFilters("locality", "documented"), "custom", "una combinación heredada no representable se conserva como personalizada");
+assert.deepEqual(mapFiltersFromScope("documented"), { category: "opportunity", evidence: "documented" }, "el filtro compacto restaura ambos criterios de forma determinista");
+assert.deepEqual(mapFiltersFromScope("published"), { category: "published", evidence: "published-source" }, "la capa publicada aplica su clasificación de evidencia");
+assert.equal(mapFiltersFromScope("custom"), null, "una combinación heredada personalizada no se sobrescribe sin intervención");
 assert.deepEqual(parseMapViewState("?tipo=desconocido&sector=ilegal&evidencia=pendiente&vigencia=ilegal&diligencia=ilegal&ref=falso", all), {
   query: "", category: "all", kind: "all", locality: "all", activity: "all", nextStep: "all", evidence: "all", availability: "all", diligence: "all", ref: null
 }, "los parámetros no permitidos vuelven a valores seguros");
@@ -350,7 +373,7 @@ assert.equal(sharedUrl.searchParams.get("sector"), "industrial", "la ficha compa
 assert.equal(sharedUrl.searchParams.get("q"), "depósitos", "la ficha compartible conserva la búsqueda activa");
 assert.equal(sharedUrl.searchParams.get("vigencia"), "no-confirmada", "la ficha compartible conserva el filtro de estado registrado");
 assert.equal(sharedUrl.hash, "#inventario", "la URL compartible conserva el fragmento existente");
-assert.ok(mapPage.includes('id="map-data-export-disclosure"'), "las exportaciones cartográficas permanecen integradas como sección visible");
+assert.ok(mapPage.includes('id="export-csv"') && mapPage.includes('id="export-geojson"'), "las exportaciones cartográficas permanecen integradas en la barra visible del mapa");
 assert.ok(mapPage.includes("CSV para hojas de cálculo"), "la descarga CSV explica su uso");
 assert.ok(mapPage.includes("GeoJSON para QGIS y otros GIS"), "la descarga GeoJSON explica su uso");
 assert.ok(mapPage.includes('id="share-map-view"'), "el atlas ofrece una acción para compartir la vista filtrada");
