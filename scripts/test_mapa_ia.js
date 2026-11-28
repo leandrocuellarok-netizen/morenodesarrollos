@@ -14,8 +14,8 @@ assert.ok(source.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), "la
 assert.ok(source.includes("attributionControl: { compact: false }"), "la atribución OSM permanece visible también en móvil");
 assert.ok(source.includes("https://www.openstreetmap.org/fixthemap"), "se ofrece el enlace para reportar problemas cartográficos");
 const mapPage = fs.readFileSync(path.join(__dirname, "../mapa-ia/index.html"), "utf8");
-const sectionOpenCount = (mapPage.match(/<section\\b/gi) || []).length;
-const sectionCloseCount = (mapPage.match(/<\\/section\\s*>/gi) || []).length;
+const sectionOpenCount = mapPage.split("<section").length - 1;
+const sectionCloseCount = mapPage.split("</section>").length - 1;
 assert.equal(sectionCloseCount, sectionOpenCount, "mapa-ia/index.html: todas las secciones deben cerrarse explícitamente");
 assert.ok(!mapPage.includes("</section>/section>"), "mapa-ia/index.html: no debe quedar texto de cierre HTML malformado");
 const homePage = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
