@@ -9744,7 +9744,20 @@ function prefersReducedMotion(view) {
 }
 
 function normalizeSearchText(value) {
-  return String(value==null?"":value).replace(/[²]/g,"2").replace(/[³]/g,"3").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-AR").replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
+  let text=String(value==null?"":value)
+    .replace(/[²]/g,"2")
+    .replace(/[³]/g,"3")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .toLocaleLowerCase("es-AR");
+  // Normalize Argentine thousands/decimal notation: 9.897,35 -> 9897 35; 1.000 -> 1000.
+  text=text.replace(/(^|[^\d])(\d{1,3}(?:\.\d{3})+)(?:,(\d+))?(?=$|[^\d])/g,
+    (_,prefix,integer,fraction)=>prefix+integer.replace(/\./g,"")+(fraction?" "+fraction:""));
+  // Treat decimal separators as token boundaries after grouped integers are canonicalized.
+  text=text.replace(/(\d)[,.](?=\d)/g,"$1 ");
+  // Keep adjacent units and identifiers searchable in spaced and unspaced forms.
+  text=text.replace(/(\d)(?=[a-z])/g,"$1 ").replace(/([a-z])(?=\d)/g,"$1 ");
+  return text.replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
 }
 function editDistanceAtMostOne(a,b){if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,e=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue;}if(++e>1)return false;if(a.length===b.length){i++;j++;}else if(a.length>b.length)i++;else j++;}if(i<a.length||j<b.length)e++;return e<=1;}
 function searchTokenMatchStrength(token,word){
