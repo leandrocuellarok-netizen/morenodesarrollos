@@ -405,6 +405,14 @@ async function auditRoute(browser, route) {
       await page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]').waitFor({ state: "attached", timeout: 5000 });
       const nextStepCount = Number.parseInt(await page.locator("#search-results-status").innerText(), 10);
       check(Number.isInteger(nextStepCount) && nextStepCount > 0, "mapa-ia: la búsqueda indexa el próximo paso registrado y devuelve coincidencias");
+await page.locator("#reset-map").click();
+      await page.locator("#scope-filter").selectOption("territorial");
+      await page.locator("#activity-filter").selectOption("industrial");
+      await page.locator("#next-step-filter").selectOption("planning");
+      await page.locator('#opportunity-list [data-map-item="base-aerea-moreno-norte"]').waitFor({ state: "attached", timeout: 5000 });
+      const combinedActivityNextStepCount = Number.parseInt(await page.locator("#search-results-status").innerText(), 10);
+      check(Number.isInteger(combinedActivityNextStepCount) && combinedActivityNextStepCount > 0, "mapa-ia: actividad y próximo paso se combinan y mantienen el recuento de coincidencias reales");
+      await page.locator("#reset-map").click();
 
       await searchFor("SIBOM 7443/25", "opportunity");
       await page.locator('#opportunity-list [data-map-item="rp25"]').waitFor({ state: "attached", timeout: 5000 });
