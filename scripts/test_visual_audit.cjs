@@ -454,8 +454,8 @@ async function auditRoute(browser, route) {
       if (!(await catastroCard.evaluate(element => element.open))) await catastroCard.locator("summary").click();
       check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: Catastro devuelve una coincidencia real por trámite, calle y altura");
       check((await catastroCard.innerText()).includes("catastro@moreno.gov.ar") && (await catastroCard.innerText()).includes("0237 4669127 interno 1211"), "mapa-ia: la ficha muestra solo los canales oficiales publicados");
-      check(await catastroCard.locator('a[href="https://www.moreno.gob.ar/catastro.php"]').isVisible(), "mapa-ia: la ficha enlaza el portal oficial de Catastro");
-      check(await catastroCard.locator('a[href="https://moreno2.moreno.gob.ar/catastro-contribuyentes.php"]').isVisible(), "mapa-ia: la ficha expone los requisitos municipales complementarios");
+      check(await catastroCard.locator('a[href="https://moreno.gob.ar/catastro.php"]').isVisible(), "mapa-ia: la ficha enlaza el portal oficial de Catastro");
+      check(await catastroCard.locator('a[href="https://moreno.gob.ar/catastro.php?c=contribuyentes"]').isVisible(), "mapa-ia: la ficha expone los requisitos municipales complementarios");
       check(await page.locator('.map-pin[data-map-reference="catastro-municipal-moreno-plancheta"]').count() === 0, "mapa-ia: el servicio distrital de Catastro permanece en el índice sin coordenada inventada");
       await page.locator("#search").fill("Catastro Rivadavia 267 plancheta");
       await page.locator("#locality-filter").selectOption("unassigned");
