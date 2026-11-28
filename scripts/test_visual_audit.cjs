@@ -422,6 +422,9 @@ async function auditRoute(browser, route) {
       check((await habilitationCard.innerText()).includes("22/10/2026"), "mapa-ia: la ficha muestra la fecha de publicación del Boletín 334");
       check(await habilitationCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"]').isVisible(), "mapa-ia: la ficha enlaza la fuente oficial de habilitaciones");
       check(await page.locator('.map-pin[data-map-reference="ordenanza-7542-26-habilitaciones-industriales-logistica"]').count() === 0, "mapa-ia: la norma industrial no recibe coordenadas inventadas");
+      await searchFor("Ordenanza 7542/26 hipermercados 1000 m²", "opportunity");
+      await habilitationCard.waitFor({ state: "attached", timeout: 5000 });
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: 1000 m² encuentra el umbral publicado como 1.000 m²");
 
       await searchFor("Los Olivos 9.897,35 m² cesiones", "opportunity");
       const losOlivosCard = page.locator('#opportunity-list [data-map-item="los-olivos-convenio-urbanistico-7572-26"]');
@@ -432,6 +435,9 @@ async function auditRoute(browser, route) {
       check((await losOlivosCard.innerText()).includes("22/10/2026"), "mapa-ia: la ficha muestra la fecha de publicación del Boletín 334");
       check(await losOlivosCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"]').isVisible(), "mapa-ia: la ficha enlaza el convenio urbanístico oficial");
       check(await page.locator('.map-pin[data-map-reference="los-olivos-convenio-urbanistico-7572-26"]').count() === 0, "mapa-ia: Los Olivos permanece en el índice sin geolocalización no verificada");
+      await searchFor("Los Olivos 9897.35 m² cesiones", "opportunity");
+      await losOlivosCard.waitFor({ state: "attached", timeout: 5000 });
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: 9897.35 m² encuentra la superficie publicada como 9.897,35 m²");
 
       await page.locator("#search").fill("Los Olivos");
       await page.locator("#activity-filter").selectOption("land");
