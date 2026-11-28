@@ -803,6 +803,15 @@ assert.ok(filterReferences(all, { query: "Derqui 5890", category: "published" })
 assert.ok(filterReferences(all, { query: "338 m2", category: "published" }).some(item => item.id === "sumio-lote-338"), "la búsqueda indexa superficies numéricas y convierte m² a m2");
 assert.ok(filterReferences(all, { query: "Pablo Aquino Derqui 5890 338 m²", category: "published" }).some(item => item.id === "sumio-lote-338"), "la búsqueda compuesta cruza anunciante, calle y superficie");
 assert.deepEqual(
+  filterReferences(all, { query: "Ordenanza 7542/26 hipermercados 1000 m²", category: "opportunity" }).map(item => item.id),
+  ["ordenanza-7542-26-habilitaciones-industriales-logistica"],
+  "la superficie argentina 1.000 m² también coincide al consultar 1000 m²"
+);
+const losOlivosArgentineNumber = filterReferences(all, { query: "Los Olivos 9.897,35 m² cesiones", category: "opportunity" }).map(item => item.id);
+const losOlivosCanonicalNumber = filterReferences(all, { query: "Los Olivos 9897.35 m² cesiones", category: "opportunity" }).map(item => item.id);
+assert.deepEqual(losOlivosArgentineNumber, ["los-olivos-convenio-urbanistico-7572-26"]);
+assert.deepEqual(losOlivosCanonicalNumber, losOlivosArgentineNumber, "la superficie decimal mantiene la misma coincidencia con formato argentino o decimal con punto");
+assert.deepEqual(
   filterReferences(all, { query: "CUÁRTEL-V PROMEBA" }).map(item => item.id).sort(),
   filterReferences(all, { query: "cuartel v promeba" }).map(item => item.id).sort(),
   "la búsqueda ignora tildes, mayúsculas y puntuación"
