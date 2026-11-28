@@ -781,6 +781,13 @@ assert.deepEqual(
   [],
   "una publicación localizada en Moreno no se clasifica como localidad no asignada"
 );
+const districtwideCatastroRecord = all.find(item => item.id === "catastro-municipal-moreno-plancheta");
+assert.ok(districtwideCatastroRecord, "la referencia municipal de Catastro permanece en el inventario");
+assert.deepEqual(
+  filterReferences([districtwideCatastroRecord], { locality: "unassigned", category: "opportunity" }).map(item => item.id),
+  ["catastro-municipal-moreno-plancheta"],
+  "una referencia de alcance distrital no se asigna a Moreno solo porque el nombre mencione al Municipio"
+);
 const localityBoundaryFixtures = [
   { type: "opportunity", id: "cuartel-v-exact", name: "Referencia Cuartel V", locality: "Cuartel V", stage: "documented" },
   { type: "opportunity", id: "cuartel-vial", name: "Referencia Cuartel Vial", locality: "Cuartel Vial", stage: "documented" },
