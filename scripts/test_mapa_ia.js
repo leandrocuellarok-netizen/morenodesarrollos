@@ -710,7 +710,7 @@ for (const item of all) {
   assert.ok(Number.isFinite(item.lng) && item.lng > -59 && item.lng < -58, "longitud plausible para Moreno: " + item.name);
 }
 assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nomenclatura: "MARTIN FIERRO 5000, MORENO, BUENOS AIRES" }), true);
-assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nomenclatura: "MARTIN FIERRO 4900, MORENO, BUENOS AIRES" }), false);
+assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nomenclatura: "MARTIN FIERRO 4900, MORENO, BUENOS AIRES" }), false);\nassert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nomenclatura: "MARTIN FIERRO 50000, MORENO, BUENOS AIRES" }), false, "el número de puerta debe coincidir como token completo y no como subcadena");\nassert.equal(georefAddressMatches({ geocodeMatch: "SAN MARTIN 1200" }, { nomenclatura: "SAN MARTINEZ 1200, MORENO, BUENOS AIRES" }), false, "el nombre de calle debe coincidir como token completo");\nassert.equal(georefAddressMatches({ geocodeMatch: "Av. San Fernando 14" }, { nomenclatura: "AV SAN FERNANDO 14, MORENO, BUENOS AIRES" }), true, "la normalización conserva coincidencias exactas pese a tildes y puntuación");
 
 assert.equal(GEOREF_MAX_CONCURRENCY, 3, "las consultas a Georef tienen un límite conservador de concurrencia");
 assert.ok(source.includes("async function resolvePublishedGeoreferences(items, fetcher, context, concurrency)"), "la resolución de Georef está aislada y puede probarse sin red");
