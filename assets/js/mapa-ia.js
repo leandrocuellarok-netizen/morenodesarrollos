@@ -9751,9 +9751,16 @@ function normalizeSearchText(value) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g,"")
     .toLocaleLowerCase("es-AR");
-  // Normalize Argentine thousands/decimal notation: 9.897,35 -> 9897 35; 1.000 -> 1000.
+  // Normalize unambiguous grouped numbers in Argentine (9.897,35) and international (9,897.35) formats.
+  // Insignificant trailing decimal zeros are removed, so 9.897,350 and 9,897.35 share one search key.
+  const trimFraction = fraction => String(fraction || "").replace(/0+$/, "");
+  text=text.replace(/(^|[^\d])(\d{1,3}(?:,\d{3})+)\.(\d+)(?=$|[^\d])/g,
+    (_,prefix,integer,fraction)=>{const decimals=trimFraction(fraction);return prefix+integer.replace(/,/g,"")+(decimals?" "+decimals:"");});
   text=text.replace(/(^|[^\d])(\d{1,3}(?:\.\d{3})+)(?:,(\d+))?(?=$|[^\d])/g,
-    (_,prefix,integer,fraction)=>prefix+integer.replace(/\./g,"")+(fraction?" "+fraction:""));
+    (_,prefix,integer,fraction)=>{const decimals=trimFraction(fraction);return prefix+integer.replace(/\./g,"")+(decimals?" "+decimals:"");});
+  // Canonicalize ungrouped decimals too (0,44310 -> 0 4431); a single separator keeps Argentine conventions.
+  text=text.replace(/(^|[^\d])(\d+)[,.](\d+)(?=$|[^\d])/g,
+    (_,prefix,integer,fraction)=>{const decimals=trimFraction(fraction);return prefix+integer+(decimals?" "+decimals:"");});
   // Canonicalize common surface units and cadastral abbreviations without weakening exact short-token matching.
   text=text.replace(/\bmetros?\s+cuadrados?\b/g,"m2").replace(/\bhectareas?\b/g,"ha");
   // Treat decimal separators as token boundaries after grouped integers are canonicalized.
