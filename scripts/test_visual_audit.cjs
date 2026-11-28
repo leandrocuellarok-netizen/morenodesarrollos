@@ -706,7 +706,7 @@ async function auditMapFallback(browser) {
     check(await page.locator('.map-pin[aria-label*="Base Aérea"]').count() === 0, "mapa-ia fallback: una referencia sin coordenadas no recibe un marcador ficticio");
     check(await page.locator("#search").isVisible(), "mapa-ia fallback: el buscador sigue disponible");
     await page.locator("#search").fill("Base Aérea");
-    await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.includes("coincidencias"), null, { timeout: 5000 });
+    await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.includes("coincidencia"), null, { timeout: 5000 });
     check(await page.locator('[data-fallback-reference="base-aerea-moreno-norte"]').count() === 1, "mapa-ia fallback: la búsqueda encuentra una referencia sin geolocalización");
     check((await page.locator("#search-results-status").innerText()).includes("fichas sin coordenadas verificables siguen en el índice"), "mapa-ia fallback: el recuento declara las referencias sin punto");
     check(await page.locator("#map-touch-controls").isHidden(), "mapa-ia fallback: oculta controles interactivos cuando no existe motor cartográfico");
