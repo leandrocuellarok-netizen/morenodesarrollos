@@ -43,6 +43,7 @@ assert.ok(mapPage.includes("Las referencias sin coordenadas trazables permanecen
 assert.ok(mapPage.includes("CSV neutraliza fórmulas") && mapPage.includes("geometry:null"), "la barra de exportación explica la protección CSV y la geometría nula");
 assert.ok(mapPage.includes('id="map-empty-state"'), "la búsqueda presenta un estado vacío útil");
 assert.ok(mapPage.includes('id="search-results-status"'), "el buscador comunica en vivo la cantidad y tipo de coincidencias");
+assert.ok(mapPage.includes("superficies en m² o ha") && mapPage.includes("nomenclatura catastral abreviada"), "la ayuda del buscador explica las unidades y abreviaturas catastrales admitidas");
 assert.ok(mapPage.includes('class="map-panel-heading"'), "el mapa conserva una cabecera y navegación dentro del panel flotante");
 assert.equal(mapPage.split("<details").length - 1, 0, "las secciones de página ya no se ocultan detrás de disclosures móviles");
 assert.ok(mapPage.includes('id="availability-filter"'), "el atlas permite filtrar el estado registrado de las publicaciones");
@@ -778,6 +779,8 @@ assert.ok(filterReferences(all, { query: "Ordenanza 7497/26 mensuras títulos im
 assert.ok(filterReferences(all, { query: "Ordenanza 7542/26 depósitos 300 m2", category: "opportunity" }).some(item => item.id === "ordenanza-7542-26-habilitaciones-industriales-logistica"), "el buscador indexa habilitaciones, actividad y umbrales de superficie");
 assert.ok(filterReferences(all, { query: "hipermercados 1.000 m2", category: "opportunity" }).some(item => item.id === "ordenanza-7542-26-habilitaciones-industriales-logistica"), "el buscador reconoce superficies normativas publicadas");
 assert.ok(filterReferences(all, { query: "Los Olivos 9.897,35 m² cesiones", category: "opportunity" }).some(item => item.id === "los-olivos-convenio-urbanistico-7572-26"), "el buscador indexa proyecto, cesiones y superficie documentada");
+assert.ok(filterReferences(all, { query: "Circ. V Secc. B Qta. 14 Mza. 14a Parc. 2", category: "opportunity" }).some(item => item.id === "rp25"), "la nomenclatura abreviada recupera la referencia real RP25");
+assert.ok(filterReferences(all, { query: "0,4431 ha", category: "published" }).some(item => item.id === "cuartel-v-fraccion-san-fernando-galicia"), "la superficie real de 4.431 m² también se encuentra por su equivalencia exacta en hectáreas");
 assert.ok(filterReferences(all, { query: "expediente 4078-284576-I-2026", category: "opportunity" }).some(item => item.id === "los-olivos-convenio-urbanistico-7572-26"), "el buscador indexa el expediente administrativo de la fuente");
 assert.ok(filterReferences(all, { query: "solicitar reglamentación mensuras", category: "opportunity" }).some(item => item.id === "ordenanza-7497-26-titulos-imperfectos"), "el buscador indexa el próximo paso de una referencia normativa");
 assert.deepEqual(
@@ -841,6 +844,52 @@ assert.deepEqual(
   filterReferences(numericTokenFixtures, { query: "300" }).map(item => item.id),
   ["surface-300"],
   "los tokens numéricos coinciden exactamente y no confunden superficies de distinta magnitud"
+);
+const cadastralSearchFixtures = [
+  { type: "opportunity", id: "cadastral-match", name: "Referencia parcelaria", evidence: "Circunscripción V, Sección B, Quinta 14, Manzana 14a, Fracción 1, parcelas 2 y 3", stage: "documented" },
+  { type: "opportunity", id: "sector-only", name: "Contexto productivo", evidence: "Sector industrial del corredor norte", stage: "documented" }
+];
+assert.deepEqual(
+  filterReferences(cadastralSearchFixtures, { query: "Circ. V Secc. B Qta. 14 Mza. 14a Parc. 2" }).map(item => item.id),
+  ["cadastral-match"],
+  "las abreviaturas de nomenclatura catastral se normalizan sin relajar la coincidencia exacta de números"
+);
+assert.deepEqual(
+  filterReferences(cadastralSearchFixtures, { query: "sec" }).map(item => item.id),
+  ["cadastral-match"],
+  "la abreviatura Secc. se resuelve como sección y no como sector"
+);
+assert.deepEqual(
+  filterReferences(cadastralSearchFixtures, { query: "sector" }).map(item => item.id),
+  ["sector-only"],
+  "la normalización catastral no altera la búsqueda de la palabra sector"
+);
+const hectareSearchFixtures = [
+  { type: "published", id: "surface-4431", recordType: "Terreno", name: "Terreno de 4.431 m²", landSurfaceM2: 4431 },
+  { type: "published", id: "surface-4441", recordType: "Terreno", name: "Terreno de 4.441 m²", landSurfaceM2: 4441 }
+];
+assert.deepEqual(
+  filterReferences(hectareSearchFixtures, { query: "0,4431 ha" }).map(item => item.id),
+  ["surface-4431"],
+  "una superficie en m² también se encuentra por su conversión exacta a hectáreas"
+);
+assert.deepEqual(
+  filterReferences(hectareSearchFixtures, { query: "0.4431 hectáreas" }).map(item => item.id),
+  ["surface-4431"],
+  "el buscador reconoce hectáreas con separador decimal alternativo y unidad escrita"
+);
+assert.deepEqual(
+  filterReferences(hectareSearchFixtures, { query: "4431 metros cuadrados terreno" }).map(item => item.id),
+  ["surface-4431"],
+  "el buscador reconoce la unidad escrita metros cuadrados"
+);
+const coveredSurfaceFixture = [
+  { type: "published", id: "covered-90", recordType: "Casa", name: "Casa de prueba", landSurfaceM2: 300, coveredSurfaceM2: 90 }
+];
+assert.deepEqual(
+  filterReferences(coveredSurfaceFixture, { query: "90 metros cuadrados cubierta" }).map(item => item.id),
+  ["covered-90"],
+  "la superficie cubierta conserva su dimensión diferenciada de la superficie de terreno"
 );
 const rankingFixtures = [
   { type: "opportunity", id: "context-match", name: "Proyecto documentado", evidence: "Referencia contextual a Derqui 5890", stage: "documented" },
