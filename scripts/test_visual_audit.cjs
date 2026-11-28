@@ -374,14 +374,14 @@ async function auditRoute(browser, route) {
 
       await searchFor("Parques del Morenito", "published");
       await page.locator("#locality-filter").selectOption("moreno");
+      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("0 coincidencias"), null, { timeout: 5000 });
+      check(await page.locator('#published-list [data-map-item="parques-morenito-lote-594"]').count() === 0, "mapa-ia: Moreno Centro no absorbe la ficha de Tierras del Morenito");
+      await page.locator("#locality-filter").selectOption("unassigned");
       await page.waitForFunction(() => {
         const status = document.getElementById("search-results-status")?.textContent || "";
         return /^\d+ coincidencia/.test(status) && !status.startsWith("0 ");
       }, null, { timeout: 5000 });
-      check(await page.locator('#published-list [data-map-item="parques-morenito-lote-594"]').count() === 1, "mapa-ia: el filtro Moreno conserva la publicación real de Tierras del Morenito");
-      await page.locator("#locality-filter").selectOption("unassigned");
-      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("0 coincidencias"), null, { timeout: 5000 });
-      check(await page.locator('#published-list [data-map-item="parques-morenito-lote-594"]').count() === 0, "mapa-ia: la misma publicación no aparece como localidad no asignada");
+      check(await page.locator('#published-list [data-map-item="parques-morenito-lote-594"]').count() === 1, "mapa-ia: Tierras del Morenito permanece accesible bajo Sin localidad precisa");
       await page.locator("#reset-map").click();
 
       await searchFor("Derqui 5890", "published");
