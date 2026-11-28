@@ -373,7 +373,7 @@ assert.equal(sharedUrl.searchParams.get("sector"), "industrial", "la ficha compa
 assert.equal(sharedUrl.searchParams.get("q"), "depósitos", "la ficha compartible conserva la búsqueda activa");
 assert.equal(sharedUrl.searchParams.get("vigencia"), "no-confirmada", "la ficha compartible conserva el filtro de estado registrado");
 assert.equal(sharedUrl.hash, "#inventario", "la URL compartible conserva el fragmento existente");
-assert.ok(mapPage.includes('id="map-data-export-disclosure"'), "las exportaciones cartográficas permanecen integradas como sección visible");
+assert.ok(mapPage.includes('id="export-csv"') && mapPage.includes('id="export-geojson"'), "las exportaciones cartográficas permanecen integradas en la barra visible del mapa");
 assert.ok(mapPage.includes("CSV para hojas de cálculo"), "la descarga CSV explica su uso");
 assert.ok(mapPage.includes("GeoJSON para QGIS y otros GIS"), "la descarga GeoJSON explica su uso");
 assert.ok(mapPage.includes('id="share-map-view"'), "el atlas ofrece una acción para compartir la vista filtrada");
