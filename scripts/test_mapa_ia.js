@@ -21,12 +21,14 @@ assert.ok(!mapPage.includes("</section>/section>"), "mapa-ia/index.html: no debe
 const homePage = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
 assert.ok(mapPage.includes("<h4>Referencias territoriales</h4>"), "el fallback sin JavaScript conserva el índice territorial");
-for (const [label, url] of [["Ordenanza 7497/26", "https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"], ["Ordenanza 7542/26", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"], ["Los Olivos", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"]]) assert.ok(mapPage.includes(label) && mapPage.includes(url), "el fallback conserva la referencia y su fuente oficial: " + label);
+for (const [label, url] of [["Ordenanza 7497/26", "https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"], ["Ordenanza 7542/26", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"], ["Los Olivos", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"], ["Dirección de Catastro", "https://www.moreno.gob.ar/catastro.php"]]) assert.ok(mapPage.includes(label) && mapPage.includes(url), "el fallback conserva la referencia y su fuente oficial: " + label);
 const noScriptFallback = mapPage.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1] || "";
 const fallbackLists = [...noScriptFallback.matchAll(/<ul>([\s\S]*?)<\/ul>/g)];
-assert.equal((fallbackLists[1]?.[1].match(/<li>/g) || []).length, 13, "el fallback sin JavaScript conserva las trece referencias territoriales");
-assert.ok(homePage.includes("6 LOCALIDADES · 12 REFERENCIAS DOCUMENTADAS · 1 HIPÓTESIS"), "el esquema de Inicio muestra el total documental vigente");
-assert.ok(homePage.includes("12 referencias sin coordenada trazable: índice"), "el esquema de Inicio informa cuántas referencias siguen sin punto");
+assert.equal((fallbackLists[1]?.[1].match(/<li>/g) || []).length, 14, "el fallback sin JavaScript conserva las catorce referencias territoriales");
+assert.ok(noScriptFallback.includes("catastro-contribuyentes.php"), "el fallback sin JavaScript conserva el enlace de requisitos de Catastro");
+assert.ok(homePage.includes("6 LOCALIDADES · 13 REFERENCIAS DOCUMENTADAS · 1 HIPÓTESIS"), "el esquema de Inicio muestra el total documental vigente");
+assert.ok(homePage.includes("13 referencias sin coordenada trazable: índice"), "el esquema de Inicio informa cuántas referencias siguen sin punto");
+assert.ok(homePage.includes("Las otras trece referencias territoriales permanecen en el índice sin marcador"), "el esquema de Inicio conserva el conteo de fichas sin geolocalización");
 assert.ok(mapPage.includes('id="kind-filter" type="hidden"'), "el atlas conserva compatibilidad con enlaces sectoriales heredados");
 assert.ok(mapPage.includes('id="locality-filter"'), "el atlas permite filtrar por localidad");
 assert.ok(mapPage.includes('id="activity-filter"'), "el atlas permite filtrar por actividad");
@@ -421,7 +423,7 @@ assert.ok(source.includes('link.download = "moreno-mapa-ia-referencias.geojson"'
 
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
-assert.equal(opportunities.length, 13, "se conservan diez referencias territoriales y se agregan tres antecedentes normativos y urbanísticos documentados");
+assert.equal(opportunities.length, 14, "se conservan las referencias anteriores y se incorpora el antecedente institucional de Catastro");
 assert.ok(publishedProperties.length >= 28, "la capa publicada conserva el inventario histórico y las incorporaciones verificadas");
 assert.equal(all.length, localities.length + opportunities.length + publishedProperties.length, "el total coincide con localidades, referencias territoriales y publicaciones");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
@@ -1114,7 +1116,7 @@ assert.equal(clearReviewState({ removeItem: () => { throw new Error("storage blo
 const reviewExport = buildReviewExport(firstReviewState, all, "2026-11-25T06:00:00.000Z");
 assert.equal(reviewExport.schema_version, 2);
 assert.equal(reviewExport.generated_at, "2026-11-25T06:00:00.000Z");
-assert.equal(reviewExport.references.length, 13, "la exportación excluye localidades y conserva las trece referencias territoriales");
+assert.equal(reviewExport.references.length, 14, "la exportación excluye localidades y conserva las catorce referencias territoriales");
 const exportedRp25 = reviewExport.references.find(reference => reference.id === "rp25");
 assert.equal(exportedRp25.completed_tasks, 1);
 assert.equal(exportedRp25.total_tasks, 5);
