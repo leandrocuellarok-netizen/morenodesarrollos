@@ -335,9 +335,6 @@ async function auditRoute(browser, route) {
       for (const id of ["availability-filter", "diligence-filter"]) {
         check(await page.locator("#" + id).isVisible(), "mapa-ia: el criterio avanzado " + id + " está disponible dentro del diálogo");
       }
-      await page.locator("#availability-filter").selectOption("no-confirmada");
-      await page.locator("#diligence-filter").selectOption("complete");
-      check((await advancedFiltersButton.innerText()).includes("2 activos"), "mapa-ia: el botón resume la cantidad de criterios avanzados activos");
       await page.locator("#close-advanced-filters").click();
       check(!(await advancedFiltersDialog.evaluate(element => element.open)), "mapa-ia: el diálogo se cierra desde su control visible");
       check(await advancedFiltersButton.getAttribute("aria-expanded") === "false", "mapa-ia: el estado ARIA se restablece al cerrar");
@@ -354,10 +351,15 @@ async function auditRoute(browser, route) {
         await page.locator("#search").fill(query);
         await page.waitForFunction(() => {
           const status = document.getElementById("search-results-status");
-          return Boolean(status && (/\\bcoincidencias?\\b/.test(status.textContent) || status.textContent.includes("referencias cargadas")));
+          return Boolean(status && (status.textContent.includes("coincidencia") || status.textContent.includes("referencias cargadas")));
         }, null, { timeout: 5000 });
       };
 
+      await page.locator("#open-advanced-filters").click();
+      await page.locator("#availability-filter").selectOption("no-confirmada");
+      await page.locator("#diligence-filter").selectOption("complete");
+      check((await page.locator("#open-advanced-filters").innerText()).includes("2 activos"), "mapa-ia: el botón resume la cantidad de criterios avanzados activos");
+      await page.locator("#apply-advanced-filters").click();
       await searchFor("Derqui 5890", "published");
       await page.locator('#published-list [data-map-item="sumio-lote-338"]').waitFor({ state: "attached", timeout: 5000 });
       check(Number.parseInt(await page.locator("#search-results-status").innerText(), 10) > 0, "mapa-ia: los criterios avanzados combinados conservan coincidencias reales");
@@ -512,7 +514,7 @@ async function auditRoute(browser, route) {
 
       const legacyFilterPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
       await legacyFilterPage.goto(BASE_URL + "/mapa-ia/?tipo=opportunity&evidencia=documented&vigencia=no-confirmada&diligencia=complete", { waitUntil: "domcontentloaded" });
-      await legacyFilterPage.waitForFunction(() => document.getElementById("search-results-status")?.textContent.includes("referencias cargadas"), null, { timeout: 8000 });
+      await legacyFilterPage.waitForFunction(() => { const text = document.getElementById("search-results-status")?.textContent || ""; return text.includes("coincidencia") || text.includes("referencias cargadas"); }, null, { timeout: 8000 });
       check(await legacyFilterPage.locator("#scope-filter").inputValue() === "documented", "mapa-ia: un enlace heredado restaura capa y evidencia en el control compacto");
       check((await legacyFilterPage.locator("#advanced-filter-count").innerText()).includes("2 activos"), "mapa-ia: un enlace heredado restaura los dos criterios avanzados");
       await legacyFilterPage.locator("#open-advanced-filters").click();
