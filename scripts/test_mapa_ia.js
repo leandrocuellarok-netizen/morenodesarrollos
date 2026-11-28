@@ -863,6 +863,21 @@ assert.deepEqual(
   "el formato internacional 1,000.00 coincide con el umbral real publicado como 1.000 m²"
 );
 assert.deepEqual(
+  filterReferences(all, { query: "Ordenanza 7542/26 hipermercados 1,000 m²", category: "opportunity" }).map(item => item.id),
+  ["ordenanza-7542-26-habilitaciones-industriales-logistica"],
+  "el separador internacional de miles sin decimales también encuentra el umbral real de 1.000 m²"
+);
+assert.deepEqual(
+  filterReferences(all, { query: "Ordenanza 7542/26 hipermercados 1,000 metros cuadrados", category: "opportunity" }).map(item => item.id),
+  ["ordenanza-7542-26-habilitaciones-industriales-logistica"],
+  "la equivalencia de miles se conserva cuando la unidad está escrita"
+);
+assert.deepEqual(
+  filterReferences(all, { query: "Los Olivos 9,897 m² cesiones", category: "opportunity" }).map(item => item.id),
+  [],
+  "una consulta de 9.897 m² no debe coincidir con la superficie exacta de 9.897,35 m²"
+);
+assert.deepEqual(
   filterReferences(all, { query: "Los Olivos 9,897.36 m² cesiones", category: "opportunity" }).map(item => item.id),
   [],
   "la normalización numérica no aproxima ni confunde superficies distintas"
@@ -891,12 +906,23 @@ assert.deepEqual(
 );
 const numericTokenFixtures = [
   { type: "opportunity", id: "surface-300", name: "Lote 300 m²", landSurfaceM2: 300, stage: "documented" },
+  { type: "opportunity", id: "surface-3005", name: "Lote 300,5 m²", landSurfaceM2: 300.5, stage: "documented" },
   { type: "opportunity", id: "surface-3000", name: "Lote 3000 m²", landSurfaceM2: 3000, stage: "documented" }
 ];
 assert.deepEqual(
   filterReferences(numericTokenFixtures, { query: "300" }).map(item => item.id),
   ["surface-300"],
-  "los tokens numéricos coinciden exactamente y no confunden superficies de distinta magnitud"
+  "los tokens numéricos coinciden exactamente y no confunden superficies enteras, decimales ni magnitudes distintas"
+);
+assert.deepEqual(
+  filterReferences(numericTokenFixtures, { query: "300,5 m²" }).map(item => item.id),
+  ["surface-3005"],
+  "la superficie decimal conserva su valor como token numérico atómico"
+);
+assert.deepEqual(
+  filterReferences(numericTokenFixtures, { query: "300.50 m²" }).map(item => item.id),
+  ["surface-3005"],
+  "los separadores decimales alternativos y los ceros finales conservan la misma superficie exacta"
 );
 const cadastralSearchFixtures = [
   { type: "opportunity", id: "cadastral-match", name: "Referencia parcelaria", evidence: "Circunscripción V, Sección B, Quinta 14, Manzana 14a, Fracción 1, parcelas 2 y 3", stage: "documented" },

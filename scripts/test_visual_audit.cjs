@@ -445,6 +445,10 @@ async function auditRoute(browser, route) {
       check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: los ceros decimales finales no impiden encontrar la superficie real");
       await searchFor("Ordenanza 7542/26 hipermercados 1,000.00 m²", "opportunity");
       check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: 1,000.00 coincide con el umbral normativo 1.000 m²");
+      await searchFor("Ordenanza 7542/26 hipermercados 1,000 m²", "opportunity");
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: 1,000 m² con coma de miles y sin decimales recupera la norma real");
+      await searchFor("Los Olivos 9,897 m² cesiones", "opportunity");
+      check((await page.locator("#search-results-status").innerText()).startsWith("0 coincidencias"), "mapa-ia: 9.897 m² no se confunde con la superficie documentada de 9.897,35 m²");
 
       await page.locator("#search").fill("Los Olivos");
       await page.locator("#activity-filter").selectOption("land");
