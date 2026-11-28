@@ -9747,7 +9747,62 @@ function normalizeSearchText(value) {
   return String(value==null?"":value).replace(/[²]/g,"2").replace(/[³]/g,"3").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-AR").replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
 }
 function editDistanceAtMostOne(a,b){if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,e=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue;}if(++e>1)return false;if(a.length===b.length){i++;j++;}else if(a.length>b.length)i++;else j++;}if(i<a.length||j<b.length)e++;return e<=1;}
-function searchQueryMatches(query,searchable){const q=normalizeSearchText(query);if(!q)return true;const words=normalizeSearchText(searchable).split(" ").filter(Boolean);return q.split(" ").filter(Boolean).every(token=>words.some(word=>word===token||word.startsWith(token)||(token.length>=5&&word.length>=5&&editDistanceAtMostOne(token,word))));}
+function searchTokenMatchStrength(token,word){
+  if(token===word)return 3;
+  // Abbreviations, one-letter locality suffixes and numeric tokens must match exactly.
+  if(token.length<=2||/^\d+$/.test(token))return 0;
+  if(word.startsWith(token))return 2;
+  if(token.length>=5&&word.length>=5&&editDistanceAtMostOne(token,word))return 1;
+  return 0;
+}
+function searchQueryMatches(query,searchable){
+  const q=normalizeSearchText(query);
+  if(!q)return true;
+  const words=normalizeSearchText(searchable).split(" ").filter(Boolean);
+  return q.split(" ").filter(Boolean).every(token=>words.some(word=>searchTokenMatchStrength(token,word)>0));
+}
+function referenceSearchFields(item){
+  const alternateSources=Array.isArray(item&&item.sourceAlternates)?item.sourceAlternates.flatMap(source=>[source&&source.label,source&&source.url]):[];
+  const surfaceSearch=[
+    item&&item.landSurfaceM2!=null?String(item.landSurfaceM2)+" m2 superficie terreno":"",
+    item&&item.coveredSurfaceM2!=null?String(item.coveredSurfaceM2)+" m2 superficie cubierta":""
+  ];
+  return [
+    {weight:100,values:[item&&item.id,item&&item.name,item&&item.address,item&&item.locality]},
+    {weight:82,values:[item&&item.activity,item&&item.kind,item&&kindLabel[item&&item.kind],item&&item.business,item&&item.recordType]},
+    {weight:78,values:[item&&item.next]},
+    {weight:72,values:[item&&item.evidence,item&&item.evidenceType,item&&item.confidence,item&&item.status]},
+    {weight:68,values:[item&&item.source,item&&item.sourceDate,item&&item.publicationDate,...alternateSources]},
+    {weight:64,values:[item&&item.price,item&&item.currency,item&&item.landSurfaceM2,item&&item.coveredSurfaceM2,item&&item.surfaceNote,...surfaceSearch]},
+    {weight:48,values:[item&&item.info,item&&item.agency,item&&item.contact,item&&item.verificationStatus,item&&item.availabilityStatus,item&&item.lastCheckedAt,item&&item.observations,item&&item.geolocationStatus]}
+  ].map(group=>({
+    weight:group.weight,
+    text:group.values.filter(value=>value!=null&&String(value).trim()!=="").join(" ")
+  })).filter(group=>group.text);
+}
+function searchQueryScore(query,item){
+  const normalizedQuery=normalizeSearchText(query);
+  if(!normalizedQuery)return 0;
+  const tokens=normalizedQuery.split(" ").filter(Boolean);
+  const fields=referenceSearchFields(item).map(field=>({...field,normalized:normalizeSearchText(field.text)}));
+  let score=0;
+  for(const token of tokens){
+    let best=0;
+    for(const field of fields){
+      for(const word of field.normalized.split(" ")){
+        const strength=searchTokenMatchStrength(token,word);
+        if(!strength)continue;
+        const qualityBonus=strength===3?30:strength===2?12:4;
+        best=Math.max(best,field.weight+qualityBonus);
+      }
+    }
+    if(!best)return null;
+    score+=best;
+  }
+  const phraseWeight=fields.reduce((best,field)=>field.normalized.includes(normalizedQuery)?Math.max(best,field.weight):best,0);
+  if(phraseWeight)score+=phraseWeight*0.6+20;
+  return score;
+}
 const LOCALITY_FILTER_TERMS={moreno:["moreno centro"],paso:["paso del rey"],lareja:["la reja"],alvarez:["francisco alvarez"],trujui:["trujui"],cuartel:["cuartel v"]};
 const ACTIVITY_FILTER_TERMS={industrial:["industrial","logistico","logistica","productivo","deposito","pyme","carga","transporte","flota","galpon"],commercial:["comercial","comercio","servicios","gastronomia","oficina","local comercial","estacionamiento"],tourism:["turismo","recreacion","recreativo","naturaleza","quinta","dique","hotel"],land:["terreno","lote","parcela","suelo","fraccion","predio","quinta"],residential:["residencial","vivienda","casa","barrio","loteo","habitacional"],infrastructure:["infraestructura","saneamiento","cloacal","desague","pluvial","vial","parque urbano","equipamiento","urbanizacion","obras"]};
 const NEXT_STEP_FILTER_TERMS={cadastral:["catastro","nomenclatura","mensura","dominio","titularidad","plancheta","parcela"],planning:["zonificacion","normativa","indicadores","fos","fot","usos","urbanistica","certificado","restricciones"],publication:["publicacion","aviso","vigencia","revalidacion","disponibilidad","stock","precio","fuente","revisar"],contact:["solicitar","consultar","contactar","pedir","comunicar","llamar","contacto","documentacion","expediente"],fieldwork:["identificar","relevar","recorrer","visita","campo","frente","acceso","poligono"],feasibility:["servicios","factibilidad","hidraul","ambient","drenaje","infraestructura","accesos","cota"]};
@@ -9773,18 +9828,20 @@ function filterReferences(items,options){
  const s=options||{},q=String(s.query||"").trim(),category=s.category||"all",kind=s.kind||"all";
  const locality=MAP_VIEW_LOCALITIES.includes(s.locality)?s.locality:"all",activity=MAP_VIEW_ACTIVITIES.includes(s.activity)?s.activity:"all",nextStep=MAP_VIEW_NEXT_STEPS.includes(s.nextStep)?s.nextStep:"all";
  const evidence=MAP_VIEW_EVIDENCE.includes(s.evidence)?s.evidence:"all",availability=MAP_VIEW_AVAILABILITY.includes(s.availability)?s.availability:"all",diligence=MAP_VIEW_DILIGENCE.includes(s.diligence)?s.diligence:"all";
- return items.filter(item=>{
+ const filtered=items.filter(item=>{
   const categoryMatches=category==="all"||(category==="locality"&&item.type==="locality")||(category==="opportunity"&&item.type==="opportunity")||(category==="published"&&item.type==="published");
   const kindMatches=kind==="all"||(item.type==="opportunity"&&item.kind===kind);
   const localityMatches=referenceMatchesLocality(item,locality),activityMatches=referenceMatchesActivity(item,activity),nextStepMatches=referenceMatchesNextStep(item,nextStep);
   const evidenceMatches=evidence==="all"||(evidence==="published-source"&&item.type==="published")||(item.type==="opportunity"&&evidence===item.stage);
   const availabilityMatches=availability==="all"||(item.type==="published"&&availabilityFilterKey(item.availabilityStatus)===availability);
   const d=item.type==="published"?publishedDiligenceSummary(item):null,diligenceMatches=diligence==="all"||(item.type==="published"&&d&&(d.complete?"complete":"pending")===diligence);
-  const alternateSources=Array.isArray(item.sourceAlternates)?item.sourceAlternates.flatMap(source=>[source&&source.label,source&&source.url]):[];
-  const surfaceSearch=[item.landSurfaceM2!=null?String(item.landSurfaceM2)+" m2 superficie terreno":"",item.coveredSurfaceM2!=null?String(item.coveredSurfaceM2)+" m2 superficie cubierta":""];
-  const searchable=[item.id,item.name,item.info,item.business,item.status,item.evidence,item.next,item.kind,kindLabel[item.kind],item.activity,item.recordType,item.locality,item.address,item.agency,item.contact,item.price,item.currency,item.verificationStatus,item.availabilityStatus,item.lastCheckedAt,item.observations,item.surfaceNote,item.landSurfaceM2,item.coveredSurfaceM2,...surfaceSearch,item.publicationDate,item.geolocationStatus,item.evidenceType,item.confidence,item.sourceDate,item.source,...alternateSources].filter(Boolean).join(" ");
+  const searchable=referenceSearchFields(item).map(field=>field.text).join(" ");
   return categoryMatches&&kindMatches&&localityMatches&&activityMatches&&nextStepMatches&&evidenceMatches&&availabilityMatches&&diligenceMatches&&searchQueryMatches(q,searchable);
  });
+ if(!normalizeSearchText(q))return filtered;
+ return filtered.map((item,index)=>({item,index,score:searchQueryScore(q,item)}))
+  .sort((left,right)=>right.score-left.score||left.index-right.index)
+  .map(entry=>entry.item);
 }
 
 function countInventory(items) {
