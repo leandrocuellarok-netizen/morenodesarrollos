@@ -715,7 +715,11 @@ assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nome
 assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nomenclatura: "MARTIN FIERRO 4900, MORENO, BUENOS AIRES" }), false);
 assert.equal(georefAddressMatches({ geocodeMatch: "MARTIN FIERRO 5000" }, { nomenclatura: "MARTIN FIERRO 50000, MORENO, BUENOS AIRES" }), false, "el número de puerta debe coincidir como token completo y no como subcadena");
 assert.equal(georefAddressMatches({ geocodeMatch: "SAN MARTIN 1200" }, { nomenclatura: "SAN MARTINEZ 1200, MORENO, BUENOS AIRES" }), false, "el nombre de calle debe coincidir como token completo");
-assert.equal(georefAddressMatches({ geocodeMatch: "Av. San Fernando 14" }, { nomenclatura: "AV SAN FERNANDO 14, MORENO, BUENOS AIRES" }), true, "la normalización conserva coincidencias exactas pese a tildes y puntuación");
+assert.equal(georefAddressMatches({ geocodeMatch: "Av. San Fernando 14" }, { nomenclatura: "AV SAN FERNANDO 14, MORENO, BUENOS AIRES" }), true, "la abreviatura Av. coincide con Avenida aunque Georef use Av");
+assert.equal(georefAddressMatches({ geocodeMatch: "Av. San Fernando 14" }, { nomenclatura: "CALLE SAN FERNANDO 14, MORENO, BUENOS AIRES" }), false, "una avenida no puede geocodificarse sobre una calle homónima");
+assert.equal(georefAddressMatches({ geocodeMatch: "Avda. San Fernando 14" }, { nomenclatura: "AVENIDA SAN FERNANDO 14, MORENO, BUENOS AIRES" }), true, "Avda. y Avenida se normalizan como el mismo tipo vial");
+assert.equal(georefAddressMatches({ geocodeMatch: "RP 24" }, { nomenclatura: "RUTA PROVINCIAL 24, MORENO, BUENOS AIRES" }), true, "RP coincide con Ruta Provincial");
+assert.equal(georefAddressMatches({ geocodeMatch: "RP 24" }, { nomenclatura: "RUTA NACIONAL 24, MORENO, BUENOS AIRES" }), false, "Ruta Provincial no coincide con Ruta Nacional");
 
 assert.equal(GEOREF_MAX_CONCURRENCY, 3, "las consultas a Georef tienen un límite conservador de concurrencia");
 assert.ok(source.includes("async function resolvePublishedGeoreferences(items, fetcher, context, concurrency)"), "la resolución de Georef está aislada y puede probarse sin red");
@@ -1371,6 +1375,8 @@ async function testGeorefRequestQueue() {
     { id: "ambiguous", geocodeQuery: "Ambigua 500", geocodeMatch: "AMBIGUA 500" },
     { id: "failed", geocodeQuery: "Falla 10", geocodeMatch: "FALLA 10" },
     { id: "out-of-range", geocodeQuery: "Fuera de rango 1", geocodeMatch: "FUERA DE RANGO 1" },
+    { id: "road-type-mismatch", geocodeQuery: "Av. San Fernando 14", geocodeMatch: "Av. San Fernando 14" },
+    { id: "road-type-alias", geocodeQuery: "Avda. San Fernando 15", geocodeMatch: "Avda. San Fernando 15" },
     { id: "approximate", geocodeQuery: "Galileo Galilei al 7300", geocodeDisabled: true }
   ];
   let active = 0;
@@ -1407,6 +1413,26 @@ async function testGeorefRequestQueue() {
           })
         };
       }
+      if (query === "Av. San Fernando 14") {
+        return {
+          ok: true,
+          json: async () => ({
+            direcciones: [
+              { nomenclatura: "CALLE SAN FERNANDO 14, MORENO, BUENOS AIRES", ubicacion: { lat: "-34.60", lon: "-58.80" } }
+            ]
+          })
+        };
+      }
+      if (query === "Avda. San Fernando 15") {
+        return {
+          ok: true,
+          json: async () => ({
+            direcciones: [
+              { nomenclatura: "AVENIDA SAN FERNANDO 15, MORENO, BUENOS AIRES", ubicacion: { lat: "-34.61", lon: "-58.81" } }
+            ]
+          })
+        };
+      }
       return {
         ok: true,
         json: async () => ({
@@ -1421,8 +1447,8 @@ async function testGeorefRequestQueue() {
   };
 
   const result = await resolvePublishedGeoreferences(items, fakeFetch, null, 2);
-  assert.equal(calls.length, 5, "una dirección repetida genera una sola consulta");
-  assert.equal(new Set(calls).size, 5, "cada consulta única se procesa una vez");
+  assert.equal(calls.length, 7, "una dirección repetida genera una sola consulta y los dos casos de tipo vial se consultan una vez");
+  assert.equal(new Set(calls).size, 7, "cada consulta única se procesa una vez");
   assert.ok(maximumActive <= 2, "la cola respeta el límite de dos solicitudes simultáneas de la prueba");
   assert.ok(maximumActive > 1, "la cola conserva concurrencia controlada sin serializar todas las consultas");
   assert.deepEqual(result.get("San Juan Bautista 100"), {
@@ -1434,6 +1460,12 @@ async function testGeorefRequestQueue() {
   assert.equal(result.get("Ambigua 500"), null, "las coincidencias ambiguas no generan coordenadas");
   assert.equal(result.get("Falla 10"), null, "un error de red queda pendiente sin interrumpir la cola");
   assert.equal(result.get("Fuera de rango 1"), null, "coordenadas fuera del rango geográfico válido se rechazan");
+  assert.equal(result.get("Av. San Fernando 14"), null, "una respuesta de calle homónima no se convierte en coordenada para una avenida");
+  assert.deepEqual(result.get("Avda. San Fernando 15"), {
+    lat: -34.61,
+    lng: -58.81,
+    nomenclatura: "AVENIDA SAN FERNANDO 15, MORENO, BUENOS AIRES"
+  }, "la equivalencia Avda/Avenida conserva una coincidencia vial válida");
   assert.equal(result.has("Galileo Galilei al 7300"), false, "una ubicación aproximada marcada como no geocodificable no consulta Georef");
   assert.equal((await resolvePublishedGeoreferences([], fakeFetch)).size, 0, "un inventario vacío no genera consultas");
 }
