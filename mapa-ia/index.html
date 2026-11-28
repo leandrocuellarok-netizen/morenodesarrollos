@@ -97,7 +97,7 @@
           </select>
         </label>
         <label class="map-filter-field map-filter-diligence" for="diligence-filter">
-          <span>Datos informados en la ficha</span>
+          <span>Datos de prospección informados en la ficha</span>
           <select id="diligence-filter" aria-label="Filtrar publicaciones por presencia de datos de prospección">
             <option value="all">Todas las fichas</option>
             <option value="complete">7 datos informados</option>
@@ -124,7 +124,7 @@
     <output id="dossier-status" class="map-dossier-status" aria-live="polite"></output>
     <button class="map-export" id="export-csv" type="button" disabled>Descargar CSV ↓</button>
     <button class="map-export" id="export-geojson" type="button" disabled>Descargar GeoJSON ↓</button>
-    <span class="map-dossier-note">Genera un documento imprimible con las referencias visibles, sus fuentes y sus pendientes. No incorpora la bitácora local ni expedientes internos. El CSV neutraliza fórmulas; el GeoJSON conserva geometry:null cuando no hay coordenadas trazables.</span>
+    <span class="map-dossier-note">Genera un documento imprimible con las referencias visibles, sus fuentes y sus pendientes. No incorpora la bitácora local ni expedientes internos. CSV para hojas de cálculo; GeoJSON para QGIS y otros GIS. El CSV neutraliza fórmulas; el GeoJSON conserva geometry:null cuando no hay coordenadas trazables.</span>
     <span class="eyebrow" id="map-status" aria-live="polite">Mapa de trabajo · datos en revisión</span>
   </div>
 </div>
