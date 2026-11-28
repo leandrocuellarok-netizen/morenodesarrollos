@@ -9846,6 +9846,11 @@ function searchQueryScore(query,item){
   return score;
 }
 const LOCALITY_FILTER_TERMS={moreno:["moreno centro"],paso:["paso del rey"],lareja:["la reja"],alvarez:["francisco alvarez"],trujui:["trujui"],cuartel:["cuartel v"]};
+function containsNormalizedPhrase(value,phrase){
+  const normalizedValue=normalizeSearchText(value);
+  const normalizedPhrase=normalizeSearchText(phrase);
+  return Boolean(normalizedPhrase)&&(" "+normalizedValue+" ").includes(" "+normalizedPhrase+" ");
+}
 const ACTIVITY_FILTER_TERMS={industrial:["industrial","logistico","logistica","productivo","deposito","pyme","carga","transporte","flota","galpon"],commercial:["comercial","comercio","servicios","gastronomia","oficina","local comercial","estacionamiento"],tourism:["turismo","recreacion","recreativo","naturaleza","quinta","dique","hotel"],land:["terreno","lote","parcela","suelo","fraccion","predio","quinta"],residential:["residencial","vivienda","casa","barrio","loteo","habitacional"],infrastructure:["infraestructura","saneamiento","cloacal","desague","pluvial","vial","parque urbano","equipamiento","urbanizacion","obras"]};
 const NEXT_STEP_FILTER_TERMS={cadastral:["catastro","nomenclatura","mensura","dominio","titularidad","plancheta","parcela"],planning:["zonificacion","normativa","indicadores","fos","fot","usos","urbanistica","certificado","restricciones"],publication:["publicacion","aviso","vigencia","revalidacion","disponibilidad","stock","precio","fuente","revisar"],contact:["solicitar","consultar","contactar","pedir","comunicar","llamar","contacto","documentacion","expediente"],fieldwork:["identificar","relevar","recorrer","visita","campo","frente","acceso","poligono"],feasibility:["servicios","factibilidad","hidraul","ambient","drenaje","infraestructura","accesos","cota"]};
 function referenceMatchesLocality(item,key){
@@ -9854,9 +9859,9 @@ function referenceMatchesLocality(item,key){
   const name=normalizeSearchText(item&&item.name||"");
   const address=normalizeSearchText(item&&item.address||"");
   const searchable=[locality,address,(item&&item.type==="locality")?name:"",(item&&item.type==="opportunity")?name:""].filter(Boolean).join(" ");
-  if(key==="moreno")return locality==="moreno"||locality.includes("moreno centro")||(item&&item.type==="locality"&&name.includes("moreno centro"));
-  if(key==="unassigned")return !Object.values(LOCALITY_FILTER_TERMS).some(a=>a.some(x=>searchable.includes(x)));
-  return (LOCALITY_FILTER_TERMS[key]||[]).some(x=>searchable.includes(x));
+  if(key==="moreno")return locality==="moreno"||containsNormalizedPhrase(locality,"moreno centro")||(item&&item.type==="locality"&&containsNormalizedPhrase(name,"moreno centro"));
+  if(key==="unassigned")return !Object.values(LOCALITY_FILTER_TERMS).some(a=>a.some(x=>containsNormalizedPhrase(searchable,x)));
+  return (LOCALITY_FILTER_TERMS[key]||[]).some(x=>containsNormalizedPhrase(searchable,x));
 }
 function referenceMatchesActivity(item,key){if(key==="all")return true;const t=normalizeSearchText([item&&item.activity,item&&item.kind,item&&kindLabel[item.kind],item&&item.name,item&&item.business,item&&item.recordType,item&&item.observations,item&&item.evidence].filter(Boolean).join(" "));return Boolean(item&&item.kind===key)||(ACTIVITY_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
 function referenceMatchesNextStep(item,key){if(key==="all")return true;const pub=item&&item.type==="published"?"confirmar vigencia precio stock documentacion contacto":"";const t=normalizeSearchText([item&&item.next,item&&item.status,item&&item.observations,item&&item.verificationStatus,pub].filter(Boolean).join(" "));return (NEXT_STEP_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
