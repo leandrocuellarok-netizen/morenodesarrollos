@@ -9753,11 +9753,15 @@ function normalizeSearchText(value) {
   // Normalize Argentine thousands/decimal notation: 9.897,35 -> 9897 35; 1.000 -> 1000.
   text=text.replace(/(^|[^\d])(\d{1,3}(?:\.\d{3})+)(?:,(\d+))?(?=$|[^\d])/g,
     (_,prefix,integer,fraction)=>prefix+integer.replace(/\./g,"")+(fraction?" "+fraction:""));
+  // Canonicalize common surface units and cadastral abbreviations without weakening exact short-token matching.
+  text=text.replace(/\bmetros?\s+cuadrados?\b/g,"m2").replace(/\bhectareas?\b/g,"ha");
   // Treat decimal separators as token boundaries after grouped integers are canonicalized.
   text=text.replace(/(\d)[,.](?=\d)/g,"$1 ");
   // Keep adjacent units and identifiers searchable in spaced and unspaced forms.
   text=text.replace(/(\d)(?=[a-z])/g,"$1 ").replace(/([a-z])(?=\d)/g,"$1 ");
-  return text.replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
+  const normalized=text.replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
+  const cadastralAliases={circ:"circunscripcion",sec:"seccion",secc:"seccion",qta:"quinta",mz:"manzana",mza:"manzana",parc:"parcela",frac:"fraccion",fracc:"fraccion"};
+  return normalized.split(" ").map(token=>cadastralAliases[token]||token).join(" ");
 }
 function editDistanceAtMostOne(a,b){if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,e=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue;}if(++e>1)return false;if(a.length===b.length){i++;j++;}else if(a.length>b.length)i++;else j++;}if(i<a.length||j<b.length)e++;return e<=1;}
 function searchTokenMatchStrength(token,word){
@@ -9776,10 +9780,17 @@ function searchQueryMatches(query,searchable){
 }
 function referenceSearchFields(item){
   const alternateSources=Array.isArray(item&&item.sourceAlternates)?item.sourceAlternates.flatMap(source=>[source&&source.label,source&&source.url]):[];
-  const surfaceSearch=[
-    item&&item.landSurfaceM2!=null?String(item.landSurfaceM2)+" m2 superficie terreno":"",
-    item&&item.coveredSurfaceM2!=null?String(item.coveredSurfaceM2)+" m2 superficie cubierta":""
-  ];
+  const surfaceSearch=[];
+  const addSurfaceSearch=(value,label)=>{
+    if(value==null||String(value).trim()==="")return;
+    surfaceSearch.push(String(value)+" m2 superficie "+label);
+    const numeric=typeof value==="number"?value:Number(value);
+    if(Number.isFinite(numeric)&&numeric>=0){
+      surfaceSearch.push(String(numeric/10000)+" ha hectareas superficie "+label);
+    }
+  };
+  addSurfaceSearch(item&&item.landSurfaceM2,"terreno");
+  addSurfaceSearch(item&&item.coveredSurfaceM2,"cubierta");
   return [
     {weight:100,values:[item&&item.id,item&&item.name,item&&item.address,item&&item.locality]},
     {weight:82,values:[item&&item.activity,item&&item.kind,item&&kindLabel[item&&item.kind],item&&item.business,item&&item.recordType]},
