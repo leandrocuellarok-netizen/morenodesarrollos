@@ -743,7 +743,7 @@
 }
 
 
-/* Filtros del atlas: etiquetas visibles, sector explícito y controles ordenados en móvil. */
+/* Filtros principales: cuatro dimensiones visibles; criterios de publicación en un diálogo accesible. */
 .map-toolbar {
   display: grid;
   gap: 13px;
@@ -752,9 +752,10 @@
 }
 .map-filter-group {
   display: grid;
-  grid-template-columns: minmax(220px, 1.45fr) repeat(2, minmax(145px, 1fr)) minmax(300px, 2fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
+.map-filter-search { grid-column: 1 / -1; }
 .map-filter-field {
   display: grid;
   align-content: start;
@@ -785,6 +786,123 @@
   outline: 2px solid var(--rust);
   outline-offset: 3px;
 }
+.map-filter-advanced-trigger {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 13px;
+  margin-top: -3px;
+}
+#open-advanced-filters {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  min-height: 44px;
+  padding: 9px 13px;
+  border: 1px solid #8d8b80;
+  background: #eeece4;
+  color: #343a33;
+  font: 600 10px/1.4 var(--sans);
+  cursor: pointer;
+}
+#open-advanced-filters:hover,
+#open-advanced-filters.has-active-filters {
+  border-color: #80533a;
+  background: #e7e0d4;
+}
+#open-advanced-filters:focus-visible,
+.map-advanced-filters button:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+#advanced-filter-count {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 7px;
+  border: 1px solid #c9c8bc;
+  background: #f8f6ee;
+  color: #686960;
+  font: 600 9px/1.2 var(--sans);
+}
+#open-advanced-filters.has-active-filters #advanced-filter-count {
+  border-color: #80533a;
+  color: #704a30;
+}
+.map-filter-advanced-trigger > small {
+  color: #686960;
+  font: 10px/1.5 var(--sans);
+}
+.map-advanced-filters {
+  width: min(560px, calc(100vw - 28px));
+  max-width: 560px;
+  max-height: min(84vh, 760px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 1px solid #b9b5a8;
+  background: #f8f6ee;
+  color: #242622;
+  box-shadow: 0 18px 60px #1d292b44;
+}
+.map-advanced-filters::backdrop { background: rgba(29, 41, 43, .48); }
+.map-advanced-filters[open] { display: block; }
+.map-advanced-filters-form {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+}
+.map-advanced-filters-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+.map-advanced-filters-heading .eyebrow {
+  color: #80533a;
+  font: 600 9px/1.4 var(--sans);
+  letter-spacing: .14em;
+}
+.map-advanced-filters-heading h2 {
+  margin: 7px 0 0;
+  color: #242622;
+  font: 400 28px/1.1 var(--serif);
+}
+.map-advanced-close {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #c9c8bc;
+  background: #eeece4;
+  color: #343a33;
+  font: 24px/1 var(--sans);
+  cursor: pointer;
+}
+.map-advanced-filters-form > p {
+  margin: 0;
+  color: #686960;
+  font: 11px/1.65 var(--sans);
+}
+.map-advanced-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px 0;
+  border-top: 1px solid #d7d3c7;
+  border-bottom: 1px solid #d7d3c7;
+}
+.map-advanced-filters-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.map-advanced-filters-actions button {
+  min-height: 44px;
+  padding: 10px 13px;
+  cursor: pointer;
+}
 .map-toolbar-actions {
   display: flex;
   align-items: center;
@@ -792,27 +910,16 @@
   gap: 9px;
 }
 .map-toolbar-actions .map-reset,
-.map-toolbar-actions .map-export {
-  min-height: 43px;
-}
+.map-toolbar-actions .map-export { min-height: 43px; }
 .map-toolbar-actions #map-status {
   margin-left: auto;
   font-size: 9px;
 }
 @media (max-width: 980px) {
-  .map-filter-group {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .map-filter-search,
-  .map-filter-refine {
-    grid-column: 1 / -1;
-  }
+  .map-filter-group { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .map-filter-search { grid-column: 1 / -1; }
 }
 @media (max-width: 760px) {
-  .map-filter-group {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px 8px;
-  }
   .map-toolbar-actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -828,17 +935,19 @@
     grid-column: 1 / -1;
     margin: 4px 0 0;
   }
+  .map-advanced-filters-form { padding: 17px; }
+  .map-advanced-filter-grid { grid-template-columns: minmax(0, 1fr); }
+  .map-advanced-filters-actions { display: grid; grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 420px) {
   .map-filter-group,
-  .map-toolbar-actions {
-    grid-template-columns: 1fr;
-  }
-  .map-filter-search {
-    grid-column: auto;
-  }
+  .map-toolbar-actions { grid-template-columns: 1fr; }
+  .map-filter-search { grid-column: auto; }
+  .map-filter-advanced-trigger { align-items: stretch; flex-direction: column; }
+  #open-advanced-filters { width: 100%; justify-content: space-between; }
+  .map-advanced-filters { width: calc(100vw - 20px); max-height: 86vh; }
+  .map-advanced-filters-actions { grid-template-columns: 1fr; }
 }
-
 
 /* Compartir una vista conserva filtros y referencia sin exponer la bitácora local. */
 .map-toolbar-actions .map-share-view {
@@ -1024,51 +1133,6 @@
   .map-filter-search,
   .map-filter-refine { grid-column: auto; }
 }
-
-/* Exportaciones de datos: disponibles sin competir con la acción comercial principal. */
-.map-data-export-disclosure {
-  margin: 0 0 17px;
-  border-bottom: 1px solid var(--line);
-}
-.map-data-export-body {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 12px 0 15px;
-}
-.map-data-export-body > p {
-  max-width: 620px;
-  margin: 0;
-  color: #686960;
-  font: 10px/1.65 var(--sans);
-}
-.map-data-export-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-}
-.map-data-export-actions .map-export {
-  min-height: 40px;
-  margin: 0;
-}
-@media (max-width: 760px) {
-  .map-data-export-disclosure { margin: 0 0 14px; }
-  .map-data-export-body {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
-    padding: 10px 0 13px;
-  }
-  .map-data-export-actions {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-  }
-  .map-data-export-actions .map-export { width: 100%; }
-}
-
 
 /* Esquema territorial autónomo: mantiene la lectura espacial si falla la cartografía externa. */
 .map-static-fallback {
