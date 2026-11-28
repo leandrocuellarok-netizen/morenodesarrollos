@@ -814,7 +814,7 @@ const filterTokenBoundaryFixtures = [
   { type: "opportunity", id: "next-fosforo", name: "Ficha F", kind: "", next: "Fósforo fotográfico" },
   { type: "opportunity", id: "next-planning", name: "Ficha G", kind: "", next: "Solicitar certificado urbanístico y verificar FOS" },
   { type: "opportunity", id: "next-enfrente", name: "Ficha H", kind: "", next: "Ubicada enfrente de accesorios" },
-  { type: "opportunity", id: "next-fieldwork", name: "Ficha I", kind: "", next: "Relevar frente y acceso" },
+  { type: "opportunity", id: "next-fieldwork", name: "Ficha I", kind: "", next: "Relevar frente y medir el ancho" },
   { type: "opportunity", id: "next-feasibility", name: "Ficha J", kind: "", next: "Verificar impacto ambiental y riesgo hidráulico" },
   { type: "opportunity", id: "activity-parques-urbanos", name: "Ficha K", kind: "", activity: "Parques urbanos" }
 ];
