@@ -312,6 +312,8 @@ async function auditRoute(browser, route) {
     if (route.slug === "mapa-ia") {
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.includes("referencias cargadas"), null, { timeout: 8000 });
+      check(!(await page.locator("body").innerText()).includes("/section>"), "mapa-ia: el documento no expone fragmentos de etiquetas HTML");
+
       check(await page.locator(".map-sidebar").isVisible(), "mapa-ia: el panel lateral de investigación está visible");
       check(await page.locator("#map").isVisible(), "mapa-ia: el mapa ocupa el espacio principal");
       check(await page.locator(".map-panel-heading").isVisible(), "mapa-ia: la cabecera del panel está visible");
