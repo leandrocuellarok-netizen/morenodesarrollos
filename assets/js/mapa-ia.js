@@ -9927,11 +9927,40 @@ function normalizeAddressText(value) {
   return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, " ").trim();
 }
 
+const GEOREF_ADDRESS_TOKEN_ALIASES = Object.freeze({
+  AV: "AVENIDA",
+  AVDA: "AVENIDA",
+  AVENIDA: "AVENIDA",
+  PJE: "PASAJE",
+  PSJE: "PASAJE",
+  PASAJE: "PASAJE",
+  BV: "BOULEVARD",
+  BLVD: "BOULEVARD",
+  BOULEVARD: "BOULEVARD",
+  RP: "RUTA_PROVINCIAL",
+  RN: "RUTA_NACIONAL"
+});
+
+function normalizeGeorefAddressTokens(value) {
+  const raw = normalizeAddressText(value).split(/\s+/).filter(Boolean);
+  const tokens = [];
+  for (let index = 0; index < raw.length; index += 1) {
+    if (raw[index] === "RUTA" && (raw[index + 1] === "PROVINCIAL" || raw[index + 1] === "NACIONAL")) {
+      tokens.push("RUTA_" + raw[index + 1]);
+      index += 1;
+      continue;
+    }
+    tokens.push(GEOREF_ADDRESS_TOKEN_ALIASES[raw[index]] || raw[index]);
+  }
+  return tokens;
+}
+
 function georefAddressMatches(item, entry) {
-  const expected = normalizeAddressText(item && (item.geocodeMatch || item.address));
-  const actual = normalizeAddressText(entry && entry.nomenclatura);
-  const tokens = expected.split(/\s+/).filter(token => token.length > 2 || /\d/.test(token));
-  const actualTokens = new Set(actual.split(/\s+/).filter(Boolean));
+  const expected = normalizeGeorefAddressTokens(item && (item.geocodeMatch || item.address));
+  const actual = normalizeGeorefAddressTokens(entry && entry.nomenclatura);
+  // Known road-type abbreviations are expanded before filtering short tokens, so Av/RP/RN cannot be ignored.
+  const tokens = expected.filter(token => token.length > 2 || /\d/.test(token));
+  const actualTokens = new Set(actual);
   return Boolean(tokens.length && actualTokens.size && tokens.every(token => actualTokens.has(token)));
 }
 
