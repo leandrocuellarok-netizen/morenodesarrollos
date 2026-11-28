@@ -773,13 +773,13 @@ const morenoDistrictListing = all.find(item => item.id === "parques-morenito-lot
 assert.ok(morenoDistrictListing, "la publicación real de Tierras del Morenito permanece en el inventario");
 assert.deepEqual(
   filterReferences([morenoDistrictListing], { locality: "moreno", category: "published" }).map(item => item.id),
-  ["parques-morenito-lote-594"],
-  "el filtro Moreno reconoce una localidad compuesta que empieza por Moreno sin confundir Morenito"
+  [],
+  "Moreno Centro no absorbe una referencia cuya localidad publicada es Tierras del Morenito"
 );
 assert.deepEqual(
   filterReferences([morenoDistrictListing], { locality: "unassigned", category: "published" }).map(item => item.id),
-  [],
-  "una publicación localizada en Moreno no se clasifica como localidad no asignada"
+  ["parques-morenito-lote-594"],
+  "una localidad distrital no homologada a una de las seis localidades permanece en Sin localidad precisa"
 );
 const districtwideCatastroRecord = all.find(item => item.id === "catastro-municipal-moreno-plancheta");
 assert.ok(districtwideCatastroRecord, "la referencia municipal de Catastro permanece en el inventario");
@@ -791,6 +791,7 @@ assert.deepEqual(
 const localityBoundaryFixtures = [
   { type: "opportunity", id: "cuartel-v-exact", name: "Referencia Cuartel V", locality: "Cuartel V", stage: "documented" },
   { type: "opportunity", id: "cuartel-vial", name: "Referencia Cuartel Vial", locality: "Cuartel Vial", stage: "documented" },
+  { type: "opportunity", id: "moreno-centro-exact", name: "Referencia Moreno Centro", locality: "Moreno Centro", stage: "documented" },
   { type: "opportunity", id: "morenito-only", name: "Referencia Morenito", locality: "Morenito", stage: "documented" }
 ];
 assert.deepEqual(
@@ -800,8 +801,8 @@ assert.deepEqual(
 );
 assert.deepEqual(
   filterReferences(localityBoundaryFixtures, { locality: "moreno" }).map(item => item.id),
-  [],
-  "Morenito no se interpreta como Moreno"
+  ["moreno-centro-exact"],
+  "Moreno Centro requiere su frase completa y no absorbe Morenito"
 );
 assert.ok(filterReferences(all, { activity: "infrastructure", category: "opportunity" }).some(item => item.id === "promeba-trujui"), "la actividad se filtra de forma independiente del sector");
 assert.ok(filterReferences(all, { nextStep: "publication", category: "published" }).length > 0, "el próximo paso permite priorizar revalidaciones de publicaciones");
