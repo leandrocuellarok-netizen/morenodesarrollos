@@ -849,6 +849,20 @@ const losOlivosArgentineNumber = filterReferences(all, { query: "Los Olivos 9.89
 const losOlivosCanonicalNumber = filterReferences(all, { query: "Los Olivos 9897.35 m² cesiones", category: "opportunity" }).map(item => item.id);
 assert.deepEqual(losOlivosArgentineNumber, ["los-olivos-convenio-urbanistico-7572-26"]);
 assert.deepEqual(losOlivosCanonicalNumber, losOlivosArgentineNumber, "la superficie decimal mantiene la misma coincidencia con formato argentino o decimal con punto");
+const losOlivosInternationalNumber = filterReferences(all, { query: "Los Olivos 9,897.35 m² cesiones", category: "opportunity" }).map(item => item.id);
+const losOlivosTrailingZeros = filterReferences(all, { query: "Los Olivos 9.897,350 m² cesiones", category: "opportunity" }).map(item => item.id);
+assert.deepEqual(losOlivosInternationalNumber, losOlivosArgentineNumber, "el formato internacional con coma de miles y punto decimal recupera la misma referencia real");
+assert.deepEqual(losOlivosTrailingZeros, losOlivosArgentineNumber, "los ceros decimales finales no alteran la coincidencia de superficie");
+assert.deepEqual(
+  filterReferences(all, { query: "Ordenanza 7542/26 hipermercados 1,000.00 m²", category: "opportunity" }).map(item => item.id),
+  ["ordenanza-7542-26-habilitaciones-industriales-logistica"],
+  "el formato internacional 1,000.00 coincide con el umbral real publicado como 1.000 m²"
+);
+assert.deepEqual(
+  filterReferences(all, { query: "Los Olivos 9,897.36 m² cesiones", category: "opportunity" }).map(item => item.id),
+  [],
+  "la normalización numérica no aproxima ni confunde superficies distintas"
+);
 assert.deepEqual(
   filterReferences(all, { query: "CUÁRTEL-V PROMEBA" }).map(item => item.id).sort(),
   filterReferences(all, { query: "cuartel v promeba" }).map(item => item.id).sort(),
