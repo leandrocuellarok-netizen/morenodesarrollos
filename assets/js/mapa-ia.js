@@ -9863,8 +9863,26 @@ function referenceMatchesLocality(item,key){
   if(key==="unassigned")return !Object.values(LOCALITY_FILTER_TERMS).some(a=>a.some(x=>containsNormalizedPhrase(searchable,x)));
   return (LOCALITY_FILTER_TERMS[key]||[]).some(x=>containsNormalizedPhrase(searchable,x));
 }
-function referenceMatchesActivity(item,key){if(key==="all")return true;const t=normalizeSearchText([item&&item.activity,item&&item.kind,item&&kindLabel[item.kind],item&&item.name,item&&item.business,item&&item.recordType,item&&item.observations,item&&item.evidence].filter(Boolean).join(" "));return Boolean(item&&item.kind===key)||(ACTIVITY_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
-function referenceMatchesNextStep(item,key){if(key==="all")return true;const pub=item&&item.type==="published"?"confirmar vigencia precio stock documentacion contacto":"";const t=normalizeSearchText([item&&item.next,item&&item.status,item&&item.observations,item&&item.verificationStatus,pub].filter(Boolean).join(" "));return (NEXT_STEP_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
+const FILTER_TERM_PREFIXES=new Set(["ambient","hidraul"]);
+function normalizedFilterTokenMatches(token,term){
+  if(token===term)return true;
+  if(FILTER_TERM_PREFIXES.has(term)&&token.startsWith(term))return true;
+  if(term.endsWith("es")&&token===term.slice(0,-2))return true;
+  if(term.endsWith("s")&&token===term.slice(0,-1))return true;
+  return token===term+"s"||token===term+"es";
+}
+function containsNormalizedFilterTerm(value,term){
+  const valueTokens=normalizeSearchText(value).split(" ").filter(Boolean);
+  const termTokens=normalizeSearchText(term).split(" ").filter(Boolean);
+  if(!valueTokens.length||!termTokens.length)return false;
+  if(termTokens.length===1)return valueTokens.some(token=>normalizedFilterTokenMatches(token,termTokens[0]));
+  for(let start=0;start<=valueTokens.length-termTokens.length;start++){
+    if(termTokens.every((expected,index)=>normalizedFilterTokenMatches(valueTokens[start+index],expected)))return true;
+  }
+  return false;
+}
+function referenceMatchesActivity(item,key){if(key==="all")return true;const t=normalizeSearchText([item&&item.activity,item&&item.kind,item&&kindLabel[item.kind],item&&item.name,item&&item.business,item&&item.recordType,item&&item.observations,item&&item.evidence].filter(Boolean).join(" "));return Boolean(item&&item.kind===key)||(ACTIVITY_FILTER_TERMS[key]||[]).some(x=>containsNormalizedFilterTerm(t,x));}
+function referenceMatchesNextStep(item,key){if(key==="all")return true;const pub=item&&item.type==="published"?"confirmar vigencia precio stock documentacion contacto":"";const t=normalizeSearchText([item&&item.next,item&&item.status,item&&item.observations,item&&item.verificationStatus,pub].filter(Boolean).join(" "));return (NEXT_STEP_FILTER_TERMS[key]||[]).some(x=>containsNormalizedFilterTerm(t,x));}
 function evidenceMetadata(item){
   if(!item)return {classification:"Sin clasificar",evidenceType:"No clasificada",confidence:"No asignada",sourceDate:"",consultedAt:""};
   if(item.type==="published")return {classification:"Publicación de tercero; el contenido comercial no acredita disponibilidad ni precio final.",evidenceType:"Aviso inmobiliario de tercero",confidence:"Baja para disponibilidad, dominio y precio final; el registro solo conserva el contenido publicado en la fecha de revisión.",sourceDate:item.publicationDate||"No informada",consultedAt:item.lastCheckedAt||"No informada"};
