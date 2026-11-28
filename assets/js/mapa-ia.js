@@ -9775,7 +9775,8 @@ function normalizeSearchText(value) {
   // Any separators left in malformed or non-numeric text remain ordinary token boundaries.
   text=text.replace(/(\d)[,.](?=\d)/g,"$1 ");
   // Keep adjacent units and identifiers searchable in spaced and unspaced forms.
-  text=text.replace(/(\d)(?=[a-z])/g,"$1 ").replace(/([a-z])(?=\d)/g,"$1 ");
+  // Keep the internal decimal marker attached to both numeric parts while still separating units and cadastral suffixes.
+  text=text.replace(/(\d)(?=[a-ce-z])/g,"$1 ").replace(/([a-ce-z])(?=\d)/g,"$1 ");
   const normalized=text.replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
   const cadastralAliases={circ:"circunscripcion",sec:"seccion",secc:"seccion",qta:"quinta",mz:"manzana",mza:"manzana",parc:"parcela",frac:"fraccion",fracc:"fraccion"};
   return normalized.split(" ").map(token=>cadastralAliases[token]||token).join(" ");
