@@ -25,7 +25,7 @@ for (const [label, url] of [["Ordenanza 7497/26", "https://sibom.slyt.gba.gob.ar
 const noScriptFallback = mapPage.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1] || "";
 const fallbackLists = [...noScriptFallback.matchAll(/<ul>([\s\S]*?)<\/ul>/g)];
 assert.equal((fallbackLists[1]?.[1].match(/<li>/g) || []).length, 14, "el fallback sin JavaScript conserva las catorce referencias territoriales");
-assert.ok(noScriptFallback.includes("catastro.php?c=contribuyentes"), "el fallback sin JavaScript conserva el enlace de requisitos de Catastro");
+assert.ok(noScriptFallback.includes("catastro.php?c=contribuyentes") && noScriptFallback.includes("catastro.php?c=agrimensores"), "el fallback sin JavaScript conserva los enlaces oficiales de plancheta y mensura");
 assert.ok(homePage.includes("6 LOCALIDADES · 13 REFERENCIAS DOCUMENTADAS · 1 HIPÓTESIS"), "el esquema de Inicio muestra el total documental vigente");
 assert.ok(homePage.includes("13 referencias sin coordenada trazable: índice"), "el esquema de Inicio informa cuántas referencias siguen sin punto");
 assert.ok(homePage.includes("Las otras trece referencias territoriales permanecen en el índice sin marcador"), "el esquema de Inicio conserva el conteo de fichas sin geolocalización");
@@ -813,10 +813,16 @@ assert.equal(hasCoordinates(catastroReference), false, "la oficina de Catastro n
 assert.equal(catastroReference.locality, "Alcance distrital", "el servicio de Catastro no se asigna a una localidad parcelaria");
 assert.equal(catastroReference.source, "https://moreno.gob.ar/catastro.php", "la ficha conserva la página oficial de la Dirección de Catastro");
 assert.ok(catastroReference.sourceAlternates.some(entry => entry.url === "https://moreno.gob.ar/catastro.php?c=contribuyentes"), "la ficha conserva la página municipal con requisitos de plancheta");
+assert.ok(catastroReference.sourceAlternates.some(entry => entry.url === "https://moreno.gob.ar/catastro.php?c=agrimensores"), "la ficha conserva la página municipal con requisitos de mensura");
 assert.equal(catastroReference.lastCheckedAt, "2026-11-28", "la ficha registra la fecha efectiva de consulta");
 assert.match(catastroReference.sourceDate, /fecha de publicación no informada/i, "la ficha no inventa una fecha de publicación");
 assert.ok(catastroReference.evidence.includes("catastro@moreno.gov.ar") && catastroReference.evidence.includes("0237 4669127 interno 1211"), "los datos de contacto proceden del portal municipal");
+assert.ok(catastroReference.evidence.includes("dos copias del plano") && catastroReference.evidence.includes("expediente administrativo municipal"), "la ficha distingue los requisitos oficiales del trámite de mensura");
+assert.ok(catastroReference.evidence.includes("Formulario 908") && catastroReference.evidence.includes("cédulas catastrales"), "la ficha documenta requisitos oficiales para propiedad horizontal y subdivisiones");
 assert.ok(filterReferences(all, { query: "Catastro Rivadavia 267 plancheta", category: "opportunity" }).some(item => item.id === catastroReference.id), "el buscador recupera los requisitos catastrales y la dirección oficial");
+assert.ok(filterReferences(all, { query: "mensura dos copias expediente administrativo", category: "opportunity" }).some(item => item.id === catastroReference.id), "el buscador indexa el trámite oficial de mensura y su próximo paso");
+assert.ok(filterReferences(all, { query: "subdivisión 908 copropiedad", category: "opportunity" }).some(item => item.id === catastroReference.id), "el buscador indexa los requisitos oficiales de propiedad horizontal");
+assert.ok(filterReferences(all, { query: "unificación cédulas catastrales servicios generales", category: "opportunity" }).some(item => item.id === catastroReference.id), "el buscador indexa la documentación para unificación y subdivisión");
 assert.deepEqual(
   filterReferences(all, { query: "Catastro Rivadavia 267 plancheta", category: "opportunity", kind: "land", locality: "unassigned", activity: "land", nextStep: "cadastral", evidence: "documented" }).map(item => item.id),
   [catastroReference.id],
