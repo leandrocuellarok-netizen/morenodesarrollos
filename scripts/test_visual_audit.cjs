@@ -439,6 +439,13 @@ async function auditRoute(browser, route) {
       await losOlivosCard.waitFor({ state: "attached", timeout: 5000 });
       check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: 9897.35 m² encuentra la superficie publicada como 9.897,35 m²");
 
+      await searchFor("Los Olivos 9,897.35 m² cesiones", "opportunity");
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: el formato internacional 9,897.35 recupera la superficie argentina 9.897,35 m²");
+      await searchFor("Los Olivos 9.897,350 m² cesiones", "opportunity");
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: los ceros decimales finales no impiden encontrar la superficie real");
+      await searchFor("Ordenanza 7542/26 hipermercados 1,000.00 m²", "opportunity");
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: 1,000.00 coincide con el umbral normativo 1.000 m²");
+
       await page.locator("#search").fill("Los Olivos");
       await page.locator("#activity-filter").selectOption("land");
       await page.locator("#next-step-filter").selectOption("cadastral");
