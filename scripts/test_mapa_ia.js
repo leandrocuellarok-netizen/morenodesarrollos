@@ -805,6 +805,25 @@ assert.deepEqual(
   "Moreno Centro requiere su frase completa y no absorbe Morenito"
 );
 assert.ok(filterReferences(all, { activity: "infrastructure", category: "opportunity" }).some(item => item.id === "promeba-trujui"), "la actividad se filtra de forma independiente del sector");
+const filterTokenBoundaryFixtures = [
+  { type: "opportunity", id: "activity-obras", name: "Ficha A", kind: "", activity: "Obras viales" },
+  { type: "opportunity", id: "activity-sobras", name: "Ficha B", kind: "", activity: "Sobras de materiales" },
+  { type: "opportunity", id: "activity-microservicios", name: "Ficha C", kind: "", activity: "Microservicios digitales" },
+  { type: "opportunity", id: "activity-quintana", name: "Ficha D", kind: "", activity: "Quintana" },
+  { type: "opportunity", id: "activity-quintas", name: "Ficha E", kind: "", activity: "Quintas recreativas" },
+  { type: "opportunity", id: "next-fosforo", name: "Ficha F", kind: "", next: "Fósforo fotográfico" },
+  { type: "opportunity", id: "next-planning", name: "Ficha G", kind: "", next: "Solicitar certificado urbanístico y verificar FOS" },
+  { type: "opportunity", id: "next-enfrente", name: "Ficha H", kind: "", next: "Ubicada enfrente de accesorios" },
+  { type: "opportunity", id: "next-fieldwork", name: "Ficha I", kind: "", next: "Relevar frente y acceso" },
+  { type: "opportunity", id: "next-feasibility", name: "Ficha J", kind: "", next: "Verificar impacto ambiental y riesgo hidráulico" },
+  { type: "opportunity", id: "activity-parques-urbanos", name: "Ficha K", kind: "", activity: "Parques urbanos" }
+];
+assert.deepEqual(filterReferences(filterTokenBoundaryFixtures, { activity: "infrastructure" }).map(item => item.id), ["activity-obras", "activity-parques-urbanos"], "actividad usa límites de palabra y conserva plural y frases plurales");
+assert.deepEqual(filterReferences(filterTokenBoundaryFixtures, { activity: "commercial" }).map(item => item.id), [], "microservicios no se clasifica como comercio y servicios por subcadena");
+assert.deepEqual(filterReferences(filterTokenBoundaryFixtures, { activity: "tourism" }).map(item => item.id), ["activity-quintas"], "quinta no coincide con Quintana y reconoce el plural");
+assert.deepEqual(filterReferences(filterTokenBoundaryFixtures, { nextStep: "planning" }).map(item => item.id), ["next-planning"], "FOS y FOT se interpretan como tokens, no dentro de fósforo o fotografía");
+assert.deepEqual(filterReferences(filterTokenBoundaryFixtures, { nextStep: "fieldwork" }).map(item => item.id), ["next-fieldwork"], "frente y acceso no coinciden dentro de enfrente o accesorios");
+assert.deepEqual(filterReferences(filterTokenBoundaryFixtures, { nextStep: "feasibility" }).map(item => item.id), ["next-feasibility"], "los prefijos explícitos ambiental e hidráulico siguen reconociendo sus formas completas");
 assert.ok(filterReferences(all, { nextStep: "publication", category: "published" }).length > 0, "el próximo paso permite priorizar revalidaciones de publicaciones");
 assert.deepEqual(filterReferences(all, { kind: "industrial", category: "locality" }), [], "un sector de oportunidad no incorpora localidades");
 assert.deepEqual(filterReferences(all, { query: "productivo", kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque", "base-aerea-moreno-norte", "ordenanza-7542-26-habilitaciones-industriales-logistica"], "la búsqueda reconoce la etiqueta visible del sector, no solo su código interno");
