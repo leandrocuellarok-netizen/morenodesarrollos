@@ -9754,16 +9754,25 @@ function normalizeSearchText(value) {
   // Normalize unambiguous grouped numbers in Argentine (9.897,35) and international (9,897.35) formats.
   // Insignificant trailing decimal zeros are removed, so 9.897,350 and 9,897.35 share one search key.
   const trimFraction = fraction => String(fraction || "").replace(/0+$/, "");
+  const canonicalNumber = (integer, fraction) => {
+    const decimals = trimFraction(fraction);
+    // Keep decimals atomic: 300 must not match 300.5, while 300.50 and 300,5 remain equivalent.
+    return integer + (decimals ? "d" + decimals : "");
+  };
   text=text.replace(/(^|[^\d])(\d{1,3}(?:,\d{3})+)\.(\d+)(?=$|[^\d])/g,
-    (_,prefix,integer,fraction)=>{const decimals=trimFraction(fraction);return prefix+integer.replace(/,/g,"")+(decimals?" "+decimals:"");});
+    (_,prefix,integer,fraction)=>prefix+canonicalNumber(integer.replace(/,/g,""),fraction));
   text=text.replace(/(^|[^\d])(\d{1,3}(?:\.\d{3})+)(?:,(\d+))?(?=$|[^\d])/g,
-    (_,prefix,integer,fraction)=>{const decimals=trimFraction(fraction);return prefix+integer.replace(/\./g,"")+(decimals?" "+decimals:"");});
-  // Canonicalize ungrouped decimals too (0,44310 -> 0 4431); a single separator keeps Argentine conventions.
+    (_,prefix,integer,fraction)=>prefix+canonicalNumber(integer.replace(/\./g,""),fraction));
+  // A comma followed by three digits is also accepted as an international thousands separator
+  // when an explicit area unit follows (e.g. 9,897 m²); without a unit it remains ambiguous.
+  text=text.replace(/(^|[^\d])(\d{1,3}(?:,\d{3})+)(?=\s*(?:m2\b|metros?\s+cuadrados?\b|ha\b|hectareas?\b))/g,
+    (_,prefix,integer)=>prefix+integer.replace(/,/g,""));
+  // Canonicalize ungrouped decimals with one atomic decimal token.
   text=text.replace(/(^|[^\d])(\d+)[,.](\d+)(?=$|[^\d])/g,
-    (_,prefix,integer,fraction)=>{const decimals=trimFraction(fraction);return prefix+integer+(decimals?" "+decimals:"");});
+    (_,prefix,integer,fraction)=>prefix+canonicalNumber(integer,fraction));
   // Canonicalize common surface units and cadastral abbreviations without weakening exact short-token matching.
   text=text.replace(/\bmetros?\s+cuadrados?\b/g,"m2").replace(/\bhectareas?\b/g,"ha");
-  // Treat decimal separators as token boundaries after grouped integers are canonicalized.
+  // Any separators left in malformed or non-numeric text remain ordinary token boundaries.
   text=text.replace(/(\d)[,.](?=\d)/g,"$1 ");
   // Keep adjacent units and identifiers searchable in spaced and unspaced forms.
   text=text.replace(/(\d)(?=[a-z])/g,"$1 ").replace(/([a-z])(?=\d)/g,"$1 ");
