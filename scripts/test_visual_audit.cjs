@@ -372,6 +372,15 @@ async function auditRoute(browser, route) {
       await page.locator('#locality-list [data-map-item="alvarez"]').waitFor({ state: "attached", timeout: 5000 });
       check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: la búsqueda simple de localidad informa una coincidencia exacta");
 
+      await searchFor("Parques del Morenito", "published");
+      await page.locator("#locality-filter").selectOption("moreno");
+      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("1 coincidencia:"), null, { timeout: 5000 });
+      check(await page.locator('#published-list [data-map-item="parques-morenito-lote-594"]').count() === 1, "mapa-ia: el filtro Moreno conserva la publicación real de Tierras del Morenito");
+      await page.locator("#locality-filter").selectOption("unassigned");
+      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("0 coincidencias"), null, { timeout: 5000 });
+      check(await page.locator('#published-list [data-map-item="parques-morenito-lote-594"]').count() === 0, "mapa-ia: la misma publicación no aparece como localidad no asignada");
+      await page.locator("#reset-map").click();
+
       await searchFor("Derqui 5890", "published");
       await page.locator('#published-list [data-map-item="sumio-lote-338"]').waitFor({ state: "attached", timeout: 5000 });
       const streetCard = page.locator('#published-list [data-map-item="sumio-lote-338"]');
