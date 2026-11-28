@@ -36,7 +36,11 @@ assert.ok(mapPage.includes('id="category" type="hidden"') && mapPage.includes('i
 assert.ok(mapPage.includes('<dialog id="map-advanced-filters"') && mapPage.includes('id="availability-filter"') && mapPage.includes('id="diligence-filter"'), "los criterios de publicación permanecen disponibles en un diálogo accesible");
 assert.ok(mapPage.includes('id="open-advanced-filters"') && mapPage.includes('id="advanced-filter-count"'), "la interfaz informa cuántos criterios avanzados están activos");
 assert.ok(!mapPage.includes('id="map-data-export-disclosure"'), "se elimina el bloque explicativo redundante de exportación; las acciones siguen en la barra del mapa");
-assert.ok(mapPage.indexOf('id="map-review-disclosure"') > mapPage.indexOf('<p class="map-note">'), "la bitácora local deja de interrumpir el acceso inicial al mapa");
+const sidebarStart = mapPage.indexOf('<aside class="map-sidebar">');
+const sidebarEnd = mapPage.indexOf("</aside>", sidebarStart);
+assert.ok(sidebarStart >= 0 && mapPage.indexOf('id="map-review-disclosure"') > sidebarStart && mapPage.indexOf('id="map-review-disclosure"') < sidebarEnd, "la bitácora local queda accesible al final del panel lateral del mapa");
+assert.ok(mapPage.includes("Las referencias sin coordenadas trazables permanecen en el índice sin marcador"), "la introducción visible explica cómo se conservan las referencias sin geolocalización");
+assert.ok(mapPage.includes("CSV neutraliza fórmulas") && mapPage.includes("geometry:null"), "la barra de exportación explica la protección CSV y la geometría nula");
 assert.ok(mapPage.includes('id="map-empty-state"'), "la búsqueda presenta un estado vacío útil");
 assert.ok(mapPage.includes('id="search-results-status"'), "el buscador comunica en vivo la cantidad y tipo de coincidencias");
 assert.ok(mapPage.includes('class="map-panel-heading"'), "el mapa conserva una cabecera y navegación dentro del panel flotante");
@@ -279,9 +283,9 @@ assert.ok(source.includes("map.jumpTo(camera)"), "las referencias evitan animaci
 assert.ok(source.includes("map.jumpTo(home)"), "restablecer el mapa respeta el movimiento reducido");
 assert.ok(styles.includes(".map-share-link"), "los enlaces compartibles tienen un estilo identificable");
 assert.ok(styles.includes(".map-item-actions"), "las acciones principales de cada ficha tienen una composición propia");
-assert.ok(styles.includes(".map-data-export-disclosure"), "las exportaciones tienen un acceso secundario propio");
+assert.ok(styles.includes(".map-advanced-filters"), "los criterios secundarios usan un diálogo accesible");
 assert.ok(styles.includes(".map-filter-group"), "los filtros tienen una composición responsive propia");
-assert.ok(styles.includes("minmax(300px, 2fr)"), "la refinación dispone de ancho suficiente para sus dos selectores en escritorio");
+assert.ok(styles.includes(".map-advanced-filter-grid") && styles.includes("#open-advanced-filters"), "la refinación avanzada tiene una grilla propia y un disparador visible");
 assert.ok(styles.includes(".map-filter-field"), "los controles muestran etiquetas y foco visible");
 assert.ok(styles.includes(".map-published-status"), "las fichas distinguen visualmente el estado comercial registrado");
 assert.ok(styles.includes(".map-public-contact-link"), "los teléfonos y emails públicos tienen accesos directos con estilo propio");
