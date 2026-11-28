@@ -809,6 +809,39 @@ assert.deepEqual(
 );
 const combinedFilters = filterReferences(all, { query: "cuartel v", locality: "cuartel", activity: "industrial", nextStep: "contact", evidence: "documented" });
 assert.deepEqual(combinedFilters.map(item => item.id), ["base-aerea-moreno-norte"], "la búsqueda y los filtros de localidad, actividad, próximo paso y evidencia se combinan");
+
+const shortTokenFixtures = [
+  { type: "opportunity", id: "cuartel-v-exact", name: "Cuartel V", stage: "documented" },
+  { type: "opportunity", id: "cuartel-venta", name: "Cuartel y venta", stage: "documented" }
+];
+assert.deepEqual(
+  filterReferences(shortTokenFixtures, { query: "cuartel v" }).map(item => item.id),
+  ["cuartel-v-exact"],
+  "la abreviatura V de Cuartel V no coincide con palabras que solo empiezan con v"
+);
+assert.deepEqual(
+  filterReferences(shortTokenFixtures, { query: "v" }).map(item => item.id),
+  ["cuartel-v-exact"],
+  "las consultas de una letra exigen un token exacto y evitan falsos positivos"
+);
+const numericTokenFixtures = [
+  { type: "opportunity", id: "surface-300", name: "Lote 300 m²", landSurfaceM2: 300, stage: "documented" },
+  { type: "opportunity", id: "surface-3000", name: "Lote 3000 m²", landSurfaceM2: 3000, stage: "documented" }
+];
+assert.deepEqual(
+  filterReferences(numericTokenFixtures, { query: "300" }).map(item => item.id),
+  ["surface-300"],
+  "los tokens numéricos coinciden exactamente y no confunden superficies de distinta magnitud"
+);
+const rankingFixtures = [
+  { type: "opportunity", id: "context-match", name: "Proyecto documentado", evidence: "Referencia contextual a Derqui 5890", stage: "documented" },
+  { type: "opportunity", id: "identity-match", name: "Derqui 5890", address: "Derqui 5890", stage: "documented" }
+];
+assert.deepEqual(
+  filterReferences(rankingFixtures, { query: "Derqui 5890" }).map(item => item.id),
+  ["identity-match", "context-match"],
+  "los resultados con coincidencia en nombre y dirección preceden a menciones contextuales"
+);
 const unlocatedOpportunityIds = opportunities.filter(item => !hasCoordinates(item)).map(item => item.id).sort();
 assert.deepEqual(unlocatedOpportunityIds, ["base-aerea-moreno-norte", "los-olivos-convenio-urbanistico-7572-26", "mui-mo-monitoreo-urbano-inmobiliario", "norte", "ordenanza-7497-26-titulos-imperfectos", "ordenanza-7542-26-habilitaciones-industriales-logistica", "promeba-cuartel-v", "promeba-trujui", "ribera", "roggero", "rp25", "utopia-bonaerense-moreno"].sort(), "las doce referencias sin geolocalización no reciben coordenadas inventadas");
 const utopiaReference = opportunities.find(item => item.id === "utopia-bonaerense-moreno");
