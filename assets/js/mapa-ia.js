@@ -12026,8 +12026,8 @@ function initMapPage(doc) {
         advancedFiltersDialog.close();
       } else {
         advancedFiltersDialog.removeAttribute("open");
-        advancedFiltersButton.setAttribute("aria-expanded", "false");
       }
+      advancedFiltersButton.setAttribute("aria-expanded", "false");
     };
     advancedFiltersButton.addEventListener("click", () => {
       if (!advancedFiltersDialog.open) {
