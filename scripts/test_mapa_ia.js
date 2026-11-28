@@ -21,11 +21,11 @@ assert.ok(!mapPage.includes("</section>/section>"), "mapa-ia/index.html: no debe
 const homePage = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
 assert.ok(mapPage.includes("<h4>Referencias territoriales</h4>"), "el fallback sin JavaScript conserva el índice territorial");
-for (const [label, url] of [["Ordenanza 7497/26", "https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"], ["Ordenanza 7542/26", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"], ["Los Olivos", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"], ["Dirección de Catastro", "https://www.moreno.gob.ar/catastro.php"]]) assert.ok(mapPage.includes(label) && mapPage.includes(url), "el fallback conserva la referencia y su fuente oficial: " + label);
+for (const [label, url] of [["Ordenanza 7497/26", "https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"], ["Ordenanza 7542/26", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"], ["Los Olivos", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"], ["Dirección de Catastro", "https://moreno.gob.ar/catastro.php"]]) assert.ok(mapPage.includes(label) && mapPage.includes(url), "el fallback conserva la referencia y su fuente oficial: " + label);
 const noScriptFallback = mapPage.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1] || "";
 const fallbackLists = [...noScriptFallback.matchAll(/<ul>([\s\S]*?)<\/ul>/g)];
 assert.equal((fallbackLists[1]?.[1].match(/<li>/g) || []).length, 14, "el fallback sin JavaScript conserva las catorce referencias territoriales");
-assert.ok(noScriptFallback.includes("catastro-contribuyentes.php"), "el fallback sin JavaScript conserva el enlace de requisitos de Catastro");
+assert.ok(noScriptFallback.includes("catastro.php?c=contribuyentes"), "el fallback sin JavaScript conserva el enlace de requisitos de Catastro");
 assert.ok(homePage.includes("6 LOCALIDADES · 13 REFERENCIAS DOCUMENTADAS · 1 HIPÓTESIS"), "el esquema de Inicio muestra el total documental vigente");
 assert.ok(homePage.includes("13 referencias sin coordenada trazable: índice"), "el esquema de Inicio informa cuántas referencias siguen sin punto");
 assert.ok(homePage.includes("Las otras trece referencias territoriales permanecen en el índice sin marcador"), "el esquema de Inicio conserva el conteo de fichas sin geolocalización");
@@ -236,12 +236,12 @@ assert.ok(source.includes('reviewStatusElement.setAttribute("aria-busy", "true")
 assert.match(mapPage, /no se envían al servidor[\s\S]*Exportar bitácora JSON/i, "la página explica que la bitácora no se transmite y puede exportarse");
 assert.ok(mapPage.includes('href="https://mapas.moreno.gob.ar/"'), "se enlaza el visor cartográfico oficial de Moreno");
 assert.ok(mapPage.includes('href="https://arba.gov.ar/geoarba/inicio.asp"'), "se enlaza GeoARBA como fuente provincial");
-assert.ok(mapPage.includes('href="https://www.moreno.gob.ar/catastro.php"'), "se enlaza la Dirección de Catastro municipal");
+assert.ok(mapPage.includes('href="https://moreno.gob.ar/catastro.php"'), "se enlaza la Dirección de Catastro municipal");
 assert.ok(mapPage.includes('href="https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf"'), "se conserva el plano municipal histórico como antecedente");
 const safeSourceLinks = [
   'href="https://mapas.moreno.gob.ar/" target="_blank" rel="noopener noreferrer"',
   'href="https://arba.gov.ar/geoarba/inicio.asp" target="_blank" rel="noopener noreferrer"',
-  'href="https://www.moreno.gob.ar/catastro.php" target="_blank" rel="noopener noreferrer"',
+  'href="https://moreno.gob.ar/catastro.php" target="_blank" rel="noopener noreferrer"',
   'href="https://moreno2.moreno.gob.ar/docs/catastro/mapa_zonificacion.pdf" target="_blank" rel="noopener noreferrer"'
 ];
 for (const safeLink of safeSourceLinks) {
@@ -811,8 +811,8 @@ const catastroReference = opportunities.find(item => item.id === "catastro-munic
 assert.ok(catastroReference && catastroReference.stage === "documented", "Catastro se incorpora como contexto institucional documentado");
 assert.equal(hasCoordinates(catastroReference), false, "la oficina de Catastro no recibe una coordenada sin fuente cartográfica");
 assert.equal(catastroReference.locality, "Alcance distrital", "el servicio de Catastro no se asigna a una localidad parcelaria");
-assert.equal(catastroReference.source, "https://www.moreno.gob.ar/catastro.php", "la ficha conserva la página oficial de la Dirección de Catastro");
-assert.ok(catastroReference.sourceAlternates.some(entry => entry.url === "https://moreno2.moreno.gob.ar/catastro-contribuyentes.php"), "la ficha conserva la página municipal con requisitos de plancheta");
+assert.equal(catastroReference.source, "https://moreno.gob.ar/catastro.php", "la ficha conserva la página oficial de la Dirección de Catastro");
+assert.ok(catastroReference.sourceAlternates.some(entry => entry.url === "https://moreno.gob.ar/catastro.php?c=contribuyentes"), "la ficha conserva la página municipal con requisitos de plancheta");
 assert.equal(catastroReference.lastCheckedAt, "2026-11-28", "la ficha registra la fecha efectiva de consulta");
 assert.match(catastroReference.sourceDate, /fecha de publicación no informada/i, "la ficha no inventa una fecha de publicación");
 assert.ok(catastroReference.evidence.includes("catastro@moreno.gov.ar") && catastroReference.evidence.includes("0237 4669127 interno 1211"), "los datos de contacto proceden del portal municipal");
@@ -823,9 +823,9 @@ assert.deepEqual(
   "la referencia catastral sin coordenadas se encuentra con filtros combinados"
 );
 const catastroBrief = buildTerritorialBrief(all.find(item => item.id === catastroReference.id), "2026-11-28T07:50:00.000Z");
-assert.ok(catastroBrief.reference.sourceAlternates.some(entry => entry.url === "https://moreno2.moreno.gob.ar/catastro-contribuyentes.php"), "la ficha editorial exportable conserva las fuentes complementarias");
+assert.ok(catastroBrief.reference.sourceAlternates.some(entry => entry.url === "https://moreno.gob.ar/catastro.php?c=contribuyentes"), "la ficha editorial exportable conserva las fuentes complementarias");
 const catastroBriefHtml = buildTerritorialBriefHtml(catastroBrief);
-assert.ok(catastroBriefHtml.includes("Fuentes complementarias") && catastroBriefHtml.includes("catastro-contribuyentes.php"), "el dossier imprimible muestra las fuentes complementarias");
+assert.ok(catastroBriefHtml.includes("Fuentes complementarias") && catastroBriefHtml.includes("catastro.php?c=contribuyentes"), "el dossier imprimible muestra las fuentes complementarias");
 const utopiaForSources = opportunities.find(item => item.id === "utopia-bonaerense-moreno");
 const utopiaBrief = buildTerritorialBrief(all.find(item => item.id === utopiaForSources.id), "2026-11-28T07:50:00.000Z");
 assert.ok(utopiaBrief.reference.sourceAlternates.some(entry => entry.url === "https://nube.minfra.gba.gob.ar/index.php/s/TrMYQtYjHf4tSrJ/download"), "la ficha editorial conserva el acta oficial de Utopía Bonaerense");
@@ -1246,7 +1246,7 @@ assert.equal((mapPage.match(/class="verification-source"/g) || []).length, 4, "l
 for (const officialResource of [
   "https://geo.arba.gov.ar/geoserver/idera/wms?request=GetCapabilities&amp;service=WMS",
   "https://geo.arba.gov.ar/geoserver/idera/wfs?request=GetCapabilities&amp;service=WFS",
-  "https://moreno.gob.ar/catastro-contribuyentes.php",
+  "https://moreno.gob.ar/catastro.php?c=contribuyentes",
   "https://moreno.gob.ar/catastro.php?c=agrimensores",
   "https://iduar.moreno.gob.ar/obras-particulares/",
   "https://moreno.gob.ar/docs/catastro/codigo_zonificacion.pdf"
