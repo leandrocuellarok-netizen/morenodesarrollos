@@ -322,25 +322,50 @@ async function auditRoute(browser, route) {
       check(await page.locator(".map-legend").isVisible(), "mapa-ia: la leyenda de símbolos y evidencia está visible");
       check((await page.locator(".map-note").innerText()).includes("Solo se dibujan puntos con fuente cartográfica y fecha de verificación"), "mapa-ia: el alcance de coordenadas trazables está explicado");
       check(await page.locator("#search").isVisible(), "mapa-ia: el buscador principal está visible");
-      for (const id of ["locality-filter", "activity-filter", "next-step-filter", "category", "evidence-filter", "availability-filter", "diligence-filter"]) {
-        check(await page.locator("#" + id).isVisible(), "mapa-ia: el filtro " + id + " está disponible sin desplegables");
+      for (const id of ["locality-filter", "activity-filter", "next-step-filter", "scope-filter"]) {
+        check(await page.locator("#" + id).isVisible(), "mapa-ia: el filtro principal " + id + " está visible");
       }
+      check(await page.locator("#category").isHidden() && await page.locator("#evidence-filter").isHidden(), "mapa-ia: las dimensiones de capa/evidencia se conservan sin duplicar controles visibles");
+      const advancedFiltersButton = page.locator("#open-advanced-filters");
+      const advancedFiltersDialog = page.locator("#map-advanced-filters");
+      check(await advancedFiltersButton.isVisible(), "mapa-ia: los criterios de publicación se abren desde una acción secundaria");
+      await advancedFiltersButton.click();
+      check(await advancedFiltersDialog.evaluate(element => element.open), "mapa-ia: los criterios avanzados usan un diálogo modal nativo");
+      check(await advancedFiltersButton.getAttribute("aria-expanded") === "true", "mapa-ia: el botón informa el estado abierto del diálogo");
+      for (const id of ["availability-filter", "diligence-filter"]) {
+        check(await page.locator("#" + id).isVisible(), "mapa-ia: el criterio avanzado " + id + " está disponible dentro del diálogo");
+      }
+      await page.locator("#availability-filter").selectOption("no-confirmada");
+      await page.locator("#diligence-filter").selectOption("complete");
+      check((await advancedFiltersButton.innerText()).includes("2 activos"), "mapa-ia: el botón resume la cantidad de criterios avanzados activos");
+      await page.locator("#close-advanced-filters").click();
+      check(!(await advancedFiltersDialog.evaluate(element => element.open)), "mapa-ia: el diálogo se cierra desde su control visible");
+      check(await advancedFiltersButton.getAttribute("aria-expanded") === "false", "mapa-ia: el estado ARIA se restablece al cerrar");
+      await advancedFiltersButton.click();
+      await page.keyboard.press("Escape");
+      check(!(await advancedFiltersDialog.evaluate(element => element.open)), "mapa-ia: Escape cierra el diálogo");
+      check(await advancedFiltersButton.getAttribute("aria-expanded") === "false", "mapa-ia: Escape actualiza el estado ARIA");
       const initialCount = await page.locator("#atlas-total-count").innerText();
       check(initialCount.startsWith(mapInventory.length + " /"), "mapa-ia: el índice informa el inventario completo al abrir");
       check((await page.locator("#search-results-status").innerText()).includes("fichas sin coordenadas"), "mapa-ia: el buscador anuncia que conserva referencias sin coordenadas");
 
       const searchFor = async (query, category) => {
-        if (category) await page.locator("#category").selectOption(category);
+        if (category) await page.locator("#scope-filter").selectOption(({ locality: "locality", opportunity: "territorial", published: "published" })[category] || "all");
         await page.locator("#search").fill(query);
         await page.waitForFunction(() => {
           const status = document.getElementById("search-results-status");
-          return Boolean(status && (status.textContent.includes("coincidencias") || status.textContent.includes("referencias cargadas")));
+          return Boolean(status && (/\\bcoincidencias?\\b/.test(status.textContent) || status.textContent.includes("referencias cargadas")));
         }, null, { timeout: 5000 });
       };
 
+      await searchFor("Derqui 5890", "published");
+      await page.locator('#published-list [data-map-item="sumio-lote-338"]').waitFor({ state: "attached", timeout: 5000 });
+      check(Number.parseInt(await page.locator("#search-results-status").innerText(), 10) > 0, "mapa-ia: los criterios avanzados combinados conservan coincidencias reales");
+      await page.locator("#reset-map").click();
+
       await searchFor("FRANCISCO ÁLVAREZ", "locality");
       await page.locator('#locality-list [data-map-item="alvarez"]').waitFor({ state: "attached", timeout: 5000 });
-      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: la búsqueda simple de localidad informa una coincidencia exacta");
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: la búsqueda simple de localidad informa una coincidencia exacta");
 
       await searchFor("Derqui 5890", "published");
       await page.locator('#published-list [data-map-item="sumio-lote-338"]').waitFor({ state: "attached", timeout: 5000 });
@@ -377,7 +402,7 @@ async function auditRoute(browser, route) {
       const imperfectTitleCard = page.locator('#opportunity-list [data-map-item="ordenanza-7497-26-titulos-imperfectos"]');
       await imperfectTitleCard.waitFor({ state: "attached", timeout: 5000 });
       if (!(await imperfectTitleCard.evaluate(element => element.open))) await imperfectTitleCard.locator("summary").click();
-      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: la ordenanza 7497/26 devuelve una coincidencia real");
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: la ordenanza 7497/26 devuelve una coincidencia real");
       check((await imperfectTitleCard.innerText()).includes("no confiere dominio"), "mapa-ia: la ficha distingue permiso provisorio de titularidad dominial");
       check((await imperfectTitleCard.innerText()).includes("09/10/2026"), "mapa-ia: la ficha muestra la fecha de publicación del Boletín 331");
       check(await imperfectTitleCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"]').isVisible(), "mapa-ia: la ficha enlaza la ordenanza oficial");
@@ -387,7 +412,7 @@ async function auditRoute(browser, route) {
       const habilitationCard = page.locator('#opportunity-list [data-map-item="ordenanza-7542-26-habilitaciones-industriales-logistica"]');
       await habilitationCard.waitFor({ state: "attached", timeout: 5000 });
       if (!(await habilitationCard.evaluate(element => element.open))) await habilitationCard.locator("summary").click();
-      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: la ordenanza 7542/26 devuelve una coincidencia real");
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: la ordenanza 7542/26 devuelve una coincidencia real");
       check((await habilitationCard.innerText()).includes("300 m²") && (await habilitationCard.innerText()).includes("1.000 m²"), "mapa-ia: la ficha conserva los umbrales de superficie de la norma");
       check((await habilitationCard.innerText()).includes("22/10/2026"), "mapa-ia: la ficha muestra la fecha de publicación del Boletín 334");
       check(await habilitationCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"]').isVisible(), "mapa-ia: la ficha enlaza la fuente oficial de habilitaciones");
@@ -397,7 +422,7 @@ async function auditRoute(browser, route) {
       const losOlivosCard = page.locator('#opportunity-list [data-map-item="los-olivos-convenio-urbanistico-7572-26"]');
       await losOlivosCard.waitFor({ state: "attached", timeout: 5000 });
       if (!(await losOlivosCard.evaluate(element => element.open))) await losOlivosCard.locator("summary").click();
-      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencias:"), "mapa-ia: Los Olivos devuelve una coincidencia real por proyecto y superficie");
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: Los Olivos devuelve una coincidencia real por proyecto y superficie");
       check((await losOlivosCard.innerText()).includes("USD 138.562,90") && (await losOlivosCard.innerText()).includes("no precios de mercado"), "mapa-ia: las valuaciones del convenio se distinguen de precios de oferta");
       check((await losOlivosCard.innerText()).includes("22/10/2026"), "mapa-ia: la ficha muestra la fecha de publicación del Boletín 334");
       check(await losOlivosCard.locator('a[href="https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"]').isVisible(), "mapa-ia: la ficha enlaza el convenio urbanístico oficial");
@@ -406,8 +431,8 @@ async function auditRoute(browser, route) {
       await page.locator("#search").fill("Los Olivos");
       await page.locator("#activity-filter").selectOption("land");
       await page.locator("#next-step-filter").selectOption("cadastral");
-      await page.locator("#evidence-filter").selectOption("documented");
-      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("1 coincidencias:"), null, { timeout: 5000 });
+      await page.locator("#scope-filter").selectOption("documented");
+      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("1 coincidencia:"), null, { timeout: 5000 });
       const losOlivosFilteredIds = await page.locator("#opportunity-list [data-map-item]").evaluateAll(elements => elements.map(element => element.dataset.mapItem));
       check(losOlivosFilteredIds.length === 1 && losOlivosFilteredIds[0] === "los-olivos-convenio-urbanistico-7572-26", "mapa-ia: los filtros de sector, próximo paso y evidencia se combinan con la búsqueda normativa");
       await page.locator("#reset-map").click();
@@ -434,8 +459,8 @@ async function auditRoute(browser, route) {
       await page.locator("#locality-filter").selectOption("cuartel");
       await page.locator("#activity-filter").selectOption("industrial");
       await page.locator("#next-step-filter").selectOption("contact");
-      await page.locator("#evidence-filter").selectOption("documented");
-      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("1 coincidencias:"), null, { timeout: 5000 });
+      await page.locator("#scope-filter").selectOption("documented");
+      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("1 coincidencia:"), null, { timeout: 5000 });
       const combinedIds = await page.locator("#opportunity-list [data-map-item]").evaluateAll(elements => elements.map(element => element.dataset.mapItem));
       check(combinedIds.length === 1 && combinedIds[0] === "base-aerea-moreno-norte", "mapa-ia: localidad, actividad, próximo paso, evidencia y texto se combinan correctamente");
       check((await page.locator("#atlas-total-count").innerText()).startsWith("1 /"), "mapa-ia: el índice actualiza la cantidad de coincidencias filtradas");
@@ -485,6 +510,15 @@ async function auditRoute(browser, route) {
         }
       }
 
+      const legacyFilterPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+      await legacyFilterPage.goto(BASE_URL + "/mapa-ia/?tipo=opportunity&evidencia=documented&vigencia=no-confirmada&diligencia=complete", { waitUntil: "domcontentloaded" });
+      await legacyFilterPage.waitForFunction(() => document.getElementById("search-results-status")?.textContent.includes("referencias cargadas"), null, { timeout: 8000 });
+      check(await legacyFilterPage.locator("#scope-filter").inputValue() === "documented", "mapa-ia: un enlace heredado restaura capa y evidencia en el control compacto");
+      check((await legacyFilterPage.locator("#advanced-filter-count").innerText()).includes("2 activos"), "mapa-ia: un enlace heredado restaura los dos criterios avanzados");
+      await legacyFilterPage.locator("#open-advanced-filters").click();
+      check(await legacyFilterPage.locator("#availability-filter").inputValue() === "no-confirmada" && await legacyFilterPage.locator("#diligence-filter").inputValue() === "complete", "mapa-ia: el diálogo conserva los valores del enlace compartido");
+      await legacyFilterPage.close();
+
       const selectedThesisCard = page.locator('#opportunity-list [data-map-item="rp25"]');
       await selectedThesisCard.locator("summary").click();
       check(await selectedThesisCard.evaluate(element => element.open && element.classList.contains("is-active")), "mapa-ia: seleccionar una ficha lateral sincroniza la referencia activa");
@@ -493,6 +527,14 @@ async function auditRoute(browser, route) {
       check(await page.locator(".map-sidebar").isVisible(), "mapa-ia: el panel lateral permanece disponible en móvil");
       check(await page.locator(".map-navigation-help").isVisible(), "mapa-ia: las instrucciones de uso siguen visibles en móvil");
       check(await page.locator(".map-legend").isVisible(), "mapa-ia: la leyenda sigue visible en móvil");
+      await page.locator("#open-advanced-filters").click();
+      check(await page.locator("#map-advanced-filters").isVisible(), "mapa-ia: los criterios avanzados también se abren en móvil");
+      const advancedTouchTargets = await page.locator("#availability-filter, #diligence-filter, #close-advanced-filters, #reset-advanced-filters, #apply-advanced-filters").evaluateAll(elements => elements.map(element => {
+        const box = element.getBoundingClientRect();
+        return { width: box.width, height: box.height };
+      }));
+      check(advancedTouchTargets.length === 5 && advancedTouchTargets.every(box => box.width >= 44 && box.height >= 44), "mapa-ia: los controles del diálogo alcanzan objetivos táctiles mínimos");
+      await page.locator("#apply-advanced-filters").click();
       const interactiveCanvasReady = await page.locator(".maplibregl-canvas").count() > 0;
       if (interactiveCanvasReady) {
         check(await page.locator("#map-touch-controls").isVisible(), "mapa-ia: los controles táctiles aparecen en móvil");
