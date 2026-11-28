@@ -9860,7 +9860,10 @@ function referenceMatchesLocality(item,key){
   const address=normalizeSearchText(item&&item.address||"");
   const searchable=[locality,address,(item&&item.type==="locality")?name:"",(item&&item.type==="opportunity")?name:""].filter(Boolean).join(" ");
   if(key==="moreno")return containsNormalizedPhrase(locality,"moreno")||(item&&item.type==="locality"&&containsNormalizedPhrase(name,"moreno centro"));
-  if(key==="unassigned")return !Object.values(LOCALITY_FILTER_TERMS).some(a=>a.some(x=>containsNormalizedPhrase(searchable,x)));
+  if(key==="unassigned"){
+    const assignedLocality=[locality,(item&&item.type==="locality")?name:""].filter(Boolean).join(" ");
+    return !Object.values(LOCALITY_FILTER_TERMS).some(a=>a.some(x=>containsNormalizedPhrase(assignedLocality,x)));
+  }
   return (LOCALITY_FILTER_TERMS[key]||[]).some(x=>containsNormalizedPhrase(searchable,x));
 }
 function referenceMatchesActivity(item,key){if(key==="all")return true;const t=normalizeSearchText([item&&item.activity,item&&item.kind,item&&kindLabel[item.kind],item&&item.name,item&&item.business,item&&item.recordType,item&&item.observations,item&&item.evidence].filter(Boolean).join(" "));return Boolean(item&&item.kind===key)||(ACTIVITY_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
