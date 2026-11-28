@@ -9845,7 +9845,7 @@ function searchQueryScore(query,item){
   if(phraseWeight)score+=phraseWeight*0.6+20;
   return score;
 }
-const LOCALITY_FILTER_TERMS={moreno:["moreno"],paso:["paso del rey"],lareja:["la reja"],alvarez:["francisco alvarez"],trujui:["trujui"],cuartel:["cuartel v"]};
+const LOCALITY_FILTER_TERMS={moreno:["moreno centro"],paso:["paso del rey"],lareja:["la reja"],alvarez:["francisco alvarez"],trujui:["trujui"],cuartel:["cuartel v"]};
 function containsNormalizedPhrase(value,phrase){
   const normalizedValue=normalizeSearchText(value);
   const normalizedPhrase=normalizeSearchText(phrase);
@@ -9859,11 +9859,8 @@ function referenceMatchesLocality(item,key){
   const name=normalizeSearchText(item&&item.name||"");
   const address=normalizeSearchText(item&&item.address||"");
   const searchable=[locality,address,(item&&item.type==="locality")?name:"",(item&&item.type==="opportunity")?name:""].filter(Boolean).join(" ");
-  if(key==="moreno")return containsNormalizedPhrase(locality,"moreno")||(item&&item.type==="locality"&&containsNormalizedPhrase(name,"moreno centro"));
-  if(key==="unassigned"){
-    const assignedLocality=[locality,(item&&item.type==="locality")?name:""].filter(Boolean).join(" ");
-    return !Object.values(LOCALITY_FILTER_TERMS).some(a=>a.some(x=>containsNormalizedPhrase(assignedLocality,x)));
-  }
+  if(key==="moreno")return locality==="moreno"||containsNormalizedPhrase(locality,"moreno centro")||(item&&item.type==="locality"&&containsNormalizedPhrase(name,"moreno centro"));
+  if(key==="unassigned")return !Object.values(LOCALITY_FILTER_TERMS).some(a=>a.some(x=>containsNormalizedPhrase(searchable,x)));
   return (LOCALITY_FILTER_TERMS[key]||[]).some(x=>containsNormalizedPhrase(searchable,x));
 }
 function referenceMatchesActivity(item,key){if(key==="all")return true;const t=normalizeSearchText([item&&item.activity,item&&item.kind,item&&kindLabel[item.kind],item&&item.name,item&&item.business,item&&item.recordType,item&&item.observations,item&&item.evidence].filter(Boolean).join(" "));return Boolean(item&&item.kind===key)||(ACTIVITY_FILTER_TERMS[key]||[]).some(x=>t.includes(x));}
