@@ -483,7 +483,8 @@
     "utopia-bonaerense-moreno": "Utopía Bonaerense · Parque urbano e infraestructura",
     "ordenanza-7497-26-titulos-imperfectos": "Ordenanza 7497/26 · Permisos provisorios para títulos imperfectos",
     "ordenanza-7542-26-habilitaciones-industriales-logistica": "Ordenanza 7542/26 · Habilitaciones industriales y logísticas",
-    "los-olivos-convenio-urbanistico-7572-26": "Los Olivos · Convenio de regularización urbanística · Ordenanza 7572/26"
+    "los-olivos-convenio-urbanistico-7572-26": "Los Olivos · Convenio de regularización urbanística · Ordenanza 7572/26",
+    "catastro-municipal-moreno-plancheta": "Dirección de Catastro · Plancheta catastral y chapa municipal"
   });
 
   function listMapReferenceIds() {
