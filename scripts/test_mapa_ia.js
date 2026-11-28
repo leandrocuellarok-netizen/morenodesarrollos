@@ -769,6 +769,33 @@ assert.deepEqual(filterReferences(all, { kind: "industrial", evidence: "document
 assert.deepEqual(filterReferences(all, { kind: "infrastructure" }).map(item => item.id), ["promeba-trujui", "promeba-cuartel-v", "utopia-bonaerense-moreno"], "la infraestructura pública tiene una línea sectorial propia");
 assert.ok(filterReferences(all, { locality: "paso", category: "opportunity" }).some(item => item.id === "ribera"), "la localidad filtra referencias territoriales");
 assert.ok(filterReferences(all, { locality: "cuartel", category: "opportunity" }).some(item => item.id === "base-aerea-moreno-norte"), "las referencias sin coordenadas pueden filtrarse por localidad declarada");
+const morenoDistrictListing = all.find(item => item.id === "parques-morenito-lote-594");
+assert.ok(morenoDistrictListing, "la publicación real de Tierras del Morenito permanece en el inventario");
+assert.deepEqual(
+  filterReferences([morenoDistrictListing], { locality: "moreno", category: "published" }).map(item => item.id),
+  ["parques-morenito-lote-594"],
+  "el filtro Moreno reconoce una localidad compuesta que empieza por Moreno sin confundir Morenito"
+);
+assert.deepEqual(
+  filterReferences([morenoDistrictListing], { locality: "unassigned", category: "published" }).map(item => item.id),
+  [],
+  "una publicación localizada en Moreno no se clasifica como localidad no asignada"
+);
+const localityBoundaryFixtures = [
+  { type: "opportunity", id: "cuartel-v-exact", name: "Referencia Cuartel V", locality: "Cuartel V", stage: "documented" },
+  { type: "opportunity", id: "cuartel-vial", name: "Referencia Cuartel Vial", locality: "Cuartel Vial", stage: "documented" },
+  { type: "opportunity", id: "morenito-only", name: "Referencia Morenito", locality: "Morenito", stage: "documented" }
+];
+assert.deepEqual(
+  filterReferences(localityBoundaryFixtures, { locality: "cuartel" }).map(item => item.id),
+  ["cuartel-v-exact"],
+  "Cuartel V no coincide por prefijo con Cuartel Vial"
+);
+assert.deepEqual(
+  filterReferences(localityBoundaryFixtures, { locality: "moreno" }).map(item => item.id),
+  [],
+  "Morenito no se interpreta como Moreno"
+);
 assert.ok(filterReferences(all, { activity: "infrastructure", category: "opportunity" }).some(item => item.id === "promeba-trujui"), "la actividad se filtra de forma independiente del sector");
 assert.ok(filterReferences(all, { nextStep: "publication", category: "published" }).length > 0, "el próximo paso permite priorizar revalidaciones de publicaciones");
 assert.deepEqual(filterReferences(all, { kind: "industrial", category: "locality" }), [], "un sector de oportunidad no incorpora localidades");
