@@ -22,6 +22,7 @@ const opportunities=[
   {id:"ordenanza-7497-26-titulos-imperfectos",stage:"documented",name:"Ordenanza 7497/26 · Permisos provisorios para títulos imperfectos",lat:null,lng:null,kind:"land",locality:"Alcance distrital",activity:"Regularización dominial, obras, mensuras y subdivisiones parcelarias",evidenceType:"Ordenanza municipal publicada en SIBOM",confidence:"Alta para el texto normativo y su promulgación; la aplicación a un inmueble exige verificar posesión, requisitos, vigencia, reglamentación y compatibilidad urbanística.",sourceDate:"Sancionada 11/06/2026 · promulgada por Decreto 1996/26 (18/06/2026) · publicada en SIBOM 331 (09/10/2026)",lastCheckedAt:"2026-11-27",business:"Diligencia de inmuebles con títulos imperfectos; regularización de obras, mensuras, subdivisiones y unificaciones parcelarias.",evidence:"La Ordenanza 7497/26 crea un Régimen de Permisos Provisorios para Inmuebles con Títulos Imperfectos. Incluye inmuebles con posesión legítima acreditable, obras existentes o en ejecución, emprendimientos comerciales, industriales y de servicios, y mensuras, subdivisiones o unificaciones que no puedan tramitarse por falta de título perfecto. Exige acreditar posesión con ánimo de dueño, aportar documentación y planos firmados por profesional; contempla restricciones para espacios públicos, zonas prohibidas, riberas protegidas, reservas, afectaciones y parcelas con inhibiciones o restricciones no resueltas. El permiso no confiere dominio, no regulariza por sí solo la titularidad ni exime del Código de Zonificación, Edificación y normativa ambiental o territorial; además exige regularizar obligaciones tributarias municipales. La norma fija una vigencia de dos años desde su publicación y reportes semestrales; el Boletín SIBOM 331 fue publicado el 09/10/2026. La reglamentación operativa y el cómputo legal del plazo deben confirmarse antes de iniciar una actuación.",status:"Régimen creado, promulgado y publicado en SIBOM 331 el 09/10/2026; la norma prevé dos años desde la publicación. La reglamentación operativa y la aplicación a inmuebles particulares no están verificadas; no acredita título perfecto ni permiso ya otorgado.",next:"Solicitar la reglamentación y el criterio vigente de Obras Particulares y Catastro; verificar posesión legítima, antecedentes dominiales, deudas municipales, planos y mensura, nomenclatura, zonificación, restricciones ambientales e hidráulicas y eventuales derechos de terceros.",source:"https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"},
   {id:"ordenanza-7542-26-habilitaciones-industriales-logistica",stage:"documented",name:"Ordenanza 7542/26 · Habilitaciones industriales y logísticas",lat:null,lng:null,kind:"industrial",locality:"Alcance distrital",activity:"Habilitación de industrias, depósitos, distribución, logística y grandes superficies comerciales",evidenceType:"Ordenanza municipal publicada en SIBOM",confidence:"Alta para el texto normativo publicado; la habilitación y compatibilidad de cada actividad deben revisarse por parcela y ante la autoridad de aplicación.",sourceDate:"Sancionada 27/08/2026 · comunicada al D.E. 01/09/2026 · promulgación automática · publicada en SIBOM 334 (22/10/2026)",lastCheckedAt:"2026-11-27",business:"Diligencia de suelos y establecimientos industriales, depósitos, centros de distribución, logística y comercio mayorista.",evidence:"La Ordenanza 7542/26 regula la habilitación de industrias, depósitos en general, distribución y logística, hipermercados con salón de ventas superior a 1.000 m², supermercados mayoristas y oficinas administrativas vinculadas a esos rubros. Para depósitos mayores a 300 m², asigna intervención a la Subsecretaría de Industria y Comercio. Permite más de una actividad compatible en una misma unidad parcelaria bajo condiciones de uso privativo, ingreso individual y separación física, además de los controles de seguridad, salubridad y ambiente. Prevé habilitaciones definitivas, simplificadas y provisorias; la simplificada se limita a industrias de hasta Categoría II y superficie cubierta inferior a 1.000 m², con requisitos técnicos y ambientales, y la provisoria caduca a los 180 días salvo renovación evaluada. No modifica por sí sola la zonificación ni garantiza habilitación en una parcela concreta.",status:"Ordenanza sancionada y comunicada; no se presume factibilidad ni habilitación de un establecimiento. La autoridad debe confirmar procedimientos, reglamentación, requisitos y aplicación actual.",next:"Solicitar una preconsulta escrita a la Subsecretaría de Industria y Comercio; comprobar zonificación y uso permitido, superficie cubierta, categoría ambiental, certificado de aptitud ambiental, planos, accesos individuales, separación física y vigencia de cualquier habilitación.",source:"https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"},
   {id:"los-olivos-convenio-urbanistico-7572-26",stage:"documented",name:"Los Olivos · Convenio de regularización urbanística · Ordenanza 7572/26",lat:null,lng:null,kind:"land",locality:"No precisada",activity:"Desarrollo urbanístico, cesiones, equipamiento comunitario y contribución por valorización",evidenceType:"Ordenanza municipal publicada en SIBOM",confidence:"Alta para la homologación y los importes consignados en la ordenanza; no acredita ejecución posterior de pagos, transferencias registrales, aprobaciones adicionales ni disponibilidad de inmuebles.",sourceDate:"Sancionada 24/09/2026 · comunicada 29/09/2026 · promulgada por Decreto 3230/26 · publicada en SIBOM 334 (22/10/2026)",lastCheckedAt:"2026-11-27",business:"Diligencia de desarrollos urbanísticos, cesiones obligatorias, contribución por valorización, transferencias en especie y cumplimiento de convenios.",evidence:"La Ordenanza 7572/26 convalida el convenio de regularización y cumplimiento de obligaciones urbanísticas del emprendimiento Los Olivos, proyectado como barrio cerrado sobre Circunscripción IV, Parcelas Rurales 660 C, D, E, F, G, H, J, K y M. La norma consigna un saldo de cesiones de 9.897,35 m² (7.767,94 m² de área verde y 2.129,41 m² de equipamiento comunitario), valuado en USD 138.562,90, y una contribución por valorización inmobiliaria de USD 464.639,06. El convenio firmado el 21/09/2026 prevé transferir al Municipio dos inmuebles: Circunscripción II, Sección A, Chacra 5, Fracción 1, Parcela 5, de 6.189 m² con una edificación apta para fines sanitarios, asistenciales, comunitarios o institucionales, valuada en USD 370.000; y Circunscripción IV, Sección Z, Quinta 27, Parcela 11, Partida 92.786, de 4.027 m² dentro del Área Natural Protegida Dique Ing. Roggero, valuada en USD 31.000. Ambas prestaciones en especie se computan por USD 401.000 y la ordenanza consigna un saldo de USD 202.201,96 en diez cuotas con cheques diferidos e interés. Son magnitudes y valuaciones del convenio municipal, no precios de mercado ni ofertas. La norma no demuestra que los pagos se hayan completado, que las transferencias estén inscriptas ni que existan parcelas disponibles.",status:"Convenio homologado por ordenanza; la ejecución de pagos, transferencias dominiales, eventuales adendas y aprobaciones urbanísticas posteriores no queda acreditada por la sola norma. Las parcelas mencionadas no se presentan como disponibles.",next:"Obtener el convenio íntegro y el expediente 4078-284576-I-2026; cotejar nomenclatura y polígonos con Catastro, revisar escrituras y asientos registrales de las transferencias, verificar pagos de las cuotas, adendas y estado de las obligaciones urbanísticas. Confirmar límites y restricciones del Área Natural Protegida Dique Roggero antes de analizar cualquier inmueble.",source:"https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"}
+,{id:"catastro-municipal-moreno-plancheta",stage:"documented",name:"Dirección de Catastro · Plancheta catastral y chapa municipal",lat:null,lng:null,kind:"land",locality:"Alcance distrital",activity:"Catastro, nomenclatura parcelaria y regularización de titularidad",evidenceType:"Información institucional municipal · Dirección de Catastro",confidence:"Alta para los requisitos, domicilio y canales publicados por el Municipio; deben confirmarse antes de iniciar el trámite.",sourceDate:"Fecha de publicación no informada en la página institucional; consulta verificada 28/11/2026",lastCheckedAt:"2026-11-28",business:"Diligencia catastral para identificar parcelas, obtener plancheta y contrastar datos municipales antes de evaluar una operación inmobiliaria.",evidence:"El portal oficial del Municipio informa que la Dirección de Catastro atiende en Rivadavia 267, entre Concejal Rosset y Tucumán, de lunes a viernes de 8:00 a 14:00; publica catastro@moreno.gov.ar y 0237 4669127 interno 1211. La página municipal de trámites indica que la consulta de chapa municipal (calle y número) requiere escritura o boleto de compraventa y DNI; para consultar plancheta catastral requiere boleto o escritura y DNI, previo pago del sellado que corresponda según la Ordenanza Tributaria vigente. Estos requisitos son los publicados por el Municipio y deben confirmarse antes de iniciar el trámite; no equivalen a informe de dominio, certificado urbanístico ni identificación parcelaria definitiva.",status:"Canales y requisitos institucionales publicados; vigencia operativa, sellado y documentación actual deben confirmarse con la Dirección de Catastro.",next:"Reunir escritura o boleto y DNI; consultar el sellado y requisitos vigentes; solicitar la plancheta catastral y contrastar la nomenclatura obtenida con estado parcelario, dominio, zonificación y restricciones ante los organismos competentes.",source:"https://www.moreno.gob.ar/catastro.php",sourceAlternates:[{url:"https://moreno2.moreno.gob.ar/catastro-contribuyentes.php",label:"Requisitos oficiales · consulta de chapa municipal, plancheta catastral y registración de titularidad"}]}
 
 ];
 
@@ -10245,6 +10246,21 @@ function safeTerritorialSource(value) {
   }
 }
 
+function safeTerritorialAlternateSources(item) {
+  const primary = safeTerritorialSource(item && item.source);
+  const seen = new Set(primary ? [primary] : []);
+  return (Array.isArray(item && item.sourceAlternates) ? item.sourceAlternates : [])
+    .map(entry => ({
+      url: safeTerritorialSource(entry && entry.url),
+      label: String(entry && entry.label || "Fuente complementaria").trim().slice(0, 240)
+    }))
+    .filter(entry => {
+      if (!entry.url || seen.has(entry.url)) return false;
+      seen.add(entry.url);
+      return true;
+    });
+}
+
 function buildTerritorialBrief(item, generatedAt) {
   if (!item || item.type !== "opportunity" ||
       !["documented", "hypothesis"].includes(item.stage)) return null;
@@ -10283,7 +10299,8 @@ function buildTerritorialBrief(item, generatedAt) {
       sourceDate: evidenceMetadata(item).sourceDate, consultedAt: evidenceMetadata(item).consultedAt,
       verificationStatus: String(item.status || "").trim().slice(0, 800),
       nextStep: String(item.next || "").trim().slice(0, 1000),
-      sourceUrl: safeTerritorialSource(item.source)
+      sourceUrl: safeTerritorialSource(item.source),
+      sourceAlternates: safeTerritorialAlternateSources(item)
     },
     diligence: reviewTasks.map(task => ({
       id: task.id, label: task.label, sourceDocument: "", consultedAt: "", recorded: false
@@ -10324,6 +10341,19 @@ function buildTerritorialBriefHtml(brief) {
     ? '<a href="' + escapeTerritorialHtml(safeSource) + '" target="_blank" rel="noopener noreferrer">' +
       escapeTerritorialHtml(safeSource) + "</a>"
     : "<span>Sin enlace de fuente registrado.</span>";
+  const alternateSourceRows = (Array.isArray(reference.sourceAlternates) ? reference.sourceAlternates : [])
+    .map(entry => {
+      const href = safeTerritorialSource(entry && entry.url);
+      if (!href || href === safeSource) return "";
+      const label = String(entry && entry.label || href);
+      return '<p><a href="' + escapeTerritorialHtml(href) + '" target="_blank" rel="noopener noreferrer">' +
+        escapeTerritorialHtml(label) + "</a></p>";
+    })
+    .filter(Boolean)
+    .join("");
+  const alternateSourcesMarkup = alternateSourceRows
+    ? '<section class="source"><h2>Fuentes complementarias</h2>' + alternateSourceRows + "</section>"
+    : "";
   const diligenceRows = (Array.isArray(brief.diligence) ? brief.diligence : []).map(task =>
     "<tr><th>" + escapeTerritorialHtml(task.label) +
     '</th><td><span class="write-line"></span></td><td><span class="date-line"></span></td></tr>'
@@ -10387,6 +10417,7 @@ function buildTerritorialBriefHtml(brief) {
     '<p class="muted"><strong>Fuente de coordenada:</strong> ' + coordinateSourceMarkup + coordinateCheckedAt + "</p></section></div>" +
     '<section class="source"><h2>Fuente de origen</h2><p>' + sourceMarkup +
     '</p><p class="muted">Enlace consignado en el inventario MORENO. Consultar el documento original y su fecha antes de utilizarlo en una evaluación.</p></section>' +
+    alternateSourcesMarkup +
     '<section><h2>Bitácora para diligencia documental</h2><table><thead><tr><th>Control</th><th>Documento / fuente</th><th>Fecha</th></tr></thead><tbody>' +
     diligenceRows + "</tbody></table></section>" +
     '<section><h2>Datos a completar para evaluar un inmueble concreto</h2><ul class="data-list">' + dataRows + "</ul></section>" +
@@ -11472,6 +11503,15 @@ function initMapPage(doc) {
           link.textContent = "Abrir referencia externa ↗";
           body.append(link);
         }
+        safeTerritorialAlternateSources(item).forEach(source => {
+          const alternateLink = doc.createElement("a");
+          alternateLink.className = "map-source-link map-source-alternate";
+          alternateLink.href = source.url;
+          alternateLink.target = "_blank";
+          alternateLink.rel = "noopener noreferrer";
+          alternateLink.textContent = source.label + " ↗";
+          body.append(alternateLink);
+        });
         body.append(reviewPanelNode(item));
       }
 
