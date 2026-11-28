@@ -343,6 +343,7 @@ async function auditRoute(browser, route) {
       await advancedFiltersButton.click();
       await page.keyboard.press("Escape");
       check(!(await advancedFiltersDialog.evaluate(element => element.open)), "mapa-ia: Escape cierra el diálogo");
+      await page.waitForFunction(() => document.getElementById("open-advanced-filters")?.getAttribute("aria-expanded") === "false", null, { timeout: 1000 });
       check(await advancedFiltersButton.getAttribute("aria-expanded") === "false", "mapa-ia: Escape actualiza el estado ARIA");
       const initialCount = await page.locator("#atlas-total-count").innerText();
       check(initialCount.startsWith(mapInventory.length + " /"), "mapa-ia: el índice informa el inventario completo al abrir");
