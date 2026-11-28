@@ -822,12 +822,12 @@ assert.deepEqual(
   [catastroReference.id],
   "la referencia catastral sin coordenadas se encuentra con filtros combinados"
 );
-const catastroBrief = buildTerritorialBrief(catastroReference, "2026-11-28T07:50:00.000Z");
+const catastroBrief = buildTerritorialBrief(all.find(item => item.id === catastroReference.id), "2026-11-28T07:50:00.000Z");
 assert.ok(catastroBrief.reference.sourceAlternates.some(entry => entry.url === "https://moreno2.moreno.gob.ar/catastro-contribuyentes.php"), "la ficha editorial exportable conserva las fuentes complementarias");
 const catastroBriefHtml = buildTerritorialBriefHtml(catastroBrief);
 assert.ok(catastroBriefHtml.includes("Fuentes complementarias") && catastroBriefHtml.includes("catastro-contribuyentes.php"), "el dossier imprimible muestra las fuentes complementarias");
 const utopiaForSources = opportunities.find(item => item.id === "utopia-bonaerense-moreno");
-const utopiaBrief = buildTerritorialBrief(utopiaForSources, "2026-11-28T07:50:00.000Z");
+const utopiaBrief = buildTerritorialBrief(all.find(item => item.id === utopiaForSources.id), "2026-11-28T07:50:00.000Z");
 assert.ok(utopiaBrief.reference.sourceAlternates.some(entry => entry.url === "https://nube.minfra.gba.gob.ar/index.php/s/TrMYQtYjHf4tSrJ/download"), "la ficha editorial conserva el acta oficial de Utopía Bonaerense");
 assert.ok(buildTerritorialBriefHtml(utopiaBrief).includes("Acta de apertura oficial"), "el dossier de Utopía expone el enlace del acta de apertura");
 
