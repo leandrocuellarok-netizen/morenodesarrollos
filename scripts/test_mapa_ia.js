@@ -21,12 +21,14 @@ assert.ok(!mapPage.includes("</section>/section>"), "mapa-ia/index.html: no debe
 const homePage = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 assert.ok(mapPage.includes('class="map-filter-group"'), "los filtros se agrupan en una barra editorial");
 assert.ok(mapPage.includes("<h4>Referencias territoriales</h4>"), "el fallback sin JavaScript conserva el índice territorial");
-for (const [label, url] of [["Ordenanza 7497/26", "https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"], ["Ordenanza 7542/26", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"], ["Los Olivos", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"]]) assert.ok(mapPage.includes(label) && mapPage.includes(url), "el fallback conserva la referencia y su fuente oficial: " + label);
+for (const [label, url] of [["Ordenanza 7497/26", "https://sibom.slyt.gba.gob.ar/bulletins/15901/contents/2456561"], ["Ordenanza 7542/26", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463040"], ["Los Olivos", "https://sibom.slyt.gba.gob.ar/bulletins/16019/contents/2463473"], ["Dirección de Catastro", "https://www.moreno.gob.ar/catastro.php"]]) assert.ok(mapPage.includes(label) && mapPage.includes(url), "el fallback conserva la referencia y su fuente oficial: " + label);
 const noScriptFallback = mapPage.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1] || "";
 const fallbackLists = [...noScriptFallback.matchAll(/<ul>([\s\S]*?)<\/ul>/g)];
-assert.equal((fallbackLists[1]?.[1].match(/<li>/g) || []).length, 13, "el fallback sin JavaScript conserva las trece referencias territoriales");
-assert.ok(homePage.includes("6 LOCALIDADES · 12 REFERENCIAS DOCUMENTADAS · 1 HIPÓTESIS"), "el esquema de Inicio muestra el total documental vigente");
-assert.ok(homePage.includes("12 referencias sin coordenada trazable: índice"), "el esquema de Inicio informa cuántas referencias siguen sin punto");
+assert.equal((fallbackLists[1]?.[1].match(/<li>/g) || []).length, 14, "el fallback sin JavaScript conserva las catorce referencias territoriales");
+assert.ok(noScriptFallback.includes("catastro-contribuyentes.php"), "el fallback sin JavaScript conserva el enlace de requisitos de Catastro");
+assert.ok(homePage.includes("6 LOCALIDADES · 13 REFERENCIAS DOCUMENTADAS · 1 HIPÓTESIS"), "el esquema de Inicio muestra el total documental vigente");
+assert.ok(homePage.includes("13 referencias sin coordenada trazable: índice"), "el esquema de Inicio informa cuántas referencias siguen sin punto");
+assert.ok(homePage.includes("Las otras trece referencias territoriales permanecen en el índice sin marcador"), "el esquema de Inicio conserva el conteo de fichas sin geolocalización");
 assert.ok(mapPage.includes('id="kind-filter" type="hidden"'), "el atlas conserva compatibilidad con enlaces sectoriales heredados");
 assert.ok(mapPage.includes('id="locality-filter"'), "el atlas permite filtrar por localidad");
 assert.ok(mapPage.includes('id="activity-filter"'), "el atlas permite filtrar por actividad");
@@ -421,7 +423,7 @@ assert.ok(source.includes('link.download = "moreno-mapa-ia-referencias.geojson"'
 
 
 assert.equal(localities.length, 6, "se conservan las seis localidades");
-assert.equal(opportunities.length, 13, "se conservan diez referencias territoriales y se agregan tres antecedentes normativos y urbanísticos documentados");
+assert.equal(opportunities.length, 14, "se conservan las referencias anteriores y se incorpora el antecedente institucional de Catastro");
 assert.ok(publishedProperties.length >= 28, "la capa publicada conserva el inventario histórico y las incorporaciones verificadas");
 assert.equal(all.length, localities.length + opportunities.length + publishedProperties.length, "el total coincide con localidades, referencias territoriales y publicaciones");
 assert.equal(new Set(all.map(item => item.id)).size, all.length, "los identificadores son únicos");
@@ -644,7 +646,7 @@ assert.ok(publishedProperties.find(item => item.id === "casa-bernardino-rivadavi
 
 assert.equal(new Set(publishedProperties.map(item => item.id)).size, publishedProperties.length, "no hay IDs duplicados en publicaciones");
 
-const expectedInventoryCounts = { localities: 6, documented: 12, hypotheses: 1, published: publishedProperties.length, total: all.length };
+const expectedInventoryCounts = { localities: 6, documented: 13, hypotheses: 1, published: publishedProperties.length, total: all.length };
 assert.deepEqual(countInventory(all), expectedInventoryCounts);
 
 const allPublishedForPaging = filterReferences(all, { category: "published" });
@@ -677,7 +679,7 @@ assert.ok(styles.includes(".map-published-pagination"));
 assert.ok(styles.includes(".map-published-more:focus-visible"));
 assert.deepEqual(
   countInventory(filterReferences(all, { evidence: "documented" })),
-  { localities: 0, documented: 12, hypotheses: 0, published: 0, total: 12 },
+  { localities: 0, documented: 13, hypotheses: 0, published: 0, total: 13 },
   "el índice refleja el filtro de contextos con fuente"
 );
 assert.deepEqual(
@@ -724,7 +726,7 @@ for (const item of opportunities) {
 }
 
 assert.equal(filterReferences(all, { category: "locality" }).length, 6);
-assert.equal(filterReferences(all, { category: "opportunity" }).length, 13);
+assert.equal(filterReferences(all, { category: "opportunity" }).length, 14);
 assert.equal(filterReferences(all, { category: "published" }).length, publishedProperties.length);
 for (const [status, key] of [
   ["No confirmada", "no-confirmada"],
@@ -751,13 +753,13 @@ assert.ok(!source.includes('publishedProperties.forEach(item => {\n  item.lastCh
 assert.ok(source.includes("No hay constancia individual de consulta de la fuente"), "una ficha sin evidencia individual no recibe una afirmación automática de accesibilidad");
 assert.equal(filterReferences(all, { query: "Isabel la Católica", category: "published" }).length, 1);
 assert.equal(filterReferences(all, { query: "Santa Teresa", category: "published" }).length, 2, "la búsqueda distingue las dos publicaciones de Santa Teresa con direcciones diferentes");
-assert.equal(filterReferences(all, { evidence: "documented" }).length, 12, "el filtro documentado muestra todos los contextos con fuente");
+assert.equal(filterReferences(all, { evidence: "documented" }).length, 13, "el filtro documentado muestra todos los contextos con fuente");
 assert.equal(filterReferences(all, { evidence: "published-source" }).length, publishedProperties.length, "el nivel de evidencia separa avisos de terceros de contextos institucionales");
 assert.equal(filterReferences(all, { evidence: "hypothesis" }).length, 1, "el filtro de hipótesis no mezcla localidades sin clasificar");
 assert.deepEqual(filterReferences(all, { kind: "industrial" }).map(item => item.id), ["rp25", "ecoparque", "base-aerea-moreno-norte", "ordenanza-7542-26-habilitaciones-industriales-logistica"], "el filtro productivo/logístico incluye Base Aérea y la normativa de habilitaciones");
 assert.deepEqual(filterReferences(all, { kind: "commercial" }).map(item => item.id), ["ribera"], "el filtro comercial muestra la referencia existente");
 assert.deepEqual(filterReferences(all, { kind: "tourism" }).map(item => item.id), ["roggero"], "el filtro de turismo muestra la referencia existente");
-assert.deepEqual(filterReferences(all, { kind: "land" }).map(item => item.id), ["norte", "mui-mo-monitoreo-urbano-inmobiliario", "ordenanza-7497-26-titulos-imperfectos", "los-olivos-convenio-urbanistico-7572-26"], "el filtro de suelo incluye hipótesis, control municipal y dos antecedentes documentales");
+assert.deepEqual(filterReferences(all, { kind: "land" }).map(item => item.id), ["norte", "mui-mo-monitoreo-urbano-inmobiliario", "ordenanza-7497-26-titulos-imperfectos", "los-olivos-convenio-urbanistico-7572-26", "catastro-municipal-moreno-plancheta"], "el filtro de suelo incluye hipótesis, control municipal y dos antecedentes documentales");
 assert.ok(filterReferences(all, { query: "loteos autorizados", category: "opportunity" }).some(item => item.id === "mui-mo-monitoreo-urbano-inmobiliario"), "el buscador indexa el sistema municipal de loteos autorizados");
 assert.deepEqual(filterReferences(all, { kind: "industrial", evidence: "documented" }).map(item => item.id), ["rp25", "ecoparque", "base-aerea-moreno-norte", "ordenanza-7542-26-habilitaciones-industriales-logistica"], "el filtro sectorial se combina con el nivel de evidencia");
 assert.deepEqual(filterReferences(all, { kind: "infrastructure" }).map(item => item.id), ["promeba-trujui", "promeba-cuartel-v", "utopia-bonaerense-moreno"], "la infraestructura pública tiene una línea sectorial propia");
@@ -804,6 +806,30 @@ for (const id of newNormativeIds) {
   assert.equal(item.availabilityStatus, undefined, "la nueva referencia no inventa disponibilidad: " + id);
 }
 assert.equal(new Set(opportunities.map(item => item.source)).size, opportunities.length, "cada referencia territorial conserva una fuente primaria distinta");
+
+const catastroReference = opportunities.find(item => item.id === "catastro-municipal-moreno-plancheta");
+assert.ok(catastroReference && catastroReference.stage === "documented", "Catastro se incorpora como contexto institucional documentado");
+assert.equal(hasCoordinates(catastroReference), false, "la oficina de Catastro no recibe una coordenada sin fuente cartográfica");
+assert.equal(catastroReference.locality, "Alcance distrital", "el servicio de Catastro no se asigna a una localidad parcelaria");
+assert.equal(catastroReference.source, "https://www.moreno.gob.ar/catastro.php", "la ficha conserva la página oficial de la Dirección de Catastro");
+assert.ok(catastroReference.sourceAlternates.some(entry => entry.url === "https://moreno2.moreno.gob.ar/catastro-contribuyentes.php"), "la ficha conserva la página municipal con requisitos de plancheta");
+assert.equal(catastroReference.lastCheckedAt, "2026-11-28", "la ficha registra la fecha efectiva de consulta");
+assert.match(catastroReference.sourceDate, /fecha de publicación no informada/i, "la ficha no inventa una fecha de publicación");
+assert.ok(catastroReference.evidence.includes("catastro@moreno.gov.ar") && catastroReference.evidence.includes("0237 4669127 interno 1211"), "los datos de contacto proceden del portal municipal");
+assert.ok(filterReferences(all, { query: "Catastro Rivadavia 267 plancheta", category: "opportunity" }).some(item => item.id === catastroReference.id), "el buscador recupera los requisitos catastrales y la dirección oficial");
+assert.deepEqual(
+  filterReferences(all, { query: "Catastro Rivadavia 267 plancheta", category: "opportunity", kind: "land", locality: "unassigned", activity: "land", nextStep: "cadastral", evidence: "documented" }).map(item => item.id),
+  [catastroReference.id],
+  "la referencia catastral sin coordenadas se encuentra con filtros combinados"
+);
+const catastroBrief = buildTerritorialBrief(all.find(item => item.id === catastroReference.id), "2026-11-28T07:50:00.000Z");
+assert.ok(catastroBrief.reference.sourceAlternates.some(entry => entry.url === "https://moreno2.moreno.gob.ar/catastro-contribuyentes.php"), "la ficha editorial exportable conserva las fuentes complementarias");
+const catastroBriefHtml = buildTerritorialBriefHtml(catastroBrief);
+assert.ok(catastroBriefHtml.includes("Fuentes complementarias") && catastroBriefHtml.includes("catastro-contribuyentes.php"), "el dossier imprimible muestra las fuentes complementarias");
+const utopiaForSources = opportunities.find(item => item.id === "utopia-bonaerense-moreno");
+const utopiaBrief = buildTerritorialBrief(all.find(item => item.id === utopiaForSources.id), "2026-11-28T07:50:00.000Z");
+assert.ok(utopiaBrief.reference.sourceAlternates.some(entry => entry.url === "https://nube.minfra.gba.gob.ar/index.php/s/TrMYQtYjHf4tSrJ/download"), "la ficha editorial conserva el acta oficial de Utopía Bonaerense");
+assert.ok(buildTerritorialBriefHtml(utopiaBrief).includes("Acta de apertura oficial"), "el dossier de Utopía expone el enlace del acta de apertura");
 
 assert.ok(filterReferences(all, { query: "Derqui 5890", category: "published" }).some(item => item.id === "sumio-lote-338"), "la búsqueda indexa calles y direcciones publicadas");
 assert.ok(filterReferences(all, { query: "338 m2", category: "published" }).some(item => item.id === "sumio-lote-338"), "la búsqueda indexa superficies numéricas y convierte m² a m2");
@@ -904,7 +930,7 @@ assert.deepEqual(
   "los resultados con coincidencia en nombre y dirección preceden a menciones contextuales"
 );
 const unlocatedOpportunityIds = opportunities.filter(item => !hasCoordinates(item)).map(item => item.id).sort();
-assert.deepEqual(unlocatedOpportunityIds, ["base-aerea-moreno-norte", "los-olivos-convenio-urbanistico-7572-26", "mui-mo-monitoreo-urbano-inmobiliario", "norte", "ordenanza-7497-26-titulos-imperfectos", "ordenanza-7542-26-habilitaciones-industriales-logistica", "promeba-cuartel-v", "promeba-trujui", "ribera", "roggero", "rp25", "utopia-bonaerense-moreno"].sort(), "las doce referencias sin geolocalización no reciben coordenadas inventadas");
+assert.deepEqual(unlocatedOpportunityIds, ["base-aerea-moreno-norte", "catastro-municipal-moreno-plancheta", "los-olivos-convenio-urbanistico-7572-26", "mui-mo-monitoreo-urbano-inmobiliario", "norte", "ordenanza-7497-26-titulos-imperfectos", "ordenanza-7542-26-habilitaciones-industriales-logistica", "promeba-cuartel-v", "promeba-trujui", "ribera", "roggero", "rp25", "utopia-bonaerense-moreno"].sort(), "las trece referencias sin geolocalización no reciben coordenadas inventadas");
 const utopiaReference = opportunities.find(item => item.id === "utopia-bonaerense-moreno");
 assert.ok(utopiaReference.sourceAlternates.some(source => source.url === "https://nube.minfra.gba.gob.ar/index.php/s/TrMYQtYjHf4tSrJ/download"), "la ficha Utopía conserva el acta oficial de apertura como fuente directa");
 const baseAereaReference = opportunities.find(item => item.id === "base-aerea-moreno-norte");
@@ -1090,7 +1116,7 @@ assert.equal(clearReviewState({ removeItem: () => { throw new Error("storage blo
 const reviewExport = buildReviewExport(firstReviewState, all, "2026-11-25T06:00:00.000Z");
 assert.equal(reviewExport.schema_version, 2);
 assert.equal(reviewExport.generated_at, "2026-11-25T06:00:00.000Z");
-assert.equal(reviewExport.references.length, 13, "la exportación excluye localidades y conserva las trece referencias territoriales");
+assert.equal(reviewExport.references.length, 14, "la exportación excluye localidades y conserva las catorce referencias territoriales");
 const exportedRp25 = reviewExport.references.find(reference => reference.id === "rp25");
 assert.equal(exportedRp25.completed_tasks, 1);
 assert.equal(exportedRp25.total_tasks, 5);
@@ -1617,7 +1643,7 @@ assert.ok(laProvidencia.observations.includes("no cuentan con planos aprobados")
 const sourceUrls = publishedProperties.map(record => record.source).filter(Boolean);
 assert.equal(new Set(sourceUrls).size, sourceUrls.length, "no se duplican enlaces primarios");
 assert.equal(publishedProperties.length, 356, "el catálogo incorpora 29 altas netas sin duplicados");
-assert.equal(all.length, 375, "el inventario completo refleja 356 publicaciones y 19 referencias territoriales");
+assert.equal(all.length, 376, "el inventario completo refleja 356 publicaciones y 20 referencias territoriales");
 
 
 testGeorefRequestQueue()

@@ -448,6 +448,32 @@ async function auditRoute(browser, route) {
       check(losOlivosFilteredIds.length === 1 && losOlivosFilteredIds[0] === "los-olivos-convenio-urbanistico-7572-26", "mapa-ia: los filtros de sector, próximo paso y evidencia se combinan con la búsqueda normativa");
       await page.locator("#reset-map").click();
 
+      await searchFor("Catastro Rivadavia 267 plancheta", "opportunity");
+      const catastroCard = page.locator('#opportunity-list [data-map-item="catastro-municipal-moreno-plancheta"]');
+      await catastroCard.waitFor({ state: "attached", timeout: 5000 });
+      if (!(await catastroCard.evaluate(element => element.open))) await catastroCard.locator("summary").click();
+      check((await page.locator("#search-results-status").innerText()).startsWith("1 coincidencia:"), "mapa-ia: Catastro devuelve una coincidencia real por trámite, calle y altura");
+      check((await catastroCard.innerText()).includes("catastro@moreno.gov.ar") && (await catastroCard.innerText()).includes("0237 4669127 interno 1211"), "mapa-ia: la ficha muestra solo los canales oficiales publicados");
+      check(await catastroCard.locator('a[href="https://www.moreno.gob.ar/catastro.php"]').isVisible(), "mapa-ia: la ficha enlaza el portal oficial de Catastro");
+      check(await catastroCard.locator('a[href="https://moreno2.moreno.gob.ar/catastro-contribuyentes.php"]').isVisible(), "mapa-ia: la ficha expone los requisitos municipales complementarios");
+      check(await page.locator('.map-pin[data-map-reference="catastro-municipal-moreno-plancheta"]').count() === 0, "mapa-ia: el servicio distrital de Catastro permanece en el índice sin coordenada inventada");
+      await page.locator("#search").fill("Catastro Rivadavia 267 plancheta");
+      await page.locator("#locality-filter").selectOption("unassigned");
+      await page.locator("#activity-filter").selectOption("land");
+      await page.locator("#next-step-filter").selectOption("cadastral");
+      await page.locator("#scope-filter").selectOption("documented");
+      await page.waitForFunction(() => document.getElementById("search-results-status")?.textContent.startsWith("1 coincidencia:"), null, { timeout: 5000 });
+      const catastroFilteredIds = await page.locator("#opportunity-list [data-map-item]").evaluateAll(elements => elements.map(element => element.dataset.mapItem));
+      check(catastroFilteredIds.length === 1 && catastroFilteredIds[0] === "catastro-municipal-moreno-plancheta", "mapa-ia: Catastro combina localidad no asignada, actividad, próximo paso y evidencia");
+      await page.locator("#reset-map").click();
+
+      await searchFor("Utopía Bonaerense", "opportunity");
+      const utopiaCard = page.locator('#opportunity-list [data-map-item="utopia-bonaerense-moreno"]');
+      await utopiaCard.waitFor({ state: "attached", timeout: 5000 });
+      if (!(await utopiaCard.evaluate(element => element.open))) await utopiaCard.locator("summary").click();
+      check(await utopiaCard.locator('a[href="https://nube.minfra.gba.gob.ar/index.php/s/TrMYQtYjHf4tSrJ/download"]').isVisible(), "mapa-ia: la ficha territorial expone el acta oficial como fuente complementaria");
+      await page.locator("#reset-map").click();
+
       await searchFor("Ecoparque Industrial", "opportunity");
       await page.locator('#opportunity-list [data-map-item="ecoparque"]').waitFor({ state: "attached", timeout: 5000 });
       const ecoparqueCard = page.locator('#opportunity-list [data-map-item="ecoparque"]');
