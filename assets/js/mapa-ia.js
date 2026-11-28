@@ -12044,6 +12044,7 @@ function initMapPage(doc) {
       resetPublishedPaginationAndRender();
     });
     advancedFiltersDialog.addEventListener("close", () => advancedFiltersButton.setAttribute("aria-expanded", "false"));
+    advancedFiltersDialog.addEventListener("cancel", () => advancedFiltersButton.setAttribute("aria-expanded", "false"));
   }
 
   searchInput.addEventListener("input", resetPublishedPaginationAndRender);
